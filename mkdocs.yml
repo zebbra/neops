@@ -25,6 +25,7 @@ theme:
     - search.highlight
     - content.action.edit
   logo: assets/logo.svg
+  favicon: assets/favicon.png
 
   # Dark and light mode, defaults to system theme
   palette:
