@@ -71,6 +71,12 @@ markdown_extensions:
         - "."
 #        - "submodules/zebbra-mkdocs-dummyproject"
 #        - "submodules/zebbra-mkdocs-dummyproject/docs"
+  # Emojy/Symbol/Fontawesome support in markdown
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
 # --8<-- [end:markdown_extensions]
 
 # --8<-- [start:plugins]
