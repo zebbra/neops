@@ -67,6 +67,7 @@ markdown_extensions:
       # Make the build fail if a snippet can't be found.
       check_paths: true
       # https://github.com/mkdocs/mkdocs/issues/2154
+      # https://github.com/mkdocs/mkdocs/issues/3453
       base_path:
         - "mkdocs.yml"
         - "."
