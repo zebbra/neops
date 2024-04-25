@@ -24,6 +24,7 @@ theme:
     - search.suggest
     - search.highlight
     - content.action.edit
+  logo: assets/logo.svg
 
   # Dark and light mode, defaults to system theme
   palette:
