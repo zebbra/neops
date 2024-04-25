@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "neops"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+mkdocs = "*"
+mkdocs-material = "*"
+mkdocs-include-dir-to-nav = "*"
+slugify = "*"
+unicode = "*"
+python-slugify = "*"
+mkdocs-monorepo-plugin = "*"
+mkdocs-git-authors-plugin = "*"
+mkdocs-git-revision-date-localized-plugin = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
