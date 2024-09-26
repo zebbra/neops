@@ -1,0 +1,3 @@
+[submodule "submodules/neops-gql-gtw"]
+	path = submodules/neops-gql-gtw
+	url = https://github.com/zebbra/neops-gql-gtw.git
