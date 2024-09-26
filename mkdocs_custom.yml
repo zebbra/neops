@@ -2,7 +2,8 @@ site_name: Neops Docs
 
 nav:
   - Start: index.md
-#  - Dummy Project: '!include ./submodules/zebbra-mkdocs-dummyproject/mkdocs_base.yml'
+  - Components:
+      - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs.yml'
 
 
 # --8<-- [start:theme]
