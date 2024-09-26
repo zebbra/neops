@@ -59,23 +59,22 @@ This model allows the system to remain extensible and adaptable, as users can in
 In a multivendor and multiplatform implementation, functions can be registered using a decorator that associates them with a specific vendor and model, in combination with the connection library. When a task is executed, the system resolves the correct function based on the most specific match (vendor, model), allowing for a flexible, extensible setup where general functionality can be customized for specific devices.
 
 ```python
-
-@register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="xr")
-def reload_device_xr(context):
+@sdk.register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="xr")
+def reload_device_xr(context, param1):
     #...
 
-@register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="ios")
-def reload_device_ios(context):
+@sdk.register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="ios")
+def reload_device_ios(context, param1):
     #...
 
-@register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="ios" model="C9300")
-def reload_device_9300(context):
+@rsdk.register_func(func="reload_device", conn="netmiko", vendor="Cisco", platform="ios" model="C9300")
+def reload_device_9300(context, param1):
     #...
 
 
 ## in function block
 #...
-reload_device(context):
+reload_device(context)
 #...
 ```
 
