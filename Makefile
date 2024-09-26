@@ -1,6 +1,1 @@
-serve:
-	poetry run mkdocs serve
-build:
-	poetry run mkdocs build
-build-strict:
-	poetry run mkdocs build --strict
+include ./make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
