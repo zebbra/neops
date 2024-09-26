@@ -2,6 +2,7 @@ site_name: Neops Docs
 
 nav:
   - Start: index.md
+  - Principals: principels
   - Components:
       - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs.yml'
 

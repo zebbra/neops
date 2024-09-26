@@ -39,6 +39,7 @@ markdown_extensions:
 - md_in_html
 nav:
 - Start: index.md
+- Principals: principels
 - Components:
   - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs.yml'
 plugins:
