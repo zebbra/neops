@@ -2,7 +2,7 @@ site_name: Neops Docs
 
 nav:
   - Start: index.md
-#  - Dummy Project: '!include ./submodules/zebbra-mkdocs-dummyproject/mkdocs_base.yml'
+#  - Dummy Project: '!include ./submodules/zebbra-mkdocs-dummyproject/mkdocs.yml'
 
 
 # --8<-- [start:theme]
