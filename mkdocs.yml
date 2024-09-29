@@ -40,6 +40,8 @@ nav:
 - Legacy Documentation: legacy
 - Neops 2.0: index.md
 - Components and Services:
+  - Task Engine: '!include ./submodules/neops-task-engine/mkdocs_custom.yml'
+  - Task Runner: '!include ./submodules/neops-task-runner-py/mkdocs_custom.yml'
   - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
   - GraphQL Infrastructure: '!include ./submodules/neops-graphql/mkdocs_custom.yml'
 plugins:
