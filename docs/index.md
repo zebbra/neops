@@ -9,3 +9,4 @@ Stay tuned! Comprehensive documentation is on the way to help you unlock the ful
 your efficiency to new heights.
 
 
+[//]: # (--8<-- "neops-gql-gtw/config/example-rules.json")

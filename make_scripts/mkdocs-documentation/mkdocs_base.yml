@@ -60,12 +60,8 @@ markdown_extensions:
 plugins:
   # Enables search
   - search
-  - git-authors
-  - git-revision-date-localized
   # Allows to add a whole directory in the navigation instead of just files
   # Sub-nav items are automatically created if the provided dir contains subdirectories
   - include_dir_to_nav
-  # Monorepo allows to use the !include in the navigation
-  - monorepo
 
 # --8<-- [end:plugins]

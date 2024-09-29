@@ -42,6 +42,8 @@ nav:
   - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
 plugins:
 - search
+- include_dir_to_nav
+- search
 - git-authors
 - include_dir_to_nav
 - monorepo
