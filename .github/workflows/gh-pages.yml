@@ -76,6 +76,8 @@ jobs:
           name: site
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: pwd
+        run: pwd
       - name: ls dir
         run: ls
       - name: Upload artifact
