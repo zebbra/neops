@@ -78,8 +78,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'site'
-      - name: Upload artifact
-        run: ls site
+      - name: ls dir
+        run: ls 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
