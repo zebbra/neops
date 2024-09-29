@@ -74,12 +74,12 @@ jobs:
           name: site
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: ls dir
+        run: ls
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'site'
-      - name: ls dir
-        run: ls 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
