@@ -77,6 +77,8 @@ jobs:
           path: site  # Specify the target directory here
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: cname
+        run: echo "docs.neops.io" > site/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
