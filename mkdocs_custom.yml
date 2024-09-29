@@ -2,8 +2,8 @@ site_name: Neops Docs
 
 nav:
   - Start: index.md
-  - Components:
-      - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs.yml'
+  - Services:
+      - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
 
 
 # --8<-- [start:theme]
