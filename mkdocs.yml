@@ -37,7 +37,8 @@ markdown_extensions:
 - attr_list
 - md_in_html
 nav:
-- Start: index.md
+- Legacy Documentation: legacy
+- Neops 2.0: index.md
 - Services:
   - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
 plugins:

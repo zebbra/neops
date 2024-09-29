@@ -1,7 +1,8 @@
 site_name: Neops Docs
 
 nav:
-  - Start: index.md
+  - Legacy Documentation: legacy
+  - Neops 2.0: index.md
   - Services:
       - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
 
