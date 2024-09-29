@@ -1,38 +1,5 @@
-Hello world!
+# Neops product documentation
 
-<div class="grid cards" markdown>
+Neops represents a groundbreaking approach to network power that transcends traditional task automation. It’s designed to enhance productivity, enabling you to focus on what you do best—your core competencies. With Neops, you’ll experience a seamless integration of intelligent solutions that streamline operations and free up your time for strategic initiatives.
 
--   :material-clock-fast:{ .lg .middle } __Set up in 5 minutes__
-
-    ---
-
-    Install [`mkdocs-material`](#) with [`pip`](#) and get up
-    and running in minutes
-
-    [:octicons-arrow-right-24: Getting started](#)
-
--   :fontawesome-brands-markdown:{ .lg .middle } __It's just Markdown__
-
-    ---
-
-    Focus on your content and generate a responsive and searchable static site
-
-    [:octicons-arrow-right-24: Reference](#)
-
--   :material-format-font:{ .lg .middle } __Made to measure__
-
-    ---
-
-    Change the colors, fonts, language, icons, logo and more with a few lines
-
-    [:octicons-arrow-right-24: Customization](#)
-
--   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
-
-    ---
-
-    Material for MkDocs is licensed under MIT and available on [GitHub]
-
-    [:octicons-arrow-right-24: License](#)
-
-</div>
+Stay tuned! Comprehensive documentation is on the way to help you unlock the full potential of Neops and elevate your efficiency to new heights.
