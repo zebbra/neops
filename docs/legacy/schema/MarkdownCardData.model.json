@@ -1,0 +1,19 @@
+{
+  "$id": "docs.neops.io/schema/MarkdownCardData",
+  "$ref": "#/definitions/MarkdownCardData",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "MarkdownCardData": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

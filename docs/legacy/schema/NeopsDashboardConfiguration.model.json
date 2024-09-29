@@ -1,0 +1,148 @@
+{
+  "$id": "https://raw.githubusercontent.com/zebbra/neops-docs/master/schema/NeopsDashboardConfiguration.model.json",
+  "$ref": "#/definitions/NeopsDashboardConfiguration",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CardConfig<any>": {
+      "additionalProperties": false,
+      "properties": {
+        "cardId": {
+          "type": "string"
+        },
+        "data": {},
+        "version": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "ContextConfig": {
+      "additionalProperties": false,
+      "description": "Context config provided to the dashboard by the config file",
+      "properties": {
+        "clientContextConfig": {
+          "$ref": "#/definitions/EntityContextConfig"
+        },
+        "deviceContextConfig": {
+          "$ref": "#/definitions/EntityContextConfig"
+        },
+        "groupContextConfig": {
+          "$ref": "#/definitions/EntityContextConfig"
+        },
+        "interfaceContextConfig": {
+          "$ref": "#/definitions/EntityContextConfig"
+        }
+      },
+      "type": "object"
+    },
+    "DashboardCardConfig<any>": {
+      "additionalProperties": false,
+      "properties": {
+        "cardConfig": {
+          "$ref": "#/definitions/CardConfig%3Cany%3E"
+        },
+        "gridConfig": {
+          "$ref": "#/definitions/GridConfig"
+        }
+      },
+      "required": ["gridConfig", "cardConfig"],
+      "type": "object"
+    },
+    "DashboardConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "cards": {
+          "items": {
+            "$ref": "#/definitions/DashboardCardConfig%3Cany%3E"
+          },
+          "type": "array"
+        },
+        "contextConfig": {
+          "$ref": "#/definitions/ContextConfig"
+        },
+        "gridConfig": {
+          "additionalProperties": false,
+          "type": "object"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "EntityContextConfig": {
+      "additionalProperties": false,
+      "description": "Config of the entity context provided to the dashboard by the config file",
+      "properties": {
+        "pageSize": {
+          "type": "number"
+        },
+        "query": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GridConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "cols": {
+          "type": "number"
+        },
+        "rows": {
+          "type": "number"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": ["x", "y", "rows", "cols"],
+      "type": "object"
+    },
+    "MainDashboardConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "urlPath": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "NeopsDashboardConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "entries": {
+          "items": {
+            "$ref": "#/definitions/NeopsDashboardConfigurationEntry"
+          },
+          "type": "array"
+        },
+        "mainDashboard": {
+          "$ref": "#/definitions/MainDashboardConfig"
+        },
+        "version": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "NeopsDashboardConfigurationEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/DashboardConfig"
+        },
+        "onNavigation": {
+          "type": "boolean"
+        },
+        "urlPath": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
