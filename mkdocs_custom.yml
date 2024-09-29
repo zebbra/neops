@@ -46,3 +46,10 @@ extra:
 # --8<-- [start:copyright]
 copyright: Copyright &copy; Zebbra AG
 # --8<-- [end:copyright]
+
+# Overwrite plugins, removes last modified date (git-revision-date-localized)
+plugins:
+  - search
+  - git-authors
+  - include_dir_to_nav
+  - monorepo

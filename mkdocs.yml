@@ -43,7 +43,6 @@ nav:
 plugins:
 - search
 - git-authors
-- git-revision-date-localized
 - include_dir_to_nav
 - monorepo
 repo_url: https://github.com/zebbra/neops
