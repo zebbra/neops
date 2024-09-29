@@ -29,6 +29,9 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          submodules: true  # Checkout submodules
+          fetch-depth: 0    # Ensure the full history is fetched (necessary for some workflows)
 
       # Step 2: Set up Python environment
       - name: Set up Python 3.12
