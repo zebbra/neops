@@ -77,8 +77,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: 'site'
+      - name: Upload artifact
+        run: ls site
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
