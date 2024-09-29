@@ -31,6 +31,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true  # Checkout submodules
+          token: ${{ secrets.SUBMODULES_TOKEN }}  # Use the GitHub token for authentication
           fetch-depth: 0    # Ensure the full history is fetched (necessary for some workflows)
 
       # Step 2: Set up Python environment
