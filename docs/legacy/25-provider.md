@@ -121,11 +121,11 @@ graph LR
     S -- 14 run --> P1
 ```
 
-For more information of the methods of the run cycle see the [BaseRunCycle](pdoc-md/neops.core.provider.base.base_run_cycle) class.
+For more information of the methods of the run cycle see the [BaseRunCycle](Neops Provider Overview/neops.core.provider.base.base_run_cycle) class.
 
 ## Result handling
 
-Results are handled per default by the [BaseResultWriter](pdoc-md/neops.core.provider.base.base_result_writer) it stores the results to the database and informs the user. For preprocessing of the results. At the end of the run cycle are the methods of - [BaseProcessResultCycle](pdoc-md/neops.core.provider.base.base_process_result_cycle) called. Those methods are here to modify results based on other results or use them to save information to the database like the base fact or base check provider does.
+Results are handled per default by the [BaseResultWriter](Neops Provider Overview/neops.core.provider.base.base_result_writer) it stores the results to the database and informs the user. For preprocessing of the results. At the end of the run cycle are the methods of - [BaseProcessResultCycle](Neops Provider Overview/neops.core.provider.base.base_process_result_cycle) called. Those methods are here to modify results based on other results or use them to save information to the database like the base fact or base check provider does.
 
 Result Objects are generated for every related element of a task run. Within this objects the relation between elements of the entities is represented. If a task step in the [run cycle](25-provider?id=run-cycle) fails (by an exception or set on the result object), the element itself and none of it sub elements are further processed. For example if it's unable to connect to a device no more run cycle methods related to this device (device, interfaces and clients on interfaces) are processed.
 

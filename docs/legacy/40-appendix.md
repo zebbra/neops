@@ -1,8 +1,8 @@
 # Appendix
 
-- [Jinja2](appendix/appendix_jinja2.md)
-- [JSON Form](appendix/appendix_jsonform.md)
-- [Text FSM](appendix/appendix_textfsm.md)
+- [Jinja2](Appendix/appendix_jinja2.md)
+- [JSON Form](Appendix/appendix_jsonform.md)
+- [Text FSM](Appendix/appendix_textfsm.md)
 
 ## Installation manual 
 
