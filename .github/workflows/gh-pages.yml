@@ -43,6 +43,7 @@ jobs:
       - name: Build Project
         run: |
           python -m pip install poetry
+          poetry install --directory make_scripts/mkdocs-documentation/
           make doc-build
 
       # Step 4: Upload build artifacts
@@ -50,11 +51,12 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build
-          path: ./build # Change this path to wherever your build output is located
+          name: site
+          path: ./site # Change this path to wherever your build output is located
 
   # Single deploy job since we're just deploying
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -62,6 +64,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: site
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
@@ -70,5 +76,7 @@ jobs:
           # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site  # Directory with the build artifacts
