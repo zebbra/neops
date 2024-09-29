@@ -50,6 +50,8 @@ jobs:
           poetry install --directory make_scripts/mkdocs-documentation/
           make doc-build
 
+      - name: ls dir
+        run: ls
       # Step 4: Upload build artifacts
       # This step makes sure the built files are available in the deploy step
       - name: Upload Artifacts
