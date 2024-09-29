@@ -39,8 +39,9 @@ markdown_extensions:
 nav:
 - Legacy Documentation: legacy
 - Neops 2.0: index.md
-- Services:
+- Components and Services:
   - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
+  - GraphQL Infrastructure: '!include ./submodules/neops-graphql/mkdocs_custom.yml'
 plugins:
 - search
 - include_dir_to_nav
