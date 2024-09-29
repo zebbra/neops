@@ -65,6 +65,7 @@ theme:
   - navigation.tabs
   - navigation.top
   - navigation.tracking
+  - navigation.instant
   - search.share
   - search.suggest
   - search.highlight
