@@ -2,6 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-gql-gtw" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/submodules/neops-gql-gtw" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/submodules/neops-graphql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/submodules/neops-task-engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/submodules/neops-task-runner-py" vcs="Git" />
   </component>
 </project>
