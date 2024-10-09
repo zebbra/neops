@@ -10,3 +10,9 @@
 [submodule "submodules/neops-task-runner-py"]
 	path = submodules/neops-task-runner-py
 	url = https://github.com/zebbra/neops-task-runner-py.git
+[submodule "submodules/neops-web-sdk"]
+	path = submodules/neops-web-sdk
+	url = https://github.com/zebbra/neops-web-sdk.git
+[submodule "submodules/neops-web-client"]
+	path = submodules/neops-web-client
+	url = https://github.com/zebbra/neops-web-client.git

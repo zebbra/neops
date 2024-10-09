@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import deepmerge
 import yaml
 import subprocess
@@ -90,11 +92,62 @@ def ensure_docs_dir():
         shutil.copytree(MKDOCS_DOCS_TEMPLATE, "docs")
 
 
+def is_ignored_by_git(path):
+    # Use git check-ignore command to see if the path is ignored
+    result = subprocess.run(['git', 'check-ignore', path], capture_output=True, text=True)
+
+    # If the result's stdout is not empty, the path is ignored
+    return result.stdout != ''
+
+def create_symlinks():
+    """
+    Create symlinks for all folders in the root of the directory to enable snippets in the documentation
+    :return:
+    """
+    path = '.'
+    directories = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+
+    config = yaml.load(read_file(MKDOCS_RES), Loader=SafeLoaderIgnoreUnknown)
+
+    docs_dir = Path(config.get("docs_dir", "./docs"))
+
+    symlinks = [f for f in docs_dir.iterdir() if f.is_symlink()]
+
+    for dir in directories:
+        if is_ignored_by_git(dir):
+            print(f"-- Skipping {dir} (git-ignored)")
+            continue
+        if dir.startswith("."):
+            print(f"-- Skipping {dir} (hidden directory)")
+            continue
+        if dir.startswith("node_modules"):
+            print(f"-- Skipping {dir} (node_modules)")
+            continue
+        if dir.startswith("submodules"):
+            print(f"-- Skipping {dir} (submodules need to be referenced directly)")
+            continue
+        if dir.endswith(docs_dir.name):
+            print(f"-- Skipping {dir} (docs directory)")
+            continue
+        if symlinks not in symlinks:
+            dest = f"{docs_dir}/{dir}"
+            print(f"-- Skipping {dir} (already exists)")
+            if Path(dest).exists():
+                continue
+            rel_dir = os.path.relpath(dir, docs_dir)
+            os.symlink(rel_dir, dest, target_is_directory=True)
+            print(f"++ Created symlink for {dir}")
+
+    print("You can now implement files from all folders in your repo within the docs")
+
+
+
 
 def main():
     ensure_mkdocs_custom()
     merge_mkdocs_yml()
     ensure_docs_dir()
+    create_symlinks()
 
 
 if __name__ == '__main__':

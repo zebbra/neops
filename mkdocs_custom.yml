@@ -8,6 +8,8 @@ nav:
       - Task Runner: '!include ./submodules/neops-task-runner-py/mkdocs_custom.yml'
       - Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
       - GraphQL Infrastructure: '!include ./submodules/neops-graphql/mkdocs_custom.yml'
+      - WebSDK: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
+      - WebClient: '!include ./submodules/neops-web-client/mkdocs_custom.yml'
 
 
 # --8<-- [start:theme]
