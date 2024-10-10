@@ -12,6 +12,10 @@ on:
   repository_dispatch:
     types: [ trigger ]  # You can specify a custom event type
 
+  schedule:
+    - cron: '25 * * * *'  # Runs at minute 0 of every hour (UTC)
+
+
 permissions:
   contents: read
   pages: write
