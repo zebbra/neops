@@ -3,7 +3,7 @@ import pathspec
 
 # Define the directory to clean and the ignore file (like .gitignore)
 directory_to_clean = 'site'
-ignore_file = '.mkdocsignore'  # Path to your ignore file
+ignore_file = f"{os.path.dirname(__file__)}/mkdocsignore"  # Path to your ignore file
 
 if __name__ == '__main__':
     # Read the patterns from the ignore file

@@ -13,6 +13,7 @@ RUN poetry --directory make_scripts/mkdocs-documentation/ install
 COPY .git .git
 
 RUN make doc-build
+RUN make doc-site-clean
 
 FROM nginxinc/nginx-unprivileged:1.19
 
