@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
   schedule:
-    - cron: '30 * * * *'  # Runs at minute 0 of every hour (UTC)
+    - cron: '0 */3 * * *'  # Runs every 3 hours
 
   repository_dispatch:
     types: [ trigger ]  # You can specify a custom event type
