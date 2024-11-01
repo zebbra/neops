@@ -1,4 +1,4 @@
-site_name: Neops Docs
+site_name: Your Project Docs
 
 nav:
   - Start: index.md
@@ -38,8 +38,8 @@ edit_uri: edit/main/docs
 extra:
   social:
     - icon: fontawesome/solid/house
-      link: https://neops.io
-      name: Neops
+      link: https://zebbra.ch
+      name: Zebbra
 # --8<-- [end:social]
 
 # --8<-- [start:copyright]
@@ -48,7 +48,7 @@ copyright: Copyright &copy; Zebbra AG
 
 plugins:
   # Enables search
-  - git-authors
-  - git-revision-date-localized
+  # - git-authors
+  # - git-revision-date-localized
   # Monorepo allows to use the !include in the navigation
   - monorepo
