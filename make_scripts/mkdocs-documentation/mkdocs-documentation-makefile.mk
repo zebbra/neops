@@ -1,26 +1,25 @@
 .PHONY: doc-update-assets doc-create-mkdocs doc-serve doc-build
 
+MKDOCS_ENV=./make_scripts/mkdocs-documentation
+
 doc-update-assets:
-	./make_scripts/mkdocs-documentation/setup_documentation.sh
+	$(MKDOCS_ENV)/setup_documentation.sh
 
 doc-create-mkdocs:
-	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py
+	poetry run --project $(MKDOCS_ENV)/ python $(MKDOCS_ENV)/setup_documentation.py
 
 doc-serve:
-	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py
-	poetry run --directory make_scripts/mkdocs-documentation/  mkdocs serve
+	poetry install --project $(MKDOCS_ENV)/
+	poetry run --project $(MKDOCS_ENV)/ python $(MKDOCS_ENV)/setup_documentation.py
+	poetry run --project $(MKDOCS_ENV)/  mkdocs serve
 
 doc-build:
-	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py
-	poetry run --directory make_scripts/mkdocs-documentation/  mkdocs build
-	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/clean_sites_directory.py
+	poetry run --project $(MKDOCS_ENV)/ python $(MKDOCS_ENV)/setup_documentation.py
+	poetry run --project $(MKDOCS_ENV)/  mkdocs build
+	poetry run --project $(MKDOCS_ENV)/ python $(MKDOCS_ENV)/clean_sites_directory.py
 
 doc-build-docker:
-	docker build --file make_scripts/mkdocs-documentation/Dockerfile .
+	docker build --file $(MKDOCS_ENV)/Dockerfile .
 
 doc-site-clean:
-	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/clean_sites_directory.py
-
-#doc-build-strict:
-#	poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py
-#	poetry run --directory make_scripts/mkdocs-documentation/  mkdocs build --strict
+	poetry run --project $(MKDOCS_ENV)/ python $(MKDOCS_ENV)/clean_sites_directory.py

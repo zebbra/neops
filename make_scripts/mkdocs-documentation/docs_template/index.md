@@ -17,5 +17,5 @@ git submodule add your-repo-name
 
 ## Reference
 
-- Markdown/Material for MkDocs: https://squidfunk.github.io/mkdocs-material/reference/
-- Snippets: https://facelessuser.github.io/pymdown-extensions/extensions/snippets/
+- [Markdown/Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/)
+- [Usage of Snippets](https://facelessuser.github.io/pymdown-extensions/extensions/snippets/)
