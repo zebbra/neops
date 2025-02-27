@@ -3,6 +3,7 @@ site_name: Neops Docs
 nav:
   - Legacy Documentation: legacy
   - Neops 2.0: index.md
+  - Modules: modules
   - Components and Services:
       - Task Engine: '!include ./submodules/neops-task-engine/mkdocs_custom.yml'
       - Task Runner: '!include ./submodules/neops-task-runner-py/mkdocs_custom.yml'
@@ -10,6 +11,7 @@ nav:
       - GraphQL Infrastructure: '!include ./submodules/neops-graphql/mkdocs_custom.yml'
       - WebSDK: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
       - WebClient: '!include ./submodules/neops-web-client/mkdocs_custom.yml'
+  - Development: development
 
 
 # --8<-- [start:theme]
