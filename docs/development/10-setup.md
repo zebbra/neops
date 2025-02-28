@@ -1,9 +1,138 @@
-# Setup development environment
+# Setting Up Keycloak with Django Allauth and OpenID Connect Locally
 
-## Setup local OIDC environment
+This guide provides a step-by-step setup of Keycloak authentication with Django Allauth and a frontend using OIDC (OpenID Connect). 
 
-todo
+## 1. Set Up Keycloak with Docker Compose
 
-blabla
+The Docker Compose configuration will:
 
-test
+- Run PostgreSQL for both Django and Keycloak.
+- Import a predefined Keycloak realm (neops) with necessary clients.
+
+### 1.1 Configure .env for Keycloak
+
+Before running Docker Compose, update your .env file to include the Keycloak configuration:
+
+```
+...
+# Docker Compose Settings
+COMPOSE_FILE=docker-compose.base.yml:docker-compose.keycloak.yml
+```
+
+### 1.2 Start Services with Docker Compose
+
+Now, run Docker Compose to start all services:
+
+```
+docker-compose up -d
+```
+
+What this does:
+
+- Redis starts on port 6380 for caching.
+- PostgreSQL (Main DB for Django) runs on localhost:5433.
+- PostgreSQL for Keycloak runs as keycloak_postgres.
+- Keycloak starts on http://localhost:8081/, importing the neops realm.
+- Elasticsearch starts on http://localhost:9200.
+
+
+### 1.3 Verify Keycloak Setup
+
+Once Keycloak is running:
+
+- Login to Keycloak Admin Console
+  - URL: http://localhost:8081/admin
+  - Username: admin
+  - Password: admin
+- Verify Imported Realm
+  - Open "Realms" → Ensure neops is imported.
+  - Under Clients, you should see:
+    - neops-auth → Used by the backend.
+    - neops-client → Used by the frontend.
+  - You can create the users that you want.
+
+## 2. Set Up Django Backend with Keycloak
+
+The backend uses Django Allauth for authentication.
+
+### 2.1 Install Dependencies
+
+Ensure you have Python and Poetry installed. Then, inside the backend directory:
+
+```
+poetry install
+```
+
+### 2.2 Configure Authentication in Django
+
+Modify the .env file to include:
+
+```
+AUTH_PROVIDERS_CONFIG_PATH="./auth_providers_with_secret.json"
+NEOPS_PLUGINS="neops_auth_keycloak"
+```
+
+### 2.3 Configure Authentication Providers
+
+To support multiple Keycloak providers, modify the auth_providers_with_secret.json file:
+
+```
+{
+  "providers": [
+    {
+      "provider_id": "keycloak",
+      "name": "Keycloak",
+      "client_id": "neops-auth",
+      "secret": "********",
+      "settings": {
+        "server_url": "http://localhost:8081/realms/neops/.well-known/openid-configuration"
+      }
+    }
+  ]
+}
+```
+
+
+### 2.4 Apply Migrations and Start Django
+
+Run the database migrations:
+```
+poetry run python manage.py migrate
+```
+
+Then, start the Django server:
+```
+poetry run python manage.py runserver
+```
+
+
+## 3. Set Up Frontend
+
+The frontend uses OIDC (OpenID Connect) for authentication.
+
+### 3.1 Configure Authentication in environment.ts
+
+Modify environment.ts to use the correct Keycloak settings:
+```
+export const environment: EnvironmentConfig = {
+  production: false,
+  graphQLEndpointUrl: 'http://localhost:8000/graphql',
+  useOidc: true,
+  oidcConfig: [
+    {
+      authority: 'http://localhost:8081/realms/neops',
+      redirectUrl: 'http://localhost:4201/integration/cards',
+      postLogoutRedirectUri: 'http://localhost:4201/login',
+      clientId: 'neops-client',
+      scope: 'openid profile email offline_access',
+      responseType: 'code',
+      silentRenew: true,
+      useRefreshToken: true,
+      secureRoutes: ['http://localhost:8000/graphql'],
+    }
+  ]
+};
+```
+
+The frontend should now be running at http://localhost:4201/, and log in using the credentials of the user accounts you have created.
+
