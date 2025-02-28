@@ -69,14 +69,16 @@ Modify the .env file to include:
 
 ```
 AUTH_PROVIDERS_CONFIG_PATH="./auth_providers_with_secret.json"
-NEOPS_PLUGINS="neops_auth_keycloak"
+NEOPS_PLUGINS="... neops_auth_allauth"
 ```
+
+- Remove: neops_auth_django and neops_auth_keycloak.
 
 ### 2.3 Configure Authentication Providers
 
 To support multiple Keycloak providers, modify the auth_providers_with_secret.json file:
 
-```
+```json
 {
   "providers": [
     {
@@ -110,29 +112,6 @@ poetry run python manage.py runserver
 
 The frontend uses OIDC (OpenID Connect) for authentication.
 
-### 3.1 Configure Authentication in environment.ts
+### 3.1 Configure Authentication in app settings
 
-Modify environment.ts to use the correct Keycloak settings:
-```
-export const environment: EnvironmentConfig = {
-  production: false,
-  graphQLEndpointUrl: 'http://localhost:8000/graphql',
-  useOidc: true,
-  oidcConfig: [
-    {
-      authority: 'http://localhost:8081/realms/neops',
-      redirectUrl: 'http://localhost:4201/integration/cards',
-      postLogoutRedirectUri: 'http://localhost:4201/login',
-      clientId: 'neops-client',
-      scope: 'openid profile email offline_access',
-      responseType: 'code',
-      silentRenew: true,
-      useRefreshToken: true,
-      secureRoutes: ['http://localhost:8000/graphql'],
-    }
-  ]
-};
-```
-
-The frontend should now be running at http://localhost:4201/, and log in using the credentials of the user accounts you have created.
-
+[//]: # (TODO: @Haigos)
