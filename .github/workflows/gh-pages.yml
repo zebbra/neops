@@ -1,16 +1,19 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy Neops Documentation
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  schedule:
+    - cron: '0 */3 * * *'  # Runs every 3 hours
 
   repository_dispatch:
     types: [ trigger ]  # You can specify a custom event type
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: read

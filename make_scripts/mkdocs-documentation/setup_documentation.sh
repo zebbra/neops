@@ -42,5 +42,5 @@ fi
   find . -type f -iname "*.sh" -exec chmod +x {} \;
 )
 
-poetry install --directory make_scripts/mkdocs-documentation/
-poetry run --directory make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py
+poetry install --project make_scripts/mkdocs-documentation/
+poetry run --project make_scripts/mkdocs-documentation/ python make_scripts/mkdocs-documentation/setup_documentation.py

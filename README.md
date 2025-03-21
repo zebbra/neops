@@ -14,4 +14,3 @@ This repository does not contain product code, but serves as an entry point for 
 ## Contribute to documentation
 
 Everybody is welcome to contribute to the documentation!
-

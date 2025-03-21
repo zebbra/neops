@@ -123,6 +123,9 @@ def create_symlinks():
         if dir.startswith("node_modules"):
             print(f"-- Skipping {dir} (node_modules)")
             continue
+        if dir.startswith("make_scripts"):
+            print(f"-- Skipping {dir} (node_modules)")
+            continue
         if dir.startswith("submodules"):
             print(f"-- Skipping {dir} (submodules need to be referenced directly)")
             continue
