@@ -16,7 +16,7 @@
     
     
       
-        <title>Neops Secure Graphql Gateway - Neops Docs</title>
+        <title>Neops Secure Gateway - Neops Docs</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-secure-graphql-gateway" class="md-skip">
+        <a href="#neops-secure-gateway" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Secure Graphql Gateway
+              Neops Secure Gateway
             
           </span>
         </div>
@@ -3064,93 +3064,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#concepts" class="md-nav__link">
+  <a href="#docs" class="md-nav__link">
     <span class="md-ellipsis">
-      Concepts
+      Docs
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Concepts">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#role-in-the-neops-eco-system" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      Role in the Neops Eco-System
+      Prerequisites
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#big-picture" class="md-nav__link">
+  <a href="#install-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
-      Big Picture
+      Install dependencies
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
+  <a href="#building-the-app" class="md-nav__link">
     <span class="md-ellipsis">
-      Features
+      Building the app
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#schema-transformation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Schema transformation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-transformation-resolvers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data transformation / Resolvers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-and-report-filtering" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task and Report filtering
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-update" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependency update
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#running-the-app" class="md-nav__link">
     <span class="md-ellipsis">
       Running the app
@@ -3158,39 +3117,11 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#test" class="md-nav__link">
     <span class="md-ellipsis">
       Test
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      configuration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment variables
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuration-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration Rules
     </span>
   </a>
   
@@ -3225,33 +3156,27 @@
   
 
 
-<h1 id="neops-secure-graphql-gateway">Neops Secure Graphql Gateway</h1>
+<h1 id="neops-secure-gateway">Neops Secure Gateway</h1>
 <h2 id="description">Description</h2>
-<p>This is a GraphQL gateway for the Neops project. It is a gateway and Webapplication Firewall that provides a single endpoint for all the services in the Neops project. It is built using NestJS and Apollo Server.</p>
-<h2 id="concepts">Concepts</h2>
-<h3 id="role-in-the-neops-eco-system">Role in the Neops Eco-System</h3>
-<p>The gateway acts as a single endpoint for all the Graphql Operations of a running Neops Backend Graphql API. It can be used to transform the schema that is served to the client, as well as to modify the data that is served to the client. This can be used to filter out sensitive data, or to restrict the operations that the client can perform. Typically it is used to expose / restrict the Graphql API from a secure network to an insecure network.</p>
-<h3 id="big-picture">Big Picture</h3>
-<p><img src="docs/assets/big-picture.png" alt="Big Picture" width="100%"/></p>
-<h3 id="features">Features</h3>
-<p>Context of all features is the gateway acting as endpoint for all Graphql Operations within insecure networks to prevent 3rd party systems of accessing sensitive data, start processes and run reports or accessing device credentials.</p>
-<h3 id="schema-transformation">Schema transformation</h3>
-<p>Having the ability to transform the schema that is served to the client, allows to restrict the operations that the client can perform.</p>
-<p>A Graphql Operation is a query, mutation or subscription. The schema transformation can be used to allow or deny specific operations. It is possible to configure a list of allowed and denied operations. If a operation is allowed, all other operations are denied. If a operation is denied, all other operations are allowed.</p>
-<p>See below for an example configuration.</p>
-<h3 id="data-transformation-resolvers">Data transformation / Resolvers</h3>
-<p>Schema Transformations modify the schema that is served to the client. Resolvers affect the data that is served to the client during runtime of the Graphql Operation. This can be used to filter out sensitive data, or to restrict the operations that the client can perform according to configured rules.</p>
-<p>See below for an example configuration.</p>
-<h3 id="task-and-report-filtering">Task and Report filtering</h3>
-<p>To ensure certain Tasks or Export can not be called, the gateway can be configured to allow or deny specific tasks and reports. Reports / Task filters are a specialized form of the Resolvers and act during runtime of the Graphql Operation and permit or deny the execution of specific tasks or reports the client is requesting to do so.</p>
-<h2 id="installation">Installation</h2>
+<p>This is a GraphQL gateway for the Neops project. It is a proxy that provides a single endpoint for all the graphql services in the Neops project.</p>
+<p>It can be used to transform the schema that is served to the client, as well as to modify the data that is returned from queries and mutations. The configuration is done using environment variables (check <code>docker-compose.yml</code>) and a configuration file (check <code>config/example-rules.json</code>). The gateway is designed to be used to prevent 3rd party systems from accessing sensitive data, starting processes, running reports, or accessing data structures exposed by the Neops Graphql API.</p>
+<h2 id="docs">Docs</h2>
+<p>For more information about the projects underlying concepts, please refer to the <a href="https://docs.neops.io/">documentation</a>.</p>
+<h2 id="development">Development</h2>
+<p>The project is built using <a href="https://nestjs.com/">NestJS</a> and <a href="https://graphql.org/">GraphQL</a>. Setup for development is done using <a href="https://nodejs.org/">NodeJs</a>, <a href="https://www.docker.com/">Docker</a> and <a href="https://docs.docker.com/compose/">Docker Compose</a>.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Node.js &gt;= 20.x</li>
+<li>Docker (for running the Neops Graphql API)</li>
+<li>Running Neops Graphql API (for testing the gateway)</li>
+</ul>
+<h3 id="install-dependencies">Install dependencies</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>npm<span class="w"> </span>install
 </span></code></pre></div>
-<h2 id="dependency-update">Dependency update</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>npm-check-updates
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$<span class="w"> </span>ncu<span class="w"> </span>-u
+<h3 id="building-the-app">Building the app</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
 </span></code></pre></div>
-<h2 id="running-the-app">Running the app</h2>
+<h3 id="running-the-app">Running the app</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># development with debugger</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>start:debug
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -3261,7 +3186,7 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># production mode</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>start:prod
 </span></code></pre></div>
-<h2 id="test">Test</h2>
+<h3 id="test">Test</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># unit tests</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
@@ -3270,84 +3195,6 @@
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># test coverage</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>test:cov
-</span></code></pre></div>
-<h2 id="configuration">configuration</h2>
-<h3 id="environment-variables">Environment variables</h3>
-<p>Ensure to set the following environment variables (the values here are just examples) for the environemnt you are running the gateway in:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">PORT</span><span class="o">=</span><span class="m">1234</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">PATH_TO_RULES</span><span class="o">=</span>config/example-rules.json
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nv">GRAPHQL_ENDPOINT_NEOPS</span><span class="o">=</span>http://localhost:8000/graphql
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nv">STATIC_AUTH_TOKEN</span><span class="o">=</span><span class="s2">&quot;Bearer your-static-token&quot;</span>
-</span></code></pre></div>
-<h3 id="configuration-rules">Configuration Rules</h3>
-<p>check the example file under <code>config/example-rules.json</code> to see how to configure the rules for the gateway.</p>
-<p>To modify/transform the schema itself prior to serve the graphql endpoint, one can allow or deny certain operations. This directly modifies the schema which will be served to accessing clients.</p>
-<p><code>operationAllow</code> will allow the execution of specific operations by the client and deny all others. An empty list, will ALLOW all operations.</p>
-<p><code>operationDeny</code> will deny the execution of specific operations by the client.
-Example:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;transformers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">&quot;operationAllow&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">&quot;operationDeny&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;operationName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Query&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fieldName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;interfacesElastic&quot;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="p">]</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>Configuring resolvers gives ou access to the data that is served by the gateway.</p>
-<p><code>valueErasers</code> will remove the value (set to null) of a field from the response. This is useful for sensitive data that should not be exposed to the client.</p>
-<p><code>jsonData</code> will allow or deny the population of specific json attributes of a specific field in the response.</p>
-<p><code>tasksAllow</code> will allow the execution of specific tasks by the client and deny all others. An empty list, will DENY all tasks.</p>
-<p><code>tasksDeny</code> will deny the execution of specific tasks by the client.</p>
-<p><code>reportsAllow</code> will allow the execution of specific reports by the client and deny all others. An empty list, will DENY all reports.</p>
-<p><code>reportsDeny</code> will deny the execution of specific reports by the client.</p>
-<p>Example:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;resolvers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">&quot;valueErasers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="nt">&quot;fieldName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;username&quot;</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="nt">&quot;typeName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DeviceType&quot;</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p">},</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">&quot;fieldName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="nt">&quot;typeName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DeviceType&quot;</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">&quot;jsonData&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="nt">&quot;typeName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DeviceType&quot;</span><span class="p">,</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="nt">&quot;fieldName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;facts&quot;</span><span class="p">,</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">&quot;allow&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="nt">&quot;deny&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;foo.bar&quot;</span><span class="p">]</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="nt">&quot;tasksAllow&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">        </span><span class="nt">&quot;uniqueName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;testmail&quot;</span>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">    </span><span class="nt">&quot;tasksDeny&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">    </span><span class="nt">&quot;reportsAllow&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">        </span><span class="nt">&quot;uniqueName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;super.awesome.report&quot;</span>
-</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="w">    </span><span class="nt">&quot;reportsDeny&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">      </span><span class="p">{</span>
-</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">        </span><span class="nt">&quot;uniqueName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;super.awesome.report&quot;</span>
-</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">    </span><span class="p">]</span>
-</span><span id="__span-6-37"><a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-6-38"><a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>to use the rules then in a docker container, you need to mount the file to the container:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">gqlgateway</span><span class="p">:</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./config/example-rules.json:/app/config/rules.json</span>
 </span></code></pre></div>
 
 
