@@ -4091,9 +4091,9 @@
 <p><code>string</code> (<a href="./">Function Block ID</a>)</p>
 <h2 id="functionblockid-constraints">functionBlockId Constraints</h2>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>^([^\/:]+)\/([^\/:]+):[0-9]+(\.[0-9]+)?(\.[0-9]+)?$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>^([^/:-]+)\/([^/:-]+):\d+(\.\d+)?(\.\d+)?$
 </span></code></pre></div>
-<p><a href="https://regexr.com/?expression=%5E(%5B%5E%5C%2F%3A%5D%2B)%5C%2F(%5B%5E%5C%2F%3A%5D%2B)%3A%5B0-9%5D%2B(%5C.%5B0-9%5D%2B)%3F(%5C.%5B0-9%5D%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
+<p><a href="https://regexr.com/?expression=%5E(%5B%5E%2F%3A-%5D%2B)%5C%2F(%5B%5E%2F%3A-%5D%2B)%3A%5Cd%2B(%5C.%5Cd%2B)%3F(%5C.%5Cd%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h2 id="functionblockid-examples">functionBlockId Examples</h2>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="s2">&quot;fb.neops.io/ping:1.0.0&quot;</span>
 </span></code></pre></div>
