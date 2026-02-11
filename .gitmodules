@@ -8,7 +8,7 @@
 	path = submodules/neops-workflow-engine
 	url = https://github.com/zebbra/neops-task-engine.git
 [submodule "submodules/neops-task-runner-py"]
-	path = submodules/neops-task-runner-py
+	path = submodules/neops-worker-sdk-py
 	url = https://github.com/zebbra/neops-task-runner-py.git
 [submodule "submodules/neops-web-sdk"]
 	path = submodules/neops-web-sdk
