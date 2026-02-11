@@ -52,3 +52,14 @@ plugins:
   # - git-revision-date-localized
   # Monorepo allows to use the !include in the navigation
   - monorepo
+  - exclude:
+      glob:
+        - '*.tmp'
+        - '*.pdf'
+        - '*.gz'
+        - node_modules
+        - '**/node_modules/*'
+        - .venv
+        - '**/.venv/*'
+      regex:
+        - .*\.(tmp|bin|tar)$
