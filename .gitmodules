@@ -5,7 +5,7 @@
 	path = submodules/neops-graphql
 	url = https://github.com/zebbra/neops-graphql.git
 [submodule "submodules/neops-task-engine"]
-	path = submodules/neops-task-engine
+	path = submodules/neops-workflow-engine
 	url = https://github.com/zebbra/neops-task-engine.git
 [submodule "submodules/neops-task-runner-py"]
 	path = submodules/neops-task-runner-py
