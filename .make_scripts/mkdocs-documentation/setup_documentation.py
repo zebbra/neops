@@ -6,9 +6,9 @@ import subprocess
 import os
 import shutil
 
-MKDOCS_BASE = "make_scripts/mkdocs-documentation/mkdocs_base.yml"
-MKDOCS_CUST_TEMPLATE = "make_scripts/mkdocs-documentation/mkdocs_custom.yml"
-MKDOCS_DOCS_TEMPLATE = "make_scripts/mkdocs-documentation/docs_template"
+MKDOCS_BASE = ".make_scripts/mkdocs-documentation/mkdocs_base.yml"
+MKDOCS_CUST_TEMPLATE = ".make_scripts/mkdocs-documentation/mkdocs_custom.yml"
+MKDOCS_DOCS_TEMPLATE = ".make_scripts/mkdocs-documentation/docs_template"
 
 MKDOCS_CUST = "mkdocs_custom.yml"
 MKDOCS_RES = "mkdocs.yml"
@@ -29,20 +29,21 @@ class SafeLoaderIgnoreUnknown(yaml.SafeLoader):
     """
     A safe loader that passes unknown values through unchanged
     """
+
     def pass_unknown(self, node):
         return node.tag
 
 
 def is_file_dirty(filename):
     """
-  Checks if a specific file is dirty (modified but not staged) in the Git index.
+    Checks if a specific file is dirty (modified but not staged) in the Git index.
 
-  Args:
-      filename: The path to the file to check.
+    Args:
+        filename: The path to the file to check.
 
-  Returns:
-      True if the file is dirty, False otherwise.
-  """
+    Returns:
+        True if the file is dirty, False otherwise.
+    """
     # Check if file exists first
     if not os.path.exists(filename):
         return False
@@ -73,7 +74,13 @@ def merge_mkdocs_yml():
     yaml_res = deepmerge.always_merger.merge(yaml_base, yaml_custom)
 
     if not is_file_dirty(MKDOCS_RES):
-        write_file(MKDOCS_RES, RES_HEADER + yaml.dump(yaml_res).replace("tag:yaml.org,2002:", "!!").replace("'!relative'", "!relative"))
+        write_file(
+            MKDOCS_RES,
+            RES_HEADER
+            + yaml.dump(yaml_res)
+            .replace("tag:yaml.org,2002:", "!!")
+            .replace("'!relative'", "!relative"),
+        )
     else:
         raise Exception(f"{MKDOCS_RES} is dirty, stage or commit first")
 
@@ -81,6 +88,7 @@ def merge_mkdocs_yml():
 def ensure_mkdocs_custom():
     if not os.path.exists(MKDOCS_CUST):
         shutil.copy(MKDOCS_CUST_TEMPLATE, MKDOCS_CUST)
+
 
 def ensure_docs_dir():
     """
@@ -94,17 +102,22 @@ def ensure_docs_dir():
 
 def is_ignored_by_git(path):
     # Use git check-ignore command to see if the path is ignored
-    result = subprocess.run(['git', 'check-ignore', path], capture_output=True, text=True)
+    result = subprocess.run(
+        ["git", "check-ignore", path], capture_output=True, text=True
+    )
 
     # If the result's stdout is not empty, the path is ignored
-    return result.stdout != ''
+    return result.stdout != ""
+
 
 def create_symlinks():
     """
     Create symlinks for all folders in the root of the directory to enable snippets in the documentation
+    Note that you should not reference files outside of the docs dir (i.e., do not use ../folder/file),
+    as this will lead to an error when composing multiple docs
     :return:
     """
-    path = '.'
+    path = "."
     directories = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     config = yaml.load(read_file(MKDOCS_RES), Loader=SafeLoaderIgnoreUnknown)
@@ -113,7 +126,21 @@ def create_symlinks():
 
     symlinks = [f for f in docs_dir.iterdir() if f.is_symlink()]
 
+    additional_ignores: list[str] = []
+    symlink_path = f"{docs_dir}/.symlinkignore"
+    try:
+        additional_ignores = read_file(symlink_path).split("\n")
+        print("Found .symlinkignore file")
+    except FileNotFoundError:
+        print(f"No .symlinkignore file found at {symlink_path}")
+
+    for line in additional_ignores:
+        print(f"symlinkignore Line: {line}")
+
     for dir in directories:
+        if dir in additional_ignores:
+            print(f"-- Skipping {dir} (.symlinkignore-ignored)")
+            continue
         if is_ignored_by_git(dir):
             print(f"-- Skipping {dir} (git-ignored)")
             continue
@@ -144,8 +171,6 @@ def create_symlinks():
     print("You can now implement files from all folders in your repo within the docs")
 
 
-
-
 def main():
     ensure_mkdocs_custom()
     merge_mkdocs_yml()
@@ -153,5 +178,5 @@ def main():
     create_symlinks()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
