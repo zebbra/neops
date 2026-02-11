@@ -44,7 +44,7 @@ jobs:
       - name: Build Project
         run: |
           python -m pip install poetry
-          poetry install --directory make_scripts/mkdocs-documentation/
+          poetry install --directory .make_scripts/mkdocs-documentation/
           make update-submodules
           make doc-build
 
