@@ -1,7 +1,7 @@
 include .make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
 
 # To call with another branch, use make update-submodules BRANCH=feature/documentation
-BRANCH := develop
+BRANCH := feature/documentation
 update-submodules:
 	echo "Updating submodules"
 	git submodule init
@@ -14,6 +14,10 @@ update-submodules:
 set-upstream:
 	echo "Setting upstream branches for submodules"
 	git submodule foreach 'git branch --set-upstream-to=origin/${BRANCH} ${BRANCH}'
+
+commit-submodules:
+	echo "Committing changes in submodules"
+	git submodule foreach 'git add . && git commit -m "Update ${name} submodule to latest changes from ${BRANCH} branch" || echo "No changes to commit in ${name} submodule"'
 
 push-submodules:
 	echo "Pushing changes to submodules"
