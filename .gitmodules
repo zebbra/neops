@@ -13,3 +13,6 @@
 [submodule "submodules/neops-web-client"]
 	path = submodules/neops-web-client
 	url = https://github.com/zebbra/neops-web-client.git
+[submodule "submodules/neops-remote-lab"]
+	path = submodules/neops-remote-lab
+	url = https://github.com/zebbra/neops-remote-lab.git

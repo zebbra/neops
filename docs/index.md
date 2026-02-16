@@ -10,5 +10,6 @@ and free up your time for strategic initiatives.
 Stay tuned! Comprehensive documentation is on the way to help you unlock the full potential of Neops and elevate 
 your efficiency to new heights.
 
+[//]: # (TODO: Cards for each part of the product)
 
 [//]: # (--8<-- "neops-gql-gtw/config/example-rules.json")

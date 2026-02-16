@@ -38,15 +38,16 @@ markdown_extensions:
 - attr_list
 - md_in_html
 nav:
-- Legacy Documentation: legacy
-- Neops 2.0: index.md
+- Home: index.md
 - Modules: modules
 - Components and Services:
   - Workflow Engine: '!include ./submodules/neops-workflow-engine/mkdocs_custom.yml'
-  - Worker SDK Python: '!include ./submodules/neops-worker-sdk-py/mkdocs_custom.yml'
-  - WebSDK: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
   - WebClient: '!include ./submodules/neops-web-client/mkdocs_custom.yml'
-- Development: development
+- Development:
+  - Worker SDK Python: '!include ./submodules/neops-worker-sdk-py/mkdocs_custom.yml'
+  - Remote Lab: '!include ./submodules/neops-remote-lab/mkdocs_custom.yml'
+  - Web components: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
+  - Other: development
 plugins:
 - search
 - include_dir_to_nav
