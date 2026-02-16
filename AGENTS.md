@@ -24,7 +24,7 @@ and free up your time for strategic initiatives.
 
 ### Documenting with code examples
 
-- Code snippets should always be referenced from real code, ideally placed in an 'examples', 'snippets', 'use-cases' or 'getting-started' folder.
+- Code snippets longer than 5 lines should always be referenced from real code, ideally placed in an 'examples', 'snippets', 'use-cases' or 'getting-started' folder outside the docs .
 - Do never write code examples inlined in the documentation.
 - Always reference code examples using the superfences plugin
 
