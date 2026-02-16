@@ -11,3 +11,8 @@ update-submodules:
 	git submodule foreach 'git merge origin/develop'
 	git submodule foreach 'git pull'
 
+create-prs:
+	echo "Creating pull requests for submodules"
+	git submodule foreach 'git push -u'
+	git submodule foreach 'gh pr create --title "Update ${name} submodule" --body "This PR updates the ${name} submodule to the latest changes from the ${BRANCH} branch." --base develop --head ${BRANCH}'
+

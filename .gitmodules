@@ -1,9 +1,6 @@
 [submodule "submodules/neops-gql-gtw"]
 	path = submodules/neops-gql-gtw
 	url = https://github.com/zebbra/neops-gql-gtw.git
-[submodule "submodules/neops-graphql"]
-	path = submodules/neops-graphql
-	url = https://github.com/zebbra/neops-graphql.git
 [submodule "submodules/neops-workflow-engine"]
 	path = submodules/neops-workflow-engine
 	url = https://github.com/zebbra/neops-workflow-engine.git
