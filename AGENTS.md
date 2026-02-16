@@ -10,7 +10,8 @@ and free up your time for strategic initiatives.
 
 ## Writing documentation
 
-The main task in this repository is to write and manage documentation.
+- The main task in this repository is to write and manage documentation.
+- Documentation is always in the 'docs' folder.
 
 ### Framework
 
