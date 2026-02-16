@@ -15,6 +15,10 @@ set-upstream:
 	echo "Setting upstream branches for submodules"
 	git submodule foreach 'git branch --set-upstream-to=origin/${BRANCH} ${BRANCH}'
 
+push-submodules:
+	echo "Pushing changes to submodules"
+	git submodule foreach 'git push -u'
+
 create-prs:
 	echo "Creating pull requests for submodules"
 	git submodule foreach 'git push -u'
