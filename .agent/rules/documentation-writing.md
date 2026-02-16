@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Neops public facing Repository
 
 This is the public facing repository for Neops.
@@ -79,4 +83,4 @@ plugins:
 
 ### Tools
 
-- `make scan_docs`: Runs a script to scan all markdown files for compliance with the rules (no `../` links, no inlined code blocks). Use this to check your work.
+- `make scan_docs`: Runs a script to scan all markdown files for compliance with the rules (no `../` links that go outside of the `docs` folder, no inlined code blocks). Use this to check your work.
