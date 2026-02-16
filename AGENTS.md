@@ -25,7 +25,9 @@ and free up your time for strategic initiatives.
 ### Documenting with code examples
 
 - Code snippets longer than 5 lines should always be referenced from real code, ideally placed in an 'examples', 'snippets', 'use-cases' or 'getting-started' folder outside the docs folder.
-- Code snippets s horter than 5 lines can be inline if necessary 
+- Code snippets s horter than 5 lines can be inline if necessary
+- Before you create a new file for the snippet, search the whole repository for similar code, maybe it is already in a source file that can be referenced.
+- Prefer referencing code from source files over creating new files for snippets.
 - Simple commands are allowed and do not count as a code snippet. 
 - Do never write code examples inlined in the documentation.
 - Always reference code examples using the superfences plugin
