@@ -31,3 +31,6 @@ create-prs:
 
 scan_docs:
 	python3 utils/scan_docs.py
+
+sync-agent-instructions:
+	git submodule foreach 'mkdir -p .agent/rules/ && cp -r $$toplevel/.agent/rules/documentation-writing.md .agent/rules/'
