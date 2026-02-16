@@ -1,5 +1,6 @@
 include .make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
 
+# To call with another branch, use make update-submodules BRANCH=feature/documentation
 BRANCH := develop
 update-submodules:
 	echo "Updating submodules"
