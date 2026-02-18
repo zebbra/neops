@@ -50,7 +50,6 @@ plugins:
   # Enables search
   # - git-authors
   # - git-revision-date-localized
-  # Monorepo allows to use the !include in the navigation
   - exclude:
       glob:
         - '*.tmp'

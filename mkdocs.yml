@@ -54,9 +54,7 @@ nav:
 plugins:
 - search
 - include_dir_to_nav
-- search
 - git-authors
-- include_dir_to_nav
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 theme:
