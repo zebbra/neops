@@ -4,54 +4,52 @@ from mkdocs.structure.files import Files
 
 def on_files(files: Files, config):
     """
-    Final Monorepo Fix:
-    1. Reconstructs docs_dir dynamically from config.
-    2. Resolves symlinks at any depth.
-    3. Injects the REAL repo paths into Snippets so they work in /tmp.
+    Ensures Snippets can find files by adding the REAL repository root
+    to the search paths, while fixing file-level symlinks.
     """
-    # config['config_file_path'] is the absolute path to your real mkdocs.yml
-    conf_path = Path(config['config_file_path']).resolve()
-    project_root = conf_path.parent
+    # config['config_file_path'] is the path to your real mkdocs.yml
+    project_root = Path(config['config_file_path']).parent.resolve()
+    original_docs_dir = project_root / "docs"
 
-    # Dynamically get docs_dir (e.g., 'docs') and anchor it to the real project root
-    raw_docs_dir = config.get('docs_dir', 'docs')
-    original_docs_dir = (project_root / raw_docs_dir).resolve()
+    print(f"[Symlink Hook] Project Root: {project_root}")
+    print(f"[Symlink Hook] Original Docs Dir: {original_docs_dir}")
 
-    # 1. Inject the Master Search Paths into Snippets
-    # This allows Snippets to find files even when building in /tmp
+    # 2. Inject search paths for the Snippets extension
     _add_to_snippets_config(config, str(project_root))
+    # Also add original docs dir to resolve './doc_assets/...' correctly
     _add_to_snippets_config(config, str(original_docs_dir))
 
     for file in files:
-        # Reconstruct where the file lives in the ACTUAL repository
-        # This works for submodules because file.src_path is relative to the docs root
+        # Reconstruct path in real repo
         original_path = original_docs_dir / file.src_path
 
         if original_path.is_symlink():
             resolved_target = original_path.resolve().absolute()
 
             if not resolved_target.exists():
+                print(f"[Symlink Hook] WARNING: Broken link ignored: {file.src_path}")
                 continue
 
             if resolved_target.is_file():
+                # Fix individual file symlinks
                 file.abs_src_path = str(resolved_target)
+                print(f"[Symlink Hook] Resolved File: {file.src_path} -> {file.abs_src_path}")
 
             elif resolved_target.is_dir():
-                # For directory symlinks (like doc_assets)
+                # For directory symlinks (like doc_assets), we keep them in
+                # the list so the path remains valid for Snippets, but we
+                # neuter the copy command to prevent IsADirectoryError.
                 file.abs_src_path = str(resolved_target)
-
-                # NEUTER the copy command to prevent IsADirectoryError
                 file.copy_file = lambda dirty=False: None
 
-                # Add this specific resolved folder to Snippets search paths
+                # Add the specific resolved target as well
                 _add_to_snippets_config(config, str(resolved_target))
-
-                print(f"[Symlink Hook] Fixed Dir: {file.src_path} -> {resolved_target}")
+                print(f"[Symlink Hook] Mapped Directory Prefix: {file.src_path} -> {resolved_target}")
 
     return files
 
 def _add_to_snippets_config(config, path):
-    """Safely injects search paths into pymdownx.snippets"""
+    """Injects a search path into the pymdownx.snippets configuration"""
     mdx_configs = config.setdefault('mdx_configs', {})
     snippets_conf = mdx_configs.setdefault('pymdownx.snippets', {})
     base_paths = snippets_conf.get('base_path', [])

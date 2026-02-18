@@ -13,7 +13,7 @@ dependencies = [
     "slugify",
     "unicode",
     "python-slugify",
-
+    "mkdocs-monorepo-plugin",
     "mkdocs-git-authors-plugin",
     "mkdocs-git-revision-date-localized-plugin",
     "pathspec",

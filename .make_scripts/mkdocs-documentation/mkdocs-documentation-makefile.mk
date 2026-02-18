@@ -17,6 +17,7 @@ doc-serve:
 	uv run --project $(MKDOCS_ENV) mkdocs serve
 
 doc-build:
+	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/setup_documentation.py
 	uv run --project $(MKDOCS_ENV) mkdocs build
 	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/clean_sites_directory.py
 

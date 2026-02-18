@@ -15,10 +15,6 @@ nav:
       - Web components: '!include ./docs/neops-web-sdk/mkdocs_custom.yml'
       - Other: development
 
-hooks:
-  - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
-
-
 # --8<-- [start:theme]
 theme:
   # Dark and light mode, defaults to system theme
@@ -62,6 +58,4 @@ copyright: Copyright &copy; Zebbra AG
 
 # Overwrite plugins, removes last modified date (git-revision-date-localized)
 plugins:
-  - search
   - git-authors
-  - include_dir_to_nav
