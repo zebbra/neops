@@ -23,8 +23,7 @@ and free up your time for strategic initiatives.
 - The documentation is written in markdown and styled with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme.
 - We use the monorepo plugin to include the documentation in the main repository.
 - Therefore, you are newer allowed to reference a file outside of the docs folder (i.e., do never use the dot-dot syntax like `../some-file.md` to reference a file in the main repository). 
-- Always create, locate or symlink the file or ideally its containing folder in the docs folder and reference it from there.
-- Most symlinks should be available automatically in the docs folder, so be sure to verify before you create something new.
+- Always create or locate the file in outside the docs folder and use the available symlinks in docs/ to reference it.
 
 ### Documenting with code examples
 
