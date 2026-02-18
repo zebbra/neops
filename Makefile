@@ -27,9 +27,12 @@ create-prs:
 	git submodule foreach 'git push -u'
 	git submodule foreach 'gh pr create --title "Update ${name} submodule" --body "This PR updates the ${name} submodule to the latest changes from the ${BRANCH} branch." --base develop --head ${BRANCH}'
 
-
 scan_docs:
 	python3 utils/scan_docs.py
 
 sync-agent-instructions:
 	git submodule foreach 'mkdir -p .agent/rules/ && cp -r $$toplevel/.agent/rules/documentation-writing.md .agent/rules/'
+
+doc-update-assets-recursive:
+	$(MAKE) doc-update-assets
+	git submodule foreach 'make doc-update-assets'

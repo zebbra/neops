@@ -1,18 +1,18 @@
 [submodule "submodules/neops-gql-gtw"]
-	path = submodules/neops-gql-gtw
+	path = docs/neops-gql-gtw
 	url = https://github.com/zebbra/neops-gql-gtw.git
 [submodule "submodules/neops-workflow-engine"]
-	path = submodules/neops-workflow-engine
+	path = docs/neops-workflow-engine
 	url = https://github.com/zebbra/neops-workflow-engine.git
 [submodule "submodules/neops-worker-sdk-py"]
-	path = submodules/neops-worker-sdk-py
+	path = docs/neops-worker-sdk-py
 	url = https://github.com/zebbra/neops-worker-sdk-py.git
 [submodule "submodules/neops-web-sdk"]
-	path = submodules/neops-web-sdk
+	path = docs/neops-web-sdk
 	url = https://github.com/zebbra/neops-web-sdk.git
 [submodule "submodules/neops-web-client"]
-	path = submodules/neops-web-client
+	path = docs/neops-web-client
 	url = https://github.com/zebbra/neops-web-client.git
 [submodule "submodules/neops-remote-lab"]
-	path = submodules/neops-remote-lab
+	path = docs/neops-remote-lab
 	url = https://github.com/zebbra/neops-remote-lab.git

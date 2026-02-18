@@ -14,6 +14,9 @@ extra:
   - icon: fontawesome/solid/house
     link: https://neops.io
     name: Neops
+hooks:
+- .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py
+- .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
 markdown_extensions:
 - pymdownx.highlight:
     anchor_linenums: true
@@ -41,12 +44,12 @@ nav:
 - Home: index.md
 - Modules: modules
 - Components and Services:
-  - Workflow Engine: '!include ./submodules/neops-workflow-engine/mkdocs_custom.yml'
-  - WebClient: '!include ./submodules/neops-web-client/mkdocs_custom.yml'
+  - Workflow Engine: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
+  - WebClient: '!include ./docs/neops-web-client/mkdocs_custom.yml'
 - Development:
-  - Worker SDK Python: '!include ./submodules/neops-worker-sdk-py/mkdocs_custom.yml'
-  - Remote Lab: '!include ./submodules/neops-remote-lab/mkdocs_custom.yml'
-  - Web components: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
+  - Worker SDK Python: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
+  - Remote Lab: '!include ./docs/neops-remote-lab/mkdocs_custom.yml'
+  - Web components: '!include ./docs/neops-web-sdk/mkdocs_custom.yml'
   - Other: development
 plugins:
 - search
@@ -54,7 +57,6 @@ plugins:
 - search
 - git-authors
 - include_dir_to_nav
-- monorepo
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 theme:
