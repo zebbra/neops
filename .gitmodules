@@ -1,5 +1,5 @@
 [submodule "submodules/neops-gql-gtw"]
-	path = docs/neops-gql-gtw
+	path = docs/neops-secure-gateway
 	url = https://github.com/zebbra/neops-gql-gtw.git
 [submodule "submodules/neops-workflow-engine"]
 	path = docs/neops-workflow-engine
