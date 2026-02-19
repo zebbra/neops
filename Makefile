@@ -36,3 +36,7 @@ sync-agent-instructions:
 doc-update-assets-recursive:
 	$(MAKE) doc-update-assets
 	git submodule foreach 'make doc-update-assets'
+
+doc-build-recursive:
+	$(MAKE) doc-build
+	git submodule foreach 'make doc-build'
