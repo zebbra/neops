@@ -15,8 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-          fetch-depth: 0
+          submodules: true  # Checkout submodules
+          token: ${{ secrets.SUBMODULES_TOKEN }}  # Use the GitHub token for authentication
+          fetch-depth: 0    # Ensure the full history is fetched (necessary for some workflows)
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
