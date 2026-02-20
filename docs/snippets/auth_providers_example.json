@@ -1,0 +1,13 @@
+{
+    "providers": [
+        {
+            "provider_id": "keycloak",
+            "name": "Keycloak",
+            "client_id": "neops-auth",
+            "secret": "********",
+            "settings": {
+                "server_url": "http://localhost:8081/realms/neops/.well-known/openid-configuration"
+            }
+        }
+    ]
+}

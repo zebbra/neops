@@ -5,16 +5,15 @@ nav:
   - Home: index.md
   - Modules: modules
   - Components and Services:
-      - Workflow Engine: '!include ./submodules/neops-workflow-engine/mkdocs_custom.yml'
-      #- Secure Gateway: '!include ./submodules/neops-gql-gtw/mkdocs_custom.yml'
-      #- GraphQL Infrastructure: '!include ./submodules/neops-graphql/mkdocs_custom.yml'
-      - WebClient: '!include ./submodules/neops-web-client/mkdocs_custom.yml'
+      - Workflow Engine: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
+      #- Secure Gateway: '!include ./docs/neops-gql-gtw/mkdocs_custom.yml'
+      #- GraphQL Infrastructure: '!include ./docs/neops-graphql/mkdocs_custom.yml'
+      - WebClient: '!include ./docs/neops-web-client/mkdocs_custom.yml'
   - Development:
-      - Worker SDK Python: '!include ./submodules/neops-worker-sdk-py/mkdocs_custom.yml'
-      - Remote Lab: '!include ./submodules/neops-remote-lab/mkdocs_custom.yml'
-      - Web components: '!include ./submodules/neops-web-sdk/mkdocs_custom.yml'
+      - Worker SDK Python: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
+      - Remote Lab: '!include ./docs/neops-remote-lab/mkdocs_custom.yml'
+      - Web components: '!include ./docs/neops-web-sdk/mkdocs_custom.yml'
       - Other: development
-
 
 # --8<-- [start:theme]
 theme:
@@ -59,7 +58,4 @@ copyright: Copyright &copy; Zebbra AG
 
 # Overwrite plugins, removes last modified date (git-revision-date-localized)
 plugins:
-  - search
   - git-authors
-  - include_dir_to_nav
-  - monorepo

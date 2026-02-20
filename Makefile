@@ -1,18 +1,42 @@
 include .make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
 
 # To call with another branch, use make update-submodules BRANCH=feature/documentation
-BRANCH := develop
+BRANCH := feature/documentation
 update-submodules:
 	echo "Updating submodules"
 	git submodule init
 	git submodule foreach 'git fetch'
-	git submodule foreach 'git switch develop'
 	git submodule foreach 'git switch ${BRANCH} 2>/dev/null || (git switch -c ${BRANCH} && git push -u origin ${BRANCH})'
 	git submodule foreach 'git merge origin/develop'
-	git submodule foreach 'git pull'
+	git submodule foreach 'git pull || (git branch --set-upstream-to=origin/${BRANCH} ${BRANCH} && git pull)'
+
+set-upstream:
+	echo "Setting upstream branches for submodules"
+	git submodule foreach 'git branch --set-upstream-to=origin/${BRANCH} ${BRANCH}'
+
+commit-submodules:
+	echo "Committing changes in submodules"
+	git submodule foreach 'git add . && git commit -m "Update ${name} submodule to latest changes from ${BRANCH} branch" || echo "No changes to commit in ${name} submodule"'
+
+push-submodules:
+	echo "Pushing changes to submodules"
+	git submodule foreach 'git push -u'
 
 create-prs:
 	echo "Creating pull requests for submodules"
 	git submodule foreach 'git push -u'
 	git submodule foreach 'gh pr create --title "Update ${name} submodule" --body "This PR updates the ${name} submodule to the latest changes from the ${BRANCH} branch." --base develop --head ${BRANCH}'
 
+scan_docs:
+	python3 utils/scan_docs.py
+
+sync-agent-instructions:
+	git submodule foreach 'mkdir -p .agent/rules/ && cp -r $$toplevel/.agent/rules/documentation-writing.md .agent/rules/'
+
+doc-update-assets-recursive:
+	$(MAKE) doc-update-assets
+	git submodule foreach 'make doc-update-assets'
+
+doc-build-recursive:
+	$(MAKE) doc-build
+	git submodule foreach 'make doc-build'
