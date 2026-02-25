@@ -2,11 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-gql-gtw" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-graphql" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-web-client" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-web-sdk" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-worker-sdk-py" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/submodules/neops-workflow-engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-remote-lab" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-secure-gateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-web-client" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-web-sdk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-worker-sdk-py" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs/neops-workflow-engine" vcs="Git" />
   </component>
 </project>

@@ -79,19 +79,7 @@ NEOPS_PLUGINS="... neops_auth_allauth"
 To support multiple Keycloak providers, modify the auth_providers_with_secret.json file:
 
 ```json
-{
-  "providers": [
-    {
-      "provider_id": "keycloak",
-      "name": "Keycloak",
-      "client_id": "neops-auth",
-      "secret": "********",
-      "settings": {
-        "server_url": "http://localhost:8081/realms/neops/.well-known/openid-configuration"
-      }
-    }
-  ]
-}
+--8<-- "../snippets/auth_providers_example.json"
 ```
 
 
