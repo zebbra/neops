@@ -14,7 +14,7 @@ and free up your time for strategic initiatives.
 
 ## Writing documentation
 
-- The main task in this repository is to write and manage documentation.
+- This instruction file is only relevant when writing documentation.
 - Documentation is always in the 'docs' folder.
 
 ### Framework
