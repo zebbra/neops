@@ -10,6 +10,11 @@ update-submodules:
 	git submodule foreach 'git merge origin/develop'
 	git submodule foreach 'git pull || (git branch --set-upstream-to=origin/${BRANCH} ${BRANCH} && git pull)'
 
+
+reset-submodule-branches:
+	echo "Resetting submodule branches to origin/${BRANCH}"
+	git submodule foreach 'git fetch && git reset --hard origin/${BRANCH}'
+
 set-upstream:
 	echo "Setting upstream branches for submodules"
 	git submodule foreach 'git branch --set-upstream-to=origin/${BRANCH} ${BRANCH}'
