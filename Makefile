@@ -27,6 +27,10 @@ push-submodules:
 	echo "Pushing changes to submodules"
 	git submodule foreach 'git push -u'
 
+pull-submodules:
+	echo "Pulling latest changes in submodules"
+	git submodule foreach 'git pull'
+
 create-prs:
 	echo "Creating pull requests for submodules"
 	git submodule foreach 'git push -u'
