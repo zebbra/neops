@@ -16,6 +16,7 @@ extra:
     name: Neops
 hooks:
 - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
+- .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py
 markdown_extensions:
 - pymdownx.highlight:
     anchor_linenums: true
@@ -41,15 +42,16 @@ markdown_extensions:
 - md_in_html
 nav:
 - Home: index.md
-- Modules: modules
-- Components and Services:
-  - Workflow Engine: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
-  - WebClient: '!include ./docs/neops-web-client/mkdocs_custom.yml'
-- Development:
-  - Worker SDK Python: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
-  - Remote Lab: '!include ./docs/neops-remote-lab/mkdocs_custom.yml'
-  - Web components: '!include ./docs/neops-web-sdk/mkdocs_custom.yml'
-  - Other: development
+- Getting Started: getting-started
+- Concepts: concepts
+- User Guide: '!include ./docs/neops-web-client/mkdocs_custom.yml'
+- Workflows: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
+- Function Blocks: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
+- Remote Lab: '!include ./docs/neops-remote-lab/mkdocs_custom.yml'
+- Installation & Deployment: installation
+- Modules:
+  - Index: modules/index.md
+  - Secure Gateway: '!include ./docs/neops-secure-gateway/mkdocs_custom.yml'
 plugins:
 - search
 - include_dir_to_nav
