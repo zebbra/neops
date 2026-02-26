@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Project
         run: |
-          make update-submodules
+          make update-submodules BRANCH=develop
           make doc-build
 
       - name: Upload Artifacts
