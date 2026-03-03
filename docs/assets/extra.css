@@ -1,0 +1,31 @@
+/* Tabbed content: add a visible container so tabs are clearly interactive */
+.md-typeset .tabbed-set {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .2rem;
+  margin: 1em 0;
+}
+
+.md-typeset .tabbed-set > .tabbed-labels {
+  border-bottom: 2px solid var(--md-primary-fg-color);
+  background: var(--md-code-bg-color);
+  padding: 0 .4rem;
+}
+
+.md-typeset .tabbed-set > .tabbed-labels > label {
+  font-weight: 600;
+  opacity: .6;
+  padding: .6rem 1rem;
+}
+
+.md-typeset .tabbed-set > .tabbed-labels > label:hover {
+  opacity: .85;
+}
+
+.md-typeset .tabbed-set > .tabbed-labels > .tabbed-labels--active,
+.md-typeset .tabbed-set > .tabbed-labels > label.active {
+  opacity: 1;
+}
+
+.md-typeset .tabbed-set > .tabbed-content {
+  padding: .6rem 1rem;
+}

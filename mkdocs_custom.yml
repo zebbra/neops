@@ -56,5 +56,8 @@ copyright: Copyright &copy; Zebbra AG
 # --8<-- [end:copyright]
 
 # Overwrite plugins, removes last modified date (git-revision-date-localized)
+extra_css:
+  - assets/extra.css
+
 plugins:
   - git-authors
