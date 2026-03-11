@@ -17,8 +17,19 @@ def on_files(files: Files, config):
 
     # 2. Inject search paths for the Snippets extension
     _add_to_snippets_config(config, str(project_root))
-    # Also add original docs dir to resolve './doc_assets/...' correctly
     _add_to_snippets_config(config, str(original_docs_dir))
+
+    # 3. Add each included submodule's root and docs dir so that snippets
+    #    using repo-relative paths (e.g. "examples/hello.yaml") resolve
+    #    correctly when the submodule is composed into the mono-repo.
+    for child in sorted(original_docs_dir.iterdir()):
+        if child.is_dir() and (child / "mkdocs_custom.yml").exists():
+            _add_to_snippets_config(config, str(child.resolve()))
+            child_docs = child / "docs"
+            if child_docs.is_dir():
+                _add_to_snippets_config(config, str(child_docs.resolve()))
+            if os.environ.get('DEBUG') == 'true':
+                print(f"[Symlink Hook] Added submodule snippet paths: {child.name}")
 
     for file in files:
         # Reconstruct path in real repo
