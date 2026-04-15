@@ -4614,7 +4614,8 @@
 </span></code></pre></div>
 <p>Connect to this database directly to inspect state after a failed test.</p>
 <h2 id="playbook-pattern">Playbook Pattern</h2>
-<p>The most powerful E2E testing approach is the <strong>Playbook pattern</strong>, described in detail in <a href="../40-e2e-playbooks/">E2E Playbooks</a>. It lets you define complete workflow execution scenarios declaratively.</p>
+<p>The primary E2E testing approach is the <strong>Playbook pattern</strong>, described in detail in <a href="../40-e2e-playbooks/">E2E Playbooks</a>. Each playbook declaratively defines a complete workflow execution scenario — CMS state, workflow definition, function blocks, expected jobs, and terminal state — along with typed property verifications explaining what safety/liveness guarantees each test covers.</p>
+<p>Run <code>npm run playbook:index</code> to generate the full property registry and coverage report.</p>
 
 
 

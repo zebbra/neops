@@ -19,7 +19,7 @@
     
     
       
-        <title>Claude Code Context - Neops Docs</title>
+        <title>CLAUDE.md - Neops Docs</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#claude-code-context" class="md-skip">
+        <a href="#claudemd" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Claude Code Context
+              CLAUDE.md
             
           </span>
         </div>
@@ -4235,6 +4235,169 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-dependency-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Dependency Direction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e2e-playbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E Playbooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecosystem-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ecosystem Context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ecosystem Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -4259,10 +4422,108 @@
   
 
 
-<h1 id="claude-code-context">Claude Code Context</h1>
-<p>See AGENTS.md for full project context, conventions, and development guidance.</p>
-<p>For deeper knowledge, explore <code>.agent/knowledge/</code> — shared ecosystem knowledge is in <code>_shared/</code>, project-specific files alongside.</p>
-<p>When modifying source files, always run the verification commands from AGENTS.md (Development section) before considering the task complete.</p>
+<h1 id="claudemd">CLAUDE.md</h1>
+<p>This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.</p>
+<h2 id="what-this-is">What This Is</h2>
+<p>YAML-driven workflow orchestration engine for network automation. Part of the neops platform — composes reusable function blocks into transactional workflows, distributes jobs to Python workers via a blackboard pattern, and manages execution lifecycle including retry classification and rollback.</p>
+<h2 id="commands">Commands</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm<span class="w"> </span>install<span class="w">                    </span><span class="c1"># Install dependencies</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>run<span class="w"> </span>start:dev<span class="w">              </span><span class="c1"># Dev server with hot reload (port 3030)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">                  </span><span class="c1"># Production build (nest build)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w">                   </span><span class="c1"># Unit tests (Jest, *.spec.ts)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--<span class="w"> </span>--testPathPattern<span class="o">=</span>&lt;pattern&gt;<span class="w">  </span><span class="c1"># Run a single test file</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>npm<span class="w"> </span>run<span class="w"> </span>test:e2e<span class="w">               </span><span class="c1"># E2E tests (requires PostgreSQL, *.e2e-spec.ts)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w">                   </span><span class="c1"># ESLint</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>npm<span class="w"> </span>run<span class="w"> </span>lint:fix<span class="w">               </span><span class="c1"># ESLint with auto-fix</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>npm<span class="w"> </span>run<span class="w"> </span>format<span class="w">                 </span><span class="c1"># Prettier check</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>npm<span class="w"> </span>run<span class="w"> </span>format:fix<span class="w">             </span><span class="c1"># Prettier auto-fix</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>npm<span class="w"> </span>run<span class="w"> </span>swagger:gen<span class="w">            </span><span class="c1"># Regenerate OpenAPI spec</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>npm<span class="w"> </span>run<span class="w"> </span>playbook:index<span class="w">            </span><span class="c1"># Regenerate e2e playbook index from source</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>make<span class="w"> </span>validate-examples<span class="w">         </span><span class="c1"># Validate example YAML against JSON schema</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>make<span class="w"> </span>doc-serve<span class="w">                 </span><span class="c1"># Build and serve docs locally</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w">              </span><span class="c1"># Dev dependencies: postgres (port 5434) + monitor app</span>
+</span></code></pre></div>
+<p><strong>After changes, always run:</strong>
+- <code>npm run lint:fix</code> - to fix any linting errors and enforce style
+- <code>npm run test</code> — after any source or test file change
+- <code>npm run test:e2e</code> — after any change under <code>test/</code> (playbooks, executor, specs, test infra) or <code>src/</code>
+- <code>npm run swagger:gen</code> — after any change to controllers or DTOs</p>
+<p>Never skip <code>test:e2e</code> when modifying test infrastructure — unit tests do not cover the e2e playbook system.</p>
+<h2 id="architecture">Architecture</h2>
+<h3 id="request-flow">Request Flow</h3>
+<p>Workflow submission → JSON Schema validation → DFS step traversal → job creation on blackboard → workers (Python) poll for jobs → execution → result aggregation → CMS entity updates (Django/GraphQL) via acquire-lock-execute-unlock pattern.</p>
+<h3 id="module-dependency-direction">Module Dependency Direction</h3>
+<p><code>resources/</code> → <code>engine/</code> → <code>persistence/</code> → <code>model/</code> (do not introduce reverse dependencies)</p>
+<h3 id="key-paths">Key Paths</h3>
+<ul>
+<li><code>src/engine/</code> — Core execution: workflow runner, job scheduler, step handlers</li>
+<li><code>src/resources/</code> — NestJS controllers/services (REST API endpoints)</li>
+<li><code>src/model/</code> — Domain models, DTOs, workflow schema types</li>
+<li><code>src/persistence/</code> — MikroORM entities and migrations</li>
+<li><code>src/validator/</code> — Workflow JSON Schema validation</li>
+<li><code>src/config.ts</code> — All environment variables defined here</li>
+<li><code>src/main.ts</code> — Application entrypoint</li>
+<li><code>rest/monitor-app/</code> — SvelteKit Monitor App (separate build)</li>
+<li><code>examples/</code> — CI-validated workflow YAML examples</li>
+<li><code>schema/</code> — Generated JSON Schema for workflow definitions</li>
+<li><code>test/</code> — E2E test suites (<code>.e2e-spec.ts</code>)</li>
+</ul>
+<h3 id="path-alias">Path Alias</h3>
+<p><code>@src/*</code> maps to <code>src/*</code> (configured in tsconfig.json and jest moduleNameMapper).</p>
+<h3 id="endpoints">Endpoints</h3>
+<ul>
+<li><code>/api</code> — Swagger UI</li>
+<li><code>/schema</code> — JSON Schema</li>
+<li><code>/health/</code> — Health check (trailing slash required)</li>
+</ul>
+<h2 id="conventions">Conventions</h2>
+<ul>
+<li>Never ignore TypeScript warnings; fix underlying causes</li>
+<li>Prefer minimal diffs — smallest change that solves the problem</li>
+<li>Use <code>const</code>/<code>let</code> (never <code>var</code>), <code>async</code>/<code>await</code> (never <code>.then()</code>)</li>
+<li>All types explicit on function parameters and return values</li>
+<li>Use NestJS CLI for scaffolding: <code>nest g resource &lt;name&gt;</code>, <code>nest g service &lt;name&gt;</code></li>
+<li>Example function block package across all repos: <code>fb.examples.neops.io</code></li>
+<li>Migrations run automatically on startup; manual: <code>npx mikro-orm migration:up</code></li>
+<li>Logging: NestJS built-in Logger. Format configurable via <code>LOG_FORMAT</code> env var (pretty/json)</li>
+</ul>
+<h2 id="e2e-playbooks">E2E Playbooks</h2>
+<p>E2e tests use a declarative playbook pattern — each test is a <code>Playbook</code> object with <code>description</code> and typed <code>verifiesProperties</code> (with reasoning). A shared <code>PlaybookExecutor</code> drives all playbooks through the workflow lifecycle. See:
+- <code>test/workflow-lifecycle/playbooks/PLAYBOOK_INDEX.md</code> — auto-generated index of all playbooks and property registry
+- <code>test/workflow-lifecycle/playbooks/properties.ts</code> — single source of truth for system properties
+- <code>docs/60-development/40-e2e-playbooks.md</code> — full documentation of the playbook system
+- Run <code>npm run playbook:index</code> after creating or modifying playbooks</p>
+<h2 id="implementation-status">Implementation Status</h2>
+<p><strong>Not yet implemented</strong> (stubs/hardcoded): workflowReference steps, continueOnError evaluation, retryConfig from YAML (hardcoded to 3), repeatConfig, auto-retry for pure/idempotent FBs, rollback execution, BLOCKED_WAITING state, shared/read locks.</p>
+<h2 id="ecosystem-context">Ecosystem Context</h2>
+<p>Workers (Python, neops-worker-sdk-py) implement function blocks and communicate via the blackboard API. The CMS (neops-core, Django/GraphQL) provides entity data and locking. For full ecosystem details, see <code>.agent/knowledge/_shared/neops-ecosystem-overview.md</code>.</p>
+<h3 id="knowledge-files">Knowledge Files</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>How neops components interact</td>
+<td><code>.agent/knowledge/_shared/neops-ecosystem-overview.md</code></td>
+</tr>
+<tr>
+<td>Architecture details (blackboard, CMS)</td>
+<td><code>.agent/knowledge/_shared/component-architectures.md</code></td>
+</tr>
+<tr>
+<td>Writing or editing documentation</td>
+<td><code>.agent/knowledge/_shared/documentation-playbook.md</code></td>
+</tr>
+<tr>
+<td>Cross-project patterns and terminology</td>
+<td><code>.agent/knowledge/_shared/cross-project-patterns.md</code></td>
+</tr>
+</tbody>
+</table>
 
 
 
