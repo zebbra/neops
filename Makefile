@@ -1,7 +1,7 @@
 include .make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
 
 # To call with another branch, use make update-submodules BRANCH=feature/documentation
-BRANCH := feature/documentation
+BRANCH := feature/documentation-$(shell date +%Y-%m-%d)
 update-submodules:
 	echo "Updating submodules"
 	git submodule init
