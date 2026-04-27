@@ -2,16 +2,12 @@
 
 [![Neops Documentation](https://github.com/zebbra/neops/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/zebbra/neops/actions/workflows/gh-pages.yml)
 
-Neops represents a groundbreaking approach to network power that transcends traditional task automation. 
-It’s designed to enhance productivity, enabling you to focus on what you do best—your core competencies. 
-With Neops, you’ll experience a seamless integration of intelligent solutions that streamline operations 
-and free up your time for strategic initiatives.
+Neops is a transactional network automation platform.
+Operators describe network changes as workflows — ordered sequences of versioned function blocks — which the workflow engine orchestrates by acquiring entity locks from the CMS, distributing jobs to workers through the blackboard job queue, and applying changes atomically with explicit failure semantics (FAILED_SAFE vs FAILED_UNSAFE).
+Function blocks are written in Python with the worker SDK and tested against real topologies via the Remote Lab, while the web client exposes workflows to operators and the Secure Gateway lets external consumers reach a filtered subset of the API.
 
 
 ## Documentation Overview
-
-Stay tuned! Comprehensive documentation is on the way to help you unlock the full potential of Neops and elevate 
-your efficiency to new heights.
 
 <div class="grid cards" markdown>
 
@@ -19,15 +15,15 @@ your efficiency to new heights.
 
     ---
 
-    Quickly set up and start using Neops with our beginner-friendly guides and tutorials.
+    Recommended entry points for operators, workflow authors, and function-block developers.
 
-    [:octicons-arrow-right-24: Read more](getting-started/)
+    [:octicons-arrow-right-24: Read more](getting-started/00-index.md)
 
 -   :material-numeric-2-box:{ .lg .middle } __Concepts__
 
     ---
 
-    Deep dive into the core architecture, terminology, and foundational ideas behind the Neops platform.
+    The cross-cutting ideas — transactional model, function blocks, blackboard, remote lab — that explain how the pieces fit together.
 
     [:octicons-arrow-right-24: Read more](concepts/)
 
@@ -35,39 +31,39 @@ your efficiency to new heights.
 
     ---
 
-    Comprehensive documentation on how to navigate and utilize the Neops web interface effectively.
+    Use the web client to browse entity data, trigger workflows, and watch executions live.
 
-    [:octicons-arrow-right-24: Read more](neops-web-client/)
+    [:octicons-arrow-right-24: Read more](coming-soon.md)
 
 -   :material-numeric-4-box:{ .lg .middle } __Workflows__
 
     ---
 
-    Learn how to design, execute, and manage complex network automation sequences using the workflow engine.
+    Author, schedule, and operate workflows with the workflow engine: definitions, lifecycle, retries, and rollbacks.
 
-    [:octicons-arrow-right-24: Read more](neops-workflow-engine/)
+    [:octicons-arrow-right-24: Read more](neops-workflow-engine/docs/)
 
 -   :material-numeric-5-box:{ .lg .middle } __Function Blocks__
 
     ---
 
-    Explore the Python SDK for creating custom function blocks to extend Neops' automation capabilities.
+    Build reusable Python execution units with the worker SDK — anatomy, device connections, testing, deployment.
 
-    [:octicons-arrow-right-24: Read more](neops-worker-sdk-py/)
+    [:octicons-arrow-right-24: Read more](neops-worker-sdk-py/docs/)
 
 -   :material-numeric-6-box:{ .lg .middle } __Remote Lab__
 
     ---
 
-    Instructions for setting up and interacting with the Neops remote lab environments for safe testing.
+    Run pytest suites against shared Netlab topologies via a FIFO session queue.
 
-    [:octicons-arrow-right-24: Read more](neops-remote-lab/)
+    [:octicons-arrow-right-24: Read more](neops-remote-lab/docs/)
 
 -   :material-numeric-7-box:{ .lg .middle } __Installation & Deployment__
 
     ---
 
-    Step-by-step instructions for deploying Neops in your infrastructure, from simple setups to production environments.
+    Per-component deployment guides for the engine, workers, remote lab, and secure gateway.
 
     [:octicons-arrow-right-24: Read more](installation/)
 
@@ -75,12 +71,8 @@ your efficiency to new heights.
 
     ---
 
-    Detailed information about built-in extensions and modules, including the Secure Gateway.
+    Optional add-on services such as the Secure Gateway.
 
     [:octicons-arrow-right-24: Read more](modules/)
 
 </div>
-
-[//]: # (TODO: Cards for each part of the product)
-
-[//]: # (--8<-- "neops-gql-gtw/config/example-rules.json")

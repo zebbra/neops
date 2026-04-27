@@ -46,7 +46,7 @@ nav:
 - Home: index.md
 - Getting Started: getting-started
 - Concepts: concepts
-- User Guide: '!include ./docs/neops-web-client/mkdocs_custom.yml'
+- User Guide: coming-soon.md
 - Workflows: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
 - Function Blocks: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
 - Remote Lab: '!include ./docs/neops-remote-lab/mkdocs_custom.yml'

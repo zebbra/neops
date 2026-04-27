@@ -10,6 +10,4 @@
 
     [:octicons-arrow-right-24: Read more](/neops-secure-gateway/docs/)
 
-
 </div>
-

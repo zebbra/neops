@@ -1,53 +1,49 @@
 # Installation & Deployment
 
+Neops is composed of multiple deployable services.
+Each component owns its own deployment guide; this page is the index.
+Start with the workflow engine, then bring up workers, then add the remote lab and secure gateway as needed.
+
 <div class="grid cards" markdown>
 
--   :material-numeric-1-box:{ .lg .middle } __Step 1__
+-   :material-numeric-1-box:{ .lg .middle } __Workflow Engine__
 
     ---
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Deploy the orchestration core: configuration, Docker images, worker management, and operations.
 
-    [:octicons-arrow-right-24: Read more](step-1.md)
+    [:octicons-arrow-right-24: Read more](../neops-workflow-engine/docs/50-deployment/index.md)
 
--   :material-numeric-2-box:{ .lg .middle } __Step 2__
-
-    ---
-
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-    [:octicons-arrow-right-24: Read more](step-2.md)
-
--   :material-numeric-3-box:{ .lg .middle } __Step 3__
+-   :material-numeric-2-box:{ .lg .middle } __Worker SDK (Python workers)__
 
     ---
 
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Package, configure, and run worker processes that execute your function blocks.
 
-    [:octicons-arrow-right-24: Read more](step-3.md)
+    [:octicons-arrow-right-24: Read more](../neops-worker-sdk-py/docs/deployment/index.md)
 
--   :material-numeric-4-box:{ .lg .middle } __Step 4__
-
-    ---
-
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-    [:octicons-arrow-right-24: Read more](step-4.md)
-
--   :material-numeric-5-box:{ .lg .middle } __Step 5__
+-   :material-numeric-3-box:{ .lg .middle } __Remote Lab__
 
     ---
 
-    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque.
+    Set up the Netlab host and Headscale VPN so developers and CI can share lab topologies safely.
 
-    [:octicons-arrow-right-24: Read more](step-5.md)
+    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/deployment/index.md)
 
--   :material-numeric-6-box:{ .lg .middle } __Step 6__
+-   :material-numeric-4-box:{ .lg .middle } __Secure Gateway__
 
     ---
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Front the Neops API with a GraphQL gateway that filters operations and data for external consumers.
 
-    [:octicons-arrow-right-24: Read more](step-6.md)
+    [:octicons-arrow-right-24: Read more](/neops-secure-gateway/docs/)
+
+-   :material-numeric-5-box:{ .lg .middle } __Configuration reference__
+
+    ---
+
+    All environment variables and runtime knobs for the workflow engine in one place.
+
+    [:octicons-arrow-right-24: Read more](../neops-workflow-engine/docs/50-deployment/10-configuration.md)
 
 </div>

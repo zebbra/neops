@@ -1,53 +1,58 @@
 # Concepts
 
+These pages explain the cross-cutting ideas behind Neops — how a workflow turns into work, how the platform stays safe under failure, and how testing fits in.
+Component-specific concepts (definitions, lifecycle, scheduling, etc.) live inside each component's own section.
+
 <div class="grid cards" markdown>
 
--   :material-numeric-1-box:{ .lg .middle } __Concept 1__
+-   :material-numeric-1-box:{ .lg .middle } __System overview__
 
     ---
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    A single diagram showing how a workflow definition, the engine, the CMS, the blackboard, and zone-aware workers fit together.
 
-    [:octicons-arrow-right-24: Read more](concept-1.md)
+    [:octicons-arrow-right-24: Read more](10-overview.md)
 
--   :material-numeric-2-box:{ .lg .middle } __Concept 2__
-
-    ---
-
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-    [:octicons-arrow-right-24: Read more](concept-2.md)
-
--   :material-numeric-3-box:{ .lg .middle } __Concept 3__
+-   :material-numeric-2-box:{ .lg .middle } __How Neops operates__
 
     ---
 
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Read-path, write-path, and full execution-flow sequence diagrams across User, CMS, engine, blackboard, and worker.
 
-    [:octicons-arrow-right-24: Read more](concept-3.md)
+    [:octicons-arrow-right-24: Read more](20-how-neops-operates.md)
 
--   :material-numeric-4-box:{ .lg .middle } __Concept 4__
-
-    ---
-
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-    [:octicons-arrow-right-24: Read more](concept-4.md)
-
--   :material-numeric-5-box:{ .lg .middle } __Concept 5__
+-   :material-numeric-3-box:{ .lg .middle } __Workflows as transactions__
 
     ---
 
-    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque.
+    Why every workflow run is a transaction: locking, atomic updates, and FAILED_SAFE vs FAILED_UNSAFE failure classification.
 
-    [:octicons-arrow-right-24: Read more](concept-5.md)
+    [:octicons-arrow-right-24: Read more](../neops-workflow-engine/docs/10-concepts/40-workflow-as-a-transaction.md)
 
--   :material-numeric-6-box:{ .lg .middle } __Concept 6__
+-   :material-numeric-4-box:{ .lg .middle } __Function blocks__
 
     ---
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Versioned, typed Python units that the engine schedules and workers execute.
+    See also: [purity & idempotency](../neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent.md).
 
-    [:octicons-arrow-right-24: Read more](concept-6.md)
+    [:octicons-arrow-right-24: Read more](../neops-workflow-engine/docs/10-concepts/20-function-blocks.md)
+
+-   :material-numeric-5-box:{ .lg .middle } __Blackboard & execution model__
+
+    ---
+
+    How jobs flow from engine to workers and back.
+    Pairs with the [execution model](../neops-workflow-engine/docs/10-concepts/50-execution.md) page.
+
+    [:octicons-arrow-right-24: Read more](../neops-workflow-engine/docs/10-concepts/60-blackboard.md)
+
+-   :material-numeric-6-box:{ .lg .middle } __Remote lab testing__
+
+    ---
+
+    Session queue, lab lifecycle, and the one-lab-per-host invariant that makes shared testing safe.
+
+    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/concepts/10-architecture.md)
 
 </div>
