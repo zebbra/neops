@@ -11,6 +11,13 @@ update-submodules:
 	git submodule foreach 'git pull || (git branch --set-upstream-to=origin/${BRANCH} ${BRANCH} && git pull)'
 
 
+reset-submodules:
+	echo "Resetting and freshly initializing submodules"
+	git submodule deinit --all -f
+	git submodule update --init --recursive
+	$(MAKE) update-submodules
+
+
 reset-submodule-branches:
 	echo "Resetting submodule branches to origin/${BRANCH}"
 	git submodule foreach 'git fetch && git reset --hard origin/${BRANCH}'
