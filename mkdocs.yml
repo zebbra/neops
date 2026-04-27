@@ -42,14 +42,9 @@ markdown_extensions:
     alternate_style: true
 - attr_list
 - md_in_html
-- pymdownx.keys
 - pymdownx.tasklist:
     custom_checkbox: true
 - abbr
-- footnotes
-- pymdownx.tilde
-- pymdownx.caret
-- pymdownx.mark
 - smarty
 - pymdownx.smartsymbols
 - pymdownx.magiclink

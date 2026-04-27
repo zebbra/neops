@@ -69,14 +69,9 @@ markdown_extensions:
   - attr_list
   - md_in_html
   # Interaction features
-  - pymdownx.keys           # ++ctrl+c++ → kbd
   - pymdownx.tasklist:      # visible checklist boxes
       custom_checkbox: true
   - abbr                    # *[ACL]: ... tooltips on hover
-  - footnotes
-  - pymdownx.tilde          # ~~strike~~
-  - pymdownx.caret          # ^^superscript^^
-  - pymdownx.mark           # ==highlight==
   # Typographic refinement
   - smarty                  # 'curly' / "quotes", em-dashes (---), en-dashes (--), …
   - pymdownx.smartsymbols   # --> → / <== ⇐ / (c) (r) (tm)
