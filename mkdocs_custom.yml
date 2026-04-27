@@ -56,6 +56,10 @@ extra:
 copyright: Copyright &copy; Zebbra AG
 # --8<-- [end:copyright]
 
+# Custom CSS — tab styling (pymdownx.tabbed visual container).
+extra_css:
+  - assets/extra.css
+
 # Overwrite plugins, removes last modified date (git-revision-date-localized)
 plugins:
   - git-authors
