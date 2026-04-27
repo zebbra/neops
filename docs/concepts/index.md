@@ -53,6 +53,6 @@ Component-specific concepts (definitions, lifecycle, scheduling, etc.) live insi
 
     Session queue, lab lifecycle, and the one-lab-per-host invariant that makes shared testing safe.
 
-    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/concepts/10-architecture.md)
+    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/10-concepts/10-architecture.md)
 
 </div>

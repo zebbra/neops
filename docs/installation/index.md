@@ -28,7 +28,7 @@ Start with the workflow engine, then bring up workers, then add the remote lab a
 
     Set up the Netlab host and Headscale VPN so developers and CI can share lab topologies safely.
 
-    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/deployment/index.md)
+    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/40-deployment/index.md)
 
 -   :material-numeric-4-box:{ .lg .middle } __Secure Gateway__
 
