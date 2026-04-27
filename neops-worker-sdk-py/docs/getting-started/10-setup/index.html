@@ -4642,60 +4642,89 @@ for modern Python.</p>
 they need to validate your code before it ever touches a device.</p>
 </details>
 <h2 id="ide-recommendations">IDE Recommendations</h2>
-<p>=== "VS Code"</p>
-<div class="language-text highlight"><pre><span></span><code>**Recommended extensions:**
-
-| Extension | ID | Purpose |
-|---|---|---|
-| Python | `ms-python.python` | Core Python support |
-| Pyrefly | `meta.pyrefly` | Type checking, auto-completion, go-to-definition |
-| Ruff | `charliermarsh.ruff` | Fast linting and formatting |
-
-[Pyrefly](https://pyrefly.org/en/docs/IDE/) acts as a full language server —
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">VS Code</label><label for="__tabbed_1_2">PyCharm</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><strong>Recommended extensions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>ID</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td><code>ms-python.python</code></td>
+<td>Core Python support</td>
+</tr>
+<tr>
+<td>Pyrefly</td>
+<td><code>meta.pyrefly</code></td>
+<td>Type checking, auto-completion, go-to-definition</td>
+</tr>
+<tr>
+<td>Ruff</td>
+<td><code>charliermarsh.ruff</code></td>
+<td>Fast linting and formatting</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://pyrefly.org/en/docs/IDE/">Pyrefly</a> acts as a full language server —
 it provides inline type errors, hover information, and code navigation out of
-the box. It replaces Pylance for type analysis, so you only need one of the two.
-
-**Recommended settings** (`.vscode/settings.json`):
-
-```json
-{
-    &quot;[python]&quot;: {
-        &quot;editor.defaultFormatter&quot;: &quot;charliermarsh.ruff&quot;,
-        &quot;editor.formatOnSave&quot;: true
-    }
-}
-```
-
-!!! note &quot;Alternative: Pylance&quot;
-
-    If you prefer Microsoft&#39;s [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
-    (`ms-python.vscode-pylance`), it works well too — add
-    `&quot;python.analysis.typeCheckingMode&quot;: &quot;basic&quot;` to your settings.
-    Pyrefly disables Pylance by default when both are installed; keep only one
-    active to avoid duplicate diagnostics.
-</code></pre></div>
-<p>=== "PyCharm"</p>
-<div class="language-text highlight"><pre><span></span><code>PyCharm has excellent built-in Python support — type checking, refactoring, and
-debugging work out of the box with fewer plugins.
-
-**Recommended plugins:**
-
-| Plugin | Purpose |
-|---|---|
-| Pydantic | Enhanced support for Pydantic models (auto-completion, validation) |
-
-**Configuration tips:**
-
-- **Ruff integration:** Go to *Settings &gt; Tools &gt; External Tools*, add a new
-  tool with program `uv`, arguments `run ruff check $FilePath$`, and working
-  directory `$ProjectFileDir$`. Add a second entry with arguments
-  `run ruff format $FilePath$` for formatting. Assign keyboard shortcuts or
-  configure file watchers to run on save.
-- **Pyrefly for type checking:** Add an external tool with program `uv`,
-  arguments `run pyrefly check $FilePath$`, and working directory
-  `$ProjectFileDir$`. This gives you the same type analysis as CI, beyond
-  PyCharm&#39;s built-in inspector.
-</code></pre></div>
+the box. It replaces Pylance for type analysis, so you only need one of the two.</p>
+<p><strong>Recommended settings</strong> (<code>.vscode/settings.json</code>):</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nt">&quot;[python]&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">        </span><span class="nt">&quot;editor.defaultFormatter&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;charliermarsh.ruff&quot;</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">        </span><span class="nt">&quot;editor.formatOnSave&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Alternative: Pylance</p>
+<p>If you prefer Microsoft's <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance">Pylance</a>
+(<code>ms-python.vscode-pylance</code>), it works well too — add
+<code>"python.analysis.typeCheckingMode": "basic"</code> to your settings.
+Pyrefly disables Pylance by default when both are installed; keep only one
+active to avoid duplicate diagnostics.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>PyCharm has excellent built-in Python support — type checking, refactoring, and
+debugging work out of the box with fewer plugins.</p>
+<p><strong>Recommended plugins:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pydantic</td>
+<td>Enhanced support for Pydantic models (auto-completion, validation)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Configuration tips:</strong></p>
+<ul>
+<li><strong>Ruff integration:</strong> Go to <em>Settings &gt; Tools &gt; External Tools</em>, add a new
+  tool with program <code>uv</code>, arguments <code>run ruff check $FilePath$</code>, and working
+  directory <code>$ProjectFileDir$</code>. Add a second entry with arguments
+  <code>run ruff format $FilePath$</code> for formatting. Assign keyboard shortcuts or
+  configure file watchers to run on save.</li>
+<li><strong>Pyrefly for type checking:</strong> Add an external tool with program <code>uv</code>,
+  arguments <code>run pyrefly check $FilePath$</code>, and working directory
+  <code>$ProjectFileDir$</code>. This gives you the same type analysis as CI, beyond
+  PyCharm's built-in inspector.</li>
+</ul>
+</div>
+</div>
+</div>
 <h2 id="environment-configuration">Environment Configuration</h2>
 <p>neops workers discover the platform and function blocks through environment variables.
 Create a <code>.env</code> file in your project root:</p>

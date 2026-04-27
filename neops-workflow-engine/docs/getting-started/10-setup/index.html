@@ -4583,17 +4583,20 @@
 </span></code></pre></div>
 <h3 id="2-database">2. Database</h3>
 <p>The engine requires PostgreSQL. The fastest way to get it running:</p>
-<p>=== "Docker (recommended)"</p>
-<div class="language-text highlight"><pre><span></span><code>```bash
-docker run -d --name neops-postgres \
-  -e POSTGRES_PASSWORD=unsafe \
-  -p 5434:5432 \
-  postgres:15
-```
-</code></pre></div>
-<p>=== "Local PostgreSQL"</p>
-<div class="language-text highlight"><pre><span></span><code>Ensure PostgreSQL is running on port 5434 (or configure `POSTGRES_PORT`) with a user that can create databases.
-</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker (recommended)</label><label for="__tabbed_1_2">Local PostgreSQL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>neops-postgres<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>unsafe<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">5434</span>:5432<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>postgres:15
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Ensure PostgreSQL is running on port 5434 (or configure <code>POSTGRES_PORT</code>) with a user that can create databases.</p>
+</div>
+</div>
+</div>
 <p>Run migrations to create the database tables (using MikroORM, the engine's database toolkit):</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>npx<span class="w"> </span>mikro-orm<span class="w"> </span>migration:fresh
 </span></code></pre></div>
@@ -4615,17 +4618,19 @@ with data you want to keep, use <code>npx mikro-orm migration:up</code> instead.
 environment variables including CMS connection, logging, and worker management settings.</p>
 </details>
 <h3 id="4-start-the-engine">4. Start the Engine</h3>
-<p>=== "Development mode (auto-reload)"</p>
-<div class="language-text highlight"><pre><span></span><code>```bash
-npm run start:dev
-```
-</code></pre></div>
-<p>=== "Production mode"</p>
-<div class="language-text highlight"><pre><span></span><code>```bash
-npm run build
-npm run start:prod
-```
-</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Development mode (auto-reload)</label><label for="__tabbed_2_2">Production mode</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>npm<span class="w"> </span>run<span class="w"> </span>start:dev
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>npm<span class="w"> </span>run<span class="w"> </span>start:prod
+</span></code></pre></div>
+</div>
+</div>
+</div>
 <p>The engine starts on port <strong>3030</strong> by default. Verify it is running:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
 </span></code></pre></div>
@@ -4648,33 +4653,32 @@ running and you can skip this step.</p>
 </div>
 <h3 id="6-ide-setup-recommended">6. IDE Setup (Recommended)</h3>
 <p>Get autocompletion and validation for workflow YAML files in your editor:</p>
-<p>=== "VS Code"</p>
-<div class="language-text highlight"><pre><span></span><code>Install the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml),
-then add to `.vscode/settings.json`:
-
-```json
-{
-  &quot;yaml.schemas&quot;: {
-    &quot;http://localhost:3030/schema&quot;: &quot;*.workflow.yaml&quot;
-  }
-}
-```
-
-For offline use, point to the local schema file instead:
-
-```json
-{
-  &quot;yaml.schemas&quot;: {
-    &quot;./schema/RootWorkflow.schema.json&quot;: &quot;*.workflow.yaml&quot;
-  }
-}
-```
-</code></pre></div>
-<p>=== "JetBrains (IntelliJ, PyCharm)"</p>
-<div class="language-text highlight"><pre><span></span><code>Go to **Settings** → **Languages &amp; Frameworks** → **Schemas and DTDs** →
-**JSON Schema Mappings**. Add a mapping with URL `http://localhost:3030/schema`
-and file path pattern `*.workflow.yaml`.
-</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">VS Code</label><label for="__tabbed_3_2">JetBrains (IntelliJ, PyCharm)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">YAML extension</a>,
+then add to <code>.vscode/settings.json</code>:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;yaml.schemas&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">&quot;http://localhost:3030/schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*.workflow.yaml&quot;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>For offline use, point to the local schema file instead:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;yaml.schemas&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">&quot;./schema/RootWorkflow.schema.json&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*.workflow.yaml&quot;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Go to <strong>Settings</strong> → <strong>Languages &amp; Frameworks</strong> → <strong>Schemas and DTDs</strong> →
+<strong>JSON Schema Mappings</strong>. Add a mapping with URL <code>http://localhost:3030/schema</code>
+and file path pattern <code>*.workflow.yaml</code>.</p>
+</div>
+</div>
+</div>
 <p>See the <a href="../../99-appendix/schema/">Schema Reference</a> for more details on validation options.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../20-your-first-workflow/">Your First Workflow</a> -- deploy and execute a workflow end to end.</p>

@@ -4562,72 +4562,93 @@
 <p>Set breakpoints in <code>run()</code>, <code>acquire()</code>, or capability methods. Disable the
 blocking detector during debugging — it fires false positives while you step
 through code.</p>
-<p>=== "VS Code"</p>
-<div class="language-text highlight"><pre><span></span><code>Add this configuration to `.vscode/launch.json`:
-
-```json
-{
-    &quot;version&quot;: &quot;0.2.0&quot;,
-    &quot;configurations&quot;: [
-        {
-            &quot;name&quot;: &quot;Debug Function Block Tests&quot;,
-            &quot;type&quot;: &quot;debugpy&quot;,
-            &quot;request&quot;: &quot;launch&quot;,
-            &quot;module&quot;: &quot;pytest&quot;,
-            &quot;args&quot;: [
-                &quot;tests/&quot;,
-                &quot;-v&quot;,
-                &quot;-s&quot;,
-                &quot;--no-header&quot;,
-                &quot;-k&quot;, &quot;${input:testFilter}&quot;
-            ],
-            &quot;console&quot;: &quot;integratedTerminal&quot;,
-            &quot;justMyCode&quot;: false,
-            &quot;env&quot;: {
-                &quot;BLOCKING_DETECTION_THRESHOLD&quot;: &quot;0&quot;
-            }
-        }
-    ],
-    &quot;inputs&quot;: [
-        {
-            &quot;id&quot;: &quot;testFilter&quot;,
-            &quot;description&quot;: &quot;Test name filter (-k pattern)&quot;,
-            &quot;default&quot;: &quot;&quot;,
-            &quot;type&quot;: &quot;promptString&quot;
-        }
-    ]
-}
-```
-
-`BLOCKING_DETECTION_THRESHOLD=0` disables the blocking detector so it does
-not interfere with stepping.
-</code></pre></div>
-<p>=== "PyCharm"</p>
-<div class="language-text highlight"><pre><span></span><code>**Create a pytest run configuration:**
-
-1. Go to *Run &gt; Edit Configurations &gt; Add (+) &gt; pytest*
-2. Set **Target** to your test directory (e.g. `tests/`)
-3. Set **Working directory** to the project root
-4. Under **Environment variables**, add:
-
-    | Variable | Value | Purpose |
-    |---|---|---|
-    | `BLOCKING_DETECTION_THRESHOLD` | `0` | Disable blocking detector during debugging |
-    | `REMOTE_LAB_URL` | `https://your-lab.example.com` | Remote lab endpoint (if using remote lab tests) |
-
-5. Click **OK** and run with the **Debug** button (or ++shift+f9++)
-
-**Tips:**
-
-- Use *Run &gt; Debug* (not *Run &gt; Run*) to enable breakpoints
-- PyCharm&#39;s *Evaluate Expression* (++alt+f8++) is useful for inspecting
-  `DeviceTypeDto`, `WorkflowContext`, and Pydantic model fields mid-debug
-- Add `-s` to **Additional Arguments** to see `print()` and logger output
-  in the debug console
-- For remote lab tests, set `REMOTE_LAB_URL` in the run configuration
-  rather than relying on a `.env` file — PyCharm does not auto-load `.env`
-  by default
-</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">VS Code</label><label for="__tabbed_1_2">PyCharm</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Add this configuration to <code>.vscode/launch.json</code>:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.0&quot;</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;configurations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Debug Function Block Tests&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;debugpy&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">            </span><span class="nt">&quot;request&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;launch&quot;</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="nt">&quot;module&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pytest&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">            </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">                </span><span class="s2">&quot;tests/&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">                </span><span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">                </span><span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">                </span><span class="s2">&quot;--no-header&quot;</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">                </span><span class="s2">&quot;-k&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;${input:testFilter}&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">            </span><span class="p">],</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">            </span><span class="nt">&quot;console&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integratedTerminal&quot;</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">            </span><span class="nt">&quot;justMyCode&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">            </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">                </span><span class="nt">&quot;BLOCKING_DETECTION_THRESHOLD&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;testFilter&quot;</span><span class="p">,</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Test name filter (-k pattern)&quot;</span><span class="p">,</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">            </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;promptString&quot;</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>BLOCKING_DETECTION_THRESHOLD=0</code> disables the blocking detector so it does
+not interfere with stepping.</p>
+</div>
+<div class="tabbed-block">
+<p><strong>Create a pytest run configuration:</strong></p>
+<ol>
+<li>Go to <em>Run &gt; Edit Configurations &gt; Add (+) &gt; pytest</em></li>
+<li>Set <strong>Target</strong> to your test directory (e.g. <code>tests/</code>)</li>
+<li>Set <strong>Working directory</strong> to the project root</li>
+<li>
+<p>Under <strong>Environment variables</strong>, add:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BLOCKING_DETECTION_THRESHOLD</code></td>
+<td><code>0</code></td>
+<td>Disable blocking detector during debugging</td>
+</tr>
+<tr>
+<td><code>REMOTE_LAB_URL</code></td>
+<td><code>https://your-lab.example.com</code></td>
+<td>Remote lab endpoint (if using remote lab tests)</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Click <strong>OK</strong> and run with the <strong>Debug</strong> button (or ++shift+f9++)</p>
+</li>
+</ol>
+<p><strong>Tips:</strong></p>
+<ul>
+<li>Use <em>Run &gt; Debug</em> (not <em>Run &gt; Run</em>) to enable breakpoints</li>
+<li>PyCharm's <em>Evaluate Expression</em> (++alt+f8++) is useful for inspecting
+  <code>DeviceTypeDto</code>, <code>WorkflowContext</code>, and Pydantic model fields mid-debug</li>
+<li>Add <code>-s</code> to <strong>Additional Arguments</strong> to see <code>print()</code> and logger output
+  in the debug console</li>
+<li>For remote lab tests, set <code>REMOTE_LAB_URL</code> in the run configuration
+  rather than relying on a <code>.env</code> file — PyCharm does not auto-load <code>.env</code>
+  by default</li>
+</ul>
+</div>
+</div>
+</div>
 <hr />
 <h2 id="common-error-patterns">Common Error Patterns</h2>
 <h3 id="connection-errors">Connection Errors</h3>

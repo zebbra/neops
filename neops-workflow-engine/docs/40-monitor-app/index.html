@@ -4532,27 +4532,31 @@ UI for workflow management and execution monitoring.</p>
 <li><strong>View workers</strong> -- See online workers and their registered function blocks</li>
 </ul>
 <h2 id="quick-start">Quick Start</h2>
-<p>=== "Docker Compose (recommended)"</p>
-<div class="language-text highlight"><pre><span></span><code>Follow the [Quick Start](../getting-started/10-setup.md#quick-start-with-docker-compose) to
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker Compose (recommended)</label><label for="__tabbed_1_2">Local development</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Follow the <a href="../getting-started/10-setup/#quick-start-with-docker-compose">Quick Start</a> to
 start PostgreSQL, the Monitor App, and the engine. Then open
-[http://localhost:5173](http://localhost:5173) in your browser.
-</code></pre></div>
-<p>=== "Local development"</p>
-<div class="language-text highlight"><pre><span></span><code>1. Ensure the workflow engine is running (see [Setup](../getting-started/10-setup.md))
-2. Start the Monitor App:
-
-    ```bash
-    make run-monitor
-    ```
-
-    Or directly:
-
-    ```bash
-    cd rest/monitor-app &amp;&amp; npm run dev
-    ```
-
-3. Open [http://localhost:5173](http://localhost:5173) in your browser
-</code></pre></div>
+<a href="http://localhost:5173">http://localhost:5173</a> in your browser.</p>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>Ensure the workflow engine is running (see <a href="../getting-started/10-setup/">Setup</a>)</li>
+<li>
+<p>Start the Monitor App:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>run-monitor
+</span></code></pre></div>
+<p>Or directly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>rest/monitor-app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev
+</span></code></pre></div>
+</li>
+<li>
+<p>Open <a href="http://localhost:5173">http://localhost:5173</a> in your browser</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
 <h2 id="key-screens">Key Screens</h2>
 <h3 id="workflow-definitions">Workflow Definitions</h3>
 <p>Lists all registered workflow definitions. From here you can:</p>
