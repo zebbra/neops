@@ -11,6 +11,10 @@ theme:
     - navigation.indexes
     - navigation.sections
     - navigation.tabs
+    # Top tabs stay visible while scrolling.
+    - navigation.tabs.sticky
+    # Breadcrumb path under the top tabs on every page.
+    - navigation.path
     - navigation.top
     - navigation.tracking
     - navigation.instant
@@ -18,6 +22,8 @@ theme:
     - search.suggest
     - search.highlight
     - content.action.edit
+    # Right-side TOC scroll-syncs with the reading position.
+    - toc.follow
   logo: assets/logo.svg
   favicon: assets/favicon.png
 
@@ -62,6 +68,20 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - md_in_html
+  # Interaction features
+  - pymdownx.keys           # ++ctrl+c++ → kbd
+  - pymdownx.tasklist:      # visible checklist boxes
+      custom_checkbox: true
+  - abbr                    # *[ACL]: ... tooltips on hover
+  - footnotes
+  - pymdownx.tilde          # ~~strike~~
+  - pymdownx.caret          # ^^superscript^^
+  - pymdownx.mark           # ==highlight==
+  # Typographic refinement
+  - smarty                  # 'curly' / "quotes", em-dashes (---), en-dashes (--), …
+  - pymdownx.smartsymbols   # --> → / <== ⇐ / (c) (r) (tm)
+  - pymdownx.magiclink      # bare URLs render as live links
+  - pymdownx.betterem       # cleaner bold/italic edge-case parsing
 # --8<-- [end:markdown_extensions]
 
 # --8<-- [start:plugins]

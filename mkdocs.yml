@@ -42,6 +42,18 @@ markdown_extensions:
     alternate_style: true
 - attr_list
 - md_in_html
+- pymdownx.keys
+- pymdownx.tasklist:
+    custom_checkbox: true
+- abbr
+- footnotes
+- pymdownx.tilde
+- pymdownx.caret
+- pymdownx.mark
+- smarty
+- pymdownx.smartsymbols
+- pymdownx.magiclink
+- pymdownx.betterem
 nav:
 - Home: index.md
 - Getting Started: getting-started
@@ -73,6 +85,8 @@ theme:
   - navigation.indexes
   - navigation.sections
   - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.path
   - navigation.top
   - navigation.tracking
   - navigation.instant
@@ -80,6 +94,7 @@ theme:
   - search.suggest
   - search.highlight
   - content.action.edit
+  - toc.follow
   logo: assets/logo.svg
   name: material
   palette:
