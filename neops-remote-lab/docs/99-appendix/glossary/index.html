@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6008,6 +6012,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Appendix
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6029,7 +6099,7 @@
 <hr />
 <h2 id="sessions-and-queueing">Sessions and queueing</h2>
 <p><strong>Session</strong>
-:   A logical reservation in the server's FIFO queue, identified by a UUID. Either <code>WAITING</code> (queued) or <code>ACTIVE</code> (head of queue). See <a href="../../10-concepts/20-session-queue/">Session queue</a>.</p>
+:   A logical reservation in the server&rsquo;s FIFO queue, identified by a UUID. Either <code>WAITING</code> (queued) or <code>ACTIVE</code> (head of queue). See <a href="../../10-concepts/20-session-queue/">Session queue</a>.</p>
 <p><a id="session-queue"></a><strong>Session queue</strong>
 :   Server-side FIFO list that decides who drives the lab next; promotion is first-come, first-served. See <a href="../../10-concepts/20-session-queue/#promotion-order">Session queue → Promotion order</a>.</p>
 <p><strong>Heartbeat</strong>
@@ -6043,13 +6113,13 @@
 <p><strong>Topology</strong>
 :   A Netlab YAML file (<code>.yml</code>) declaring nodes, links, modules, and provider. See <a href="../../10-concepts/40-topology-format/">Topology format</a>.</p>
 <p><strong>Topology identity</strong>
-:   The SHA-256 of the topology file's bytes — <strong>not</strong> the filename. See <a href="../../10-concepts/30-lab-lifecycle/#topology-identity-is-content-not-filename">Lab lifecycle → Topology identity</a>.</p>
+:   The SHA-256 of the topology file&rsquo;s bytes — <strong>not</strong> the filename. See <a href="../../10-concepts/30-lab-lifecycle/#topology-identity-is-content-not-filename">Lab lifecycle → Topology identity</a>.</p>
 <p><strong>Reference count</strong>
 :   Counter on the running lab; <code>reuse=true</code> increments, <code>release</code> decrements, hitting zero leaves the lab idle (not torn down). See <a href="../../10-concepts/30-lab-lifecycle/#reuse-the-refcount-increments">Lab lifecycle → Reuse</a>.</p>
 <p><strong>Lab reuse</strong>
 :   Opt-in (<code>reuse=true</code> / <code>reuse_lab=True</code>) sharing of a running lab across sessions whose topology content hash matches. See <a href="../../10-concepts/30-lab-lifecycle/#reuse-the-refcount-increments">Lab lifecycle → Reuse</a>.</p>
 <p><strong>One-lab rule</strong>
-:   Netlab's "only one topology per host" constraint; the queue exists because of it. See <a href="../../50-contributing/20-invariants/#one-lab-per-host">Invariants → One lab per host</a>.</p>
+:   Netlab&rsquo;s &ldquo;only one topology per host&rdquo; constraint; the queue exists because of it. See <a href="../../50-contributing/20-invariants/#one-lab-per-host">Invariants → One lab per host</a>.</p>
 <hr />
 <h2 id="locking-and-concurrency">Locking and concurrency</h2>
 <p><strong><code>LabManager</code></strong>
@@ -6097,7 +6167,7 @@
 <p><strong><a href="https://netlab.tools/">Netlab</a></strong>
 :   The lab orchestrator this service wraps. Used via <code>neops_remote_lab.netlab.connector.run_netlab</code> only. See <a href="../../40-deployment/10-netlab-host-setup/">Netlab host setup</a>.</p>
 <p><strong><a href="https://containerlab.dev/">Containerlab</a></strong>
-:   Netlab's default provider (<code>provider: clab</code>); pulls vendor NOS containers and wires them.</p>
+:   Netlab&rsquo;s default provider (<code>provider: clab</code>); pulls vendor NOS containers and wires them.</p>
 <p><strong><a href="https://frrouting.org/">FRR</a></strong>
 :   Open-source software router; the default <code>device:</code> in most topologies. See <a href="../../40-deployment/40-vendor-setup/">Vendor setup</a> (FRR tab).</p>
 <p><strong><a href="https://learn.srlinux.dev/">Nokia SR Linux</a></strong>
@@ -6272,7 +6342,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

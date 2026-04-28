@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6166,6 +6170,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Deploy & Operate
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6228,7 +6298,7 @@ environment that uv manages. No system-Python contamination.</p>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>pipx<span class="w"> </span>ensurepath
 </span></code></pre></div>
 <p>Installs into <code>~/.local/pipx/venvs/networklab</code> and exposes the
-<code>netlab</code> CLI on <code>PATH</code>. Re-login (or source your shell's RC file)
+<code>netlab</code> CLI on <code>PATH</code>. Re-login (or source your shell&rsquo;s RC file)
 after the first <code>pipx ensurepath</code>.</p>
 </div>
 <div class="tabbed-block">
@@ -6238,7 +6308,7 @@ after the first <code>pipx ensurepath</code>.</p>
 </span></code></pre></div>
 <p>Manual virtualenv plus a symlink. On Ubuntu 24.04+ a plain
 <code>pip install networklab</code> fails with <code>error: externally-managed-environment</code>
-(<a href="https://peps.python.org/pep-0668/">PEP 668</a>) — that's why uv or
+(<a href="https://peps.python.org/pep-0668/">PEP 668</a>) — that&rsquo;s why uv or
 pipx is preferred.</p>
 </div>
 </div>
@@ -6257,7 +6327,7 @@ pipx is preferred.</p>
 <p>This runs a minimal lab with FRR containers and tears it down to validate your install.
 All systems (Ansible, Docker, libvirt, etc.) must pass.</p>
 <hr />
-<p>If you're authoring tests against Remote Lab, see <a href="../../20-client/10-pytest-fixtures/">Pytest fixtures</a> for the public fixture API, or <a href="../../getting-started/10-pytest/">Quickstart</a> to run your first lab-backed test.</p>
+<p>If you&rsquo;re authoring tests against Remote Lab, see <a href="../../20-client/10-pytest-fixtures/">Pytest fixtures</a> for the public fixture API, or <a href="../../getting-started/10-pytest/">Quickstart</a> to run your first lab-backed test.</p>
 <p>For consumers integrating via the <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a>,
 that project owns the <code>remote_lab_fixture</code> consumer surface — see its
 <a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab testing guide</a>.</p>
@@ -6365,7 +6435,7 @@ upgrade it and configure netlab to use it without sudo.</p>
 </tr>
 <tr>
 <td><code>netlab up</code> asks for sudo password</td>
-<td>Ensure <code>containerlab</code> runs without sudo, and you're in the right groups</td>
+<td>Ensure <code>containerlab</code> runs without sudo, and you&rsquo;re in the right groups</td>
 </tr>
 <tr>
 <td><code>pip install</code> errors with <code>externally-managed-environment</code></td>
@@ -6532,7 +6602,7 @@ escalation.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5943,6 +5947,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5992,11 +6062,11 @@
 </tr>
 <tr>
 <td><code>isPure</code></td>
-<td>No side effects -- safe to discard without consequences</td>
+<td>No side effects &ndash; safe to discard without consequences</td>
 </tr>
 <tr>
 <td><code>isIdempotent</code></td>
-<td>Same input produces same output -- safe to re-run</td>
+<td>Same input produces same output &ndash; safe to re-run</td>
 </tr>
 </tbody>
 </table>
@@ -6005,10 +6075,10 @@
 <li><strong>Validate</strong> workflow definitions at deployment time (does the referenced FB exist? Are parameters compatible with the schema?)</li>
 <li><strong>Resolve</strong> version ranges at execution time (find the best matching version)</li>
 <li><strong>Determine transaction safety</strong> (can this workflow be retried? Is the failure safe?)</li>
-<li><strong>Classify failures</strong> -- if all executed steps were pure, the failure is <code>FAILED_SAFE</code></li>
+<li><strong>Classify failures</strong> &ndash; if all executed steps were pure, the failure is <code>FAILED_SAFE</code></li>
 </ol>
 <h2 id="pure-and-idempotent">Pure and Idempotent</h2>
-<p>These two properties are the foundation of the engine's transaction model. <strong>Pure</strong> means no side effects (read-only). <strong>Idempotent</strong> means safe to re-run (same input → same result). The engine uses these flags to classify failures and (when implemented) determine retry eligibility.</p>
+<p>These two properties are the foundation of the engine&rsquo;s transaction model. <strong>Pure</strong> means no side effects (read-only). <strong>Idempotent</strong> means safe to re-run (same input → same result). The engine uses these flags to classify failures and (when implemented) determine retry eligibility.</p>
 <p>For the full explanation, decision trees, and best practices, see <a href="../../30-function-blocks/40-types-and-safety/">Types &amp; Safety Semantics</a>.</p>
 <details class="info">
 <summary>Why this matters for network automation</summary>
@@ -6057,16 +6127,16 @@ properties tell you precisely what state you are in.</p>
 </table>
 <h2 id="lifecycle-in-the-engine">Lifecycle in the Engine</h2>
 <ol>
-<li><strong>Registration</strong> -- Workers register their function blocks on startup. The engine stores the metadata and JSON schemas.</li>
-<li><strong>Resolution</strong> -- When a workflow references <code>fb.neops.io/ping:1</code>, the engine finds the latest <code>1.x.x</code> version.</li>
-<li><strong>Acquire</strong> -- The engine creates ACQUIRE jobs on the blackboard. Workers pick them up and run the function block's <code>acquire()</code> method to determine what additional entity data is needed.</li>
-<li><strong>Execution</strong> -- The engine creates EXECUTE jobs on the blackboard. Workers pick them up and run the function block's <code>run()</code> method.</li>
-<li><strong>Result</strong> -- The worker pushes the result (success/failure, data, DB updates) back to the blackboard.</li>
+<li><strong>Registration</strong> &ndash; Workers register their function blocks on startup. The engine stores the metadata and JSON schemas.</li>
+<li><strong>Resolution</strong> &ndash; When a workflow references <code>fb.neops.io/ping:1</code>, the engine finds the latest <code>1.x.x</code> version.</li>
+<li><strong>Acquire</strong> &ndash; The engine creates ACQUIRE jobs on the blackboard. Workers pick them up and run the function block&rsquo;s <code>acquire()</code> method to determine what additional entity data is needed.</li>
+<li><strong>Execution</strong> &ndash; The engine creates EXECUTE jobs on the blackboard. Workers pick them up and run the function block&rsquo;s <code>run()</code> method.</li>
+<li><strong>Result</strong> &ndash; The worker pushes the result (success/failure, data, DB updates) back to the blackboard.</li>
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">Writing function blocks</p>
-<p>This page describes function blocks from the engine's perspective. To learn how to
-implement <code>run()</code>, <code>acquire()</code>, and <code>rollback()</code> in Python, see the Worker SDK's
+<p>This page describes function blocks from the engine&rsquo;s perspective. To learn how to
+implement <code>run()</code>, <code>acquire()</code>, and <code>rollback()</code> in Python, see the Worker SDK&rsquo;s
 <a href="/neops-worker-sdk-py/docs/function-blocks/10-anatomy/">Anatomy of a Function Block</a>.</p>
 </div>
 
@@ -6223,7 +6293,7 @@ implement <code>run()</code>, <code>acquire()</code>, and <code>rollback()</code
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6059,6 +6063,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6131,13 +6201,13 @@
     K -- No --&gt; M</code></pre>
 <h3 id="step-by-step">Step-by-step</h3>
 <ol>
-<li><strong>Filter by platform</strong> -- only plugins registered for <code>device.platform</code> survive.</li>
-<li><strong>Filter by connection_type</strong> -- if provided, narrows to that type. If omitted, all types for the platform remain.</li>
-<li><strong>Filter by connection_library</strong> -- if provided, exact match. If omitted, all libraries for the platform+type remain.</li>
-<li><strong>Filter by capabilities</strong> -- if the proxy declares capabilities, prefer plugins implementing <strong>all</strong> of them.</li>
-<li><strong>Best-match fallback</strong> -- if no plugin implements every required capability, select the one with the highest score (most capabilities matched). Ties raise <code>AmbiguousPluginError</code>.</li>
-<li><strong>Single match</strong> -- if exactly one candidate remains, return it.</li>
-<li><strong>Multiple matches</strong> -- if <code>fallback_to_default=True</code>, try defaults. Otherwise raise <code>AmbiguousPluginError</code>.</li>
+<li><strong>Filter by platform</strong> &ndash; only plugins registered for <code>device.platform</code> survive.</li>
+<li><strong>Filter by connection_type</strong> &ndash; if provided, narrows to that type. If omitted, all types for the platform remain.</li>
+<li><strong>Filter by connection_library</strong> &ndash; if provided, exact match. If omitted, all libraries for the platform+type remain.</li>
+<li><strong>Filter by capabilities</strong> &ndash; if the proxy declares capabilities, prefer plugins implementing <strong>all</strong> of them.</li>
+<li><strong>Best-match fallback</strong> &ndash; if no plugin implements every required capability, select the one with the highest score (most capabilities matched). Ties raise <code>AmbiguousPluginError</code>.</li>
+<li><strong>Single match</strong> &ndash; if exactly one candidate remains, return it.</li>
+<li><strong>Multiple matches</strong> &ndash; if <code>fallback_to_default=True</code>, try defaults. Otherwise raise <code>AmbiguousPluginError</code>.</li>
 </ol>
 <hr />
 <h2 id="default-plugins">Default Plugins</h2>
@@ -6149,8 +6219,8 @@
 </span></code></pre></div>
 <p>Defaults are checked in order:</p>
 <ol>
-<li><strong>(platform, connection_type) default</strong> -- checked first, but only when <code>connection_type</code> was specified.</li>
-<li><strong>platform default</strong> -- checked second as a broader fallback.</li>
+<li><strong>(platform, connection_type) default</strong> &ndash; checked first, but only when <code>connection_type</code> was specified.</li>
+<li><strong>platform default</strong> &ndash; checked second as a broader fallback.</li>
 </ol>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -6178,11 +6248,11 @@ always raise <code>AmbiguousPluginError</code>.</p>
 <tbody>
 <tr>
 <td>User default replaces SDK default</td>
-<td>Allowed -- logged at <code>info</code> level</td>
+<td>Allowed &ndash; logged at <code>info</code> level</td>
 </tr>
 <tr>
 <td>SDK default tries to replace user default</td>
-<td>Skipped -- user takes precedence</td>
+<td>Skipped &ndash; user takes precedence</td>
 </tr>
 <tr>
 <td>Two user defaults for the same scope</td>
@@ -6197,19 +6267,19 @@ always raise <code>AmbiguousPluginError</code>.</p>
 <p>This means you can safely override any SDK default by registering your own plugin with <code>default_for_platform=True</code> or <code>default_for_connection_type=True</code>.</p>
 <hr />
 <h2 id="capability-validation">Capability Validation</h2>
-<p>After resolution, the proxy validates that the plugin implements all required capability methods (<code>validate_capabilities=True</code> by default). Missing methods are logged as warnings -- they do not block proxy creation. Calling a missing method at runtime raises <code>NotImplementedForThisPlatform</code>.</p>
+<p>After resolution, the proxy validates that the plugin implements all required capability methods (<code>validate_capabilities=True</code> by default). Missing methods are logged as warnings &ndash; they do not block proxy creation. Calling a missing method at runtime raises <code>NotImplementedForThisPlatform</code>.</p>
 <hr />
 <h2 id="common-gotchas">Common Gotchas</h2>
 <ol>
-<li><strong>Omitting <code>connection_library</code> creates ambiguity</strong> -- if both Scrapli and Netmiko plugins exist for <code>"ios" + "ssh"</code>, you must either specify the library or opt into defaults.</li>
-<li><strong>Best-match ties are not resolved by defaults</strong> -- when no plugin fully matches and multiple plugins tie on score, <code>AmbiguousPluginError</code> is raised immediately. Defaults only apply after capability filtering.</li>
-<li><strong>Defaults require opt-in at the call site</strong> -- <code>fallback_to_default=True</code> must be passed explicitly.</li>
+<li><strong>Omitting <code>connection_library</code> creates ambiguity</strong> &ndash; if both Scrapli and Netmiko plugins exist for <code>"ios" + "ssh"</code>, you must either specify the library or opt into defaults.</li>
+<li><strong>Best-match ties are not resolved by defaults</strong> &ndash; when no plugin fully matches and multiple plugins tie on score, <code>AmbiguousPluginError</code> is raised immediately. Defaults only apply after capability filtering.</li>
+<li><strong>Defaults require opt-in at the call site</strong> &ndash; <code>fallback_to_default=True</code> must be passed explicitly.</li>
 </ol>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li><a href="../50-writing-plugins/">Writing Plugins</a> -- implement a new plugin</li>
-<li><a href="../70-architecture-deep-dive/">Architecture Deep Dive</a> -- resolution internals</li>
+<li><a href="../50-writing-plugins/">Writing Plugins</a> &ndash; implement a new plugin</li>
+<li><a href="../70-architecture-deep-dive/">Architecture Deep Dive</a> &ndash; resolution internals</li>
 </ul>
 
 
@@ -6365,7 +6435,7 @@ always raise <code>AmbiguousPluginError</code>.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

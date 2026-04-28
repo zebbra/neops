@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6137,6 +6141,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6223,11 +6293,11 @@ registry internals of the connection proxy system.</p>
 <ul>
 <li>Reads <code>self._device</code> and <code>self._plugin</code> at call time to build a <code>CapabilityContext</code>.</li>
 <li>Raises <code>NotImplementedForThisPlatform</code> with the context attached.</li>
-<li>Preserves the original method's <code>__name__</code>, <code>__qualname__</code>, <code>__doc__</code>, and <code>__annotations__</code>.</li>
+<li>Preserves the original method&rsquo;s <code>__name__</code>, <code>__qualname__</code>, <code>__doc__</code>, and <code>__annotations__</code>.</li>
 <li>Is tagged with <code>__generated_fallback__ = True</code> for introspection.</li>
 </ul>
 <h3 id="4-clear-abstract-methods">4. Clear Abstract Methods</h3>
-<p>The metaclass removes all capability method names from <code>__abstractmethods__</code>, making the proxy class instantiable. Static analyzers may still warn about abstract classes -- this is a known IDE limitation.</p>
+<p>The metaclass removes all capability method names from <code>__abstractmethods__</code>, making the proxy class instantiable. Static analyzers may still warn about abstract classes &ndash; this is a known IDE limitation.</p>
 <hr />
 <h2 id="method-delegation-via-__getattribute__">Method Delegation via <code>__getattribute__</code></h2>
 <p><code>ConnectionProxy.__getattribute__</code> intercepts every attribute access:</p>
@@ -6241,9 +6311,9 @@ registry internals of the connection proxy system.</p>
     Cap -- No --&gt; Self2</code></pre>
 <p>The resolution priority is:</p>
 <ol>
-<li><strong>Private attributes</strong> (<code>_device</code>, <code>_plugin</code>, <code>_closed</code>, ...) -- always resolved from the proxy instance via <code>object.__getattribute__</code>.</li>
-<li><strong>Capability methods</strong> -- if the method name exists in <code>_capability_methods</code>, the proxy checks the plugin for a callable attribute with that name. If found, the plugin's method is returned directly.</li>
-<li><strong>Self</strong> -- everything else (including metaclass-generated fallbacks, explicit proxy overrides, and non-capability methods) resolves from the proxy instance.</li>
+<li><strong>Private attributes</strong> (<code>_device</code>, <code>_plugin</code>, <code>_closed</code>, &hellip;) &ndash; always resolved from the proxy instance via <code>object.__getattribute__</code>.</li>
+<li><strong>Capability methods</strong> &ndash; if the method name exists in <code>_capability_methods</code>, the proxy checks the plugin for a callable attribute with that name. If found, the plugin&rsquo;s method is returned directly.</li>
+<li><strong>Self</strong> &ndash; everything else (including metaclass-generated fallbacks, explicit proxy overrides, and non-capability methods) resolves from the proxy instance.</li>
 </ol>
 <p>This means a user can override a fallback by defining the method on the proxy class itself:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SafeProxy</span><span class="p">(</span><span class="n">ConnectionProxy</span><span class="p">,</span> <span class="n">DeviceInfoCapability</span><span class="p">):</span>
@@ -6255,9 +6325,9 @@ registry internals of the connection proxy system.</p>
 <h2 id="fallback-method-internals">Fallback Method Internals</h2>
 <p>Each generated fallback captures three pieces of context at creation time (closure variables):</p>
 <ul>
-<li><code>cls</code> -- the proxy class being created</li>
-<li><code>method_name</code> -- the string name of the method</li>
-<li><code>interface</code> -- the capability interface that declares it</li>
+<li><code>cls</code> &ndash; the proxy class being created</li>
+<li><code>method_name</code> &ndash; the string name of the method</li>
+<li><code>interface</code> &ndash; the capability interface that declares it</li>
 </ul>
 <p>At call time, the fallback reads <code>self._device</code> and <code>self._plugin</code> to populate the <code>CapabilityContext</code> dataclass, then raises <code>NotImplementedForThisPlatform</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">raise</span> <span class="n">NotImplementedForThisPlatform</span><span class="p">(</span>
@@ -6306,28 +6376,28 @@ registry internals of the connection proxy system.</p>
 <ol>
 <li><strong>Extract platform</strong> from <code>device.platform.short_name</code> or <code>device.platform</code> (string). Raise <code>ConnectionValidationError</code> if missing.</li>
 <li><strong>Filter <code>_plugin_registry</code></strong> by platform, then optionally by connection_type and connection_library. Result: a flat list of candidate classes.</li>
-<li><strong>Capability filtering</strong> -- if <code>required_capabilities</code> is non-empty:<ul>
+<li><strong>Capability filtering</strong> &ndash; if <code>required_capabilities</code> is non-empty:<ul>
 <li>Compute full matches (plugins implementing <em>all</em> capabilities).</li>
 <li>If full matches exist, replace candidates with them.</li>
 <li>Otherwise, score each candidate by number of capabilities implemented. Select the highest scorer. Ties raise <code>AmbiguousPluginError</code>.</li>
 </ul>
 </li>
-<li><strong>Single candidate</strong> -- instantiate with <code>plugin_class(device=device)</code> and return.</li>
+<li><strong>Single candidate</strong> &ndash; instantiate with <code>plugin_class(device=device)</code> and return.</li>
 <li><strong>Multiple candidates</strong> with <code>fallback_to_default=True</code>:<ul>
 <li>Check <code>_connection_type_defaults[(platform, connection_type)]</code> first.</li>
 <li>Then check <code>_platform_defaults[platform]</code>.</li>
 <li>The default must be <em>in</em> the candidate list to be selected.</li>
 </ul>
 </li>
-<li><strong>Multiple candidates</strong> without a usable default -- raise <code>AmbiguousPluginError</code> with full diagnostic information.</li>
+<li><strong>Multiple candidates</strong> without a usable default &ndash; raise <code>AmbiguousPluginError</code> with full diagnostic information.</li>
 </ol>
 <h3 id="sdk-vs-user-plugin-detection">SDK vs User Plugin Detection</h3>
-<p>The registry determines plugin origin by comparing the plugin's module root to the SDK's module root (<code>neops_worker_sdk</code>). This is derived at import time from <code>ConnectionPlugin.__module__</code>. User plugins defined in any other package always take precedence for default registration.</p>
+<p>The registry determines plugin origin by comparing the plugin&rsquo;s module root to the SDK&rsquo;s module root (<code>neops_worker_sdk</code>). This is derived at import time from <code>ConnectionPlugin.__module__</code>. User plugins defined in any other package always take precedence for default registration.</p>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> -- user-facing resolution reference</li>
-<li><a href="../80-best-practices/">Best Practices</a> -- patterns for production use</li>
+<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> &ndash; user-facing resolution reference</li>
+<li><a href="../80-best-practices/">Best Practices</a> &ndash; patterns for production use</li>
 </ul>
 
 
@@ -6483,7 +6553,7 @@ registry internals of the connection proxy system.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

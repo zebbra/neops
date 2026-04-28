@@ -45,6 +45,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -82,7 +84,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -213,14 +217,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -420,7 +418,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5931,12 +5935,12 @@
   <a href="#full-reference-of-execute_fb_test_case_with" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full Reference of @execute_fb_test_case_with (...)
+        Full Reference of @execute_fb_test_case_with (&hellip;)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Full Reference of @execute_fb_test_case_with (...)">
+    <nav class="md-nav" aria-label="Full Reference of @execute_fb_test_case_with (…)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -6015,6 +6019,14 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6034,7 +6046,7 @@
 <p>This framework is for beein able to test our neops‑worker‑sdk FunctionBlocks easily with two simple decorators.</p>
 <p>It also provides an easy abstraction to spin up virtual notwork labs using <strong>Netlab
 ** (<a href="https://netlab.tools/">netlab.tools</a>).
-Those labs can run locally (on Ubuntu machines), on a remote VM which is Running the </strong>Remote Lab Manager** or executed
+Those labs can run locally (on Ubuntu machines), on a remote VM which is Running the **Remote Lab Manager</strong> or executed
 in CI on our custom GitHub runner.</p>
 <p>Who is this for: engineers writing/maintaining FunctionBlocks who want quick, repeatable tests against realistic router
 labs.</p>
@@ -6074,7 +6086,7 @@ docs: <a href="https://www.wireguard.com/">wireguard.com</a>.</p>
 <p>For purely remote runs (using <code>REMOTE_LAB_URL</code>), your local machine does not need Netlab or Containerlab.</p>
 <p>If you do need Netlab locally or on a remote Ubuntu VM, follow
 the <a href="./netlab_configuration.md">Netlab installation guide</a>. External docs: <strong>Netlab
-** (<a href="https://netlab.tools/">netlab.tools</a>), </strong>Containerlab** (<a href="https://containerlab.dev/">containerlab.dev</a>).</p>
+** (<a href="https://netlab.tools/">netlab.tools</a>), **Containerlab</strong> (<a href="https://containerlab.dev/">containerlab.dev</a>).</p>
 <h3 id="python-dependencies">Python dependencies</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Local testing dependencies</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span><span class="nb">test</span>
@@ -6171,7 +6183,7 @@ Netlab fixture per test</strong> is allowed.</p>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="p">],</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="full-reference-of-execute_fb_test_case_with">Full Reference of @execute_fb_test_case_with (...)</h3>
+<h3 id="full-reference-of-execute_fb_test_case_with">Full Reference of @execute_fb_test_case_with (&hellip;)</h3>
 <p>Signature (simplified):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">execute_fb_test_case_with</span><span class="p">(</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>        <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -6230,8 +6242,8 @@ Netlab fixture per test</strong> is allowed.</p>
 <li>Remote Lab Manager (API and client): <a href="../remote-lab/">./remote-lab.md</a></li>
 <li>WireGuard (WIP, parity with Tailscale sysctl/Docker): <a href="./wiregard_configuration.md">./wiregard_configuration.md</a></li>
 <li>External docs: <strong>Netlab</strong> (<a href="https://netlab.tools/">netlab.tools</a>), <strong>Containerlab
-  ** (<a href="https://containerlab.dev/">containerlab.dev</a>), </strong>Tailscale<strong> (<a href="https://tailscale.com/">tailscale.com</a>), *
-  *WireGuard</strong> (<a href="https://www.wireguard.com/">wireguard.com</a>)</li>
+  ** (<a href="https://containerlab.dev/">containerlab.dev</a>), **Tailscale</strong> (<a href="https://tailscale.com/">tailscale.com</a>), *
+  <em>WireGuard</em>* (<a href="https://www.wireguard.com/">wireguard.com</a>)</li>
 <li>Key modules: fixtures, lifecycle, plugins, client/server<ul>
 <li><code>neops_worker_sdk/testing/netlab/fixture.py</code></li>
 <li><code>neops_worker_sdk/testing/netlab/lab_manager.py</code></li>
@@ -6357,7 +6369,7 @@ Netlab fixture per test</strong> is allowed.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

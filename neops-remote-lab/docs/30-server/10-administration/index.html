@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6098,6 +6102,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Run the service
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6149,12 +6219,12 @@ unless you have a hard reason not to.</p>
 <p>The help output lists the complete server CLI surface: <code>--debug</code>,
 <code>--host</code>, <code>--port</code>, <code>--log-level</code>, <code>--log-config</code>, and <code>--version</code>. <!-- trace: neops_remote_lab/__main__.py:149 -->
 If <code>neops-remote-lab --help</code> errors with <code>command not found</code>, your
-tool's <code>bin</code> directory is not on <code>PATH</code> — run <code>uv tool update-shell</code>,
+tool&rsquo;s <code>bin</code> directory is not on <code>PATH</code> — run <code>uv tool update-shell</code>,
 <code>pipx ensurepath</code>, or add the symlink target manually depending on which
 installer you used.</p>
 <div class="admonition info">
 <p class="admonition-title">Before you start</p>
-<p>Netlab CLI must already be on <code>PATH</code> — the launcher refuses to start without it. <!-- trace: neops_remote_lab/__main__.py:206 --> If the host is fresh, run <a href="../../40-deployment/10-netlab-host-setup/">Netlab host setup</a> first. You'll also want shell access with permission to read <code>/tmp</code>, kill processes, and restart the service.</p>
+<p>Netlab CLI must already be on <code>PATH</code> — the launcher refuses to start without it. <!-- trace: neops_remote_lab/__main__.py:206 --> If the host is fresh, run <a href="../../40-deployment/10-netlab-host-setup/">Netlab host setup</a> first. You&rsquo;ll also want shell access with permission to read <code>/tmp</code>, kill processes, and restart the service.</p>
 </div>
 <p>Once the CLI is reachable, continue with <a href="#starting-the-server">Starting the server</a>
 for a one-shot foreground run, or <a href="#running-as-a-system-service">Running as a system service</a>
@@ -6194,7 +6264,7 @@ unit file looks like this — save it at
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>systemctl<span class="w"> </span>status<span class="w"> </span>neops-remote-lab
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>neops-remote-lab<span class="w"> </span>-f
 </span></code></pre></div>
-<p><code>journalctl -u neops-remote-lab -f</code> follows the server's structured log
+<p><code>journalctl -u neops-remote-lab -f</code> follows the server&rsquo;s structured log
 stream in the journal; send it to <code>&lt;LOG_PATH&gt;</code> via <code>--log-config</code> if you
 need a file-based handler instead.</p>
 <div class="admonition warning">
@@ -6441,7 +6511,7 @@ reference, see <a href="../50-debugging/">Debugging</a>.</p>
 </tr>
 <tr>
 <td><code>'netlab' CLI not found in PATH.</code> at startup, exit 1</td>
-<td>Netlab not installed or not on the launcher's <code>PATH</code></td>
+<td>Netlab not installed or not on the launcher&rsquo;s <code>PATH</code></td>
 <td>Install Netlab; verify with <code>netlab version</code>; retry. <!-- trace: neops_remote_lab/__main__.py:206 --></td>
 </tr>
 <tr>
@@ -6451,7 +6521,7 @@ reference, see <a href="../50-debugging/">Debugging</a>.</p>
 </tr>
 <tr>
 <td>All <code>POST /lab</code> calls return 423 Locked from one caller</td>
-<td>The caller's session is not ACTIVE, or a different topology owns the host</td>
+<td>The caller&rsquo;s session is not ACTIVE, or a different topology owns the host</td>
 <td>Check <code>GET /session/{id}</code>; if WAITING, wait; if ACTIVE, another topology is running — release or force-destroy.</td>
 </tr>
 <tr>
@@ -6484,7 +6554,7 @@ reference, see <a href="../50-debugging/">Debugging</a>.</p>
 <li><strong><a href="../30-security/">Security model</a></strong> — the threat model the operational guidance above is built on top of.</li>
 <li><strong><a href="../../10-concepts/10-architecture/">Architecture</a></strong> — where the single-instance + one-lab invariants come from.</li>
 <li><strong><a href="../../10-concepts/20-session-queue/">Session queue</a></strong> — FIFO semantics and 423 Locked flow.</li>
-<li><strong><a href="../../40-deployment/20-headscale-quick-setup/">Headscale: quick setup</a></strong> — the recommended VPN enclosure (alternatives in the page's <em>Other approaches</em> section).</li>
+<li><strong><a href="../../40-deployment/20-headscale-quick-setup/">Headscale: quick setup</a></strong> — the recommended VPN enclosure (alternatives in the page&rsquo;s <em>Other approaches</em> section).</li>
 </ul>
 
 
@@ -6643,7 +6713,7 @@ reference, see <a href="../50-debugging/">Debugging</a>.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

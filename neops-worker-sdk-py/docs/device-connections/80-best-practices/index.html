@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6113,6 +6117,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6221,7 +6291,7 @@ and <code>device.password</code> directly when creating connections.</p>
 <hr />
 <h2 id="enable-mode-privilege-escalation">Enable Mode / Privilege Escalation</h2>
 <p>Many Cisco and Arista devices require <code>enable</code> mode for privileged commands.
-Handle this through your connection plugin's raw connection:</p>
+Handle this through your connection plugin&rsquo;s raw connection:</p>
 <p><strong>Netmiko</strong> — pass <code>secret</code> when constructing the connection, then call <code>enable()</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">raw</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">plugin</span><span class="o">.</span><span class="n">get_raw_connection</span><span class="p">()</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">raw</span><span class="o">.</span><span class="n">secret</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">password</span>  <span class="c1"># or a dedicated enable secret</span>
@@ -6236,13 +6306,13 @@ Handle this through your connection plugin's raw connection:</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>If you frequently need enable mode, wrap the escalation in your
-<a href="../50-writing-plugins/">connection plugin</a> so callers don't deal with
+<a href="../50-writing-plugins/">connection plugin</a> so callers don&rsquo;t deal with
 privilege details.</p>
 </div>
 <hr />
 <h2 id="ssh-key-authentication">SSH Key Authentication</h2>
 <p>For environments that use key-based authentication instead of passwords:</p>
-<p><strong>Scrapli</strong> — supports <code>auth_private_key</code> natively. Set it in your plugin's
+<p><strong>Scrapli</strong> — supports <code>auth_private_key</code> natively. Set it in your plugin&rsquo;s
 <code>__init__</code> or pass it through connection options:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scrapli</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scrapli</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
@@ -6276,8 +6346,8 @@ a secrets manager in the <code>acquire()</code> phase.</p>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">collect_with_retry</span><span class="p">(</span><span class="n">proxy</span><span class="p">):</span>
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="k">return</span> <span class="n">proxy</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span>
 </span></code></pre></div>
-<p>Timeouts are configured at the library level (e.g., scrapli's
-<code>timeout_transport</code>, netmiko's <code>timeout</code>). Pass them via the
+<p>Timeouts are configured at the library level (e.g., scrapli&rsquo;s
+<code>timeout_transport</code>, netmiko&rsquo;s <code>timeout</code>). Pass them via the
 <code>BaseConnection</code> in a custom plugin, or access the raw connection:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">raw</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">plugin</span><span class="o">.</span><span class="n">get_raw_connection</span><span class="p">()</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">raw</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># library-specific</span>
@@ -6498,7 +6568,7 @@ a secrets manager in the <code>acquire()</code> phase.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

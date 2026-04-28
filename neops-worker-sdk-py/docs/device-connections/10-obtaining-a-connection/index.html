@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -3152,7 +3156,7 @@
   <a href="#connect-context-manager-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        connect() -- context manager (recommended)
+        connect() &ndash; context manager (recommended)
       
     </span>
   </a>
@@ -3163,7 +3167,7 @@
   <a href="#get_connection-manual-lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_connection() -- manual lifecycle
+        get_connection() &ndash; manual lifecycle
       
     </span>
   </a>
@@ -3174,7 +3178,7 @@
   <a href="#close-explicit-teardown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        close() -- explicit teardown
+        close() &ndash; explicit teardown
       
     </span>
   </a>
@@ -5936,7 +5940,7 @@
   <a href="#connect-context-manager-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        connect() -- context manager (recommended)
+        connect() &ndash; context manager (recommended)
       
     </span>
   </a>
@@ -5947,7 +5951,7 @@
   <a href="#get_connection-manual-lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_connection() -- manual lifecycle
+        get_connection() &ndash; manual lifecycle
       
     </span>
   </a>
@@ -5958,7 +5962,7 @@
   <a href="#close-explicit-teardown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        close() -- explicit teardown
+        close() &ndash; explicit teardown
       
     </span>
   </a>
@@ -6037,6 +6041,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6057,9 +6127,9 @@
 offers two entry points: a context manager (<code>connect()</code>) and a factory method
 (<code>get_connection()</code>).</p>
 <hr />
-<h2 id="connect-context-manager-recommended"><code>connect()</code> -- context manager (recommended)</h2>
-<p><code>connect()</code> wraps the full lifecycle -- plugin resolution, connection setup, and
-teardown -- in a <code>contextmanager</code>. The connection is always closed on exit,
+<h2 id="connect-context-manager-recommended"><code>connect()</code> &ndash; context manager (recommended)</h2>
+<p><code>connect()</code> wraps the full lifecycle &ndash; plugin resolution, connection setup, and
+teardown &ndash; in a <code>contextmanager</code>. The connection is always closed on exit,
 even when an exception propagates.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    <span class="nd">@classmethod</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nd">@contextmanager</span>
@@ -6116,14 +6186,14 @@ even when an exception propagates.</p>
 <div class="admonition note">
 <p class="admonition-title">Synchronous context manager</p>
 <p><code>connect()</code> is a <strong>synchronous</strong> context manager (<code>with</code>, not <code>async with</code>).
-The underlying libraries (scrapli, netmiko, ncclient, ...) are blocking.
+The underlying libraries (scrapli, netmiko, ncclient, &hellip;) are blocking.
 This is fine inside function blocks because the neops runtime executes
 each function block invocation in a <strong>thread pool</strong>.</p>
 </div>
 <hr />
-<h2 id="get_connection-manual-lifecycle"><code>get_connection()</code> -- manual lifecycle</h2>
-<p>When you need more control -- for example, to inspect the resolved plugin before
-connecting, or to keep a connection across several steps -- use <code>get_connection()</code>
+<h2 id="get_connection-manual-lifecycle"><code>get_connection()</code> &ndash; manual lifecycle</h2>
+<p>When you need more control &ndash; for example, to inspect the resolved plugin before
+connecting, or to keep a connection across several steps &ndash; use <code>get_connection()</code>
 with an explicit <code>close()</code>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>    <span class="nd">@classmethod</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_connection</span><span class="p">(</span>
@@ -6215,8 +6285,8 @@ with an explicit <code>close()</code>.</p>
 <code>close()</code> when you use <code>get_connection()</code> directly.</p>
 </div>
 <hr />
-<h2 id="close-explicit-teardown"><code>close()</code> -- explicit teardown</h2>
-<p><code>close()</code> delegates to the plugin's <code>teardown_connection()</code> and marks the proxy
+<h2 id="close-explicit-teardown"><code>close()</code> &ndash; explicit teardown</h2>
+<p><code>close()</code> delegates to the plugin&rsquo;s <code>teardown_connection()</code> and marks the proxy
 as closed. It is safe to call multiple times.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -6240,7 +6310,7 @@ as closed. It is safe to call multiple times.</p>
 </span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span><span class="o">.</span><span class="n">teardown_connection</span><span class="p">()</span>
 </span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
 </span></code></pre></div>
-<p>After <code>close()</code>, capability method calls will fail because the plugin's raw
+<p>After <code>close()</code>, capability method calls will fail because the plugin&rsquo;s raw
 connection is gone. Treat a closed proxy as unusable.</p>
 <hr />
 <h2 id="parameters">Parameters</h2>
@@ -6289,7 +6359,7 @@ connection is gone. Treat a closed proxy as unusable.</p>
 <td><code>validate_capabilities</code></td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
-<td>Warn at creation time if the resolved plugin is missing methods declared by the proxy's capabilities.</td>
+<td>Warn at creation time if the resolved plugin is missing methods declared by the proxy&rsquo;s capabilities.</td>
 </tr>
 </tbody>
 </table>
@@ -6311,7 +6381,7 @@ Do not call it a second time — connect the existing wrapper instead.</p>
 <hr />
 <h2 id="error-handling">Error handling</h2>
 <h3 id="exception-hierarchy">Exception hierarchy</h3>
-<p>All connection exceptions inherit from <code>NeopsConnectionError</code> (not Python's
+<p>All connection exceptions inherit from <code>NeopsConnectionError</code> (not Python&rsquo;s
 built-in <code>ConnectionError</code>):</p>
 <pre class="mermaid"><code>classDiagram
     class NeopsConnectionError
@@ -6556,7 +6626,7 @@ built-in <code>ConnectionError</code>):</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

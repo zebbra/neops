@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6187,6 +6191,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6245,13 +6315,13 @@
 </span></code></pre></div>
 <h3 id="workflow-stuck-in-locking">Workflow stuck in LOCKING</h3>
 <p><strong>Cause:</strong> The CMS is unreachable or not responding to the lock request.</p>
-<p><strong>Resolution:</strong> Check CMS connectivity (<code>NEOPS_CMS_URL</code>) and CMS logs. Restart the engine if the CMS was temporarily down -- the engine will retry on startup.</p>
+<p><strong>Resolution:</strong> Check CMS connectivity (<code>NEOPS_CMS_URL</code>) and CMS logs. Restart the engine if the CMS was temporarily down &ndash; the engine will retry on startup.</p>
 <h3 id="jobs-not-being-picked-up-many-pending">Jobs not being picked up (many PENDING)</h3>
 <p><strong>Possible causes:</strong></p>
 <ol>
-<li><strong>No workers online</strong> -- Check <code>GET /workers/online</code></li>
-<li><strong>No worker has the required FB</strong> -- Check if any online worker has the function block registered</li>
-<li><strong>Workers not polling</strong> -- Check worker logs for connectivity issues</li>
+<li><strong>No workers online</strong> &ndash; Check <code>GET /workers/online</code></li>
+<li><strong>No worker has the required FB</strong> &ndash; Check if any online worker has the function block registered</li>
+<li><strong>Workers not polling</strong> &ndash; Check worker logs for connectivity issues</li>
 </ol>
 <h3 id="failed_unsafe-investigation">FAILED_UNSAFE investigation</h3>
 <p>When an execution ends as <a href="../../10-concepts/40-workflow-as-a-transaction/#failed_unsafe"><code>FAILED_UNSAFE</code></a> (meaning side effects may have occurred):</p>
@@ -6281,9 +6351,9 @@ time out through the stuck job cleanup mechanism.</p>
 <h2 id="database-maintenance">Database Maintenance</h2>
 <p>The engine uses MikroORM with PostgreSQL. Standard PostgreSQL maintenance applies:</p>
 <ul>
-<li><strong>Vacuuming</strong> -- PostgreSQL auto-vacuum handles this in most cases</li>
-<li><strong>Backup</strong> -- Standard <code>pg_dump</code> for backups</li>
-<li><strong>Disk space</strong> -- Completed executions and their jobs are retained indefinitely. Consider periodic cleanup of old execution data if disk space is a concern.</li>
+<li><strong>Vacuuming</strong> &ndash; PostgreSQL auto-vacuum handles this in most cases</li>
+<li><strong>Backup</strong> &ndash; Standard <code>pg_dump</code> for backups</li>
+<li><strong>Disk space</strong> &ndash; Completed executions and their jobs are retained indefinitely. Consider periodic cleanup of old execution data if disk space is a concern.</li>
 </ul>
 <h2 id="version-information">Version Information</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Engine version and API version</span>
@@ -6448,7 +6518,7 @@ time out through the stuck job cleanup mechanism.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6043,6 +6047,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6064,9 +6134,9 @@
 <h2 id="the-core-idea">The Core Idea</h2>
 <p>Group a sequence of operations so the engine always knows the state of the world:</p>
 <ul>
-<li><strong>What ran</strong> -- which steps executed on which devices</li>
-<li><strong>What changed</strong> -- which steps had side effects (configuration writes, entity modifications)</li>
-<li><strong>What's safe</strong> -- whether the execution can be retried, rolled back, or needs manual intervention</li>
+<li><strong>What ran</strong> &ndash; which steps executed on which devices</li>
+<li><strong>What changed</strong> &ndash; which steps had side effects (configuration writes, entity modifications)</li>
+<li><strong>What&rsquo;s safe</strong> &ndash; whether the execution can be retried, rolled back, or needs manual intervention</li>
 </ul>
 <p>The engine achieves this through the <strong>pure</strong> and <strong>idempotent</strong> contracts on function blocks, combined with <strong>entity locking</strong> and <strong>atomic state transitions</strong>.</p>
 <h2 id="acid-like-properties">ACID-Like Properties</h2>
@@ -6145,7 +6215,7 @@
 <p>The workflow failed, but <strong>nothing irreversible happened</strong>. This occurs when:</p>
 <ul>
 <li>The workflow failed before any steps executed</li>
-<li>All executed steps were <strong>pure</strong> (read-only) -- no side effects at all</li>
+<li>All executed steps were <strong>pure</strong> (read-only) &ndash; no side effects at all</li>
 <li>The workflow was successfully rolled back</li>
 </ul>
 <p>You can safely discard or re-run this workflow without worrying about leftover state.</p>
@@ -6177,31 +6247,31 @@ path shown above is the <strong>planned design</strong>. The engine already trac
 <code>isIdempotentExecution</code> but does not yet use it for retry decisions.</p>
 </div>
 <h2 id="entity-locking">Entity Locking</h2>
-<p>Before execution, the engine acquires exclusive locks on all entities in the workflow's scope:</p>
+<p>Before execution, the engine acquires exclusive locks on all entities in the workflow&rsquo;s scope:</p>
 <ol>
-<li><strong>Acquisition</strong> -- The engine queries the CMS for the required entities</li>
-<li><strong>Locking</strong> -- The CMS grants exclusive write locks</li>
-<li><strong>Execution</strong> -- Steps run against the locked entities</li>
-<li><strong>Release</strong> -- On completion (success or failure), locks are released and DB updates are applied atomically</li>
+<li><strong>Acquisition</strong> &ndash; The engine queries the CMS for the required entities</li>
+<li><strong>Locking</strong> &ndash; The CMS grants exclusive write locks</li>
+<li><strong>Execution</strong> &ndash; Steps run against the locked entities</li>
+<li><strong>Release</strong> &ndash; On completion (success or failure), locks are released and DB updates are applied atomically</li>
 </ol>
 <p>This prevents two workflows from modifying the same device simultaneously. If a device is already locked by another workflow, the new workflow waits in <code>SCHEDULED</code> state until the lock becomes available.</p>
 <details class="info">
 <summary>Locking granularity</summary>
 <p>Locks are per-entity: a workflow locking device A does not block a different workflow
-operating on device B. Locks are exclusive -- only one workflow can hold a lock on a
+operating on device B. Locks are exclusive &ndash; only one workflow can hold a lock on a
 given entity at a time.</p>
 </details>
 <h2 id="practical-implications">Practical Implications</h2>
 <p><strong>For workflow authors:</strong></p>
 <ul>
-<li>Mark read-only function blocks as <code>isPure: true</code> -- this gives the engine maximum flexibility for failure classification</li>
-<li>Mark config-push function blocks as <code>isIdempotent: true</code> if re-running them is safe (declarative config, not append-based) -- this will enable automatic retries when that feature is implemented</li>
-<li>Order steps so pure (read-only) steps execute first -- if the workflow fails during the pure phase, it is automatically <code>FAILED_SAFE</code></li>
+<li>Mark read-only function blocks as <code>isPure: true</code> &ndash; this gives the engine maximum flexibility for failure classification</li>
+<li>Mark config-push function blocks as <code>isIdempotent: true</code> if re-running them is safe (declarative config, not append-based) &ndash; this will enable automatic retries when that feature is implemented</li>
+<li>Order steps so pure (read-only) steps execute first &ndash; if the workflow fails during the pure phase, it is automatically <code>FAILED_SAFE</code></li>
 </ul>
 <p><strong>For operators:</strong></p>
 <ul>
 <li><code>FAILED_SAFE</code> workflows can be safely ignored or re-triggered</li>
-<li><code>FAILED_UNSAFE</code> workflows need investigation -- check the execution details in the Monitor App to see which steps ran on which devices</li>
+<li><code>FAILED_UNSAFE</code> workflows need investigation &ndash; check the execution details in the Monitor App to see which steps ran on which devices</li>
 <li>Entity locks are released even on failure, so subsequent workflows are not blocked</li>
 </ul>
 
@@ -6358,7 +6428,7 @@ given entity at a time.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

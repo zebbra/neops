@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5942,6 +5946,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Appendix
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5958,8 +6028,8 @@
 
 
 <h1 id="how-remote-lab-fits-with-neops">How Remote Lab fits with neops</h1>
-<p><em>For Neops devs and External API users alike. Which neops concepts apply to Remote Lab, which don't, and how the pieces connect.</em></p>
-<p>If you arrived here from a peer neops project, you'll have words like <em>function block</em>, <em>worker</em>, <em>workflow</em> in your mental model. <strong>Most of them don't apply to Remote Lab itself.</strong> Remote Lab is the test substrate the rest of the platform runs network-automation tests against; it doesn't run workflows, it doesn't host workers, it doesn't read the blackboard. This page maps the shared vocabulary so you don't trip on shape-mismatches.</p>
+<p><em>For Neops devs and External API users alike. Which neops concepts apply to Remote Lab, which don&rsquo;t, and how the pieces connect.</em></p>
+<p>If you arrived here from a peer neops project, you&rsquo;ll have words like <em>function block</em>, <em>worker</em>, <em>workflow</em> in your mental model. <strong>Most of them don&rsquo;t apply to Remote Lab itself.</strong> Remote Lab is the test substrate the rest of the platform runs network-automation tests against; it doesn&rsquo;t run workflows, it doesn&rsquo;t host workers, it doesn&rsquo;t read the blackboard. This page maps the shared vocabulary so you don&rsquo;t trip on shape-mismatches.</p>
 <p>If you arrived from outside neops entirely, this page is a guided tour of the surrounding pieces — safely skippable if you only care about driving the lab.</p>
 <h2 id="what-remote-lab-actually-is">What Remote Lab actually is</h2>
 <p>A FastAPI service plus a pytest11 plugin. The service runs on a Netlab host and serializes lab access via a FIFO queue. The plugin (<code>remote_lab_fixture</code>) is the <strong>stable public API</strong> consumed directly by <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a> test suites.</p>
@@ -5970,7 +6040,7 @@
 <tr>
 <th>Term</th>
 <th>What neops uses it for</th>
-<th>Remote Lab's stance</th>
+<th>Remote Lab&rsquo;s stance</th>
 </tr>
 </thead>
 <tbody>
@@ -5997,12 +6067,12 @@
 <tr>
 <td><strong>Blackboard</strong></td>
 <td>The shared job queue between the workflow engine and workers — the engine writes jobs, workers read and return results. (<a href="https://docs.neops.io/neops-workflow-engine/docs/10-concepts/60-blackboard/">Workflow Engine → Blackboard</a>)</td>
-<td><strong>Different mechanism, different scope.</strong> Remote Lab's <a href="../../10-concepts/20-session-queue/">session queue</a> serializes exclusive lab access; the blackboard decouples workers from the engine. Same word "queue", unrelated systems.</td>
+<td><strong>Different mechanism, different scope.</strong> Remote Lab&rsquo;s <a href="../../10-concepts/20-session-queue/">session queue</a> serializes exclusive lab access; the blackboard decouples workers from the engine. Same word &ldquo;queue&rdquo;, unrelated systems.</td>
 </tr>
 <tr>
 <td><strong>Provider</strong></td>
-<td>In neops-core's legacy automation-class sense, a provider is a vendor-driver abstraction.</td>
-<td><strong>Defines its own.</strong> In a Remote Lab topology, <code>provider:</code> is <a href="https://netlab.tools/">Netlab</a>'s runtime selector (<code>clab</code>, <code>libvirt</code>, …). Unrelated to the neops-core sense.</td>
+<td>In neops-core&rsquo;s legacy automation-class sense, a provider is a vendor-driver abstraction.</td>
+<td><strong>Defines its own.</strong> In a Remote Lab topology, <code>provider:</code> is <a href="https://netlab.tools/">Netlab</a>&rsquo;s runtime selector (<code>clab</code>, <code>libvirt</code>, …). Unrelated to the neops-core sense.</td>
 </tr>
 <tr>
 <td><strong>Context</strong> (<code>WorkflowContext</code>)</td>
@@ -6012,7 +6082,7 @@
 <tr>
 <td><strong>Heartbeat</strong></td>
 <td>A worker→engine liveness ping.</td>
-<td><strong>Different scope.</strong> Remote Lab's <code>POST /session/heartbeat</code> is a client→server session keepalive (<a href="../../10-concepts/20-session-queue/#the-heartbeat">Session Queue → The heartbeat</a>). Same word, different relationship.</td>
+<td><strong>Different scope.</strong> Remote Lab&rsquo;s <code>POST /session/heartbeat</code> is a client→server session keepalive (<a href="../../10-concepts/20-session-queue/#the-heartbeat">Session Queue → The heartbeat</a>). Same word, different relationship.</td>
 </tr>
 <tr>
 <td><strong>Checks / Scope</strong></td>
@@ -6196,7 +6266,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

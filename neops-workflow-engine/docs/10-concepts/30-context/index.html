@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -1184,12 +1188,12 @@
   <a href="#whats-in-the-context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's in the Context
+        What&rsquo;s in the Context
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="What&#39;s in the Context">
+    <nav class="md-nav" aria-label="What’s in the Context">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -5959,12 +5963,12 @@
   <a href="#whats-in-the-context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's in the Context
+        What&rsquo;s in the Context
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="What&#39;s in the Context">
+    <nav class="md-nav" aria-label="What’s in the Context">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -6077,6 +6081,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6094,7 +6164,7 @@
 
 <h1 id="context">Context</h1>
 <p>The context is the data that a workflow execution carries through its steps. It contains entity information (devices, interfaces, groups), workflow parameters, and results from previous steps. Every JMESPath expression in your workflow resolves against this context.</p>
-<h2 id="whats-in-the-context">What's in the Context</h2>
+<h2 id="whats-in-the-context">What&rsquo;s in the Context</h2>
 <table>
 <thead>
 <tr>
@@ -6109,7 +6179,7 @@
 </tr>
 <tr>
 <td><code>context.device</code></td>
-<td>Seed device data (hostname, IP, facts, ...).</td>
+<td>Seed device data (hostname, IP, facts, &hellip;).</td>
 </tr>
 <tr>
 <td><code>context.interfaces</code></td>
@@ -6127,13 +6197,13 @@
 </table>
 <h3 id="static-context-available-from-the-start">Static context (available from the start)</h3>
 <ul>
-<li><strong><code>parameters</code></strong> -- Values passed when the workflow execution was triggered (e.g., <code>timeout</code>, <code>backup_type</code>)</li>
-<li><strong><code>context.device</code></strong> / <strong><code>context.interface</code></strong> / <strong><code>context.device_group</code></strong> -- The seed entity data loaded from the CMS</li>
+<li><strong><code>parameters</code></strong> &ndash; Values passed when the workflow execution was triggered (e.g., <code>timeout</code>, <code>backup_type</code>)</li>
+<li><strong><code>context.device</code></strong> / <strong><code>context.interface</code></strong> / <strong><code>context.device_group</code></strong> &ndash; The seed entity data loaded from the CMS</li>
 </ul>
 <h3 id="dynamic-context-populated-during-execution">Dynamic context (populated during execution)</h3>
 <ul>
-<li><strong><code>&lt;step_label&gt;.result</code></strong> -- The result data from a completed step. For example, if a step labeled <code>ping</code> returns <code>{ "reachable": true }</code>, subsequent steps can access <code>{{ ping.result.data.reachable }}</code></li>
-<li><strong>Acquired entities</strong> -- Additional entities pulled in through <code>acquire</code> clauses</li>
+<li><strong><code>&lt;step_label&gt;.result</code></strong> &ndash; The result data from a completed step. For example, if a step labeled <code>ping</code> returns <code>{ "reachable": true }</code>, subsequent steps can access <code>{{ ping.result.data.reachable }}</code></li>
+<li><strong>Acquired entities</strong> &ndash; Additional entities pulled in through <code>acquire</code> clauses</li>
 </ul>
 <h2 id="how-context-gets-populated">How Context Gets Populated</h2>
 <table>
@@ -6173,10 +6243,10 @@
 </tbody>
 </table>
 <ol>
-<li><strong>Execution trigger</strong> -- The user provides entity IDs or queries and workflow parameters</li>
-<li><strong>Entity acquisition</strong> -- The engine requests entities from the CMS and locks them</li>
-<li><strong>Step-level acquire</strong> -- If steps define <code>acquire</code> clauses, the engine runs ACQUIRE jobs to gather additional data</li>
-<li><strong>Execution</strong> -- Each step receives the accumulated context and its result is added to the context for subsequent steps</li>
+<li><strong>Execution trigger</strong> &ndash; The user provides entity IDs or queries and workflow parameters</li>
+<li><strong>Entity acquisition</strong> &ndash; The engine requests entities from the CMS and locks them</li>
+<li><strong>Step-level acquire</strong> &ndash; If steps define <code>acquire</code> clauses, the engine runs ACQUIRE jobs to gather additional data</li>
+<li><strong>Execution</strong> &ndash; Each step receives the accumulated context and its result is added to the context for subsequent steps</li>
 </ol>
 <h2 id="jmespath-expressions">JMESPath Expressions</h2>
 <p>Parameters, conditions, and assertions use <code>{{ expression }}</code> syntax. The expression is a <a href="https://jmespath.org/">JMESPath</a> query evaluated against the context.</p>
@@ -6218,8 +6288,8 @@ similarly: <code>context.device.facts.version</code>. The
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
-<li><a href="../../20-workflows/50-acquire/">Acquire</a> -- How entities are acquired and added to the context</li>
-<li><a href="../../20-workflows/30-parameters/">Parameters &amp; Interpolation</a> -- JMESPath interpolation in detail</li>
+<li><a href="../../20-workflows/50-acquire/">Acquire</a> &ndash; How entities are acquired and added to the context</li>
+<li><a href="../../20-workflows/30-parameters/">Parameters &amp; Interpolation</a> &ndash; JMESPath interpolation in detail</li>
 </ul>
 
 
@@ -6375,7 +6445,7 @@ similarly: <code>context.device.facts.version</code>. The
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

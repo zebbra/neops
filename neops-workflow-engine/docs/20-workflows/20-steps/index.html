@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5999,6 +6003,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6106,7 +6176,7 @@
 </tr>
 </tbody>
 </table>
-<p>The <code>label</code> is how subsequent steps reference this step's results: <code>{{ get_version.result.data.version }}</code>.</p>
+<p>The <code>label</code> is how subsequent steps reference this step&rsquo;s results: <code>{{ get_version.result.data.version }}</code>.</p>
 <h2 id="embedded-workflow-step">Embedded Workflow Step</h2>
 <p>Group multiple steps into a logical unit. Useful for organizing complex workflows into phases:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workflow</span>
@@ -6129,9 +6199,9 @@
 <p>An embedded workflow:</p>
 <ul>
 <li>Executes its steps in sequence (or parallel if <code>config.executionStrategy.parallel: true</code>)</li>
-<li>Shares the parent workflow's execution context</li>
+<li>Shares the parent workflow&rsquo;s execution context</li>
 <li>Can have its own <code>acquire</code> clause to pull in additional entities</li>
-<li>Is part of the parent workflow's transaction -- it does not create a separate execution</li>
+<li>Is part of the parent workflow&rsquo;s transaction &ndash; it does not create a separate execution</li>
 </ul>
 <h2 id="workflow-reference-step">Workflow Reference Step</h2>
 <div class="admonition warning">
@@ -6191,8 +6261,8 @@ containing a <code>workflowReference</code> step will result in a runtime error.
 </tbody>
 </table>
 <h3 id="embed-vs-dispatch-planned">Embed vs Dispatch (Planned)</h3>
-<p><strong><code>embed</code></strong> -- The referenced workflow's steps are inlined into the current execution. They share the same context and transaction. This is equivalent to copy-pasting the steps.</p>
-<p><strong><code>dispatch</code></strong> -- The referenced workflow runs as a separate execution with its own context and transaction. The parent workflow waits for it to complete. Use this for independent sub-workflows that should have their own locking and failure isolation.</p>
+<p><strong><code>embed</code></strong> &ndash; The referenced workflow&rsquo;s steps are inlined into the current execution. They share the same context and transaction. This is equivalent to copy-pasting the steps.</p>
+<p><strong><code>dispatch</code></strong> &ndash; The referenced workflow runs as a separate execution with its own context and transaction. The parent workflow waits for it to complete. Use this for independent sub-workflows that should have their own locking and failure isolation.</p>
 <pre class="mermaid"><code>graph TD
     subgraph embed ["embed — same context &amp; transaction"]
         direction TB
@@ -6224,7 +6294,7 @@ containing a <code>workflowReference</code> step will result in a runtime error.
 <td><code>functionBlock</code></td>
 </tr>
 <tr>
-<td>Group related steps (e.g., "pre-checks", "configure", "verify")</td>
+<td>Group related steps (e.g., &ldquo;pre-checks&rdquo;, &ldquo;configure&rdquo;, &ldquo;verify&rdquo;)</td>
 <td><code>workflow</code> (embedded)</td>
 </tr>
 <tr>
@@ -6240,10 +6310,10 @@ containing a <code>workflowReference</code> step will result in a runtime error.
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
-<li><a href="../30-parameters/">Parameters &amp; Interpolation</a> -- JMESPath expressions in step parameters</li>
-<li><a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a> -- Conditional execution and validation</li>
-<li><a href="../60-retry-and-rollback/">Retry &amp; Rollback</a> -- Failure handling for steps</li>
-<li><a href="../90-examples/">Examples</a> -- Complete workflow examples using all step types</li>
+<li><a href="../30-parameters/">Parameters &amp; Interpolation</a> &ndash; JMESPath expressions in step parameters</li>
+<li><a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a> &ndash; Conditional execution and validation</li>
+<li><a href="../60-retry-and-rollback/">Retry &amp; Rollback</a> &ndash; Failure handling for steps</li>
+<li><a href="../90-examples/">Examples</a> &ndash; Complete workflow examples using all step types</li>
 </ul>
 
 
@@ -6399,7 +6469,7 @@ containing a <code>workflowReference</code> step will result in a runtime error.
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

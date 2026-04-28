@@ -45,6 +45,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -82,7 +84,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -213,14 +217,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -420,7 +418,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5860,6 +5864,14 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5963,7 +5975,7 @@ As an example on Interface <code>GigabitEthernet0/1</code>:</p>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">},</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">],</span>
 </span></code></pre></div>
-<p>With the interface related search term <code>interfaces.facts.vlans.name: CLIENT-A</code> you will get interfaces Gi0/1, Gi3/0 and Gig3/1. And in device and location view, you'd get the related devices or locations with interfaces that match the above search.</p>
+<p>With the interface related search term <code>interfaces.facts.vlans.name: CLIENT-A</code> you will get interfaces Gi0/1, Gi3/0 and Gig3/1. And in device and location view, you&rsquo;d get the related devices or locations with interfaces that match the above search.</p>
 <h4 id="values">Values</h4>
 <p>A <code>*</code> can be uses as a wildcard.
 For exact matches use double quotes <code>"</code>.</p>
@@ -5997,7 +6009,7 @@ The Rollback operation is performed by the <a href="/pdoc-md/neops.core.provider
 <li>Authentication against Keycloak, with OAuth2.0 (Backends like Oauth, LDAP and others supported by <a href="https://www.keycloak.org/">Keycloak</a>)</li>
 </ul>
 <h2 id="roles-rights-and-permissions">Roles, Rights and Permissions</h2>
-<p>neops.io has it's own permission system. We grant access based on roles (Role assignments are set in Keycloak or in the Local User Database).
+<p>neops.io has it&rsquo;s own permission system. We grant access based on roles (Role assignments are set in Keycloak or in the Local User Database).
 Roles are linked to Tasks and Device Groups with three different type of permissions (Read, Execute, Write). Those Permissions are implicit as soon you have write permissions to an element you will have permissions to read and execute as well.
 That a user is able to execute or modify a Task on a given Device he need at least execute or write permission on both Elements with any given role.</p>
 <p>To grant access to permission management or other functionality there are dedicated permission elements to grant access on (such as can a user create a task).</p>
@@ -6009,7 +6021,7 @@ That a user is able to execute or modify a Task on a given Device he need at lea
 With those default permissions you have the ability to go with the least privilege principle (no default permission) or not (set default permissions)</p>
 <h4 id="permission-elements">Permission Elements</h4>
 <p><img alt="Permission Elements" src="../_media/screenshots/permission-elements.png" /></p>
-<p>To grant access to task creation, permission settings or any other base functionally use the "UI Elements" tab.
+<p>To grant access to task creation, permission settings or any other base functionally use the &ldquo;UI Elements&rdquo; tab.
 The needed permission (read, write, execute) for an action is related to the implementation. But basicity it should be self explained such as for the permission settings only read and write are used.</p>
 <p>Those permissions are always related to roles.</p>
 <h4 id="permission-on-tasks">Permission on Tasks</h4>
@@ -6138,7 +6150,7 @@ As soon as a Device is in a permitted Device Group for a given role, those perso
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

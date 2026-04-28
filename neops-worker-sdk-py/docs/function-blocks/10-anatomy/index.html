@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5981,6 +5985,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6008,21 +6078,21 @@
     D --&gt; E[Result]
     E --&gt; F[DB Updates]</code></pre>
 <ol>
-<li><strong>Registration</strong> -- The <code>@register_function_block</code> decorator attaches metadata (name, version, schemas) to the class.</li>
-<li><strong>Discovery</strong> -- On startup, the worker recursively imports all Python modules in the configured directory and collects decorated classes.</li>
-<li><strong>Acquire</strong> -- The workflow engine dispatches an <code>ACQUIRE</code> job. The worker calls <code>acquire()</code> to declare resource needs; the engine locks entities and resolves context.</li>
-<li><strong>Execute</strong> -- The engine dispatches a separate <code>EXECUTE</code> job. The worker calls <code>execute_function_block()</code>, which validates parameters and invokes <code>run()</code> with a <code>WorkflowContext</code> holding entity state.</li>
-<li><strong>Result</strong> -- <code>run()</code> returns a typed <code>FunctionBlockResult</code> with a success flag, message, and structured data.</li>
-<li><strong>DB Updates</strong> -- The platform diffs entity state before and after execution, generating create/patch/delete operations automatically.</li>
+<li><strong>Registration</strong> &ndash; The <code>@register_function_block</code> decorator attaches metadata (name, version, schemas) to the class.</li>
+<li><strong>Discovery</strong> &ndash; On startup, the worker recursively imports all Python modules in the configured directory and collects decorated classes.</li>
+<li><strong>Acquire</strong> &ndash; The workflow engine dispatches an <code>ACQUIRE</code> job. The worker calls <code>acquire()</code> to declare resource needs; the engine locks entities and resolves context.</li>
+<li><strong>Execute</strong> &ndash; The engine dispatches a separate <code>EXECUTE</code> job. The worker calls <code>execute_function_block()</code>, which validates parameters and invokes <code>run()</code> with a <code>WorkflowContext</code> holding entity state.</li>
+<li><strong>Result</strong> &ndash; <code>run()</code> returns a typed <code>FunctionBlockResult</code> with a success flag, message, and structured data.</li>
+<li><strong>DB Updates</strong> &ndash; The platform diffs entity state before and after execution, generating create/patch/delete operations automatically.</li>
 </ol>
 <hr />
 <h2 id="parameters">Parameters</h2>
-<p><code>FunctionBlockParams</code> extends Pydantic's <code>BaseModel</code> with <code>extra="ignore"</code>. Unknown fields from the workflow engine are dropped (the SDK logs a warning listing them via <code>parse_parameters_from_dto()</code>), so schema extensions never break existing function blocks.</p>
+<p><code>FunctionBlockParams</code> extends Pydantic&rsquo;s <code>BaseModel</code> with <code>extra="ignore"</code>. Unknown fields from the workflow engine are dropped (the SDK logs a warning listing them via <code>parse_parameters_from_dto()</code>), so schema extensions never break existing function blocks.</p>
 <p>A minimal parameter model declares its fields with type annotations:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">EchoParameters</span><span class="p">(</span><span class="n">FunctionBlockParams</span><span class="p">):</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
 </span></code></pre></div>
-<p>Pydantic validates automatically -- if the engine sends <code>{"text": 42}</code>, Pydantic coerces it to <code>"42"</code>. Send <code>{}</code> without a required field and validation fails with a clear error before <code>run()</code> is ever called.</p>
+<p>Pydantic validates automatically &ndash; if the engine sends <code>{"text": 42}</code>, Pydantic coerces it to <code>"42"</code>. Send <code>{}</code> without a required field and validation fails with a clear error before <code>run()</code> is ever called.</p>
 <details class="info">
 <summary>Complex parameters: nested models, defaults, and validators</summary>
 <p>Real-world function blocks often need richer input structures:</p>
@@ -6050,16 +6120,16 @@
 </span></code></pre></div>
 <p>Key patterns:</p>
 <ul>
-<li><strong>Nested models</strong> -- compose <code>FunctionBlockParams</code> subclasses for structured input.</li>
-<li><strong>Optional fields</strong> -- <code>list[str] | None = None</code> for parameters that may be omitted.</li>
-<li><strong>Defaults</strong> -- assign values directly (<code>skip_unreachable: bool = True</code>).</li>
-<li><strong>Validators</strong> -- <code>@field_validator</code> for cross-field or business-rule checks.</li>
+<li><strong>Nested models</strong> &ndash; compose <code>FunctionBlockParams</code> subclasses for structured input.</li>
+<li><strong>Optional fields</strong> &ndash; <code>list[str] | None = None</code> for parameters that may be omitted.</li>
+<li><strong>Defaults</strong> &ndash; assign values directly (<code>skip_unreachable: bool = True</code>).</li>
+<li><strong>Validators</strong> &ndash; <code>@field_validator</code> for cross-field or business-rule checks.</li>
 </ul>
 <p>JSON schemas auto-generated from these models drive the parameter form in the neops UI.</p>
 </details>
 <hr />
 <h2 id="results">Results</h2>
-<p><code>FunctionBlockResultData</code> extends <code>BaseModel</code> with <code>extra="forbid"</code>. Unlike parameters, results enforce <strong>strict</strong> output validation -- any undeclared field raises a <code>ValidationError</code>. Downstream workflow steps and the UI can trust the schema completely.</p>
+<p><code>FunctionBlockResultData</code> extends <code>BaseModel</code> with <code>extra="forbid"</code>. Unlike parameters, results enforce <strong>strict</strong> output validation &ndash; any undeclared field raises a <code>ValidationError</code>. Downstream workflow steps and the UI can trust the schema completely.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">EchoResult</span><span class="p">(</span><span class="n">FunctionBlockResultData</span><span class="p">):</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">echoed_message</span><span class="p">:</span> <span class="nb">str</span>
 </span></code></pre></div>
@@ -6125,12 +6195,12 @@
 <tbody>
 <tr>
 <td><code>name</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>Unique name within the package</td>
 </tr>
 <tr>
 <td><code>package</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>Reverse-DNS namespace (e.g. <code>fb.acme.com</code>)</td>
 </tr>
 <tr>
@@ -6140,27 +6210,27 @@
 </tr>
 <tr>
 <td><code>description</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>Short description shown in the UI</td>
 </tr>
 <tr>
 <td><code>run_on</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>Entity scope: <code>"device"</code>, <code>"interface"</code>, <code>"group"</code>, or <code>"global"</code></td>
 </tr>
 <tr>
 <td><code>fb_type</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>Category: <code>"configure"</code>, <code>"facts"</code>, <code>"check"</code>, <code>"execute"</code>, <code>"none"</code></td>
 </tr>
 <tr>
 <td><code>param_cls</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>The <code>FunctionBlockParams</code> subclass for this block</td>
 </tr>
 <tr>
 <td><code>result_cls</code></td>
-<td>--</td>
+<td>&ndash;</td>
 <td>The <code>FunctionBlockResultData</code> subclass for this block</td>
 </tr>
 <tr>
@@ -6308,8 +6378,8 @@
 <h2 id="execute_function_block"><code>execute_function_block()</code></h2>
 <p>You never call <code>run()</code> directly. The <code>@final</code> method <code>execute_function_block()</code> wraps every execution:</p>
 <ul>
-<li><strong>Production</strong> (default) -- catches all exceptions from <code>run()</code> and converts them into a failed <code>FunctionBlockResult</code>. A single failing block never crashes the worker process.</li>
-<li><strong>Testing</strong> (<code>propagate_exceptions=True</code>) -- lets exceptions propagate with full stack traces so pytest points you to the exact error location.</li>
+<li><strong>Production</strong> (default) &ndash; catches all exceptions from <code>run()</code> and converts them into a failed <code>FunctionBlockResult</code>. A single failing block never crashes the worker process.</li>
+<li><strong>Testing</strong> (<code>propagate_exceptions=True</code>) &ndash; lets exceptions propagate with full stack traces so pytest points you to the exact error location.</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">block</span><span class="o">.</span><span class="n">execute_function_block</span><span class="p">(</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">params</span><span class="o">=</span><span class="n">MyParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">),</span>
@@ -6475,7 +6545,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

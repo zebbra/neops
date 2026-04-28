@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5986,6 +5990,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6041,9 +6111,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>The server MUST use <code>try_acquire</code>.</strong> Calling <code>acquire</code> from inside an async handler blocks the event loop for minutes, and the loop never wakes up to process the release that would let the call succeed — instant deadlock for every other client. <code>POST /lab</code> returns <code>423 Locked</code> on a busy lab and expects the HTTP client to retry; that's how the contract avoids this trap.</p>
-<p><strong>Local-process tests use <code>acquire</code></strong> when they're the only caller and blocking is the point — they want the lab when it's free, no async involved.</p>
-<p>Mixing them is one of the easier ways to wedge the test suite. If you find yourself reading <code>acquire</code> and unsure whether it's safe in your context, ask: am I inside an event loop? If yes, use <code>try_acquire</code> and a polling HTTP client.</p>
+<p><strong>The server MUST use <code>try_acquire</code>.</strong> Calling <code>acquire</code> from inside an async handler blocks the event loop for minutes, and the loop never wakes up to process the release that would let the call succeed — instant deadlock for every other client. <code>POST /lab</code> returns <code>423 Locked</code> on a busy lab and expects the HTTP client to retry; that&rsquo;s how the contract avoids this trap.</p>
+<p><strong>Local-process tests use <code>acquire</code></strong> when they&rsquo;re the only caller and blocking is the point — they want the lab when it&rsquo;s free, no async involved.</p>
+<p>Mixing them is one of the easier ways to wedge the test suite. If you find yourself reading <code>acquire</code> and unsure whether it&rsquo;s safe in your context, ask: am I inside an event loop? If yes, use <code>try_acquire</code> and a polling HTTP client.</p>
 <h2 id="the-decision-tree">The decision tree</h2>
 <pre class="mermaid"><code>flowchart TD
     start["try_acquire(topo, reuse)"] --&gt; lock["GLOBAL_LOCK acquired"]
@@ -6066,10 +6136,10 @@
 <li>The <strong>singleton</strong> stops two async tasks in the server from racing.</li>
 <li>The <strong>file lock</strong> stops a separate Python process — most often a developer running local <code>netlab</code> by hand alongside the server, or a <code>LabManager.acquire()</code> call from a local test fixture — from trampling shared state.</li>
 </ul>
-<p>If a process holding <code>GLOBAL_LOCK</code> crashes, the OS releases the lock when the file handle goes away. The server's startup path is built around the assumption that previous holders may have left state behind.</p>
+<p>If a process holding <code>GLOBAL_LOCK</code> crashes, the OS releases the lock when the file handle goes away. The server&rsquo;s startup path is built around the assumption that previous holders may have left state behind.</p>
 <h2 id="stale-state-recovery">Stale-state recovery</h2>
 <!-- trace: neops_remote_lab/netlab/lab_manager.py:125 -->
-<p>Before starting any lab, <code>_start</code> calls <code>_terminate_default_netlab_instance</code> to forcibly run <code>netlab down --instance default --cleanup</code>. The call is made with <code>expected_failure=True</code>, so when no default instance exists it's a silent no-op. When one is running (a previous job crashed before its own teardown), it gets cleaned up.</p>
+<p>Before starting any lab, <code>_start</code> calls <code>_terminate_default_netlab_instance</code> to forcibly run <code>netlab down --instance default --cleanup</code>. The call is made with <code>expected_failure=True</code>, so when no default instance exists it&rsquo;s a silent no-op. When one is running (a previous job crashed before its own teardown), it gets cleaned up.</p>
 <p>This is unconditional — every server startup probes for stale state. The cost is one extra subprocess call per startup; the value is a service that recovers from operator mistakes (<code>Ctrl+C</code> mid-run, <code>kill -9</code> while a lab was up) without manual intervention.</p>
 <p>The companion stale-lock recovery for the singleton filelock — the <em>server-instance</em> lock, not the lab lock above — is in <a href="../../30-server/10-administration/#stale-lock-recovery">Administration → Stale-lock recovery</a>.</p>
 <h2 id="see-also">See also</h2>
@@ -6236,7 +6306,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

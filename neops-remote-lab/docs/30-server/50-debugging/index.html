@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6120,6 +6124,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Run the service
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6151,7 +6221,7 @@
 <tr>
 <td><code>RuntimeError: REMOTE_LAB_URL not set</code></td>
 <td>The pytest fixture saw no <code>REMOTE_LAB_URL</code> in the environment</td>
-<td>Export <code>REMOTE_LAB_URL</code> to point at your server. The fixture has no fallback to localhost — if you don't have a server, see <a href="../../getting-started/20-local/">Local development server</a>.</td>
+<td>Export <code>REMOTE_LAB_URL</code> to point at your server. The fixture has no fallback to localhost — if you don&rsquo;t have a server, see <a href="../../getting-started/20-local/">Local development server</a>.</td>
 </tr>
 <tr>
 <td>Tests hang in queue</td>
@@ -6166,7 +6236,7 @@
 <tr>
 <td><code>423 Locked</code> on <code>POST /lab</code> only</td>
 <td>Lab is busy with a different topology</td>
-<td>The client retries every 5 s automatically. If you cannot wait, see "Lab stuck busy" below.</td>
+<td>The client retries every 5 s automatically. If you cannot wait, see &ldquo;Lab stuck busy&rdquo; below.</td>
 </tr>
 <tr>
 <td><code>404 Not Found</code> on <code>GET /session/{id}</code></td>
@@ -6190,7 +6260,7 @@
 </tr>
 </tbody>
 </table>
-<p>For the operator's view of the same symptom space (stale filelocks, port
+<p>For the operator&rsquo;s view of the same symptom space (stale filelocks, port
 conflicts, <code>netlab</code> not installed), see
 <a href="../10-administration/#troubleshooting">Administration → Troubleshooting</a>.</p>
 <hr />
@@ -6229,7 +6299,7 @@ exactly which step failed.</p>
 </ol>
 <p>Without <code>--debug</code>, Netlab output is captured silently and only logged
 on failure. Streaming is useful when <code>netlab up</code> is taking longer than
-expected and you want to see what it's doing.</p>
+expected and you want to see what it&rsquo;s doing.</p>
 <p>You can also enable streaming independently:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_NETLAB_STREAM_OUTPUT</span><span class="o">=</span><span class="m">1</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>neops-remote-lab<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--log-level<span class="w"> </span>INFO
@@ -6293,7 +6363,7 @@ endpoint is in <a href="../40-rest-api/">REST API</a>.</p>
 <td><strong>400</strong></td>
 <td><code>POST /lab</code></td>
 <td>Bad request — topology file missing, or filename does not end in <code>.yml</code>/<code>.yaml</code></td>
-<td>Check the path you passed to <code>-F "topology=@..."</code> (or your client's equivalent) and that the file extension is correct.</td>
+<td>Check the path you passed to <code>-F "topology=@..."</code> (or your client&rsquo;s equivalent) and that the file extension is correct.</td>
 </tr>
 <tr>
 <td><strong>404</strong></td>
@@ -6357,11 +6427,11 @@ client-side string in server logs or vice versa, so split by owner.</p>
 <tbody>
 <tr>
 <td><code>Session ... is active after X.Xs</code></td>
-<td>The client's <code>_wait_for_active_session</code> saw the session promote to <code>ACTIVE</code>.</td>
+<td>The client&rsquo;s <code>_wait_for_active_session</code> saw the session promote to <code>ACTIVE</code>.</td>
 </tr>
 <tr>
 <td><code>Session did not become active within Xs</code></td>
-<td>The client's <code>session_timeout</code> expired while the session was still <code>WAITING</code>; raised as <code>TimeoutError</code>.</td>
+<td>The client&rsquo;s <code>session_timeout</code> expired while the session was still <code>WAITING</code>; raised as <code>TimeoutError</code>.</td>
 </tr>
 <tr>
 <td><code>Lab acquired successfully.</code></td>
@@ -6461,7 +6531,7 @@ periodic background sweeps, but a few paths still need manual help.</p>
 — do not just delete them blindly. A stale lock is a signal that a
 prior process crashed; investigate before clearing.</p>
 <p><strong>Client-side:</strong> there is rarely cleanup work to do. The server holds
-all session and lab state; if your client crashes, the server's
+all session and lab state; if your client crashes, the server&rsquo;s
 stale-session cleanup will reclaim the slot after
 <code>_ACTIVE_SESSION_STALE</code> (300 s) or <code>_WAITING_SESSION_TIMEOUT</code> (600 s).
 If you cannot wait, end the orphaned session yourself:</p>
@@ -6641,7 +6711,7 @@ If you cannot wait, end the orphaned session yourself:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

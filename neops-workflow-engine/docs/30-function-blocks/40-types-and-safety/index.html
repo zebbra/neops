@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5999,6 +6003,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6015,7 +6085,7 @@
 
 
 <h1 id="types-safety-semantics">Types &amp; Safety Semantics</h1>
-<p>The <code>isPure</code> and <code>isIdempotent</code> flags on function blocks are the foundation of the engine's transaction model. They determine how the engine handles failures, retries, and execution classification.</p>
+<p>The <code>isPure</code> and <code>isIdempotent</code> flags on function blocks are the foundation of the engine&rsquo;s transaction model. They determine how the engine handles failures, retries, and execution classification.</p>
 <h2 id="safety-properties">Safety Properties</h2>
 <table>
 <thead>
@@ -6044,7 +6114,7 @@
 </tbody>
 </table>
 <h3 id="pure">Pure</h3>
-<p>A pure function block only reads data. It never modifies the device, the CMS, or any external system. If a pure function block fails, nothing has changed -- the world is exactly as it was before.</p>
+<p>A pure function block only reads data. It never modifies the device, the CMS, or any external system. If a pure function block fails, nothing has changed &ndash; the world is exactly as it was before.</p>
 <p>The engine uses this to classify failures: if a workflow only ran pure steps before failing, the failure is <code>FAILED_SAFE</code>.</p>
 <h3 id="idempotent">Idempotent</h3>
 <p>An idempotent function block can be safely executed multiple times with the same input. The result is the same whether it runs once or ten times. This is a weaker guarantee than pure (the function block does have side effects), but the side effects are predictable and repeatable.</p>
@@ -6059,7 +6129,7 @@
 <table>
 <thead>
 <tr>
-<th>All executed steps are...</th>
+<th>All executed steps are&hellip;</th>
 <th><code>isPureExecution</code></th>
 <th><code>isIdempotentExecution</code></th>
 <th>On failure →</th>
@@ -6089,7 +6159,7 @@
 <div class="admonition warning">
 <p class="admonition-title">Implementation status</p>
 <p><strong>Today:</strong> Only <code>isPureExecution</code> drives the failure classification. If all executed
-steps were pure → <code>FAILED_SAFE</code>; otherwise → <code>FAILED_UNSAFE</code>. The "retry eligible" path
+steps were pure → <code>FAILED_SAFE</code>; otherwise → <code>FAILED_UNSAFE</code>. The &ldquo;retry eligible&rdquo; path
 for idempotent executions is <strong>planned but not yet active</strong>. <code>isIdempotentExecution</code> is
 tracked throughout execution but not yet used for automatic retry decisions.</p>
 </div>
@@ -6122,12 +6192,12 @@ and the step-level <code>retryConfig</code> are planned for a future release.</p
 <p><strong>Design idempotent configs:</strong>
 :   When writing configuration function blocks, prefer declarative (replace entire config section) over imperative (append line). Declarative configs are naturally idempotent.</p>
 <p><strong>Use FAILED_SAFE as a signal:</strong>
-:   If your workflows frequently end as <code>FAILED_SAFE</code>, that means your read-only steps are failing (likely connectivity issues) but nothing harmful happened. Investigate the root cause but don't panic.</p>
+:   If your workflows frequently end as <code>FAILED_SAFE</code>, that means your read-only steps are failing (likely connectivity issues) but nothing harmful happened. Investigate the root cause but don&rsquo;t panic.</p>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
-<li><a href="/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/">Pure and Idempotent (Worker SDK)</a> -- How to declare and reason about <code>is_pure</code> / <code>is_idempotent</code> in Python</li>
-<li><a href="../../10-concepts/40-workflow-as-a-transaction/">Workflow as a Transaction</a> -- How purity and idempotency drive the engine's transaction model</li>
+<li><a href="/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/">Pure and Idempotent (Worker SDK)</a> &ndash; How to declare and reason about <code>is_pure</code> / <code>is_idempotent</code> in Python</li>
+<li><a href="../../10-concepts/40-workflow-as-a-transaction/">Workflow as a Transaction</a> &ndash; How purity and idempotency drive the engine&rsquo;s transaction model</li>
 </ul>
 
 
@@ -6283,7 +6353,7 @@ and the step-level <code>retryConfig</code> are planned for a future release.</p
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

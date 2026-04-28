@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6308,6 +6312,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Use from Python
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6327,10 +6397,10 @@
 <p><em><code>remote_lab_fixture</code> is the stable public API. Three lines of test code; the queue, the lifecycle, and teardown disappear into the fixture.</em></p>
 <div class="admonition tip">
 <p class="admonition-title">Using this from the Worker SDK?</p>
-<p>The <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a> imports <code>remote_lab_fixture</code> directly. Read <a href="../15-worker-sdk/">With Worker SDK</a> and the SDK's <a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab testing guide</a> for the function-block-test patterns.</p>
+<p>The <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a> imports <code>remote_lab_fixture</code> directly. Read <a href="../15-worker-sdk/">With Worker SDK</a> and the SDK&rsquo;s <a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab testing guide</a> for the function-block-test patterns.</p>
 </div>
 <h2 id="happy-path-three-tests-one-running-lab">Happy path: three tests, one running lab</h2>
-<p>The shape you'll write 90% of the time — <code>reuse_lab=True</code> so a fleet of small assertions against the same topology pays the <code>netlab up</code> cost <strong>once</strong>:</p>
+<p>The shape you&rsquo;ll write 90% of the time — <code>reuse_lab=True</code> so a fleet of small assertions against the same topology pays the <code>netlab up</code> cost <strong>once</strong>:</p>
 <div class="language-python highlight"><span class="filename">tests/conftest.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_remote_lab.testing.fixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">remote_lab_fixture</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># One topology, shared across every test that requests `simple_lab`.</span>
@@ -6340,7 +6410,7 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
 </span></code></pre></div>
 <ol>
-<li>With <code>reuse_lab=True</code>, the second test that requests <code>simple_lab</code> finds the lab already running and just bumps the reference count. Without it, the first test's teardown tears the lab down — the second pays the boot cost again.</li>
+<li>With <code>reuse_lab=True</code>, the second test that requests <code>simple_lab</code> finds the lab already running and just bumps the reference count. Without it, the first test&rsquo;s teardown tears the lab down — the second pays the boot cost again.</li>
 </ol>
 <div class="language-python highlight"><span class="filename">tests/test_frr_routing.py</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_two_routers_present</span><span class="p">(</span><span class="n">simple_lab</span><span class="p">):</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">simple_lab</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
@@ -6356,7 +6426,7 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pytest<span class="w"> </span>tests/<span class="w"> </span>-v
 </span></code></pre></div>
 <div class="admonition success">
-<p class="admonition-title">What you'll see</p>
+<p class="admonition-title">What you&rsquo;ll see</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>tests/test_frr_routing.py::test_two_routers_present
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[INFO] Created session 4b8c... at queue position 0
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[INFO] Session 4b8c... is active after 0.3s
@@ -6377,7 +6447,7 @@
 <p>Three tests; one boot; three reuses. The final <code>release</code> drops the refcount to zero — the lab idles until the pytest session ends, then <code>atexit</code> cleans it up.</p>
 <div class="admonition info">
 <p class="admonition-title">How the plugin loads</p>
-<p>Installing <code>neops-remote-lab</code> registers a pytest plugin via the package's entry points. You do not add anything to <code>conftest.py</code> to enable it; you only need to import <code>remote_lab_fixture</code> at module scope where you want a fixture.</p>
+<p>Installing <code>neops-remote-lab</code> registers a pytest plugin via the package&rsquo;s entry points. You do not add anything to <code>conftest.py</code> to enable it; you only need to import <code>remote_lab_fixture</code> at module scope where you want a fixture.</p>
 </div>
 <hr />
 <h2 id="remote_lab_fixture-factory"><code>remote_lab_fixture</code> (factory)</h2>
@@ -6415,7 +6485,7 @@ to any test in the same collection scope.</p>
 <td><code>name</code></td>
 <td><code>str \| None</code></td>
 <td><code>None</code> (keyword-only)</td>
-<td>Fixture name override. When omitted, the fixture name defaults to the topology file's stem (e.g. <code>demo.yml</code> → <code>demo</code>).</td>
+<td>Fixture name override. When omitted, the fixture name defaults to the topology file&rsquo;s stem (e.g. <code>demo.yml</code> → <code>demo</code>).</td>
 </tr>
 <tr>
 <td><code>reuse_lab</code></td>
@@ -6439,7 +6509,7 @@ running topology.</p>
 <li>Resolves the session-scoped <code>remote_lab_client</code> (creating it on the first
    test that needs a lab).</li>
 <li>Calls <code>client.acquire(topology_path, reuse=reuse_lab)</code>, which blocks
-   through the server's 423 polling loop until the lab is running. <!-- trace: neops_remote_lab/testing/fixture.py:124 --></li>
+   through the server&rsquo;s 423 polling loop until the lab is running. <!-- trace: neops_remote_lab/testing/fixture.py:124 --></li>
 <li>Yields the device list to your test.</li>
 <li>On teardown — whether the test passed or raised — calls
    <code>client.release()</code>. On a <code>reuse_lab=False</code> lab this triggers teardown; on
@@ -6448,11 +6518,11 @@ running topology.</p>
 <p>The fixture does not catch exceptions in your test body. An assertion failure
 propagates normally and the teardown path still runs release.</p>
 <h3 id="fixture-naming">Fixture naming</h3>
-<p>The name assigned to the factory's return value in your module is what tests
+<p>The name assigned to the factory&rsquo;s return value in your module is what tests
 reference. The factory also registers an internal name (the <code>name</code> kwarg or
 the topology stem) that the collection-time ordering plugin uses to group
 tests by shared lab. <!-- trace: neops_remote_lab/testing/fixture.py:84 -->
-Alongside the name, the factory stashes the fixture's rank, reuse flag,
+Alongside the name, the factory stashes the fixture&rsquo;s rank, reuse flag,
 topology path, and remote-mode flag in a module-level metadata dict that
 the ordering plugin reads at collection time. <!-- trace: neops_remote_lab/testing/fixture.py:93 --></p>
 <div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Naming examples</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
@@ -6504,7 +6574,7 @@ test.</p>
   resolved, raising <code>RuntimeError</code> with a pointed error message. <!-- trace: neops_remote_lab/testing/fixture.py:34 --></li>
 <li><strong>Honors timeout overrides.</strong> When <code>REMOTE_LAB_REQUEST_TIMEOUT</code>,
   <code>REMOTE_LAB_SESSION_TIMEOUT</code>, or <code>REMOTE_LAB_ACQUISITION_TIMEOUT</code> are set
-  in the environment, they override the client's defaults. <!-- trace: neops_remote_lab/testing/fixture.py:41 --></li>
+  in the environment, they override the client&rsquo;s defaults. <!-- trace: neops_remote_lab/testing/fixture.py:41 --></li>
 <li><strong>Teardown.</strong> Both a pytest session finalizer and an <code>atexit</code> handler call
   <code>client.close()</code>, so the session is always ended even on abnormal pytest
   exit (SIGINT, worker crash).</li>
@@ -6531,7 +6601,7 @@ with <code>ValueError</code> — the tests never run. <!-- trace: neops_remote_l
 <h3 id="why">Why</h3>
 <p>The server enforces one-lab-per-host as a Netlab limitation. A single test
 holding two lab fixtures would deadlock at acquire — the second acquire
-would sit in the 423 polling loop forever, because the first acquire's
+would sit in the 423 polling loop forever, because the first acquire&rsquo;s
 session still holds the host.</p>
 <p>The plugin catches this at collection so you see the error immediately, not
 after <code>pytest</code> has spent five minutes running earlier tests.</p>
@@ -6553,7 +6623,7 @@ after <code>pytest</code> has spent five minutes running earlier tests.</p>
    <code>test_cross_topology</code> — it errors out of collection first.</li>
 </ol>
 <div class="admonition failure">
-<p class="admonition-title">Collection error you'll see</p>
+<p class="admonition-title">Collection error you&rsquo;ll see</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ValueError: Test tests/test_cross.py::test_cross_topology uses multiple
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Remote Lab fixtures: lab_a, lab_b. Only one Remote Lab fixture per test
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>is allowed.
@@ -6562,7 +6632,7 @@ after <code>pytest</code> has spent five minutes running earlier tests.</p>
 <h3 id="how-to-work-around-it">How to work around it</h3>
 <p>Split the scenario into two tests. If the scenario requires two topologies
 to run back-to-back in the same process, use <code>reuse_lab=True</code> on one and
-sequence them via pytest's normal ordering — which, for lab fixtures, the
+sequence them via pytest&rsquo;s normal ordering — which, for lab fixtures, the
 plugin deterministically groups by fixture rank (see below).</p>
 <hr />
 <h2 id="test-execution-ordering">Test execution ordering</h2>
@@ -6585,7 +6655,7 @@ alphabetical.</p>
 <p>The plugin logs the computed execution order to the <code>remote-lab-plugin</code>
 logger at INFO level, including topology, reuse flag, and the node IDs
 in each group. Add <code>--log-cli-level=info</code> while debugging to watch
-pytest's grouping decisions.</p>
+pytest&rsquo;s grouping decisions.</p>
 </div>
 <hr />
 <h2 id="end-to-end-example">End-to-end example</h2>
@@ -6647,9 +6717,9 @@ running lab and release at the end of the pytest session.</p>
 composing its own lab-backed function-block test harness. Downstream test
 code written against this API in worker-sdk-py is expected to keep working
 across patch and minor versions of this project. If you are maintaining this
-project, treat <code>remote_lab_fixture</code>'s signature, <code>remote_lab_client</code>'s name
+project, treat <code>remote_lab_fixture</code>&rsquo;s signature, <code>remote_lab_client</code>&rsquo;s name
 and scope, and the one-fixture-per-test rule as a public interface — change
-them only when you're ready to coordinate a major-version release with
+them only when you&rsquo;re ready to coordinate a major-version release with
 downstream consumers.</p>
 <hr />
 <h2 id="configuration">Configuration</h2>
@@ -6818,7 +6888,7 @@ downstream consumers.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6043,6 +6047,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6059,13 +6129,13 @@
 
 
 <h1 id="entity-acquisition-acquire">Entity Acquisition (Acquire)</h1>
-<p>In plain terms, <strong>acquire</strong> answers the question: <em>"What data does this workflow (or step) need before it can run?"</em> Think of it as a shopping list -- you declare what entities you need, and the engine fetches and locks them for you before execution begins.</p>
-<p>The <code>acquire</code> clause lets workflows pull additional entities into the execution context beyond the initial seed entities. This is how you expand the data available to your steps -- for example, loading all interfaces for a device, or selecting specific devices by Elasticsearch query.</p>
+<p>In plain terms, <strong>acquire</strong> answers the question: <em>&ldquo;What data does this workflow (or step) need before it can run?&rdquo;</em> Think of it as a shopping list &ndash; you declare what entities you need, and the engine fetches and locks them for you before execution begins.</p>
+<p>The <code>acquire</code> clause lets workflows pull additional entities into the execution context beyond the initial seed entities. This is how you expand the data available to your steps &ndash; for example, loading all interfaces for a device, or selecting specific devices by Elasticsearch query.</p>
 <h2 id="where-to-use-acquire">Where to Use Acquire</h2>
 <p>Acquire can be defined at two levels:</p>
 <ul>
-<li><strong>Root level</strong> -- Acquires entities for the entire workflow, before any steps execute</li>
-<li><strong>Step level</strong> -- Acquires entities for a specific step, just before that step executes</li>
+<li><strong>Root level</strong> &ndash; Acquires entities for the entire workflow, before any steps execute</li>
+<li><strong>Step level</strong> &ndash; Acquires entities for a specific step, just before that step executes</li>
 </ul>
 <h2 id="acquire-types">Acquire Types</h2>
 <h3 id="elastic-query">Elastic Query</h3>
@@ -6077,7 +6147,7 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">assertNotEmpty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Select</span><span class="nv"> </span><span class="s">devices</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">NetBox</span><span class="nv"> </span><span class="s">ID&quot;</span>
 </span></code></pre></div>
-<p>This acquires devices whose <code>facts.netbox_id</code> field has a value. The engine queries the CMS's Elasticsearch index and adds matching devices to the context.</p>
+<p>This acquires devices whose <code>facts.netbox_id</code> field has a value. The engine queries the CMS&rsquo;s Elasticsearch index and adds matching devices to the context.</p>
 <table>
 <thead>
 <tr>
@@ -6246,8 +6316,8 @@
 <h2 id="execution-flow">Execution Flow</h2>
 <ol>
 <li><strong>Root acquire</strong> runs during the <code>RESOURCE_DISCOVERY</code> phase, before any steps execute</li>
-<li>For declarative acquire types (<code>elastic</code>, <code>expansion</code>, <code>context</code>, <code>reference</code>), the engine resolves them directly via the CMS -- no worker involvement</li>
-<li>For function-block-level acquire (defined by the FB's <code>acquire()</code> method), the engine creates <code>ACQUIRE</code> jobs on the blackboard, which workers execute</li>
+<li>For declarative acquire types (<code>elastic</code>, <code>expansion</code>, <code>context</code>, <code>reference</code>), the engine resolves them directly via the CMS &ndash; no worker involvement</li>
+<li>For function-block-level acquire (defined by the FB&rsquo;s <code>acquire()</code> method), the engine creates <code>ACQUIRE</code> jobs on the blackboard, which workers execute</li>
 <li>The engine fetches and locks the requested entities from the CMS</li>
 <li><strong>Step acquire</strong> runs just before the step, expanding the context available to that step</li>
 </ol>
@@ -6262,10 +6332,10 @@ specified statically in the workflow definition.</p>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
-<li><a href="../../10-concepts/30-context/">Context</a> -- How acquired entity data flows into the execution context</li>
-<li><a href="../../10-concepts/50-execution/">Execution Model</a> -- How acquire fits into the overall execution lifecycle</li>
-<li><a href="../../10-concepts/40-workflow-as-a-transaction/#entity-locking">Entity Locking</a> -- How acquired entities are locked for transactional safety</li>
-<li><a href="/neops-worker-sdk-py/docs/function-blocks/10-anatomy/#lifecycle-methods">Implementing <code>acquire()</code> (Worker SDK)</a> -- How to implement the <code>acquire()</code> method in Python function blocks</li>
+<li><a href="../../10-concepts/30-context/">Context</a> &ndash; How acquired entity data flows into the execution context</li>
+<li><a href="../../10-concepts/50-execution/">Execution Model</a> &ndash; How acquire fits into the overall execution lifecycle</li>
+<li><a href="../../10-concepts/40-workflow-as-a-transaction/#entity-locking">Entity Locking</a> &ndash; How acquired entities are locked for transactional safety</li>
+<li><a href="/neops-worker-sdk-py/docs/function-blocks/10-anatomy/#lifecycle-methods">Implementing <code>acquire()</code> (Worker SDK)</a> &ndash; How to implement the <code>acquire()</code> method in Python function blocks</li>
 </ul>
 
 
@@ -6421,7 +6491,7 @@ specified statically in the workflow definition.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5943,6 +5947,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5988,9 +6058,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Metadata</strong> identifies the workflow uniquely: a <code>package</code> namespace, a <code>name</code>, and a semantic version (<code>major.minor.patch</code>). The combination <code>package/name:major.minor.patch</code> is the workflow's identity.</p>
+<p><strong>Metadata</strong> identifies the workflow uniquely: a <code>package</code> namespace, a <code>name</code>, and a semantic version (<code>major.minor.patch</code>). The combination <code>package/name:major.minor.patch</code> is the workflow&rsquo;s identity.</p>
 <p><strong>Seed Entity</strong> declares what type of entity this workflow is designed to run on. When you execute the workflow, you provide IDs or queries for entities of this type. The engine creates one execution context per entity.</p>
-<p><strong>Acquire</strong> (optional) defines additional entities to pull into the execution context -- devices by Elasticsearch query, interfaces by expansion from the seed device, or references to other steps' results.</p>
+<p><strong>Acquire</strong> (optional) defines additional entities to pull into the execution context &ndash; devices by Elasticsearch query, interfaces by expansion from the seed device, or references to other steps&rsquo; results.</p>
 <p><strong>Steps</strong> are the operations. Each step is one of three types:</p>
 <table>
 <thead>
@@ -6039,7 +6109,7 @@
 <li>Is identified as <code>wf.example.neops.io/hello_world:1.0.0</code></li>
 <li>Runs with <code>seedEntity: global</code> (no specific device or CMS connection required)</li>
 <li>Has one step: execute the <code>echo</code> function block with a static message parameter</li>
-<li>Uses the simplest possible structure -- ideal for a first deployment test</li>
+<li>Uses the simplest possible structure &ndash; ideal for a first deployment test</li>
 </ul>
 <h2 id="versioning">Versioning</h2>
 <p>Workflows follow semantic versioning:</p>
@@ -6090,7 +6160,7 @@
 <details class="info">
 <summary>How seed entities drive execution</summary>
 <p>When you execute a workflow with <code>seedEntity: device</code> and provide <code>deviceIds: [1, 2, 3]</code>,
-the engine creates three parallel execution paths -- one per device. Each path runs
+the engine creates three parallel execution paths &ndash; one per device. Each path runs
 through all steps independently. This means device 1 might be on step 3 while device 2
 is still on step 1, depending on worker availability and execution speed.</p>
 </details>
@@ -6248,7 +6318,7 @@ is still on step 1, depending on worker availability and execution speed.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

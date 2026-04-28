@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5959,6 +5963,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-setup/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5975,7 +6045,7 @@
 
 
 <h1 id="testing-your-function-block">Testing Your Function Block</h1>
-<p>Function blocks interact with real network devices -- testing locally catches bugs before
+<p>Function blocks interact with real network devices &ndash; testing locally catches bugs before
 they reach production. A few well-placed tests save hours of debugging on live infrastructure.</p>
 <h2 id="quick-setup">Quick Setup</h2>
 <p>Install the test dependencies as optional extras:</p>
@@ -5998,7 +6068,7 @@ handle this internally.</p>
 <h2 id="writing-a-standalone-test">Writing a Standalone Test</h2>
 <p>The pattern for testing a function block is straightforward:</p>
 <ol>
-<li>Build a <code>WorkflowContext</code> -- the data envelope your function block receives at runtime.</li>
+<li>Build a <code>WorkflowContext</code> &ndash; the data envelope your function block receives at runtime.</li>
 <li>Instantiate your function block class.</li>
 <li>Call <code>execute_function_block()</code> with parameters and context.</li>
 <li>Assert against the result.</li>
@@ -6037,7 +6107,7 @@ the result is successful and contains the expected output. Run it with:</p>
 extra decorator required.</p>
 </div>
 <h2 id="the-decorator-shortcut">The Decorator Shortcut</h2>
-<p>For quick smoke tests, the SDK provides <code>@fb_test_case</code> -- a decorator that attaches
+<p>For quick smoke tests, the SDK provides <code>@fb_test_case</code> &ndash; a decorator that attaches
 test cases directly to your function block class. Pytest discovers and runs them
 automatically.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@fb_test_case</span><span class="p">(</span>
@@ -6051,7 +6121,7 @@ automatically.</p>
 </span></code></pre></div>
 <p>The <code>assertions</code> parameter takes a list of check functions. Each receives the result
 and should return <code>True</code> if the check passes. <code>lambda r: r.success</code> is shorthand for
-"check that the result was successful." You could also write it as a regular function:</p>
+&ldquo;check that the result was successful.&rdquo; You could also write it as a regular function:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_success</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span>
 </span></code></pre></div>
@@ -6066,8 +6136,8 @@ pass/fail checks that live next to the function block definition.</p>
 <h2 id="testing-with-real-devices">Testing with Real Devices</h2>
 <p>The SDK includes <code>@fb_test_case_with_lab</code> for integration testing against actual network
 equipment. The remote lab provisions <a href="https://netlab.tools/">Netlab</a> /
-<a href="https://containerlab.dev/">Containerlab</a> topologies on demand -- Cisco IOL routers,
-FRR instances, and more -- so your function blocks run against genuine device responses.</p>
+<a href="https://containerlab.dev/">Containerlab</a> topologies on demand &ndash; Cisco IOL routers,
+FRR instances, and more &ndash; so your function blocks run against genuine device responses.</p>
 <p>To enable it:</p>
 <ol>
 <li>Set the <code>REMOTE_LAB_URL</code> environment variable to your lab endpoint.</li>
@@ -6097,11 +6167,11 @@ for CI pipelines or dedicated test environments. See the full
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>========================= 2 passed in 0.12s ============================
 </span></code></pre></div>
 <hr />
-<p>You've completed the getting started guide. Explore the deep dives for more detail:</p>
+<p>You&rsquo;ve completed the getting started guide. Explore the deep dives for more detail:</p>
 <ul>
-<li><strong><a href="../../function-blocks/">Function Blocks</a></strong> -- parameters, results, registration, and lifecycle</li>
-<li><strong><a href="../../device-connections/">Device Connections</a></strong> -- opening sessions, running commands, parsing output</li>
-<li><strong><a href="../../testing/">Testing</a></strong> -- remote lab setup, fixtures, and advanced assertions</li>
+<li><strong><a href="../../function-blocks/">Function Blocks</a></strong> &ndash; parameters, results, registration, and lifecycle</li>
+<li><strong><a href="../../device-connections/">Device Connections</a></strong> &ndash; opening sessions, running commands, parsing output</li>
+<li><strong><a href="../../testing/">Testing</a></strong> &ndash; remote lab setup, fixtures, and advanced assertions</li>
 </ul>
 
 
@@ -6257,7 +6327,7 @@ for CI pipelines or dedicated test environments. See the full
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

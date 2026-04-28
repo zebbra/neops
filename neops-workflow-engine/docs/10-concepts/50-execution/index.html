@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5999,6 +6003,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6050,17 +6120,17 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
     Engine-&gt;&gt;CMS: Unlock, apply DB updates
     Engine-&gt;&gt;Engine: Mark COMPLETED</code></pre>
 <h2 id="step-traversal">Step Traversal</h2>
-<p>The engine processes steps using <strong>depth-first traversal</strong> -- it fully completes each step (including all nested sub-steps in embedded workflows) before moving to the next one. For each step:</p>
+<p>The engine processes steps using <strong>depth-first traversal</strong> &ndash; it fully completes each step (including all nested sub-steps in embedded workflows) before moving to the next one. For each step:</p>
 <ol>
-<li><strong>Evaluate condition</strong> -- If the step has a <code>condition</code>, evaluate it against the current context. Skip if false.</li>
-<li><strong>Evaluate assertions</strong> -- If the step has <code>assert</code> clauses, evaluate them. Fail the step if any assertion is false.</li>
-<li><strong>Create jobs</strong> -- For each entity in scope (determined by <code>runOn</code> and the acquired context), create a job on the blackboard.</li>
-<li><strong>Wait for results</strong> -- The engine pauses this execution path until all jobs for this step complete.</li>
-<li><strong>Process results</strong> -- Add step results to the context. If a job failed, apply retry/error handling logic.</li>
-<li><strong>Advance</strong> -- Move to the next step in the sequence.</li>
+<li><strong>Evaluate condition</strong> &ndash; If the step has a <code>condition</code>, evaluate it against the current context. Skip if false.</li>
+<li><strong>Evaluate assertions</strong> &ndash; If the step has <code>assert</code> clauses, evaluate them. Fail the step if any assertion is false.</li>
+<li><strong>Create jobs</strong> &ndash; For each entity in scope (determined by <code>runOn</code> and the acquired context), create a job on the blackboard.</li>
+<li><strong>Wait for results</strong> &ndash; The engine pauses this execution path until all jobs for this step complete.</li>
+<li><strong>Process results</strong> &ndash; Add step results to the context. If a job failed, apply retry/error handling logic.</li>
+<li><strong>Advance</strong> &ndash; Move to the next step in the sequence.</li>
 </ol>
 <h3 id="per-entity-execution">Per-Entity Execution</h3>
-<p>A step with <code>runOn: device</code> in a workflow with 100 devices in scope creates 100 jobs -- one per device. These jobs can execute in parallel across multiple workers.</p>
+<p>A step with <code>runOn: device</code> in a workflow with 100 devices in scope creates 100 jobs &ndash; one per device. These jobs can execute in parallel across multiple workers.</p>
 <pre class="mermaid"><code>graph LR
     Step["Step: show_version&lt;br/&gt;(runOn: device)"] --&gt; J1["Job: device-1"]
     Step --&gt; J2["Job: device-2"]
@@ -6129,7 +6199,7 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
 <thead>
 <tr>
 <th>State</th>
-<th>What's happening</th>
+<th>What&rsquo;s happening</th>
 </tr>
 </thead>
 <tbody>
@@ -6203,15 +6273,15 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
 <h2 id="error-handling">Error Handling</h2>
 <p>When a step fails, the engine follows this sequence:</p>
 <ol>
-<li><strong>Classify failure</strong> -- Based on the pure/idempotent properties of all executed steps, mark the workflow as <code>FAILED_SAFE</code> or <code>FAILED_UNSAFE</code></li>
+<li><strong>Classify failure</strong> &ndash; Based on the pure/idempotent properties of all executed steps, mark the workflow as <code>FAILED_SAFE</code> or <code>FAILED_UNSAFE</code></li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Implementation status</p>
 <p>The following are planned but not yet implemented:</p>
 <ul>
-<li><code>continueOnError</code> -- skip to next step on failure (schema-defined, not enforced)</li>
-<li><code>retryConfig</code> -- automatic step-level retries (schema-defined, not consumed)</li>
-<li>Rollback -- reverse executed steps (framework placeholder, no logic)</li>
+<li><code>continueOnError</code> &ndash; skip to next step on failure (schema-defined, not enforced)</li>
+<li><code>retryConfig</code> &ndash; automatic step-level retries (schema-defined, not consumed)</li>
+<li>Rollback &ndash; reverse executed steps (framework placeholder, no logic)</li>
 </ul>
 </div>
 <details class="info">
@@ -6376,7 +6446,7 @@ by the stuck job cleanup service.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

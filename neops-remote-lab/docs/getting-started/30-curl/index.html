@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6074,6 +6078,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Get started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6091,7 +6161,7 @@
 
 <h1 id="rest-quickstart-curl">REST quickstart (cURL)</h1>
 <p><em>Drive a Remote Lab session end-to-end with cURL — six calls, any HTTP-capable stack, no Python required.</em></p>
-<p>You came from a SwiNOG talk, a README, or a colleague who said <em>"yes, you can drive it from anything"</em>. This page is for you if you want exclusive access to a real Netlab topology from whatever harness you run — not necessarily Python, not necessarily pytest. Six cURL calls end-to-end.</p>
+<p>You came from a SwiNOG talk, a README, or a colleague who said <em>&ldquo;yes, you can drive it from anything&rdquo;</em>. This page is for you if you want exclusive access to a real Netlab topology from whatever harness you run — not necessarily Python, not necessarily pytest. Six cURL calls end-to-end.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BASE_URL</span><span class="o">=</span><span class="s2">&quot;http://lab.example.com:8000&quot;</span><span class="w">   </span><span class="c1"># your Remote Lab Manager</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>curl<span class="w"> </span>-fsS<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$BASE_URL</span><span class="s2">/healthz&quot;</span><span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;%{http_code}\n&quot;</span>
 </span></code></pre></div>
@@ -6173,7 +6243,7 @@ poll <code>GET /session/{id}</code> until status flips to <code>active</code>:</
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;session active&quot;</span>
 </span></code></pre></div>
 <p>The poll itself counts as activity — <code>GET /session/{id}</code> updates the
-session's <code>last_seen_at</code> timestamp, so a polling waiter does not go
+session&rsquo;s <code>last_seen_at</code> timestamp, so a polling waiter does not go
 stale. If you walk away mid-wait without polling and without
 <a href="../../10-concepts/20-session-queue/#the-heartbeat">heartbeating</a> for
 600 seconds, the server evicts your waiting session and you lose your
@@ -6242,7 +6312,7 @@ cold-start cost.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&quot;r1&quot;
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>&quot;r2&quot;
 </span></code></pre></div>
-<p>Each device's <code>raw</code> field contains the full <code>netlab inspect</code> output for
+<p>Each device&rsquo;s <code>raw</code> field contains the full <code>netlab inspect</code> output for
 that node — management IP, interface details, the hooks your automation
 needs to actually drive the device. The shape is whatever Netlab
 produces; the docs deliberately do not pin a schema, since it changes
@@ -6259,7 +6329,7 @@ across Netlab versions.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>204
 </span></code></pre></div>
 <p>Release does <strong>not</strong> tear the lab down — it just decrements the
-counter. The lab becomes "idle": still running, still responsive, but
+counter. The lab becomes &ldquo;idle&rdquo;: still running, still responsive, but
 unowned. The next acquire decides its fate (reuse, restart, switch, or
 eventual cleanup on session timeout). See
 <a href="../../10-concepts/30-lab-lifecycle/#release-the-refcount-decrements">Lab lifecycle → Release</a>.</p>
@@ -6341,12 +6411,12 @@ layers over exactly this lifecycle. Two short sketches:</p>
 </span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nx">mustPost</span><span class="p">(</span><span class="s">&quot;/lab/release&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">sid</span><span class="p">)</span>
 </span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="nx">mustDelete</span><span class="p">(</span><span class="s">&quot;/session/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">sid</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Anything that wraps Go's <code>net/http</code> with multipart upload helpers
-will fit. Don't forget to send the <code>X-Session-ID</code> header on every
+<p>Anything that wraps Go&rsquo;s <code>net/http</code> with multipart upload helpers
+will fit. Don&rsquo;t forget to send the <code>X-Session-ID</code> header on every
 <code>/lab/*</code> call.</p>
 </div>
 <div class="tabbed-block">
-<p>Robot Framework, shell + <code>curl</code>, Ansible's <code>uri</code> module — they all
+<p>Robot Framework, shell + <code>curl</code>, Ansible&rsquo;s <code>uri</code> module — they all
 fit. The contract is six requests, the access boundary is the
 <code>X-Session-ID</code> header on <code>/lab/*</code>, and the only client-side state
 you have to manage is the session UUID and (for long-running
@@ -6532,7 +6602,7 @@ consumers) a periodic <a href="../../10-concepts/20-session-queue/#the-heartbeat
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

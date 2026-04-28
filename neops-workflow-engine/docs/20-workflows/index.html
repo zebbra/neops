@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5800,6 +5804,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5818,15 +5888,15 @@
 <h1 id="workflows">Workflows</h1>
 <p>This section covers everything you need to write, deploy, and understand workflow definitions. Start with the definition format, then explore each feature in depth.</p>
 <ol>
-<li><strong><a href="10-definition/">Definition</a></strong> -- Root structure, versioning, seed entity</li>
-<li><strong><a href="20-steps/">Steps</a></strong> -- Function block, embedded workflow, and workflow reference steps</li>
-<li><strong><a href="30-parameters/">Parameters</a></strong> -- JMESPath interpolation, raw parameters, parameter schemas</li>
-<li><strong><a href="40-conditions-and-assertions/">Conditions &amp; Assertions</a></strong> -- Skip or guard steps based on runtime data</li>
-<li><strong><a href="50-acquire/">Acquire</a></strong> -- Pull additional entities into the execution context</li>
-<li><strong><a href="60-retry-and-rollback/">Retry &amp; Rollback</a></strong> -- Handle failures gracefully</li>
-<li><strong><a href="70-lifecycle/">Lifecycle</a></strong> -- Execution states and transitions</li>
-<li><strong><a href="80-scheduling/">Scheduling</a></strong> -- Cron-based scheduled workflows</li>
-<li><strong><a href="90-examples/">Examples</a></strong> -- Curated workflow examples from beginner to advanced</li>
+<li><strong><a href="10-definition/">Definition</a></strong> &ndash; Root structure, versioning, seed entity</li>
+<li><strong><a href="20-steps/">Steps</a></strong> &ndash; Function block, embedded workflow, and workflow reference steps</li>
+<li><strong><a href="30-parameters/">Parameters</a></strong> &ndash; JMESPath interpolation, raw parameters, parameter schemas</li>
+<li><strong><a href="40-conditions-and-assertions/">Conditions &amp; Assertions</a></strong> &ndash; Skip or guard steps based on runtime data</li>
+<li><strong><a href="50-acquire/">Acquire</a></strong> &ndash; Pull additional entities into the execution context</li>
+<li><strong><a href="60-retry-and-rollback/">Retry &amp; Rollback</a></strong> &ndash; Handle failures gracefully</li>
+<li><strong><a href="70-lifecycle/">Lifecycle</a></strong> &ndash; Execution states and transitions</li>
+<li><strong><a href="80-scheduling/">Scheduling</a></strong> &ndash; Cron-based scheduled workflows</li>
+<li><strong><a href="90-examples/">Examples</a></strong> &ndash; Curated workflow examples from beginner to advanced</li>
 </ol>
 
 
@@ -5982,7 +6052,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>

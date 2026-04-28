@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6164,6 +6168,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6185,12 +6255,12 @@
 accepted, case-insensitive) that tells Netlab what network to build:
 which nodes, which links, which provider. <code>neops-remote-lab</code> accepts that
 file over HTTP, copies it into a clean workdir, and hands it to the Netlab
-CLI verbatim. The YAML dialect is <strong>Netlab's</strong>, not ours.</p>
+CLI verbatim. The YAML dialect is <strong>Netlab&rsquo;s</strong>, not ours.</p>
 <blockquote>
 <p><strong>Why a page on topology format if Netlab owns the schema?</strong> The
 <code>extra_files</code> upload contract is enforced in <em>this</em> server, not in
 Netlab, and fixture consumers often inherit topologies from upstream
-repos and want a single-page reference for the surface they're using.</p>
+repos and want a single-page reference for the surface they&rsquo;re using.</p>
 </blockquote>
 <h2 id="the-minimal-topology">The minimal topology</h2>
 <p>A working Netlab topology needs a provider, at least one node, and usually
@@ -6228,12 +6298,12 @@ primarily with <strong><a href="https://containerlab.dev/">Containerlab</a></str
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clab</span>
 </span></code></pre></div>
 <p>Other Netlab providers (libvirt, virtualbox, external) are not blocked by
-<code>neops-remote-lab</code> itself — whatever the lab host's <code>netlab</code> installation
+<code>neops-remote-lab</code> itself — whatever the lab host&rsquo;s <code>netlab</code> installation
 supports will run — but container-based labs are what this project is built
 and validated against. If you stray, expect to maintain your own host
 provisioning.</p>
 <h2 id="vendor-defaults-which-device-to-use">Vendor defaults: which device to use</h2>
-<p>Multi-vendor topologies pick their device kind with the <code>device:</code> key, either globally under <code>defaults:</code> or per-node. <strong>Different devices have different configuration semantics — never conflate them.</strong> The three you'll meet in 95% of neops topologies:</p>
+<p>Multi-vendor topologies pick their device kind with the <code>device:</code> key, either globally under <code>defaults:</code> or per-node. <strong>Different devices have different configuration semantics — never conflate them.</strong> The three you&rsquo;ll meet in 95% of neops topologies:</p>
 <div class="grid cards">
 <ul>
 <li>
@@ -6243,7 +6313,7 @@ provisioning.</p>
 <ul>
 <li>Protocol tests (BGP, OSPF, IS-IS, RIP, BFD, MPLS LDP, EVPN)</li>
 <li>CI defaults — no license, fastest boot</li>
-<li>No vendor CLI semantics (don't grep for IOS strings)</li>
+<li>No vendor CLI semantics (don&rsquo;t grep for IOS strings)</li>
 </ul>
 <p><a href="../../40-deployment/40-vendor-setup/">Setup →</a> &middot; <a href="https://netlab.tools/platforms/frr/">netlab.tools/frr</a></p>
 </li>
@@ -6275,7 +6345,7 @@ provisioning.</p>
 <h3 id="when-frr-is-the-right-call">When FRR is the right call</h3>
 <p>FRR is a software router. <em>It does not emulate hardware; it does not implement vendor-proprietary features; it does not have a Cisco-style or Junos-style CLI.</em> Pick FRR when:</p>
 <ul>
-<li>You're testing routing-protocol behaviour (OSPFv2/v3, BGP, IS-IS, RIP, PIM, BFD, MPLS LDP, VRF, EVPN).</li>
+<li>You&rsquo;re testing routing-protocol behaviour (OSPFv2/v3, BGP, IS-IS, RIP, PIM, BFD, MPLS LDP, VRF, EVPN).</li>
 <li>You want CI to run quickly without licensing concerns.</li>
 <li>The function block under test does not depend on vendor-specific CLI output formats.</li>
 </ul>
@@ -6283,10 +6353,10 @@ provisioning.</p>
 <summary>FRR limitations to know about before you commit</summary>
 <ul>
 <li><strong>No vendor CLI semantics.</strong> <code>vtysh</code> resembles IOS at a glance but show-output formats, command grammars, and config artifacts differ. Tests that grep for IOS-specific strings will fail against FRR.</li>
-<li><strong>Protocol coverage is broad but not complete.</strong> Cisco-proprietary protocols (EIGRP, GLBP, HSRP) have partial or no FRR equivalents. The <a href="https://docs.frrouting.org/">FRR documentation</a> is authoritative about what's supported.</li>
+<li><strong>Protocol coverage is broad but not complete.</strong> Cisco-proprietary protocols (EIGRP, GLBP, HSRP) have partial or no FRR equivalents. The <a href="https://docs.frrouting.org/">FRR documentation</a> is authoritative about what&rsquo;s supported.</li>
 <li><strong>VRF support requires the Linux VRF kernel module.</strong> Covered in <a href="../../40-deployment/10-netlab-host-setup/#optional-23-enable-vrf-support-for-frr-labs-ubuntu">Netlab host setup → VRF support</a>.</li>
 <li><strong>No hardware-specific behavior.</strong> Interface flap timers, ASIC-level packet handling, queueing, and platform-specific timing are absent.</li>
-<li><strong>Configuration via <code>vtysh</code>, not vendor CLI.</strong> Programmatic config goes through Netlab's templates, not raw vendor commands.</li>
+<li><strong>Configuration via <code>vtysh</code>, not vendor CLI.</strong> Programmatic config goes through Netlab&rsquo;s templates, not raw vendor commands.</li>
 </ul>
 <p>For most function-block tests, FRR is fine — the integration tests live above CLI-format details. Use FRR by default; move to a vendor image only when you know you need vendor semantics.</p>
 </details>
@@ -6294,12 +6364,12 @@ provisioning.</p>
 <p>A real vendor NOS, no license fee:</p>
 <ul>
 <li>Function block uses YANG / gNMI / JSON-RPC config or queries.</li>
-<li>You're testing EVPN, segment routing, or other DC-style features.</li>
+<li>You&rsquo;re testing EVPN, segment routing, or other DC-style features.</li>
 <li>You want reproducible CI against a vendor target (public image, stable tags).</li>
 </ul>
 <details class="info">
 <summary>SR Linux trade-offs</summary>
-<p>Container-only (no real hardware via this path); not OSI-approved open-source (Nokia EULA); ~1 GB RAM per node; ~30 s boot. For large topologies, prefer Netlab's parallelism and <code>reuse_lab=True</code> to amortize boot cost — see <a href="../20-session-queue/#shared-topologies-collapse-the-queue">Session queue → Shared topologies collapse the queue</a>.</p>
+<p>Container-only (no real hardware via this path); not OSI-approved open-source (Nokia EULA); ~1 GB RAM per node; ~30 s boot. For large topologies, prefer Netlab&rsquo;s parallelism and <code>reuse_lab=True</code> to amortize boot cost — see <a href="../20-session-queue/#shared-topologies-collapse-the-queue">Session queue → Shared topologies collapse the queue</a>.</p>
 </details>
 <h3 id="when-cisco-iol-is-the-right-call">When Cisco IOL is the right call</h3>
 <p>When the function block depends on IOS CLI semantics neither FRR nor SR Linux can replicate (show-output parsing, IOS configuration block ordering, classic show commands), and you can arrange a Cisco license. <strong>Without IOL access, stick with FRR or SR Linux</strong> — both are free and both cover most function-block test scenarios.</p>
@@ -6373,7 +6443,7 @@ conventions defined by downstream consumers — most notably the
 test suites
 (<a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab integration guide</a>) —
 not fixtures shipped from this repository. If your project needs
-them, see the consuming project's test directory for canonical
+them, see the consuming project&rsquo;s test directory for canonical
 topology files to copy.</p>
 </div>
 <h2 id="the-multipart-upload-contract">The multipart upload contract</h2>
@@ -6437,13 +6507,13 @@ survive the upload round-trip.</p>
 <p class="admonition-title">Use relative paths in extra_files filenames</p>
 <p>Upload clients that set <code>filename=foo/bar.yml</code> get a nested directory
 on the server. Upload clients that set <code>filename=bar.yml</code> get a flat
-file. <code>RemoteLabClient</code> uses the topology's filename as-is and does
+file. <code>RemoteLabClient</code> uses the topology&rsquo;s filename as-is and does
 not currently wire up <code>extra_files</code> automatically; callers that need
 extras must upload them through the REST API directly.</p>
 </div>
 <h2 id="how-netlab-is-actually-invoked">How Netlab is actually invoked</h2>
 <!-- trace: neops_remote_lab/netlab/connector.py:96 -->
-<p>Once the upload lands and the lab isn't busy, the server calls <code>run_netlab</code>
+<p>Once the upload lands and the lab isn&rsquo;t busy, the server calls <code>run_netlab</code>
 which shells out as <code>["netlab", "up", "&lt;topology&gt;.yml"]</code> with the temp
 workdir as the working directory. Output is either streamed line-by-line
 to the logger (when <code>NEOPS_NETLAB_STREAM_OUTPUT=1</code>) or captured and logged
@@ -6638,7 +6708,7 @@ saves a queue slot.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

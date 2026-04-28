@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5977,6 +5981,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Development
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5993,7 +6063,7 @@
 
 
 <h1 id="adding-handlers">Adding Handlers</h1>
-<p>The engine's execution logic is organized as event handlers. Each handler is responsible for one state transition or one type of job result processing. To extend the engine, you typically add a new handler.</p>
+<p>The engine&rsquo;s execution logic is organized as event handlers. Each handler is responsible for one state transition or one type of job result processing. To extend the engine, you typically add a new handler.</p>
 <h2 id="the-handler-pattern">The Handler Pattern</h2>
 <p>Every handler extends the <code>EventHandler</code> base class and implements:</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">abstract</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">EventHandler</span><span class="o">&lt;</span><span class="nx">TEvent</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">EngineEvent</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
@@ -6013,7 +6083,7 @@
 <p><strong><code>eventConditions()</code></strong>
 :   Returns an array of conditions that must all be true for this handler to be selected. Conditions can check workflow execution status, job status, and job result status.</p>
 <p><strong><code>executeInTransaction()</code></strong>
-:   The handler's logic, executed within a database transaction. Any entities modified here are flushed atomically.</p>
+:   The handler&rsquo;s logic, executed within a database transaction. Any entities modified here are flushed atomically.</p>
 <h2 id="registering-a-handler">Registering a Handler</h2>
 <p>Handlers are registered in <code>CoreEngineService.initEngine()</code>:</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">private</span><span class="w"> </span><span class="nx">initEngine</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
@@ -6031,7 +6101,7 @@
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="p">)</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>The registry selects the handler whose event conditions match the incoming event. If multiple handlers match, the first registered one wins -- so order matters.</p>
+<p>The registry selects the handler whose event conditions match the incoming event. If multiple handlers match, the first registered one wins &ndash; so order matters.</p>
 <h2 id="example-adding-a-new-state-handler">Example: Adding a New State Handler</h2>
 <p>To add handling for a new workflow state (e.g., a custom validation step):</p>
 <ol>
@@ -6077,7 +6147,7 @@
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>                                                                            ↓
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                                                                   DB flush (→ new events)
 </span></code></pre></div>
-<p>Each handler modifies entities and flushes. The flush may trigger new events (e.g., changing a workflow's status triggers the next handler), creating a chain of handlers that process the entire lifecycle.</p>
+<p>Each handler modifies entities and flushes. The flush may trigger new events (e.g., changing a workflow&rsquo;s status triggers the next handler), creating a chain of handlers that process the entire lifecycle.</p>
 
 
 
@@ -6232,7 +6302,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

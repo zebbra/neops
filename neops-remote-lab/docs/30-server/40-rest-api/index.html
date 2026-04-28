@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5964,6 +5968,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Run the service
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6269,7 +6339,7 @@ authentication. The only access boundary on <code>/lab/*</code> is the
 </details>
 <details class="abstract">
 <summary><strong><code>POST /lab/release</code></strong> — decrement the reference count</summary>
-<p>Releases this session's claim on the lab. When the reference count drops to zero the lab becomes <em>idle</em> but keeps running, available for another session to attach via <code>POST /lab</code> with <code>reuse=true</code>. <!-- trace: neops_remote_lab/server.py:436 --></p>
+<p>Releases this session&rsquo;s claim on the lab. When the reference count drops to zero the lab becomes <em>idle</em> but keeps running, available for another session to attach via <code>POST /lab</code> with <code>reuse=true</code>. <!-- trace: neops_remote_lab/server.py:436 --></p>
 <p><strong>Response</strong> — <code>204 No Content</code>.</p>
 <p><strong>Errors</strong>:</p>
 <table>
@@ -6452,7 +6522,7 @@ authentication. The only access boundary on <code>/lab/*</code> is the
 <ul>
 <li><strong><code>GET /healthz</code></strong> — liveness probe (returns <code>204</code>). Use from container orchestration, not from application code.</li>
 <li><strong><code>GET /debug/health</code></strong> — verbose diagnostic endpoint. Returns queue length, session count, uptime. Intended for development; may change without notice.</li>
-<li><strong><code>GET /active-session</code></strong> — returns the currently ACTIVE session's id. Useful during debugging; not part of the stable contract.</li>
+<li><strong><code>GET /active-session</code></strong> — returns the currently ACTIVE session&rsquo;s id. Useful during debugging; not part of the stable contract.</li>
 <li><strong><code>GET /lab</code></strong> — lab status with device list. Overlaps with <code>GET /lab/devices</code> and <code>POST /lab</code> response. Reserved for introspection use.</li>
 </ul>
 <p>If you need one of these for a concrete use case, open an issue so the contract can be promoted.</p>
@@ -6463,7 +6533,7 @@ authentication. The only access boundary on <code>/lab/*</code> is the
 <li><strong><a href="../../10-concepts/30-lab-lifecycle/">Lab lifecycle</a></strong> — reference counting, SHA identity, and teardown.</li>
 <li><strong><a href="../20-configuration/">Server config</a></strong> — CLI flags and environment variables.</li>
 <li><strong><a href="../10-administration/">Operator runbook</a></strong> — install, systemd, stale-lock recovery, stuck-lab cleanup.</li>
-<li><strong><a href="../30-security/">Security model</a></strong> — what the X-Session-ID gate protects against and what it doesn't.</li>
+<li><strong><a href="../30-security/">Security model</a></strong> — what the X-Session-ID gate protects against and what it doesn&rsquo;t.</li>
 </ul>
 
 
@@ -6622,7 +6692,7 @@ authentication. The only access boundary on <code>/lab/*</code> is the
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6037,6 +6041,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Resources
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6167,19 +6237,19 @@ AI-assisted development:</p>
 <h3 id="network-specific-prompts">Network-specific prompts</h3>
 <p>Effective prompts for network automation:</p>
 <ul>
-<li>"Write a function block that collects BGP neighbor state from a device
-  using the DeviceInfoCapability proxy and stores the result in device facts."</li>
-<li>"Write an idempotent function block that pushes an ACL configuration to a
-  device. It should back up the current config first."</li>
-<li>"Write a pure function block that validates NTP configuration against a
-  policy defined in the parameters."</li>
+<li>&ldquo;Write a function block that collects BGP neighbor state from a device
+  using the DeviceInfoCapability proxy and stores the result in device facts.&rdquo;</li>
+<li>&ldquo;Write an idempotent function block that pushes an ACL configuration to a
+  device. It should back up the current config first.&rdquo;</li>
+<li>&ldquo;Write a pure function block that validates NTP configuration against a
+  policy defined in the parameters.&rdquo;</li>
 </ul>
 <h3 id="test-generation">Test generation</h3>
 <p>AI agents can generate tests from function block code:</p>
 <ul>
-<li>"Write a standalone pytest test for this function block using
-  <code>create_workflow_context</code> with mock device data."</li>
-<li>"Add <code>@fb_test_case</code> decorators for success and failure paths."</li>
+<li>&ldquo;Write a standalone pytest test for this function block using
+  <code>create_workflow_context</code> with mock device data.&rdquo;</li>
+<li>&ldquo;Add <code>@fb_test_case</code> decorators for success and failure paths.&rdquo;</li>
 </ul>
 <hr />
 <h2 id="agent-knowledge-base">Agent Knowledge Base</h2>
@@ -6220,12 +6290,12 @@ focused on the information agents need to generate correct code.</p>
 <h2 id="tips">Tips</h2>
 <ul>
 <li><strong>Start with parameters.</strong> Define the Pydantic models first — they
-  constrain the function block's behavior and give the AI a clear contract.</li>
+  constrain the function block&rsquo;s behavior and give the AI a clear contract.</li>
 <li><strong>Reference real examples.</strong> Point to <code>examples/</code> for patterns rather than
   describing them from scratch.</li>
 <li><strong>Validate with tests.</strong> Always generate a test alongside the function
   block and run it immediately.</li>
-<li><strong>Use the type system.</strong> The SDK's type annotations help AI models generate
+<li><strong>Use the type system.</strong> The SDK&rsquo;s type annotations help AI models generate
   correct code. Avoid <code>Any</code> types in parameters and results.</li>
 </ul>
 
@@ -6382,7 +6452,7 @@ focused on the information agents need to generate correct code.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

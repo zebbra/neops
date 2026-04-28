@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -3263,7 +3267,7 @@
   <a href="#get_raw_connection-escape-hatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_raw_connection() -- escape hatch
+        get_raw_connection() &ndash; escape hatch
       
     </span>
   </a>
@@ -5963,7 +5967,7 @@
   <a href="#get_raw_connection-escape-hatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_raw_connection() -- escape hatch
+        get_raw_connection() &ndash; escape hatch
       
     </span>
   </a>
@@ -5980,6 +5984,72 @@
           
           
             <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
               
               <article class="md-content__inner md-typeset">
                 
@@ -6387,14 +6457,14 @@ plugin package to ensure the SDK plugins are available:</p>
     Connected --&gt; Torn_Down: teardown_connection()
     Torn_Down --&gt; [*]</code></pre>
 <ol>
-<li><strong>Instantiation</strong> -- <code>Plugin(device)</code> stores the device reference. No
+<li><strong>Instantiation</strong> &ndash; <code>Plugin(device)</code> stores the device reference. No
    connection is created yet.</li>
-<li><strong><code>initialize_connection(connect=True)</code></strong> -- calls <code>_create_connection()</code> to
+<li><strong><code>initialize_connection(connect=True)</code></strong> &ndash; calls <code>_create_connection()</code> to
    build the <code>BaseConnection</code> wrapper, then calls <code>wrapper.connect()</code> to open
    the session.</li>
-<li><strong>Capability methods</strong> -- the plugin uses <code>self.get_raw_connection()</code> to
-   obtain the library's native connection object and execute commands.</li>
-<li><strong><code>teardown_connection()</code></strong> -- calls <code>wrapper.disconnect()</code> and clears the
+<li><strong>Capability methods</strong> &ndash; the plugin uses <code>self.get_raw_connection()</code> to
+   obtain the library&rsquo;s native connection object and execute commands.</li>
+<li><strong><code>teardown_connection()</code></strong> &ndash; calls <code>wrapper.disconnect()</code> and clears the
    internal reference.</li>
 </ol>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -6445,9 +6515,9 @@ plugin package to ensure the SDK plugins are available:</p>
 </span><span id="__span-6-46"><a id="__codelineno-6-46" name="__codelineno-6-46" href="#__codelineno-6-46"></a><span class="sd">        &quot;&quot;&quot;</span>
 </span></code></pre></div>
 <hr />
-<h2 id="get_raw_connection-escape-hatch"><code>get_raw_connection()</code> -- escape hatch</h2>
+<h2 id="get_raw_connection-escape-hatch"><code>get_raw_connection()</code> &ndash; escape hatch</h2>
 <p>When the capability system does not cover your use case, you can drop down to
-the library's native connection object:</p>
+the library&rsquo;s native connection object:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_raw_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RawConnection</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="sd">        Get the raw connection object from the underlying library.</span>
@@ -6640,7 +6710,7 @@ Always check the return value before using it.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

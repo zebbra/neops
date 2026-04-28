@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5987,6 +5991,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6023,7 +6093,7 @@
     W1-&gt;&gt;BB: Push result
     W2-&gt;&gt;BB: Push result
     BB--&gt;&gt;Engine: Result events</code></pre>
-<p>The blackboard is not a separate service -- it is a set of database tables and REST endpoints within the workflow engine. Workers interact with it over HTTP.</p>
+<p>The blackboard is not a separate service &ndash; it is a set of database tables and REST endpoints within the workflow engine. Workers interact with it over HTTP.</p>
 <h2 id="job-lifecycle">Job Lifecycle</h2>
 <p>Every job transitions through three states:</p>
 <pre class="mermaid"><code>stateDiagram-v2
@@ -6042,7 +6112,7 @@
 <thead>
 <tr>
 <th>Type</th>
-<th>When it's created</th>
+<th>When it&rsquo;s created</th>
 <th>What the worker does</th>
 </tr>
 </thead>
@@ -6050,27 +6120,27 @@
 <tr>
 <td><code>ACQUIRE</code></td>
 <td>During resource discovery phase</td>
-<td>Runs the function block's <code>acquire()</code> method to determine which additional entities are needed</td>
+<td>Runs the function block&rsquo;s <code>acquire()</code> method to determine which additional entities are needed</td>
 </tr>
 <tr>
 <td><code>EXECUTE</code></td>
 <td>During the running phase</td>
-<td>Runs the function block's <code>run()</code> method with the full entity context</td>
+<td>Runs the function block&rsquo;s <code>run()</code> method with the full entity context</td>
 </tr>
 <tr>
 <td><code>ROLLBACK</code></td>
 <td>During error recovery</td>
-<td>Runs the function block's <code>rollback()</code> method to undo changes</td>
+<td>Runs the function block&rsquo;s <code>rollback()</code> method to undo changes</td>
 </tr>
 </tbody>
 </table>
 <h2 id="polling-mechanics">Polling Mechanics</h2>
 <p>Workers poll the blackboard periodically (the Worker SDK defaults to every 10 seconds, but this is configured on the worker side). Each poll request includes:</p>
 <ul>
-<li><strong><code>workerId</code></strong> -- The worker's unique ID</li>
-<li><strong><code>functionBlockIds</code></strong> -- List of function block IDs the worker can execute</li>
+<li><strong><code>workerId</code></strong> &ndash; The worker&rsquo;s unique ID</li>
+<li><strong><code>functionBlockIds</code></strong> &ndash; List of function block IDs the worker can execute</li>
 </ul>
-<p>The blackboard returns pending jobs that match the worker's function blocks (default: 1 job per poll, configurable via <code>limit</code>). The assignment is atomic -- once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
+<p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
 <pre class="mermaid"><code>sequenceDiagram
     participant W as Worker
     participant BB as Blackboard
@@ -6088,10 +6158,10 @@
 <h2 id="result-structure">Result Structure</h2>
 <p>When a worker pushes a result, it includes:</p>
 <ul>
-<li><strong><code>status</code></strong> -- Success or failure</li>
-<li><strong><code>result</code></strong> -- The function block's return data (conforms to the <code>resultDataJsonSchema</code>)</li>
-<li><strong><code>acquires</code></strong> (for ACQUIRE jobs) -- Additional entity acquisition requests</li>
-<li><strong><code>dbUpdates</code></strong> (for EXECUTE jobs) -- Entity create/patch/delete operations to apply to the CMS</li>
+<li><strong><code>status</code></strong> &ndash; Success or failure</li>
+<li><strong><code>result</code></strong> &ndash; The function block&rsquo;s return data (conforms to the <code>resultDataJsonSchema</code>)</li>
+<li><strong><code>acquires</code></strong> (for ACQUIRE jobs) &ndash; Additional entity acquisition requests</li>
+<li><strong><code>dbUpdates</code></strong> (for EXECUTE jobs) &ndash; Entity create/patch/delete operations to apply to the CMS</li>
 </ul>
 <p>The engine processes results asynchronously through an event-driven system. Each result triggers the next step in the workflow execution.</p>
 <h2 id="scaling">Scaling</h2>
@@ -6107,14 +6177,14 @@
 <p>The blackboard uses PostgreSQL instead of a dedicated message queue (RabbitMQ, Redis)
 for simplicity and transactional consistency. Job state, workflow state, and function
 block registrations are all in the same database, enabling atomic operations across
-them. For most network automation workloads, PostgreSQL's performance is more than
+them. For most network automation workloads, PostgreSQL&rsquo;s performance is more than
 sufficient.</p>
 </details>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
-<li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> -- Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
-<li><a href="../../50-deployment/30-worker-management/">Worker Management</a> -- How the engine monitors worker health and handles failures</li>
+<li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
+<li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
 
 
@@ -6270,7 +6340,7 @@ sufficient.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

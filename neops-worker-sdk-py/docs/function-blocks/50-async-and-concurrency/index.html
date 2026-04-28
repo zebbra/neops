@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -2985,7 +2989,7 @@
   <a href="#run_in_thread-offloading-blocking-io" class="md-nav__link">
     <span class="md-ellipsis">
       
-        @run_in_thread -- Offloading Blocking I/O
+        @run_in_thread &ndash; Offloading Blocking I/O
       
     </span>
   </a>
@@ -2996,7 +3000,7 @@
   <a href="#run_parallel-concurrent-execution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        run_parallel() -- Concurrent Execution
+        run_parallel() &ndash; Concurrent Execution
       
     </span>
   </a>
@@ -3007,7 +3011,7 @@
   <a href="#schedule_task-fire-and-forget" class="md-nav__link">
     <span class="md-ellipsis">
       
-        @schedule_task -- Fire-and-Forget
+        @schedule_task &ndash; Fire-and-Forget
       
     </span>
   </a>
@@ -5936,7 +5940,7 @@
   <a href="#run_in_thread-offloading-blocking-io" class="md-nav__link">
     <span class="md-ellipsis">
       
-        @run_in_thread -- Offloading Blocking I/O
+        @run_in_thread &ndash; Offloading Blocking I/O
       
     </span>
   </a>
@@ -5947,7 +5951,7 @@
   <a href="#run_parallel-concurrent-execution" class="md-nav__link">
     <span class="md-ellipsis">
       
-        run_parallel() -- Concurrent Execution
+        run_parallel() &ndash; Concurrent Execution
       
     </span>
   </a>
@@ -5958,7 +5962,7 @@
   <a href="#schedule_task-fire-and-forget" class="md-nav__link">
     <span class="md-ellipsis">
       
-        @schedule_task -- Fire-and-Forget
+        @schedule_task &ndash; Fire-and-Forget
       
     </span>
   </a>
@@ -6015,6 +6019,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-anatomy/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6040,7 +6110,7 @@ slow operations. The key takeaway: wrap blocking network calls (netmiko,
 scrapli) with <code>@run_in_thread</code>, and use <code>run_parallel()</code> to fan out across
 devices.</p>
 </div>
-<p>The neops Worker SDK uses a <strong>hybrid sync/async execution model</strong> that lets you write blocking code (netmiko, paramiko, file I/O) in your function blocks without interfering with the worker's internal operations. This page explains the model and the concurrency utilities the SDK provides.</p>
+<p>The neops Worker SDK uses a <strong>hybrid sync/async execution model</strong> that lets you write blocking code (netmiko, paramiko, file I/O) in your function blocks without interfering with the worker&rsquo;s internal operations. This page explains the model and the concurrency utilities the SDK provides.</p>
 <h2 id="the-execution-model">The Execution Model</h2>
 <p>The worker runs two things simultaneously:</p>
 <table>
@@ -6075,7 +6145,7 @@ devices.</p>
     A --&gt;|heartbeat| C[Workflow Engine API]
     B --&gt;|asyncio.run| D[Your Function Block]
     D --&gt;|"@run_in_thread"| E[Blocking I/O threads]</code></pre>
-<h2 id="run_in_thread-offloading-blocking-io"><code>@run_in_thread</code> -- Offloading Blocking I/O</h2>
+<h2 id="run_in_thread-offloading-blocking-io"><code>@run_in_thread</code> &ndash; Offloading Blocking I/O</h2>
 <p>Most network libraries (netmiko, paramiko, requests) perform blocking I/O. Wrap these operations with <code>@run_in_thread</code> to run them in a thread pool, returning an awaitable you can <code>await</code> from your async <code>run()</code> method.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.concurrency</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_in_thread</span>
 </span></code></pre></div>
@@ -6132,7 +6202,7 @@ devices.</p>
 <li>Type hints are preserved; the return type becomes <code>Awaitable[R]</code>.</li>
 <li>Under the hood, <code>@run_in_thread</code> calls <code>loop.run_in_executor(None, fn)</code>, which uses the default thread pool executor (limited to <code>min(32, os.cpu_count() + 4)</code> threads).</li>
 </ul>
-<h2 id="run_parallel-concurrent-execution"><code>run_parallel()</code> -- Concurrent Execution</h2>
+<h2 id="run_parallel-concurrent-execution"><code>run_parallel()</code> &ndash; Concurrent Execution</h2>
 <p>When you need to run the same (or different) operations across multiple targets concurrently, use <code>run_parallel()</code>. It accepts any number of awaitables and returns results in the same order.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.concurrency</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_in_thread</span><span class="p">,</span> <span class="n">run_parallel</span>
 </span></code></pre></div>
@@ -6184,7 +6254,7 @@ devices.</p>
 <p>If one of the parallel operations raises an exception, <code>run_parallel()</code> raises it immediately.
 The remaining operations continue running but their results are discarded.</p>
 </div>
-<h2 id="schedule_task-fire-and-forget"><code>@schedule_task</code> -- Fire-and-Forget</h2>
+<h2 id="schedule_task-fire-and-forget"><code>@schedule_task</code> &ndash; Fire-and-Forget</h2>
 <p>For async operations you want to start without waiting for them, use <code>@schedule_task</code>. It wraps an async function so that calling it immediately schedules an <code>asyncio.Task</code> and returns the <code>Task</code> object.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.concurrency</span><span class="w"> </span><span class="kn">import</span> <span class="n">schedule_task</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -6198,7 +6268,7 @@ notifications, or background cleanup.</p>
 <p class="admonition-title">Tasks are cancelled at job boundary</p>
 <p>Each function block job runs in its own event loop via <code>asyncio.run()</code>.
 When <code>run()</code> returns, <code>asyncio.run()</code> cancels <strong>all pending tasks</strong> as part
-of its cleanup. Any <code>@schedule_task</code> task that hasn't completed by then
+of its cleanup. Any <code>@schedule_task</code> task that hasn&rsquo;t completed by then
 receives <code>CancelledError</code>. If the task has side effects (API calls, writes),
 those may be interrupted. Always <code>await</code> tasks with critical side effects
 before returning from <code>run()</code>.</p>
@@ -6206,10 +6276,10 @@ before returning from <code>run()</code>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p><code>@schedule_task</code> only works in an async context with a running event loop.
-Within a function block's <code>run()</code> method, this is always the case.</p>
+Within a function block&rsquo;s <code>run()</code> method, this is always the case.</p>
 </div>
 <h2 id="blocking-detection">Blocking Detection</h2>
-<p>The SDK includes a <code>BlockingDetector</code> that monitors your function block's execution thread from the main event loop. When a blocking operation exceeds the configured threshold, it captures a stack trace and logs a warning pointing to the exact location.</p>
+<p>The SDK includes a <code>BlockingDetector</code> that monitors your function block&rsquo;s execution thread from the main event loop. When a blocking operation exceeds the configured threshold, it captures a stack trace and logs a warning pointing to the exact location.</p>
 <p>Example output:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>WARNING | Blocking operation detected in config_backup (exceeded 0.5s threshold)
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Blocking at:
@@ -6456,7 +6526,7 @@ example, collecting data from 50 devices simultaneously within one group-level f
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

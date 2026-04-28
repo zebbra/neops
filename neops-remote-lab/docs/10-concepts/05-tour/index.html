@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5942,6 +5946,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5958,14 +6028,14 @@
 
 
 <h1 id="three-minute-tour">Three-minute tour</h1>
-<p><em>The shape of a Remote Lab interaction in four steps. No state-machine internals, no refcount math — that's the next four pages. Read this once to get the whole picture; then dig in.</em></p>
+<p><em>The shape of a Remote Lab interaction in four steps. No state-machine internals, no refcount math — that&rsquo;s the next four pages. Read this once to get the whole picture; then dig in.</em></p>
 <h2 id="what-it-does">What it does</h2>
 <p>Network-automation tests want a real router. <a href="https://netlab.tools/">Netlab</a> only lets one topology run per host, so a shared lab host turns into a collision playground the moment more than one test wants to run. <strong>Remote Lab puts a small HTTP service in front of that host</strong> so several tests can share it safely — one at a time, but cleanly.</p>
 <h2 id="the-four-steps">The four steps</h2>
 <p>Every interaction follows the same four-step lifecycle:</p>
 <ol>
 <li><strong>Create a session.</strong> A test calls <code>POST /session</code>. The server appends the session to a FIFO queue and returns its UUID. If the queue was empty, the session is immediately <em>active</em> — at the head, ready to drive the lab.</li>
-<li><strong>Wait to become active.</strong> If someone else is at the head, the test polls <code>GET /session/{id}</code> until status flips to <code>active</code>. Polling itself counts as activity, so the queue won't time the session out while it waits.</li>
+<li><strong>Wait to become active.</strong> If someone else is at the head, the test polls <code>GET /session/{id}</code> until status flips to <code>active</code>. Polling itself counts as activity, so the queue won&rsquo;t time the session out while it waits.</li>
 <li><strong>Acquire the lab.</strong> The test uploads a topology via <code>POST /lab</code> (multipart). The server hashes the file content (SHA-256, <strong>not</strong> the filename), runs <code>netlab up</code>, and returns the device list. When two tests upload the same content, the second attaches to the running lab via reference counting — no second <code>netlab up</code>.</li>
 <li><strong>Release.</strong> When the test ends — pass or fail — the fixture calls <code>POST /lab/release</code>. The reference count drops; if no one else is holding the lab, the lab idles. The next acquire decides its fate (reuse, restart, switch, eventual cleanup on session timeout).</li>
 </ol>
@@ -6174,7 +6244,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

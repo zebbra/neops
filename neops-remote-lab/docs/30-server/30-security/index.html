@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5986,6 +5990,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Run the service
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6002,9 +6072,9 @@
 
 
 <h1 id="security-model">Security model</h1>
-<p><em>The threat model for an internal-trust service. </em><em>No HTTP authentication.</em><em> Every control on this page is a fence around that single fact.</em></p>
+<p><em>The threat model for an internal-trust service. <strong>No HTTP authentication.</strong> Every control on this page is a fence around that single fact.</em></p>
 <p><code>neops-remote-lab</code> ships without bearer-token, OAuth, or mTLS. Every other security control on this page builds on a single fact: the only access boundary on <code>/lab/*</code> is the <code>X-Session-ID</code> header of an ACTIVE session. Everything else — the VPN enclosure, the firewall rules, the operational guidance — is a fence around that fact.</p>
-<p>If you don't have time to read the rest of the page, the short version is: <strong>deploy behind a VPN, treat any caller able to complete the session handshake as authorized, and don't expose port 8000 to anything broader than a known network.</strong></p>
+<p>If you don&rsquo;t have time to read the rest of the page, the short version is: <strong>deploy behind a VPN, treat any caller able to complete the session handshake as authorized, and don&rsquo;t expose port 8000 to anything broader than a known network.</strong></p>
 <div class="admonition danger">
 <p class="admonition-title">No HTTP authentication</p>
 <p><code>neops-remote-lab</code> ships <strong>without</strong> bearer-token, OAuth, or mTLS authentication. The only access boundary on <code>/lab/*</code> is the <code>X-Session-ID</code> of an ACTIVE session. <strong>Deploy behind a VPN.</strong></p>
@@ -6039,15 +6109,15 @@
 <h2 id="what-the-x-session-id-gate-is-not">What the <code>X-Session-ID</code> gate is not</h2>
 <ul>
 <li><strong>Not an authentication header.</strong> Anyone able to call <code>POST /session</code> (which has no auth) gets a fresh session ID. The gate is a contract about queue ordering, not about identity.</li>
-<li><strong>Not a secret.</strong> It's returned in plaintext by an unauthenticated endpoint. If your network is hostile, the session ID is already compromised.</li>
-<li><strong>Not transport security.</strong> HTTPS is fine and recommended in front of the service, but TLS by itself doesn't authenticate the <em>caller</em> — it authenticates the <em>server</em> to the caller and encrypts the bytes between them.</li>
+<li><strong>Not a secret.</strong> It&rsquo;s returned in plaintext by an unauthenticated endpoint. If your network is hostile, the session ID is already compromised.</li>
+<li><strong>Not transport security.</strong> HTTPS is fine and recommended in front of the service, but TLS by itself doesn&rsquo;t authenticate the <em>caller</em> — it authenticates the <em>server</em> to the caller and encrypts the bytes between them.</li>
 </ul>
 <h2 id="operational-guidance">Operational guidance</h2>
 <table>
 <thead>
 <tr>
 <th>Do</th>
-<th>Don't</th>
+<th>Don&rsquo;t</th>
 </tr>
 </thead>
 <tbody>
@@ -6061,7 +6131,7 @@
 </tr>
 <tr>
 <td>Restrict network reachability with host or cloud firewall rules.</td>
-<td>Rely on <code>X-Session-ID</code> as a secret — it's returned by an unauthenticated <code>POST /session</code>.</td>
+<td>Rely on <code>X-Session-ID</code> as a secret — it&rsquo;s returned by an unauthenticated <code>POST /session</code>.</td>
 </tr>
 <tr>
 <td>Use a reverse proxy (nginx, Caddy) with TLS + mutual auth if you must expose across hosts.</td>
@@ -6073,19 +6143,19 @@
 <p>If your deployment requires network reachability beyond a single VPN, layer these controls in front of the server:</p>
 <ol>
 <li><strong>Network-level ACLs</strong> — restrict TCP 8000 to known caller subnets. The cheapest possible boundary; deploy this first.</li>
-<li><strong>mTLS at a reverse proxy</strong> — each caller presents a client certificate. The proxy authenticates the certificate; the lab service still doesn't.</li>
+<li><strong>mTLS at a reverse proxy</strong> — each caller presents a client certificate. The proxy authenticates the certificate; the lab service still doesn&rsquo;t.</li>
 <li><strong>Rate limiting on <code>POST /session</code></strong> — prevents queue-flooding by a hostile or buggy caller. The service has no defence against this on its own.</li>
 </ol>
 <p>None of this replaces the need to treat the service as internal-trust; it reduces the blast radius of a compromised caller.</p>
 <h2 id="what-this-means-for-contributors">What this means for contributors</h2>
-<p>The "X-Session-ID is the only access boundary" rule is enforced as an <a href="../../50-contributing/20-invariants/#x-session-id-is-the-only-access-boundary-on-lab">invariant</a>. Adding any other auth path (Bearer, mTLS, header magic) without removing this one creates a confused threat model: callers get to choose which boundary to bypass.</p>
+<p>The &ldquo;X-Session-ID is the only access boundary&rdquo; rule is enforced as an <a href="../../50-contributing/20-invariants/#x-session-id-is-the-only-access-boundary-on-lab">invariant</a>. Adding any other auth path (Bearer, mTLS, header magic) without removing this one creates a confused threat model: callers get to choose which boundary to bypass.</p>
 <p>If a future requirement demands real auth, the right shape is to <em>replace</em> <code>X-Session-ID</code> with the new gate, not stack a second one on top.</p>
 <h2 id="see-also">See also</h2>
 <ul>
-<li><strong><a href="../../40-deployment/20-headscale-quick-setup/">Headscale: quick setup</a></strong> — the recommended VPN enclosure in five commands; the page's <a href="../../40-deployment/20-headscale-quick-setup/#other-approaches">Other approaches</a> section covers managed Tailscale, WireGuard, IP allowlists, and mTLS at a reverse proxy.</li>
+<li><strong><a href="../../40-deployment/20-headscale-quick-setup/">Headscale: quick setup</a></strong> — the recommended VPN enclosure in five commands; the page&rsquo;s <a href="../../40-deployment/20-headscale-quick-setup/#other-approaches">Other approaches</a> section covers managed Tailscale, WireGuard, IP allowlists, and mTLS at a reverse proxy.</li>
 <li><strong><a href="../40-rest-api/">REST API</a></strong> — the contract table that the gate enforces.</li>
 <li><strong><a href="../../10-concepts/20-session-queue/">Session Queue</a></strong> — the FIFO state machine ACTIVE-only gating sits on top of.</li>
-<li><strong><a href="../../50-contributing/20-invariants/#x-session-id-is-the-only-access-boundary-on-lab">Invariants → X-Session-ID is the only access boundary</a></strong> — the rule, in the contributor's voice.</li>
+<li><strong><a href="../../50-contributing/20-invariants/#x-session-id-is-the-only-access-boundary-on-lab">Invariants → X-Session-ID is the only access boundary</a></strong> — the rule, in the contributor&rsquo;s voice.</li>
 </ul>
 
 
@@ -6244,7 +6314,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

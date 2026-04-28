@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5965,6 +5969,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5989,7 +6059,7 @@
 <li>Inspect the results</li>
 </ol>
 <h2 id="the-workflow">The Workflow</h2>
-<p>Here is the simplest possible workflow -- it runs a single <code>echo</code> function block with global scope (no CMS connection needed):</p>
+<p>Here is the simplest possible workflow &ndash; it runs a single <code>echo</code> function block with global scope (no CMS connection needed):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># A minimal workflow that runs a single function block.</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Uses seedEntity: global so it works without CMS -- ideal for getting started.</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello_world</span>
@@ -6008,7 +6078,7 @@
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">neops</span><span class="nv"> </span><span class="s">workflow</span><span class="nv"> </span><span class="s">engine!&quot;</span>
 </span></code></pre></div>
-<p>Let's break this down:</p>
+<p>Let&rsquo;s break this down:</p>
 <table>
 <thead>
 <tr>
@@ -6047,14 +6117,14 @@
 </tr>
 </tbody>
 </table>
-<p>The single step references the <code>echo</code> function block at version <code>1.0.0</code> and passes a static message. Since this is a <code>global</code> workflow, no device context is needed -- it runs exactly once.</p>
+<p>The single step references the <code>echo</code> function block at version <code>1.0.0</code> and passes a static message. Since this is a <code>global</code> workflow, no device context is needed &ndash; it runs exactly once.</p>
 <div class="admonition tip">
 <p class="admonition-title">Dynamic parameters with JMESPath</p>
 <p>In device-scoped workflows, you can use <strong>JMESPath</strong> expressions like
 <code>{{ context.device.hostname }}</code> to interpolate runtime data into parameters.
-<a href="https://jmespath.org/">JMESPath</a> is a query language for JSON -- try the
+<a href="https://jmespath.org/">JMESPath</a> is a query language for JSON &ndash; try the
 <a href="https://jmespath.org/tutorial.html">interactive tutorial</a> (about 10 minutes).
-You'll see this in action in the <a href="../../20-workflows/90-examples/#show-version">Show Version example</a>.</p>
+You&rsquo;ll see this in action in the <a href="../../20-workflows/90-examples/#show-version">Show Version example</a>.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Build the echo function block yourself</p>
@@ -6140,7 +6210,7 @@ and use the create form.</p>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s1">    &quot;parameters&quot;: {}</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s1">  }&#39;</span>
 </span></code></pre></div>
-<p>The <code>workflow</code> field is the full SemVer identifier (<code>package/name:major.minor.patch</code>). Since this workflow uses <code>seedEntity: global</code>, no entity IDs are needed. For device-scoped workflows, you'd provide <code>"executeOnParameters": { "ids": [1, 2, 3] }</code> with CMS device IDs.</p>
+<p>The <code>workflow</code> field is the full SemVer identifier (<code>package/name:major.minor.patch</code>). Since this workflow uses <code>seedEntity: global</code>, no entity IDs are needed. For device-scoped workflows, you&rsquo;d provide <code>"executeOnParameters": { "ids": [1, 2, 3] }</code> with CMS device IDs.</p>
 <p>The response returns the execution with its initial state:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
@@ -6165,7 +6235,7 @@ polling for jobs. You should see log output confirming registration.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
 </span></code></pre></div>
 <p>The response shows the current status of the execution: which state it is in and which jobs have been created.</p>
-<p>You can also track execution in real time through the Monitor App's <strong>Executions</strong> view.</p>
+<p>You can also track execution in real time through the Monitor App&rsquo;s <strong>Executions</strong> view.</p>
 <h2 id="what-happened">What Happened?</h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant You
@@ -6192,12 +6262,12 @@ polling for jobs. You should see log output confirming registration.</p>
 <div class="admonition info">
 <p class="admonition-title">Device-scoped workflows</p>
 <p>For workflows with <code>seedEntity: device</code>, the engine creates one job <strong>per device per step</strong>.
-If you execute on 100 devices with 3 steps, that's up to 300 jobs distributed across workers.</p>
+If you execute on 100 devices with 3 steps, that&rsquo;s up to 300 jobs distributed across workers.</p>
 </div>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Complete the loop</p>
-<p>You've deployed and executed a workflow. The <code>echo</code> function block was provided by a worker
+<p>You&rsquo;ve deployed and executed a workflow. The <code>echo</code> function block was provided by a worker
 running the Worker SDK. To <strong>write your own function blocks</strong>, head to the
 <a href="/neops-worker-sdk-py/docs/getting-started/">Worker SDK Getting Started</a> and build one from
 scratch. Then come back to compose it into a workflow.</p>
@@ -6358,7 +6428,7 @@ scratch. Then come back to compose it into a workflow.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

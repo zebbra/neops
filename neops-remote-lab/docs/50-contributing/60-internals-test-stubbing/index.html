@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5942,6 +5946,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5978,8 +6048,8 @@
 <p>The stub inherits the state-management logic — refcount, hash comparison, filelock — and only replaces the Netlab-dependent parts. That means tests exercise the <strong>same</strong> queue and lifecycle code that production runs, just without booting containers.</p>
 <p>This is exactly why <a href="../40-internals-lab-manager/#the-singleton-pattern">the singleton design</a> is the way it is: subclassing class-level state is trivial; subclassing instance state would have meant a more elaborate factory dance.</p>
 <h2 id="tests-that-need-real-netlab">Tests that need real Netlab</h2>
-<p>Tests that need a real Netlab installation (end-to-end, container connectivity, real <code>netlab inspect</code> output) must be gated with a marker or skip condition so they don't fire in CI. The convention is to assume CI unless the test is explicitly opt-in.</p>
-<p>Don't write a test that "just so happens to work" with the stub but relies on production-only behaviour — the stub diverges from real Netlab at the boundary, and a test that hides that divergence will pass in CI and fail mysteriously in local dev (or vice versa).</p>
+<p>Tests that need a real Netlab installation (end-to-end, container connectivity, real <code>netlab inspect</code> output) must be gated with a marker or skip condition so they don&rsquo;t fire in CI. The convention is to assume CI unless the test is explicitly opt-in.</p>
+<p>Don&rsquo;t write a test that &ldquo;just so happens to work&rdquo; with the stub but relies on production-only behaviour — the stub diverges from real Netlab at the boundary, and a test that hides that divergence will pass in CI and fail mysteriously in local dev (or vice versa).</p>
 <h2 id="the-pytest-plugin-entry-point">The pytest plugin entry point</h2>
 <p><code>pyproject.toml</code> declares:</p>
 <div class="language-toml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[project.entry-points.pytest11]</span>
@@ -5991,7 +6061,7 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="s2">&quot;neops_remote_lab.testing.pytest_order_plugin&quot;</span><span class="p">,</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">]</span>
 </span></code></pre></div>
-<p>pytest's <code>pytest_plugins</code> mechanism then loads both modules. The indirection means a single entry-point name (<code>neops-remote-lab</code>) registers the fixture factory <strong>and</strong> the collection-time ordering plugin without forcing consumers to know about either module path.</p>
+<p>pytest&rsquo;s <code>pytest_plugins</code> mechanism then loads both modules. The indirection means a single entry-point name (<code>neops-remote-lab</code>) registers the fixture factory <strong>and</strong> the collection-time ordering plugin without forcing consumers to know about either module path.</p>
 <p>If you add a new pytest-side module, append its dotted path to <code>pytest_plugins</code> rather than declaring a new entry point — the entry point is the public surface, and changing its name is a breaking change for anyone who has it in a <code>pytest --no-cov -p no:neops-remote-lab</code> invocation.</p>
 <h2 id="see-also">See also</h2>
 <ul>
@@ -6156,7 +6226,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5959,6 +5963,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-setup/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5976,7 +6046,7 @@
 
 <h1 id="connecting-to-devices">Connecting to Devices</h1>
 <p>Most function blocks exist to interact with network equipment. The neops SDK makes
-this remarkably concise through its <strong>proxy/plugin</strong> architecture -- you declare
+this remarkably concise through its <strong>proxy/plugin</strong> architecture &ndash; you declare
 <em>what</em> you need, and the platform figures out <em>how</em> to connect.</p>
 <hr />
 <h2 id="three-lines-to-a-live-device">Three lines to a live device</h2>
@@ -5996,14 +6066,14 @@ interfaces:</p>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">pass</span>
 </span></code></pre></div>
 <p>That is the entire class — no methods to implement. By inheriting
-<code>DeviceInfoCapability</code> you tell the SDK: "I need a plugin that can answer
-device info questions." This capability provides:</p>
+<code>DeviceInfoCapability</code> you tell the SDK: &ldquo;I need a plugin that can answer
+device info questions.&rdquo; This capability provides:</p>
 <ul>
 <li><code>get_version()</code> — returns a dict with vendor, model, serial, and software release</li>
 </ul>
 <p>When you call this on the proxy, the SDK delegates to whichever plugin was
-resolved for the device's platform. Need a command the built-in capabilities
-don't cover? Use <code>get_raw_connection()</code> to access the underlying library
+resolved for the device&rsquo;s platform. Need a command the built-in capabilities
+don&rsquo;t cover? Use <code>get_raw_connection()</code> to access the underlying library
 directly (see <a href="../../device-connections/80-best-practices/#use-get_raw_connection-as-an-escape-hatch">Best Practices</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -6044,21 +6114,21 @@ whatever device the workflow targets:</p>
 <li><strong><code>VersionProxy.connect(device, fallback_to_default=True)</code></strong> is a context
   manager (like <code>with open(file)</code> — it opens the connection automatically and
   closes it when the <code>with</code> block exits).</li>
-<li><strong><code>fallback_to_default=True</code></strong> tells the resolver to use the platform's
+<li><strong><code>fallback_to_default=True</code></strong> tells the resolver to use the platform&rsquo;s
   default connection plugin if no exact match is found. This is the right
   default for most use cases.</li>
-<li><strong><code>proxy.get_version()</code></strong> delegates to whichever plugin was resolved --
+<li><strong><code>proxy.get_version()</code></strong> delegates to whichever plugin was resolved &ndash;
   scrapli for IOS, netmiko for legacy gear, HTTP for API-driven platforms.</li>
 </ul>
 <hr />
 <h2 id="how-the-resolver-works">How the resolver works</h2>
 <p>When you call <code>connect()</code>, the SDK walks a short decision path:</p>
 <ol>
-<li>Look at the device's <strong>platform</strong> (e.g. <code>ios</code>, <code>junos</code>, <code>frr</code>).</li>
+<li>Look at the device&rsquo;s <strong>platform</strong> (e.g. <code>ios</code>, <code>junos</code>, <code>frr</code>).</li>
 <li>Find registered plugins that match that platform <strong>and</strong> implement all the
    capabilities your proxy requires.</li>
 <li>Pick the best match (or fall back to a default plugin if allowed).</li>
-<li>Create the underlying connection (SSH, NETCONF, REST -- whatever the plugin
+<li>Create the underlying connection (SSH, NETCONF, REST &ndash; whatever the plugin
    uses) and return the proxy.</li>
 </ol>
 <p>Your code never sees the library-level details. If someone later swaps
@@ -6077,7 +6147,7 @@ without a single line changed.</p>
   and delegates every method call to that plugin.</li>
 </ul>
 <p>When you call <code>proxy.get_version()</code>, the proxy forwards the call to the
-resolved plugin's <code>get_version()</code>. If the plugin does not implement a
+resolved plugin&rsquo;s <code>get_version()</code>. If the plugin does not implement a
 method, the proxy raises <code>NotImplementedForThisPlatform</code> with a clear
 error message.</p>
 <p>For the full deep dive, see the
@@ -6086,7 +6156,7 @@ error message.</p>
 <hr />
 <h2 id="next-steps">Next steps</h2>
 <p>You have a function block that talks to real devices. Now make sure it works
-before deploying -- continue to <a href="../40-testing-your-function-block/">Testing</a> to write your first
+before deploying &ndash; continue to <a href="../40-testing-your-function-block/">Testing</a> to write your first
 test case.</p>
 
 
@@ -6242,7 +6312,7 @@ test case.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

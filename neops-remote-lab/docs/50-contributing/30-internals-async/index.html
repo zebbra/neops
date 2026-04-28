@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5986,6 +5990,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6013,7 +6083,7 @@
 <h2 id="when-to-use-it">When to use it</h2>
 <p>Any path that ultimately invokes <code>netlab</code> — chiefly <code>LabManager.try_acquire()</code> and <code>LabManager.cleanup()</code>. If you add a new heavyweight operation, route it through <code>_run_blocking</code>.</p>
 <h2 id="when-not-to-use-it">When not to use it</h2>
-<p>Lightweight metadata reads like <code>LabManager.status()</code> and <code>LabManager.has_running_lab()</code> stay synchronous inside async handlers. The thread-hop overhead exceeds the operation cost, and there's no event-loop benefit to gain.</p>
+<p>Lightweight metadata reads like <code>LabManager.status()</code> and <code>LabManager.has_running_lab()</code> stay synchronous inside async handlers. The thread-hop overhead exceeds the operation cost, and there&rsquo;s no event-loop benefit to gain.</p>
 <h2 id="the-reverse-is-also-forbidden">The reverse is also forbidden</h2>
 <p><strong>Never add async code inside <code>LabManager</code> or <code>connector.py</code>.</strong> Mixing async into the synchronous half of the codebase means passing event loops across threads — fragile, and unnecessary because the synchronous half never needs concurrency primitives.</p>
 <p>Keep the boundary crisp: async lives in <code>server.py</code>; everything <code>LabManager</code> and below is synchronous.</p>
@@ -6055,7 +6125,7 @@
 <li><strong><a href="../20-invariants/">Invariants</a></strong> — the rules these mechanics enforce.</li>
 <li><strong><a href="../40-internals-lab-manager/">Internals: LabManager singleton &amp; locking</a></strong> — what runs on the synchronous side of the boundary.</li>
 <li><strong><a href="../50-internals-atexit/">Internals: atexit + lifespan</a></strong> — why the no-async rule extends past process exit.</li>
-<li><strong><a href="../70-anti-patterns/">Anti-patterns</a></strong> — the "don't" table that names each violation.</li>
+<li><strong><a href="../70-anti-patterns/">Anti-patterns</a></strong> — the &ldquo;don&rsquo;t&rdquo; table that names each violation.</li>
 </ul>
 
 
@@ -6214,7 +6284,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

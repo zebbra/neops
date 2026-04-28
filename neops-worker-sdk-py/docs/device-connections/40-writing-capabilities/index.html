@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6125,6 +6129,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6158,7 +6228,7 @@
 <h3 id="2-define-abstract-methods">2. Define Abstract Methods</h3>
 <p>Declare each operation as an <code>@abstractmethod</code> with explicit return types. The method bodies should contain only <code>...</code> (Ellipsis).</p>
 <h3 id="3-write-docstrings">3. Write Docstrings</h3>
-<p>Docstrings are critical -- they are the first thing users see when <code>NotImplementedForThisPlatform</code> is raised. Describe the expected return structure and semantics.</p>
+<p>Docstrings are critical &ndash; they are the first thing users see when <code>NotImplementedForThisPlatform</code> is raised. Describe the expected return structure and semantics.</p>
 <h3 id="4-keep-interfaces-cohesive">4. Keep Interfaces Cohesive</h3>
 <p>Each capability should address <strong>one concern</strong>. Prefer two small interfaces over one large interface that mixes configuration retrieval with inventory collection.</p>
 <hr />
@@ -6241,7 +6311,7 @@ delegation behavior.</p>
 <p>See <a href="../60-resolution-and-defaults/">Resolution and Defaults</a> for the full algorithm.</p>
 <hr />
 <h2 id="ide-and-type-checker-notes">IDE and Type Checker Notes</h2>
-<p>Capability interfaces use <code>@abstractmethod</code>, so static analyzers may report that a proxy "does not implement abstract methods." This is expected. At runtime, the <code>ProxyMeta</code> metaclass injects fallback implementations and clears <code>__abstractmethods__</code>, making the proxy fully instantiable.</p>
+<p>Capability interfaces use <code>@abstractmethod</code>, so static analyzers may report that a proxy &ldquo;does not implement abstract methods.&rdquo; This is expected. At runtime, the <code>ProxyMeta</code> metaclass injects fallback implementations and clears <code>__abstractmethods__</code>, making the proxy fully instantiable.</p>
 <p>If your IDE complains, suppress the warning locally (e.g., PyCharm <code># noinspection PyAbstractClass</code> or a type-ignore comment on the class line).</p>
 <hr />
 <h2 id="existing-capabilities">Existing Capabilities</h2>
@@ -6266,8 +6336,8 @@ delegation behavior.</p>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li><a href="../50-writing-plugins/">Writing Plugins</a> -- implement your capability in a platform plugin</li>
-<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> -- how capabilities influence plugin selection</li>
+<li><a href="../50-writing-plugins/">Writing Plugins</a> &ndash; implement your capability in a platform plugin</li>
+<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> &ndash; how capabilities influence plugin selection</li>
 </ul>
 
 
@@ -6423,7 +6493,7 @@ delegation behavior.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

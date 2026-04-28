@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5964,6 +5968,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Use from Python
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5980,14 +6050,14 @@
 
 
 <h1 id="with-worker-sdk">With Worker SDK</h1>
-<p><em>The <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a> imports <code>remote_lab_fixture</code> as a stable public API. This page is the Remote-Lab-side complement to the SDK's <a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab testing guide</a> — what to know on the topology and fixture side; the SDK owns the function-block-test patterns.</em></p>
+<p><em>The <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK</a> imports <code>remote_lab_fixture</code> as a stable public API. This page is the Remote-Lab-side complement to the SDK&rsquo;s <a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Remote lab testing guide</a> — what to know on the topology and fixture side; the SDK owns the function-block-test patterns.</em></p>
 <div class="admonition info">
 <p class="admonition-title">Two pages, two scopes</p>
 <p><a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">The Worker SDK testing guide</a> covers fixture composition, mocking patterns within a function-block test, what <code>WorkflowContext</code> looks like during a test run, and the worker test layout. <strong>Read it first.</strong></p>
-<p><em>This page</em> covers what's specific to Remote Lab — which topologies common function-block tests use, what multi-vendor patterns look like, where to draw the line between Worker SDK responsibility and Remote Lab responsibility.</p>
+<p><em>This page</em> covers what&rsquo;s specific to Remote Lab — which topologies common function-block tests use, what multi-vendor patterns look like, where to draw the line between Worker SDK responsibility and Remote Lab responsibility.</p>
 </div>
 <h2 id="where-to-declare-your-fixture">Where to declare your fixture</h2>
-<p>The Worker SDK's testing layout puts shared fixtures in a worker-level <code>conftest.py</code>. The <code>remote_lab_fixture</code> factory call goes there:</p>
+<p>The Worker SDK&rsquo;s testing layout puts shared fixtures in a worker-level <code>conftest.py</code>. The <code>remote_lab_fixture</code> factory call goes there:</p>
 <div class="language-python highlight"><span class="filename">worker_my_thing/tests/conftest.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_remote_lab.testing.fixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">remote_lab_fixture</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># One topology, shared across every function-block test in this worker.</span>
@@ -6019,12 +6089,12 @@
 <h2 id="what-this-fixture-does-not-do">What this fixture does <em>not</em> do</h2>
 <p>A few things you might expect from a Worker SDK angle that live elsewhere:</p>
 <ul>
-<li><strong>It does not register your function block.</strong> That's the SDK's <code>WorkerContext</code> setup; see <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK → Worker setup</a>.</li>
-<li><strong>It does not provide a <code>WorkflowContext</code>.</strong> That's a workflow-engine concept (<a href="https://docs.neops.io/neops-workflow-engine/docs/10-concepts/30-context/">Context</a>), unrelated to lab provisioning.</li>
-<li><strong>It does not mock device responses.</strong> It gives you a real device. If you need to mock, that's a different layer (the SDK's mocking utilities or pytest's <code>monkeypatch</code>).</li>
+<li><strong>It does not register your function block.</strong> That&rsquo;s the SDK&rsquo;s <code>WorkerContext</code> setup; see <a href="https://docs.neops.io/neops-worker-sdk-py/docs/">Worker SDK → Worker setup</a>.</li>
+<li><strong>It does not provide a <code>WorkflowContext</code>.</strong> That&rsquo;s a workflow-engine concept (<a href="https://docs.neops.io/neops-workflow-engine/docs/10-concepts/30-context/">Context</a>), unrelated to lab provisioning.</li>
+<li><strong>It does not mock device responses.</strong> It gives you a real device. If you need to mock, that&rsquo;s a different layer (the SDK&rsquo;s mocking utilities or pytest&rsquo;s <code>monkeypatch</code>).</li>
 <li><strong>It does not run alongside the workflow engine.</strong> Remote Lab is the test substrate — function-block tests use it directly; a deployed workflow at runtime does not.</li>
 </ul>
-<p>For where Remote Lab does and doesn't fit in the wider neops platform, see <a href="../../99-appendix/neops-ecosystem/">Neops ecosystem</a>.</p>
+<p>For where Remote Lab does and doesn&rsquo;t fit in the wider neops platform, see <a href="../../99-appendix/neops-ecosystem/">Neops ecosystem</a>.</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><strong><a href="https://docs.neops.io/neops-worker-sdk-py/docs/testing/30-remote-lab/">Worker SDK → Remote lab testing</a></strong> — the canonical integration guide. Read it next.</li>
@@ -6191,7 +6261,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

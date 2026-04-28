@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -4767,7 +4771,7 @@
   <a href="#whats-the-same-regardless" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's the same regardless
+        What&rsquo;s the same regardless
       
     </span>
   </a>
@@ -5902,7 +5906,7 @@
   <a href="#whats-the-same-regardless" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's the same regardless
+        What&rsquo;s the same regardless
       
     </span>
   </a>
@@ -5942,6 +5946,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Deploy & Operate
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5958,7 +6028,7 @@
 
 
 <h1 id="pick-a-deployment">Pick a deployment</h1>
-<p><em>Four scenarios, four starting points. Pick the row that matches what you're standing up; each routes into the right guide.</em></p>
+<p><em>Four scenarios, four starting points. Pick the row that matches what you&rsquo;re standing up; each routes into the right guide.</em></p>
 <table>
 <thead>
 <tr>
@@ -5990,7 +6060,7 @@
 </tr>
 </tbody>
 </table>
-<p>The shared-VM and multi-tenant rows assume the project's recommended Headscale enclosure. <strong>Any equivalent network boundary works</strong> — managed Tailscale, WireGuard, internal-only VLAN with IP allowlists, mTLS at a reverse proxy. See <a href="../20-headscale-quick-setup/#other-approaches">Headscale: quick → Other approaches</a> before committing.</p>
+<p>The shared-VM and multi-tenant rows assume the project&rsquo;s recommended Headscale enclosure. <strong>Any equivalent network boundary works</strong> — managed Tailscale, WireGuard, internal-only VLAN with IP allowlists, mTLS at a reverse proxy. See <a href="../20-headscale-quick-setup/#other-approaches">Headscale: quick → Other approaches</a> before committing.</p>
 <h2 id="when-each-shape-is-the-right-call">When each shape is the right call</h2>
 <div class="grid cards">
 <ul>
@@ -5998,19 +6068,19 @@
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg></span> &nbsp; <strong>Local laptop</strong></p>
 <hr />
 <p><em>One developer, fast iteration, no shared state.</em></p>
-<p>Server runs in your terminal, foreground. Stop it when you stop working. No VPN, no lock recovery, no shared queue. Containerlab is greedy with CPU; offload to a VM when laptop heat or other-people's-tests start to matter.</p>
+<p>Server runs in your terminal, foreground. Stop it when you stop working. No VPN, no lock recovery, no shared queue. Containerlab is greedy with CPU; offload to a VM when laptop heat or other-people&rsquo;s-tests start to matter.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1M9 5h1V3H9zm0 8h1v-2H9zm0 8h1v-2H9zM5 3v2h2V3zm0 8v2h2v-2zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong>Single shared VM</strong></p>
 <hr />
 <p><em>Small team, one lab host, occasional contention.</em></p>
-<p>Single instance under <code>systemd</code> on a dedicated VM. <strong>Network enclosure</strong> so the team's laptops and CI runners can reach the lab subnet — Headscale is the path we ship docs for, but any VPN/IP-allowlist scheme works. The default deployment shape; covers everything up to maybe a dozen developers.</p>
+<p>Single instance under <code>systemd</code> on a dedicated VM. <strong>Network enclosure</strong> so the team&rsquo;s laptops and CI runners can reach the lab subnet — Headscale is the path we ship docs for, but any VPN/IP-allowlist scheme works. The default deployment shape; covers everything up to maybe a dozen developers.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h1a1 1 0 0 1 1 1h7v2h-7a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1H2v-2h7a1 1 0 0 1 1-1h1v-2H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7zM4 3h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m5 4h1V5H9zm0 8h1v-2H9zM5 5v2h2V5zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong>Multi-tenant lab</strong></p>
 <hr />
 <p><em>Multiple teams, sometimes several sites, ACLs needed.</em></p>
-<p>Same <code>systemd</code>-managed instance, plus reverse proxy (TLS), and <strong>ACLs restricting subnet access by user/tag</strong> (Headscale ACLs in our reference deployment; any equivalent policy plane fits). The lab queue serializes contention; the ACL restricts who can queue at all. <strong>Still one process per host</strong> — the one-server invariant doesn't change.</p>
+<p>Same <code>systemd</code>-managed instance, plus reverse proxy (TLS), and <strong>ACLs restricting subnet access by user/tag</strong> (Headscale ACLs in our reference deployment; any equivalent policy plane fits). The lab queue serializes contention; the ACL restricts who can queue at all. <strong>Still one process per host</strong> — the one-server invariant doesn&rsquo;t change.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.5 18.5c0-1.1.3-2.1.7-3H12c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5c0 .2 0 .4-.1.5.8-.3 1.6-.5 2.6-.5.5 0 1 .1 1.5.2V12c0-.3 0-.7-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.3-.3-.3-.6-.3l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c.1-.1-.2-.3-.4-.3h-4c-.2 0-.5.2-.5.4l-.4 2.7c-.6.2-1.1.6-1.7.9L5 5c-.3 0-.5 0-.7.3l-2 3.5c-.1.2 0 .4.2.6L4.6 11c0 .3-.1.7-.1 1s0 .7.1 1l-2.1 1.7c-.2.2-.2.4-.1.6l2 3.5c.1.2.3.2.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h2.5c-.7-1.1-1.1-2.3-1.1-3.6m6.5-4V13l-2.2 2.2 2.2 2.2V16c1.4 0 2.5 1.1 2.5 2.5 0 .4-.1.8-.3 1.1l1.1 1.1c1.2-1.8.7-4.3-1.1-5.5-.6-.5-1.4-.7-2.2-.7m0 6.5c-1.4 0-2.5-1.1-2.5-2.5 0-.4.1-.8.3-1.1l-1.1-1.1c-1.2 1.8-.7 4.3 1.1 5.5.7.4 1.4.7 2.2.7V24l2.2-2.2-2.2-2.3z"/></svg></span> &nbsp; <strong>CI runner pool</strong></p>
@@ -6020,11 +6090,11 @@
 </li>
 </ul>
 </div>
-<h2 id="whats-the-same-regardless">What's the same regardless</h2>
+<h2 id="whats-the-same-regardless">What&rsquo;s the same regardless</h2>
 <p>Every deployment shares the load-bearing parts:</p>
 <ul>
 <li><strong>One server per host.</strong> <a href="../../50-contributing/20-invariants/#one-server-instance-per-host">Filelock</a> catches a second instance.</li>
-<li><strong>One lab per host.</strong> <a href="../../50-contributing/20-invariants/#one-lab-per-host">LabManager + GLOBAL_LOCK</a> — Netlab can't run two topologies anyway.</li>
+<li><strong>One lab per host.</strong> <a href="../../50-contributing/20-invariants/#one-lab-per-host">LabManager + GLOBAL_LOCK</a> — Netlab can&rsquo;t run two topologies anyway.</li>
 <li><strong><code>X-Session-ID</code> is the only access boundary.</strong> <a href="../../30-server/30-security/">Security model</a>. VPN is mandatory; the service has no HTTP authentication.</li>
 <li><strong>Topology identity is the SHA-256 of file content.</strong> <a href="../../10-concepts/30-lab-lifecycle/#topology-identity-is-content-not-filename">Lab lifecycle</a>. Reuse just works across copy-pasted topologies.</li>
 </ul>
@@ -6064,7 +6134,7 @@
 <tr>
 <td>Vendor images</td>
 <td>whatever you need locally</td>
-<td>the team's defaults</td>
+<td>the team&rsquo;s defaults</td>
 <td>per-tenant defaults possible</td>
 <td>inherits from host</td>
 </tr>
@@ -6079,11 +6149,11 @@
 </table>
 <h2 id="see-also">See also</h2>
 <ul>
-<li><strong><a href="../10-netlab-host-setup/">Netlab host</a></strong> — install Netlab + Containerlab rootless. Prerequisite for every deployment except "Local laptop" running on a dev's machine.</li>
+<li><strong><a href="../10-netlab-host-setup/">Netlab host</a></strong> — install Netlab + Containerlab rootless. Prerequisite for every deployment except &ldquo;Local laptop&rdquo; running on a dev&rsquo;s machine.</li>
 <li><strong><a href="../20-headscale-quick-setup/">Headscale: quick</a></strong> — five-command Headscale + Headplane setup; also lists the alternatives (managed Tailscale, WireGuard, IP allowlists, mTLS).</li>
 <li><strong><a href="../30-headscale-reference/">Headscale reference</a></strong> — ACLs, OIDC, troubleshooting (Headscale-specific).</li>
 <li><strong><a href="../../30-server/10-administration/">Operator runbook</a></strong> — install via uv/pipx, run under <code>systemd</code>, recover from stale locks.</li>
-<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the X-Session-ID gate protects against and what it doesn't.</li>
+<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the X-Session-ID gate protects against and what it doesn&rsquo;t.</li>
 <li><strong><a href="../../getting-started/40-ci/">Wire into CI</a></strong> — runner pipeline shapes and queue-tuning pointers.</li>
 </ul>
 
@@ -6243,7 +6313,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

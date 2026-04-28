@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6052,6 +6056,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6068,13 +6138,13 @@
 
 
 <h1 id="invariants">Invariants</h1>
-<p><em>Eight rules a PR cannot violate. Each is short. Re-read the relevant one </em><em>before</em><em> any non-trivial change to <code>server.py</code>, <code>lab_manager.py</code>, or <code>connector.py</code>.</em></p>
+<p><em>Eight rules a PR cannot violate. Each is short. Re-read the relevant one <strong>before</strong> any non-trivial change to <code>server.py</code>, <code>lab_manager.py</code>, or <code>connector.py</code>.</em></p>
 <p>A change cannot break any of these without coordinating with every consumer of the surface area. Each entry: what the rule is, <strong>why</strong> it exists, and <strong>what breaks</strong> if it goes away.</p>
 <p>The mechanics that <em>enforce</em> these rules — <code>_run_blocking</code>, the <code>LabManager</code> singleton, atexit teardown, the test-stubbing pattern — live in their own pages under <a href="../30-internals-async/">Internals</a>. Before touching <code>server.py</code>, <code>lab_manager.py</code>, or <code>netlab/connector.py</code>, read both this page and the relevant Internals page.</p>
 <hr />
 <h2 id="one-server-instance-per-host">One server instance per host</h2>
 <!-- trace: neops_remote_lab/__main__.py:104 -->
-<p>The entrypoint takes a non-blocking <code>FileLock</code> at a fixed path under the system temp directory. A second instance attempting to start on the same host fails the lock, logs the running owner's pid/user/host/bind/cmd, and exits with status 1.</p>
+<p>The entrypoint takes a non-blocking <code>FileLock</code> at a fixed path under the system temp directory. A second instance attempting to start on the same host fails the lock, logs the running owner&rsquo;s pid/user/host/bind/cmd, and exits with status 1.</p>
 <table>
 <thead>
 <tr>
@@ -6104,7 +6174,7 @@
 <tbody>
 <tr>
 <td>What breaks</td>
-<td>Two callers' lab state collide; one tears down the other's containers mid-test.</td>
+<td>Two callers&rsquo; lab state collide; one tears down the other&rsquo;s containers mid-test.</td>
 </tr>
 </tbody>
 </table>
@@ -6117,7 +6187,7 @@
 <thead>
 <tr>
 <th>Why</th>
-<th>Most systems key on filename. This one doesn't, so a test helper that copies a vendored topology into each test's workdir still gets reuse for free.</th>
+<th>Most systems key on filename. This one doesn&rsquo;t, so a test helper that copies a vendored topology into each test&rsquo;s workdir still gets reuse for free.</th>
 </tr>
 </thead>
 <tbody>
@@ -6130,18 +6200,18 @@
 <hr />
 <h2 id="yml-and-yaml-are-both-accepted"><code>.yml</code> and <code>.yaml</code> are both accepted</h2>
 <!-- trace: neops_remote_lab/netlab/lab_manager.py:68 -->
-<p>Both extensions, case-insensitive, pass <code>prepare_workdir</code>'s suffix check (<code>.yml</code>, <code>.yaml</code>, <code>.YML</code>, <code>.YAML</code>). The HTTP layer accepts the same set, so the surface is uniform end-to-end.</p>
+<p>Both extensions, case-insensitive, pass <code>prepare_workdir</code>&rsquo;s suffix check (<code>.yml</code>, <code>.yaml</code>, <code>.YML</code>, <code>.YAML</code>). The HTTP layer accepts the same set, so the surface is uniform end-to-end.</p>
 <table>
 <thead>
 <tr>
 <th>Why</th>
-<th>There is no asymmetry between what <code>POST /lab</code> validates and what <code>LabManager</code> accepts. Consumers shouldn't have to remember which extension this project happens to prefer.</th>
+<th>There is no asymmetry between what <code>POST /lab</code> validates and what <code>LabManager</code> accepts. Consumers shouldn&rsquo;t have to remember which extension this project happens to prefer.</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>What breaks</td>
-<td>If you add a new entry point that copies a topology and forgets to mirror this check, callers see "topology accepted, then mysteriously rejected" failures with no clear cause.</td>
+<td>If you add a new entry point that copies a topology and forgets to mirror this check, callers see &ldquo;topology accepted, then mysteriously rejected&rdquo; failures with no clear cause.</td>
 </tr>
 </tbody>
 </table>
@@ -6213,7 +6283,7 @@
 <thead>
 <tr>
 <th>Why</th>
-<th>A runtime failure (the second <code>acquire</code> would loop in the <code>423</code> polling path forever, because the first <code>acquire</code>'s session still holds the host) is much harder to diagnose than a clear <code>ValueError</code> during collection.</th>
+<th>A runtime failure (the second <code>acquire</code> would loop in the <code>423</code> polling path forever, because the first <code>acquire</code>&rsquo;s session still holds the host) is much harder to diagnose than a clear <code>ValueError</code> during collection.</th>
 </tr>
 </thead>
 <tbody>
@@ -6227,7 +6297,7 @@
 <hr />
 <h2 id="see-also">See also</h2>
 <ul>
-<li><strong><a href="../70-anti-patterns/">Anti-patterns</a></strong> — the consolidated "don't" table that names each invariant by the rule it violates. Grep this when reviewing a PR.</li>
+<li><strong><a href="../70-anti-patterns/">Anti-patterns</a></strong> — the consolidated &ldquo;don&rsquo;t&rdquo; table that names each invariant by the rule it violates. Grep this when reviewing a PR.</li>
 <li><strong><a href="../30-internals-async/">Internals: Async discipline</a></strong> — the <code>_run_blocking</code> mechanics behind the one-server-per-host invariant.</li>
 <li><strong><a href="../40-internals-lab-manager/">Internals: LabManager singleton &amp; locking</a></strong> — <code>try_acquire</code> vs <code>acquire</code>, GLOBAL_LOCK, stale-state recovery — the mechanics behind one-lab-per-host.</li>
 <li><strong><a href="../50-internals-atexit/">Internals: atexit + lifespan</a></strong> — why teardown stays synchronous and silent.</li>
@@ -6391,7 +6461,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

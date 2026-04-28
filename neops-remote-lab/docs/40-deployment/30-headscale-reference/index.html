@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6206,6 +6210,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Deploy & Operate
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6232,7 +6302,7 @@ crosslink_references: []</p>
 <p><em>Configuration surface for a deployed Headscale tailnet — ACLs, OIDC, system settings, troubleshooting, full command summary.</em></p>
 <div class="admonition info">
 <p class="admonition-title"><strong>Reference for the opinionated path</strong></p>
-<p>This page is Headscale-specific — ACL syntax, Headplane configuration, the Compose layout we ship. If you're picking your enclosure and haven't decided yet, start at <a href="../20-headscale-quick-setup/#other-approaches">Headscale: quick setup → Other approaches</a> for the family of options (managed Tailscale, WireGuard, IP allowlists, mTLS, …). The lab service is unaware of which one you pick.</p>
+<p>This page is Headscale-specific — ACL syntax, Headplane configuration, the Compose layout we ship. If you&rsquo;re picking your enclosure and haven&rsquo;t decided yet, start at <a href="../20-headscale-quick-setup/#other-approaches">Headscale: quick setup → Other approaches</a> for the family of options (managed Tailscale, WireGuard, IP allowlists, mTLS, …). The lab service is unaware of which one you pick.</p>
 </div>
 <p>For the five-command happy path, see <a href="../20-headscale-quick-setup/">Headscale: quick setup</a>. This page covers the configuration surface you reach for once the tailnet is running — ACLs, user management, the Compose+config layout, troubleshooting, and a quick command summary.</p>
 <h2 id="repository-layout">Repository layout</h2>
@@ -6258,7 +6328,7 @@ crosslink_references: []</p>
 <p>DNS/MagicDNS and DERP settings are present and can be adjusted later.</p>
 <h3 id="headplaneconfigyaml-headplane-configuration"><code>headplane.config.yaml</code> — Headplane configuration</h3>
 <!-- trace: headscale/headplane.config.yaml:23 -->
-<p>Points to Headscale at <code>http://headscale:8080</code> (the Compose service name) and mounts Headscale's <code>config.yaml</code> for visibility in the UI.</p>
+<p>Points to Headscale at <code>http://headscale:8080</code> (the Compose service name) and mounts Headscale&rsquo;s <code>config.yaml</code> for visibility in the UI.</p>
 <h3 id="docker-composeyml"><code>docker-compose.yml</code></h3>
 <!-- trace: headscale/docker-compose.yml:35 -->
 
@@ -6295,7 +6365,7 @@ crosslink_references: []</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>headscale<span class="w"> </span>headscale<span class="w"> </span>policy<span class="w"> </span>check
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>headscale
 </span></code></pre></div>
-<p>For the policy file format, see <a href="https://headscale.net/stable/ref/acls/">Headscale ACL docs</a>. At minimum, restrict access to the lab subnet to the users and tags that need it; "default-allow" leaves the lab service exposed to every peer on the tailnet.</p>
+<p>For the policy file format, see <a href="https://headscale.net/stable/ref/acls/">Headscale ACL docs</a>. At minimum, restrict access to the lab subnet to the users and tags that need it; &ldquo;default-allow&rdquo; leaves the lab service exposed to every peer on the tailnet.</p>
 <h2 id="oidc-optional">OIDC (optional)</h2>
 <p>You can add OIDC for user management; see examples in <code>headplane.config.yaml</code> and the upstream <a href="https://github.com/tale/headplane">Headplane docs</a>. Set <code>server.cookie_secure = true</code> once you sit HTTPS in front.</p>
 <h2 id="system-settings">System settings</h2>
@@ -6310,7 +6380,7 @@ crosslink_references: []</p>
 <tbody>
 <tr>
 <td><code>iptables: false</code> in <code>/etc/docker/daemon.json</code></td>
-<td>Stops Docker's iptables rules from blocking container traffic across the bridged lab network.</td>
+<td>Stops Docker&rsquo;s iptables rules from blocking container traffic across the bridged lab network.</td>
 </tr>
 <tr>
 <td><code>net.ipv4.ip_forward=1</code> (sysctl.d drop-in)</td>
@@ -6343,7 +6413,7 @@ crosslink_references: []</p>
 <td><code>server.cookie_secure</code> in <code>headplane.config.yaml</code> is <code>true</code>; flip to <code>false</code> for plain-HTTP access</td>
 </tr>
 <tr>
-<td>Tailscale client "cannot reach control-plane"</td>
+<td>Tailscale client &ldquo;cannot reach control-plane&rdquo;</td>
 <td><code>$HEADSCALE_HOST</code> not reachable from the client; use SSH port-forwarding or fix DNS/firewall</td>
 </tr>
 <tr>
@@ -6386,7 +6456,7 @@ crosslink_references: []</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><strong><a href="../20-headscale-quick-setup/">Headscale: quick setup</a></strong> — the five-command happy path.</li>
-<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the tailnet is and isn't protecting against.</li>
+<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the tailnet is and isn&rsquo;t protecting against.</li>
 <li><strong><a href="../../30-server/10-administration/">Operator runbook</a></strong> — install the lab service itself behind the tailnet.</li>
 <li><strong><a href="https://headscale.net/">Headscale upstream</a></strong> — authoritative reference for the control plane.</li>
 <li><strong><a href="https://tailscale.com/kb/1019/subnets">Tailscale subnet router docs</a></strong> — what <code>--advertise-routes</code> actually does on the wire.</li>
@@ -6545,7 +6615,7 @@ crosslink_references: []</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

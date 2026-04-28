@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5240,7 +5244,7 @@
   <a href="#where-to-go-next-based-on-what-youre-touching" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next based on what you're touching
+        Where to go next based on what you&rsquo;re touching
       
     </span>
   </a>
@@ -5913,7 +5917,7 @@
   <a href="#where-to-go-next-based-on-what-youre-touching" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next based on what you're touching
+        Where to go next based on what you&rsquo;re touching
       
     </span>
   </a>
@@ -5942,6 +5946,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5958,18 +6028,18 @@
 
 
 <h1 id="your-first-pr">Your first PR</h1>
-<p><em>The 30-minute path: clone, run <code>make check</code> green, pick something small, ship it. Six checkboxes; the rest of Contributing is for once you're past these.</em></p>
+<p><em>The 30-minute path: clone, run <code>make check</code> green, pick something small, ship it. Six checkboxes; the rest of Contributing is for once you&rsquo;re past these.</em></p>
 <h2 id="the-path">The path</h2>
-<ul>
-<li>[ ] <strong><code>git clone</code> the repo.</strong> <code>git clone git@github.com:zebbra/remote-lab.git</code>. Branch from <code>develop</code>, not <code>main</code> — every PR targets <code>develop</code>.</li>
-<li>[ ] <strong>Read <a href="https://github.com/zebbra/remote-lab/blob/develop/AGENTS.md"><code>AGENTS.md</code></a>.</strong> One screen. Lists the conventions code review enforces — <code>*Dto</code> suffix, <code>_run_blocking()</code> for blocking I/O in async handlers, <code>connector.run_netlab()</code> as the only Netlab path, CVE-pinned deps. Skim this <strong>before</strong> your first commit.</li>
-<li>[ ] <strong>Run <code>make check</code>.</strong> Green on a fresh clone means your dev environment is set up. If it isn't, <a href="../10-dev-setup/">Dev setup</a> walks the diagnose-and-fix path. <em>Do not skip this step</em> — you need it green to know whether your changes broke something.</li>
-<li>[ ] <strong>Read <a href="../20-invariants/">Invariants</a>.</strong> The eight rules a PR cannot violate. Each entry is 5–10 lines. Read all eight; the one that bites you on your first PR is rarely the one you'd guess.</li>
-<li>[ ] <strong>Pick a <a href="https://github.com/zebbra/remote-lab/labels/good%20first%20issue">good-first-issue</a>.</strong> Or a typo, or a doc fix, or anything you've already noticed while reading these docs. The first PR is about the <em>flow</em>, not about a heroic feature.</li>
-<li>[ ] <strong>Open a PR.</strong> CI runs <code>make check</code> (lint + typecheck + tests). When it's green, ask for review.</li>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong><code>git clone</code> the repo.</strong> <code>git clone git@github.com:zebbra/remote-lab.git</code>. Branch from <code>develop</code>, not <code>main</code> — every PR targets <code>develop</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read <a href="https://github.com/zebbra/remote-lab/blob/develop/AGENTS.md"><code>AGENTS.md</code></a>.</strong> One screen. Lists the conventions code review enforces — <code>*Dto</code> suffix, <code>_run_blocking()</code> for blocking I/O in async handlers, <code>connector.run_netlab()</code> as the only Netlab path, CVE-pinned deps. Skim this <strong>before</strong> your first commit.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Run <code>make check</code>.</strong> Green on a fresh clone means your dev environment is set up. If it isn&rsquo;t, <a href="../10-dev-setup/">Dev setup</a> walks the diagnose-and-fix path. <em>Do not skip this step</em> — you need it green to know whether your changes broke something.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Read <a href="../20-invariants/">Invariants</a>.</strong> The eight rules a PR cannot violate. Each entry is 5–10 lines. Read all eight; the one that bites you on your first PR is rarely the one you&rsquo;d guess.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Pick a <a href="https://github.com/zebbra/remote-lab/labels/good%20first%20issue">good-first-issue</a>.</strong> Or a typo, or a doc fix, or anything you&rsquo;ve already noticed while reading these docs. The first PR is about the <em>flow</em>, not about a heroic feature.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Open a PR.</strong> CI runs <code>make check</code> (lint + typecheck + tests). When it&rsquo;s green, ask for review.</li>
 </ul>
 <h2 id="what-ci-is-going-to-check">What CI is going to check</h2>
-<p><code>make check</code> runs four things in sequence. If your local pre-push run is green, CI's run will be too.</p>
+<p><code>make check</code> runs four things in sequence. If your local pre-push run is green, CI&rsquo;s run will be too.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>lint<span class="w">       </span><span class="c1"># ruff format-check + ruff check</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>typeCheck<span class="w">  </span><span class="c1"># pyrefly</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span><span class="nb">test</span><span class="w">       </span><span class="c1"># pytest -q (39 tests today)</span>
@@ -5977,9 +6047,9 @@
 </span></code></pre></div>
 <details class="info">
 <summary>If <code>make audit</code> fails on a pre-existing CVE</summary>
-<p><code>make audit</code> failing on a transitive CVE you didn't introduce is a known state — track separately, don't block your PR on it. The maintainer pins these explicitly with <code># CVE-*</code> comments in <code>pyproject.toml</code>. See <a href="../20-invariants/#cve-pinned-dependencies">Invariants → CVE-pinned dependencies</a>.</p>
+<p><code>make audit</code> failing on a transitive CVE you didn&rsquo;t introduce is a known state — track separately, don&rsquo;t block your PR on it. The maintainer pins these explicitly with <code># CVE-*</code> comments in <code>pyproject.toml</code>. See <a href="../20-invariants/#cve-pinned-dependencies">Invariants → CVE-pinned dependencies</a>.</p>
 </details>
-<h2 id="where-to-go-next-based-on-what-youre-touching">Where to go next based on what you're touching</h2>
+<h2 id="where-to-go-next-based-on-what-youre-touching">Where to go next based on what you&rsquo;re touching</h2>
 <div class="grid cards">
 <ul>
 <li>
@@ -6014,12 +6084,12 @@
 </li>
 </ul>
 </div>
-<p>After your first PR is in, <a href="../70-anti-patterns/">Anti-patterns</a> is the one-page grep target you'll want bookmarked for review.</p>
+<p>After your first PR is in, <a href="../70-anti-patterns/">Anti-patterns</a> is the one-page grep target you&rsquo;ll want bookmarked for review.</p>
 <h2 id="see-also">See also</h2>
 <ul>
-<li><strong><a href="https://github.com/zebbra/remote-lab/blob/develop/AGENTS.md"><code>AGENTS.md</code></a></strong> — the same invariants in repo-root form, alongside agent-bootstrap context. Read this if you're working with an AI assistant.</li>
+<li><strong><a href="https://github.com/zebbra/remote-lab/blob/develop/AGENTS.md"><code>AGENTS.md</code></a></strong> — the same invariants in repo-root form, alongside agent-bootstrap context. Read this if you&rsquo;re working with an AI assistant.</li>
 <li><strong><a href="https://github.com/zebbra/remote-lab/blob/develop/README.md"><code>README.md</code></a></strong> — project overview, install, quick orientation.</li>
-<li><strong><a href="../../10-concepts/10-architecture/">Architecture</a></strong> — the high-level picture. The Internals pages assume you've read this.</li>
+<li><strong><a href="../../10-concepts/10-architecture/">Architecture</a></strong> — the high-level picture. The Internals pages assume you&rsquo;ve read this.</li>
 </ul>
 
 
@@ -6178,7 +6248,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

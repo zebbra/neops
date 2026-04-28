@@ -45,6 +45,8 @@
       
     
     
+      <link rel="stylesheet" href="../assets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -82,7 +84,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -213,14 +217,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -420,7 +418,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5921,6 +5925,14 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5938,18 +5950,18 @@
 
 <h1 id="neopswebsdk">NeopsWebSdk</h1>
 <p>Neops Web SDK is the dev environment for the neops client, services and components. It is a standard Angular projects <strong>with libraries</strong></p>
-<p>You'll find</p>
+<p>You&rsquo;ll find</p>
 <ul>
 <li>The <a href="./src/app">App (./src/app)</a>: Dev Environment for development and testing</li>
 <li><a href="./projects">Libraries (./projects)</a>: Libraries, which are automatically published on git tag and reused in neops projects</li>
 </ul>
 <h2 id="setup">Setup</h2>
 <p>We use GitHub as our npm registry. Although the packages are public, you need to log in with your user. When asked for password, it is recommended to enter a token instead of the password.</p>
-<p>You can generate a token here: https://github.com/settings/tokens</p>
+<p>You can generate a token here: <a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a></p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm<span class="w"> </span>login<span class="w"> </span>--scope<span class="o">=</span>@zebbra<span class="w"> </span>--registry<span class="o">=</span>https://npm.pkg.github.com
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install
 </span></code></pre></div>
-<p>Start the application in your favourite IDE or run 'ng serve'.</p>
+<p>Start the application in your favourite IDE or run &lsquo;ng serve&rsquo;.</p>
 <h2 id="carbon-component-libraries">Carbon component libraries</h2>
 <p>Our Design is based on the carbon design system. There are two main projects for components we use:</p>
 <ul>
@@ -5958,8 +5970,8 @@
 </ul>
 <h2 id="angular-help">Angular help</h2>
 <ul>
-<li>'ng --help' for CLI instructions</li>
-<li>https://angular.io/ for introduction</li>
+<li>&lsquo;ng &ndash;help&rsquo; for CLI instructions</li>
+<li><a href="https://angular.io/">https://angular.io/</a> for introduction</li>
 <li><a href="ANGULAR-README/">The Angular Readme for a quick overview</a></li>
 </ul>
 <h2 id="docker">Docker</h2>
@@ -6014,12 +6026,12 @@ lo interface (127.0.0.1)</p>
 <h3 id="upgrade-path">Upgrade Path</h3>
 <p>This project was generated on Angular 13</p>
 <h4 id="to-angular-14">To Angular 14</h4>
-<p>From https://update.angular.io/?l=3&amp;v=13.0-14.0</p>
+<p>From <a href="https://update.angular.io/?l=3&amp;v=13.0-14.0">https://update.angular.io/?l=3&amp;v=13.0-14.0</a></p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ng<span class="w"> </span>update<span class="w"> </span>@angular/core@14<span class="w"> </span>@angular/cli@14<span class="w"> </span>--force
 </span></code></pre></div>
 <p>Then handle dependency conflicts by either updating dependencies or add them to overrides in package.json</p>
 <h4 id="to-angular-15">To Angular 15</h4>
-<p>From https://update.angular.io/?v=14.0-15.0</p>
+<p>From <a href="https://update.angular.io/?v=14.0-15.0">https://update.angular.io/?v=14.0-15.0</a></p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ng<span class="w"> </span>update<span class="w"> </span>@angular/core@15<span class="w"> </span>@angular/cli@15<span class="w"> </span>--force
 </span></code></pre></div>
 <p>Then handle dependency conflicts by either updating dependencies or add them to overrides in package.json</p>
@@ -6148,7 +6160,7 @@ lo interface (127.0.0.1)</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

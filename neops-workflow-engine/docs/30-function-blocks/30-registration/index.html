@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5965,6 +5969,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6072,22 +6142,22 @@
 </table>
 <h2 id="schema-compatibility-rules">Schema Compatibility Rules</h2>
 <p>When registering a new version of an existing function block, the engine enforces compatibility:</p>
-<p><strong>Parameter schema (input) -- backward compatible:</strong>
+<p><strong>Parameter schema (input) &ndash; backward compatible:</strong>
 :   New versions must ensure that the set of required parameters in the new version is a subset of (or equal to) the required parameters in the existing version. Adding new optional parameters is always safe. The engine validates compatibility against the exact version (if re-registering), the latest patch version, and the latest minor version of the same major.</p>
-<p><strong>Result schema (output) -- forward compatible:</strong>
+<p><strong>Result schema (output) &ndash; forward compatible:</strong>
 :   New versions can add fields to results but must not remove existing fields. This ensures that workflows that reference step results still find the expected data.</p>
 <p><strong>Immutable properties:</strong>
-:   <code>runOn</code> and <code>fbType</code> cannot change across versions of the same function block. These are part of the function block's contract.</p>
+:   <code>runOn</code> and <code>fbType</code> cannot change across versions of the same function block. These are part of the function block&rsquo;s contract.</p>
 <h2 id="worker-association">Worker Association</h2>
 <p>Function blocks can be associated with specific workers during registration. This enables:</p>
 <ul>
 <li><strong>Tracking</strong> which workers can execute which function blocks</li>
-<li><strong>Job routing</strong> -- the blackboard only returns jobs to workers that have registered the matching function block</li>
-<li><strong>Health monitoring</strong> -- if a worker goes offline, the engine knows which function blocks are affected</li>
+<li><strong>Job routing</strong> &ndash; the blackboard only returns jobs to workers that have registered the matching function block</li>
+<li><strong>Health monitoring</strong> &ndash; if a worker goes offline, the engine knows which function blocks are affected</li>
 </ul>
 <p>Multiple workers can register the same function block (for horizontal scaling).</p>
 <h2 id="deregistration">Deregistration</h2>
-<p>When a worker gracefully shuts down (<code>POST /workers/:uuid/unregister</code>), its function block registrations are preserved but unlinked from the worker. The function block definitions remain available for workflow resolution -- only the worker's ability to execute them is removed.</p>
+<p>When a worker gracefully shuts down (<code>POST /workers/:uuid/unregister</code>), its function block registrations are preserved but unlinked from the worker. The function block definitions remain available for workflow resolution &ndash; only the worker&rsquo;s ability to execute them is removed.</p>
 <p>When a function block is deprecated, existing workflows can still reference it, but new workflows should use the latest version.</p>
 
 
@@ -6243,7 +6313,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

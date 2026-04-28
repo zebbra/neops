@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6069,6 +6073,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-obtaining-a-connection/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Device Connections
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6090,9 +6160,9 @@
 <h2 id="plugin-anatomy">Plugin Anatomy</h2>
 <p>Every plugin has three responsibilities:</p>
 <ol>
-<li><strong>Declare identity</strong> -- <code>platform</code>, <code>connection_type</code>, <code>connection_library</code> class attributes.</li>
-<li><strong>Create the connection</strong> -- <code>_create_connection()</code> returns a <code>BaseConnection</code> wrapper.</li>
-<li><strong>Implement capabilities</strong> -- concrete methods for each capability interface the plugin claims.</li>
+<li><strong>Declare identity</strong> &ndash; <code>platform</code>, <code>connection_type</code>, <code>connection_library</code> class attributes.</li>
+<li><strong>Create the connection</strong> &ndash; <code>_create_connection()</code> returns a <code>BaseConnection</code> wrapper.</li>
+<li><strong>Implement capabilities</strong> &ndash; concrete methods for each capability interface the plugin claims.</li>
 </ol>
 <hr />
 <h2 id="step-1-create-a-baseconnection-wrapper">Step 1: Create a <code>BaseConnection</code> Wrapper</h2>
@@ -6102,7 +6172,7 @@
 <li>Lazy-import the third-party dependency inside <code>connect()</code> so missing packages only fail when the plugin is actually used.</li>
 <li>Store the raw client in <code>self._connection</code> only after a successful connect.</li>
 <li>Raise <code>ConnectionValidationError</code> for missing fields and <code>ConnectionCreationError</code> for connection failures.</li>
-<li>Make <code>disconnect()</code> defensive -- log warnings, never raise.</li>
+<li>Make <code>disconnect()</code> defensive &ndash; log warnings, never raise.</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FRRNetmikoConnection</span><span class="p">(</span><span class="n">BaseConnection</span><span class="p">[</span><span class="n">NetmikoType</span><span class="p">]):</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Netmiko wrapper for FRRouting devices.&quot;&quot;&quot;</span>
@@ -6236,14 +6306,14 @@
 <p>If your package registers a plugin as a default and the SDK already has one for that scope, your plugin silently takes precedence. See <a href="../60-resolution-and-defaults/">Resolution and Defaults</a> for override rules.</p>
 <hr />
 <h2 id="checklist">Checklist</h2>
-<ul>
-<li>[ ] <code>platform</code>, <code>connection_type</code>, and <code>connection_library</code> are set</li>
-<li>[ ] <code>_create_connection()</code> returns a valid <code>BaseConnection</code></li>
-<li>[ ] Every inherited capability method has a concrete implementation</li>
-<li>[ ] Exceptions use <code>ConnectionCreationError</code> / <code>ConnectionValidationError</code> (not <code>ValueError</code>)</li>
-<li>[ ] Logging uses <code>Logger()</code> with appropriate levels</li>
-<li>[ ] Plugin is decorated with <code>@register_connection_plugin()</code></li>
-<li>[ ] Parsing failures return a safe structure with <code>raw_output</code> when helpful</li>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>platform</code>, <code>connection_type</code>, and <code>connection_library</code> are set</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>_create_connection()</code> returns a valid <code>BaseConnection</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Every inherited capability method has a concrete implementation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Exceptions use <code>ConnectionCreationError</code> / <code>ConnectionValidationError</code> (not <code>ValueError</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Logging uses <code>Logger()</code> with appropriate levels</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Plugin is decorated with <code>@register_connection_plugin()</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Parsing failures return a safe structure with <code>raw_output</code> when helpful</li>
 </ul>
 <hr />
 <h2 id="logging-and-exception-guidelines">Logging and Exception Guidelines</h2>
@@ -6295,8 +6365,8 @@ and log a warning.</p>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li><a href="../40-writing-capabilities/">Writing Capabilities</a> -- define new capability interfaces</li>
-<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> -- how plugins are selected at runtime</li>
+<li><a href="../40-writing-capabilities/">Writing Capabilities</a> &ndash; define new capability interfaces</li>
+<li><a href="../60-resolution-and-defaults/">Resolution and Defaults</a> &ndash; how plugins are selected at runtime</li>
 </ul>
 
 
@@ -6452,7 +6522,7 @@ and log a warning.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

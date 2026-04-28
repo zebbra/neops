@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5986,6 +5990,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Get started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6002,8 +6072,8 @@
 
 
 <h1 id="local-development-server">Local development server</h1>
-<p><em>Run the Remote Lab Manager on your laptop on <code>localhost:8000</code>. Foreground process; install once, start when you want a lab, <code>Ctrl+C</code> when you don't.</em></p>
-<p>Run the Remote Lab Manager on your laptop on <code>localhost:8000</code>. Foreground process; install once, start when you want a lab, <code>Ctrl+C</code> when you don't.</p>
+<p><em>Run the Remote Lab Manager on your laptop on <code>localhost:8000</code>. Foreground process; install once, start when you want a lab, <code>Ctrl+C</code> when you don&rsquo;t.</em></p>
+<p>Run the Remote Lab Manager on your laptop on <code>localhost:8000</code>. Foreground process; install once, start when you want a lab, <code>Ctrl+C</code> when you don&rsquo;t.</p>
 <div class="admonition tip">
 <p class="admonition-title">Wrong page?</p>
 <p>Already have a Remote Lab Manager you can reach? Skip this and use <a href="../10-pytest/">Quickstart</a> directly. Standing up a multi-user shared host? Jump to <a href="../../30-server/10-administration/">Operator runbook</a>.</p>
@@ -6025,7 +6095,7 @@ modules are happy, then tears down. If it fails, fix Netlab first —
 <hr />
 <h2 id="1-install-the-server">1. Install the server</h2>
 <p>The server ships as the <code>neops-remote-lab</code> Python distribution. Install it
-as a tool — isolated from your project's environment, on your shell's
+as a tool — isolated from your project&rsquo;s environment, on your shell&rsquo;s
 <code>PATH</code>. The package declares a <code>neops-remote-lab</code> console script that
 points at <code>neops_remote_lab.__main__:main</code>. <!-- trace: pyproject.toml:34 --></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">uv (recommended)</label><label for="__tabbed_1_2">pipx</label><label for="__tabbed_1_3">pip (last resort)</label></div>
@@ -6062,7 +6132,7 @@ instead unless you have a hard reason not to.</p>
 <p>You should see the install path and the full CLI surface (<code>--debug</code>,
 <code>--host</code>, <code>--port</code>, <code>--log-level</code>, <code>--log-config</code>, <code>--version</code>). <!-- trace: neops_remote_lab/__main__.py:149 -->
 If you see <code>command not found</code>, run <code>pipx ensurepath</code> and re-login (or
-source your shell's RC file).</p>
+source your shell&rsquo;s RC file).</p>
 <hr />
 <h2 id="2-start-the-server-on-localhost">2. Start the server on localhost</h2>
 <p>For a development session, the simplest run is foreground with debug
@@ -6072,7 +6142,7 @@ logging:</p>
 <p>This binds <code>0.0.0.0:8000</code>, sets the log level to <code>DEBUG</code>, and streams
 Netlab subprocess output to the log in real time (the equivalent of
 <code>NEOPS_NETLAB_STREAM_OUTPUT=1</code>). <!-- trace: neops_remote_lab/__main__.py:163 -->
-You'll see the server come up:</p>
+You&rsquo;ll see the server come up:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>INFO     | remote-lab-server | Server starting (pid=12345, version=0.x.y)
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>INFO     | remote-lab-server | Lock acquired at /tmp/neops_remote_lab_server.lock
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>INFO     | remote-lab-server | netlab CLI found at /home/you/.local/bin/netlab
@@ -6085,11 +6155,11 @@ instead, a previous server is still holding the singleton lock — see
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-fsS<span class="w"> </span>http://localhost:8000/healthz<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>OK
 </span></code></pre></div>
 <p>A <code>204 No Content</code> (the body is empty; <code>&amp;&amp; echo OK</code> runs because curl
-exits 0) is the liveness signal. Anything else means the server didn't
+exits 0) is the liveness signal. Anything else means the server didn&rsquo;t
 bind, the port is taken, or your firewall is blocking loopback — none of
 which the fixture can debug for you.</p>
 <div class="admonition tip">
-<p class="admonition-title">Bind only to loopback if you don't want others to reach it</p>
+<p class="admonition-title">Bind only to loopback if you don&rsquo;t want others to reach it</p>
 <p>The default <code>--host 0.0.0.0</code> binds on every interface. On a shared
 development machine, prefer <code>--host 127.0.0.1</code> so the server is only
 reachable from your own user:
@@ -6104,20 +6174,20 @@ closes the open port to anyone else on the network.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REMOTE_LAB_URL</span><span class="o">=</span>http://localhost:8000
 </span></code></pre></div>
 <p>The fixture and <code>RemoteLabClient</code> both read this variable; the fixture
-fails fast at session setup if it's missing. <!-- trace: neops_remote_lab/testing/fixture.py:34 --></p>
+fails fast at session setup if it&rsquo;s missing. <!-- trace: neops_remote_lab/testing/fixture.py:34 --></p>
 <p>Drop it into a <code>.env</code> if you load one with <code>python-dotenv</code> or <code>direnv</code>,
-so you don't have to remember the export each session.</p>
+so you don&rsquo;t have to remember the export each session.</p>
 <p>From here, follow the <a href="../10-pytest/">Quickstart</a> from
 <a href="../10-pytest/#3-write-a-minimal-topology">step 3 (Write a minimal topology)</a>
-onward. The test code is identical to the remote case — <code>pytest</code> doesn't
+onward. The test code is identical to the remote case — <code>pytest</code> doesn&rsquo;t
 know or care whether the server is on the same host or across the
 network.</p>
 <hr />
 <h2 id="4-tear-down-between-sessions">4. Tear down between sessions</h2>
-<p>When you're done with a development session, stop the server with <code>Ctrl+C</code>
-in the terminal where it's running. The shutdown sequence:</p>
+<p>When you&rsquo;re done with a development session, stop the server with <code>Ctrl+C</code>
+in the terminal where it&rsquo;s running. The shutdown sequence:</p>
 <ol>
-<li>SIGINT triggers the server's signal handler, which sets
+<li>SIGINT triggers the server&rsquo;s signal handler, which sets
    <code>_SHUTDOWN_EVENT</code>.</li>
 <li>The lifespan context manager cancels the cleanup loop, deletes any
    tracked sessions, and runs a final <code>LabManager.cleanup</code> to tear down
@@ -6126,18 +6196,18 @@ in the terminal where it's running. The shutdown sequence:</p>
    cleanup if anything in step 2 was missed.</li>
 <li>The singleton filelock is released.</li>
 </ol>
-<p>Confirm there's nothing lingering:</p>
+<p>Confirm there&rsquo;s nothing lingering:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>ps<span class="w">                 </span><span class="c1"># no clab-* containers</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ls<span class="w"> </span>/tmp/neops_remote_lab_server.*<span class="w">  </span><span class="c1"># no lockfile or metadata</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>netlab<span class="w"> </span>status<span class="w"> </span>default<span class="w">     </span><span class="c1"># &quot;No active lab instance&quot;</span>
 </span></code></pre></div>
 <p>If a container, lockfile, or netlab default instance is still alive, the
-server didn't tear down cleanly — see
+server didn&rsquo;t tear down cleanly — see
 <a href="../../30-server/10-administration/#forced-cleanup-of-a-stuck-lab">Administration → Forced cleanup of a stuck lab</a>.</p>
 <hr />
 <h2 id="when-to-graduate-to-a-remote-server">When to graduate to a remote server</h2>
 <p>Local-dev is the right shape for: writing tests, debugging failures
-quickly, exploring topology shapes. It's the wrong shape when:</p>
+quickly, exploring topology shapes. It&rsquo;s the wrong shape when:</p>
 <ul>
 <li><strong>More than one developer or CI job needs the lab.</strong> The one-server-
   per-host invariant means a second developer cannot run their own server
@@ -6160,7 +6230,7 @@ change on the consumer side.</p>
 <li><strong><a href="../10-pytest/">Quickstart</a></strong> — write your first test against the
   server you just started.</li>
 <li><strong><a href="../../10-concepts/10-architecture/">Architecture</a></strong> — the high-level
-  picture of how the local server is structured (it's the same server you
+  picture of how the local server is structured (it&rsquo;s the same server you
   would run on a shared host; only the network topology differs).</li>
 <li><strong><a href="../../30-server/10-administration/">Operator runbook</a></strong> — the operator
   reference, including stale-lock recovery, the security posture you sign
@@ -6326,7 +6396,7 @@ change on the consumer side.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -2686,7 +2690,7 @@
   <a href="#what-youll-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you'll build
+        What you&rsquo;ll build
       
     </span>
   </a>
@@ -5936,7 +5940,7 @@
   <a href="#what-youll-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you'll build
+        What you&rsquo;ll build
       
     </span>
   </a>
@@ -6037,6 +6041,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-setup/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6058,15 +6128,15 @@ unit of automation logic that the neops platform can schedule and execute. By th
 you will understand parameters, results, registration, and the <code>run()</code> method.</p>
 <hr />
 <details class="info">
-<summary>Python concepts you'll see in this guide</summary>
+<summary>Python concepts you&rsquo;ll see in this guide</summary>
 <p>This guide uses a few Python features that may be new to you. Here is a quick orientation:</p>
 <p><strong>Type hints</strong> — annotations like <code>text: str</code> or <code>count: int</code> that tell Python (and your editor) what type each variable should be. They enable autocomplete, catch bugs early, and are required by the framework.</p>
 <p><strong>Pydantic</strong> — a popular Python library for data validation. You define a class with typed fields, and Pydantic ensures the data always matches. If someone passes a number where a string is expected, Pydantic raises a clear error automatically.</p>
-<p><strong><code>async def</code></strong> — the framework uses Python's async features internally. For now, treat <code>async def</code> as boilerplate: your code inside <code>run()</code> works just like regular Python. You can use normal <code>for</code> loops, <code>if</code> statements, and library calls.</p>
+<p><strong><code>async def</code></strong> — the framework uses Python&rsquo;s async features internally. For now, treat <code>async def</code> as boilerplate: your code inside <code>run()</code> works just like regular Python. You can use normal <code>for</code> loops, <code>if</code> statements, and library calls.</p>
 <p><strong>Generics (<code>FunctionBlock[X, Y]</code>)</strong> — the square brackets tell the framework which input and output types this block uses. Think of it as a template: <code>FunctionBlock[InputType, OutputType]</code>. Your editor uses this for autocomplete.</p>
 </details>
 <hr />
-<h2 id="what-youll-build">What you'll build</h2>
+<h2 id="what-youll-build">What you&rsquo;ll build</h2>
 <p>An <strong>Echo</strong> function block that receives a piece of text and returns it unchanged.
 It is deliberately simple so you can focus on the structure rather than the logic.
 Every function block you write later — configuring interfaces, collecting facts,
@@ -6097,7 +6167,7 @@ structured outputs it returns.</p>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
 </span></code></pre></div>
 <p><code>FunctionBlockParams</code> is a Pydantic model. By writing <code>text: str</code>, you are saying:
-"this block requires a string input called <code>text</code>." Pydantic validates this
+&ldquo;this block requires a string input called <code>text</code>.&rdquo; Pydantic validates this
 automatically — if someone passes a number instead of a string, you get a clear error.</p>
 <h3 id="results">Results</h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">EchoResult</span><span class="p">(</span><span class="n">FunctionBlockResultData</span><span class="p">):</span>
@@ -6200,11 +6270,11 @@ retry or cache. You will learn more about these in the
 <li><strong><code>FunctionBlockResult</code></strong> — wrap your response with a <code>success</code> flag, a human-readable
   <code>message</code>, and your typed <code>data</code>.</li>
 <li><strong><code>del context</code> / <code>del params</code></strong> — a Python idiom that tells linters and
-  readers "this argument is intentionally unused." The statement discards the
+  readers &ldquo;this argument is intentionally unused.&rdquo; The statement discards the
   local reference but has no effect on the actual data. An alternative is to
   prefix the argument with an underscore (<code>_context</code>).</li>
 <li><strong><code>acquire()</code></strong> — called before <code>run()</code> to request additional data from the CMS
-  or lock shared resources. For blocks that don't need this (like our Echo), return
+  or lock shared resources. For blocks that don&rsquo;t need this (like our Echo), return
   a simple success. The method is required by the framework — every function block
   must implement it.</li>
 </ul>
@@ -6285,7 +6355,7 @@ it locally with pytest.</p>
 </details>
 <div class="admonition success">
 <p class="admonition-title">See it in action</p>
-<p>The echo function block you just built is used in the Workflow Engine's
+<p>The echo function block you just built is used in the Workflow Engine&rsquo;s
 <a href="/neops-workflow-engine/docs/getting-started/20-your-first-workflow/">Your First Workflow</a>
 tutorial. Deploy the hello-world workflow, start your worker, and watch the engine
 orchestrate the function block you just wrote.</p>
@@ -6448,7 +6518,7 @@ to verify it works locally with pytest.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

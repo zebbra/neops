@@ -45,6 +45,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -77,7 +79,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -208,14 +212,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -415,7 +413,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5756,6 +5760,14 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5773,47 +5785,7 @@
 
   <h1>Abbreviations</h1>
 
-<p><em>[ACL]: Access-Control List
-</em>[BFD]: Bidirectional Forwarding Detection
-<em>[BGP]: Border Gateway Protocol
-</em>[CHR]: Cloud Hosted Router (MikroTik)
-<em>[CVE]: Common Vulnerabilities and Exposures
-</em>[DERP]: Designated Encrypted Relay for Packets (Tailscale)
-<em>[DTO]: Data Transfer Object — Pydantic request/response models in this codebase, suffixed <code>*Dto</code>
-</em>[EOS]: Extensible Operating System (Arista)
-<em>[EULA]: End-User License Agreement
-</em>[EVPN]: Ethernet VPN
-<em>[FB]: Function Block — see Function Block tooltip
-</em>[FRR]: FRRouting
-<em>[GHCR]: GitHub Container Registry
-</em>[gNMI]: gRPC Network Management Interface
-<em>[GLBP]: Gateway Load Balancing Protocol (Cisco)
-</em>[HSRP]: Hot Standby Router Protocol (Cisco)
-<em>[IOL]: IOS On Linux (Cisco)
-</em>[IOS]: Internetwork Operating System (Cisco)
-<em>[IS-IS]: Intermediate System to Intermediate System
-</em>[mTLS]: mutual Transport Layer Security
-<em>[MPLS]: Multi-Protocol Label Switching
-</em>[NIC]: Network Interface Controller
-<em>[NOS]: Network Operating System
-</em>[OSPF]: Open Shortest Path First
-<em>[SR-MPLS]: Segment Routing over MPLS
-</em>[SR Linux]: Service Router Linux (Nokia)
-<em>[SRv6]: Segment Routing over IPv6
-</em>[VRF]: Virtual Routing and Forwarding
-*[YANG]: data-modeling language used by gNMI / NETCONF for network device config</p>
-<p><em>[Function Block]: A typed Python class implementing one unit of automation work — read configs, push templates, check compliance — orchestrated by the Worker SDK
-</em>[Worker]: A Python process that registers with the workflow engine, polls jobs from the blackboard, executes function blocks, returns results
-<em>[Workflow]: A versioned, declarative YAML description of an ordered sequence of automation operations on network entities
-</em>[Workflow Engine]: The NestJS service that schedules workflows and orchestrates worker execution via the blackboard
-<em>[Blackboard]: The shared job queue between the workflow engine and workers — engine writes jobs, workers read and return results
-</em>[Worker SDK]: neops-worker-sdk-py — the library you import to write function blocks; consumes Remote Lab's <code>remote_lab_fixture</code> for tests
-<em>[Remote Lab]: This project — exclusive, queue-brokered access to a real Netlab topology over HTTP
-</em>[LabManager]: The classmethod-only singleton that owns the running lab and enforces one-lab-per-host
-<em>[Netlab]: The upstream lab orchestrator (netlab.tools) this service wraps; manages one topology per host
-</em>[Containerlab]: The container runtime Netlab drives by default in this project (<code>provider: clab</code>)
-<em>[Topology]: A single Netlab YAML file declaring nodes, links, modules, and provider
-</em>[Headscale]: Self-hosted, Tailscale-compatible VPN coordination server — the recommended enclosure for the no-auth Remote Lab service</p>
+
 
 
 
@@ -5930,7 +5902,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

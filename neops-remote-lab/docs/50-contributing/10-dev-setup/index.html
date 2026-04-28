@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6108,6 +6112,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6126,7 +6196,7 @@
 <h1 id="dev-setup">Dev setup</h1>
 <p><em>Get from a fresh clone to a green <code>make check</code> in five minutes. Skim once; come back when CI surprises you.</em></p>
 <p>Get from a fresh clone to a green <code>make check</code> in five minutes. Then this page
-is what you come back to when CI flags something you didn't expect.</p>
+is what you come back to when CI flags something you didn&rsquo;t expect.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li><strong>Python 3.12+</strong> — the project pins <code>requires-python = "&gt;=3.12"</code>.</li>
@@ -6135,7 +6205,7 @@ is what you come back to when CI flags something you didn't expect.</p>
 <li><strong>git</strong> with push access if you intend to open PRs.</li>
 </ul>
 <p>You do <strong>not</strong> need Netlab or Containerlab installed to develop the server
-itself — CI doesn't have them either, and the test suite stubs <code>LabManager</code>
+itself — CI doesn&rsquo;t have them either, and the test suite stubs <code>LabManager</code>
 to keep tests host-agnostic. See
 <a href="../60-internals-test-stubbing/">Internals: CI test stubbing</a>.</p>
 <h2 id="clone-and-install">Clone and install</h2>
@@ -6161,7 +6231,7 @@ uv is unavailable.</p>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pip<span class="w"> </span>install<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>.
 </span></code></pre></div>
 <p><a href="https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-group">pip 25.0+ supports <code>--group</code></a>
-natively for PEP 735. You won't get the lockfile that uv produces;
+natively for PEP 735. You won&rsquo;t get the lockfile that uv produces;
 rely on <code>pyproject.toml</code> for reproducibility.</p>
 </div>
 <div class="tabbed-block">
@@ -6216,7 +6286,7 @@ that instead</strong> — <code>make check</code> and CI will agree with you.</p
 </table>
 <p>If any step fails, fix it locally before pushing — CI will not be more lenient.</p>
 <div class="admonition tip">
-<p class="admonition-title">What <code>make format</code> will and won't do</p>
+<p class="admonition-title">What <code>make format</code> will and won&rsquo;t do</p>
 <p><code>make format</code> runs <code>ruff format</code> and <code>ruff check --fix</code>, which auto-fixes
 formatting and a subset of lint rules (import order, unused imports,
 obvious style). It will <strong>not</strong> add missing type annotations or fix
@@ -6230,7 +6300,7 @@ rule classes that need human judgment (security, complexity).</p>
 <li><strong>Tests</strong> (<code>tests/**</code>): docstrings not required, <code>assert</code> allowed, magic
   values allowed.</li>
 <li><strong><code>server.py</code></strong>: FastAPI <code>Depends()</code>/<code>File()</code> defaults are exempt from the
-  "mutable default arg" rule.</li>
+  &ldquo;mutable default arg&rdquo; rule.</li>
 </ul>
 <p>Naming conventions that code review enforces:</p>
 <ul>
@@ -6274,7 +6344,7 @@ minimum version exists:</p>
 <li>Re-run <code>make audit</code> to confirm <code>pip-audit --strict</code> is still clean.</li>
 <li>Mention the dep bump in your commit message.</li>
 </ol>
-<p>This is one of the project's hard invariants. See
+<p>This is one of the project&rsquo;s hard invariants. See
 <a href="../20-invariants/#cve-pinned-dependencies">Invariants → CVE-pinned dependencies</a>.</p>
 <h2 id="branch-and-pr-flow">Branch and PR flow</h2>
 <ul>
@@ -6286,7 +6356,7 @@ minimum version exists:</p>
   cheaper to fix before the push.</li>
 <li><strong>Write tests</strong> for new functionality. The test suite lives in <code>tests/</code>
   and uses <code>pytest</code> plus <code>pytest-asyncio</code>. Use <code>httpx.AsyncClient</code> to
-  exercise FastAPI endpoints; that's the established pattern.</li>
+  exercise FastAPI endpoints; that&rsquo;s the established pattern.</li>
 </ul>
 <p>A typical PR looks like this:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 1. Branch from develop</span>
@@ -6330,7 +6400,7 @@ pattern.</p>
 <p>These have to run on a host with Netlab and Containerlab installed (the
 neops-labs VM, or a local Ubuntu machine that has been through
 <a href="../../40-deployment/10-netlab-host-setup/">Netlab host setup</a>). Gate them
-with markers or skip conditions so they don't fail in CI.</p>
+with markers or skip conditions so they don&rsquo;t fail in CI.</p>
 <h3 id="pytest-configuration">Pytest configuration</h3>
 <p>Configured in <code>pyproject.toml</code> under <code>[tool.pytest.ini_options]</code>:</p>
 <ul>
@@ -6338,7 +6408,7 @@ with markers or skip conditions so they don't fail in CI.</p>
   <code>@pytest.mark.asyncio</code>. Implicit asyncio mode hides ordering bugs;
   strict catches them.</li>
 <li><code>asyncio_default_fixture_loop_scope = "function"</code> — each test gets its
-  own loop. Don't mix scopes without a reason.</li>
+  own loop. Don&rsquo;t mix scopes without a reason.</li>
 <li><code>--ignore=docs</code> — the <code>docs/</code> tree contains symlinks back into source
   (<code>docs/neops_remote_lab/</code>, <code>docs/tests/</code>) so mkdocs snippets can resolve
   source paths. pytest would otherwise try to collect them.</li>
@@ -6517,7 +6587,7 @@ with markers or skip conditions so they don't fail in CI.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

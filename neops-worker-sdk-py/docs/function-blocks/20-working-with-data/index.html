@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6015,6 +6019,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../10-anatomy/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Function Blocks
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6031,14 +6101,14 @@
 
 
 <h1 id="working-with-data">Working with Data</h1>
-<p>Function blocks receive their data through the <code>WorkflowContext</code> -- a container of entity state that the workflow engine populates before execution. You read from it, modify it, and the platform persists the changes automatically. No manual database calls, no serialization code.</p>
+<p>Function blocks receive their data through the <code>WorkflowContext</code> &ndash; a container of entity state that the workflow engine populates before execution. You read from it, modify it, and the platform persists the changes automatically. No manual database calls, no serialization code.</p>
 <hr />
 <h2 id="the-workflowcontext">The WorkflowContext</h2>
 <p>When the workflow engine dispatches a job, it resolves the relevant entities from the CMS and bundles them into a <code>JobExecutionContextDto</code>. The SDK wraps this into a <code>WorkflowContext</code> that your <code>run()</code> method receives.</p>
 <div class="admonition tip">
 <p class="admonition-title">Platform Components</p>
 <p>The workflow engine populates the context from CMS data and dispatches it with each job.
-See the engine's <a href="/neops-workflow-engine/docs/10-concepts/30-context/">Context concept</a>
+See the engine&rsquo;s <a href="/neops-workflow-engine/docs/10-concepts/30-context/">Context concept</a>
 and <a href="/neops-workflow-engine/docs/20-workflows/50-acquire/">Acquire phase</a> for how entity
 resolution works on the engine side. CMS documentation is forthcoming.</p>
 </div>
@@ -6084,8 +6154,8 @@ resolution works on the engine side. CMS documentation is forthcoming.</p>
 </tr>
 </tbody>
 </table>
-<p>The convenience properties (<code>device</code>, <code>device_group</code>, <code>interface</code>) are set based on the <code>run_on</code> value in your registration. When <code>run_on="device"</code>, the SDK matches the job's <code>entity_id</code> against <code>context.devices</code> and assigns the matching entity to <code>context.device</code>.</p>
-<p>For function blocks that don't target a specific entity (e.g. discovery tasks
+<p>The convenience properties (<code>device</code>, <code>device_group</code>, <code>interface</code>) are set based on the <code>run_on</code> value in your registration. When <code>run_on="device"</code>, the SDK matches the job&rsquo;s <code>entity_id</code> against <code>context.devices</code> and assigns the matching entity to <code>context.device</code>.</p>
+<p>For function blocks that don&rsquo;t target a specific entity (e.g. discovery tasks
 that scan a subnet), use <code>run_on="global"</code>. All convenience properties remain
 <code>None</code>, and you work directly with the collections.</p>
 <div class="admonition warning">
@@ -6228,8 +6298,8 @@ entity whose ID matches the <code>entity_id</code> you pass to the context.</p>
 <h2 id="facts-and-checks">Facts and Checks</h2>
 <p>Facts and checks are versioned key-value stores attached to every entity. They are auto-aggregated as JSON and accessible through <code>device.facts</code>, <code>device.checks</code>, <code>interface.facts</code>, and so on.</p>
 <ul>
-<li><strong>Facts</strong> store operational data collected by function blocks -- interface counters, software versions, inventory details.</li>
-<li><strong>Checks</strong> store compliance and validation results -- policy pass/fail, threshold violations, audit findings.</li>
+<li><strong>Facts</strong> store operational data collected by function blocks &ndash; interface counters, software versions, inventory details.</li>
+<li><strong>Checks</strong> store compliance and validation results &ndash; policy pass/fail, threshold violations, audit findings.</li>
 </ul>
 <p>Both work identically from a data-access perspective:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">existing_facts</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">facts</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -6239,11 +6309,11 @@ entity whose ID matches the <code>entity_id</code> you pass to the context.</p>
 <p>The typical flow: a function block reads the current entity state, collects new data (from the device, an API, or computation), and writes the result back into facts. The platform handles versioning and persistence.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Facts and checks live on all three entity types. <code>device.facts</code>, <code>interface.facts</code>, and <code>device_group.facts</code> all follow the same pattern. Choose the entity that best represents the data's scope -- per-device for hardware info, per-interface for port counters, per-group for site-level aggregates.</p>
+<p>Facts and checks live on all three entity types. <code>device.facts</code>, <code>interface.facts</code>, and <code>device_group.facts</code> all follow the same pattern. Choose the entity that best represents the data&rsquo;s scope &ndash; per-device for hardware info, per-interface for port counters, per-group for site-level aggregates.</p>
 </div>
 <hr />
 <h2 id="change-tracking">Change Tracking</h2>
-<p>The <code>WorkflowContext</code> tracks every modification you make to entities -- automatically. You never need to build update payloads or call save methods.</p>
+<p>The <code>WorkflowContext</code> tracks every modification you make to entities &ndash; automatically. You never need to build update payloads or call save methods.</p>
 <pre class="mermaid"><code>flowchart LR
     A[Context created&lt;br/&gt;snapshot taken] --&gt; B[run&amp;lpar;&amp;rpar; executes&lt;br/&gt;entities modified]
     B --&gt; C[compute_db_updates&amp;lpar;&amp;rpar;&lt;br/&gt;diffs current vs snapshot]
@@ -6346,13 +6416,13 @@ entity whose ID matches the <code>entity_id</code> you pass to the context.</p>
 </span></code></pre></div>
 <p>The three key patterns in this example:</p>
 <ol>
-<li><strong>Read entity fields</strong> -- access <code>device.hostname</code>, <code>device.ip</code>, or any DTO field directly.</li>
-<li><strong>Read existing facts</strong> -- <code>device.facts or {}</code> gives you the current fact dictionary; use <code>.get()</code> to safely access nested keys.</li>
-<li><strong>Write facts</strong> -- merge new data into the existing dict and assign it back. The diff engine detects the change and generates a patch operation.</li>
+<li><strong>Read entity fields</strong> &ndash; access <code>device.hostname</code>, <code>device.ip</code>, or any DTO field directly.</li>
+<li><strong>Read existing facts</strong> &ndash; <code>device.facts or {}</code> gives you the current fact dictionary; use <code>.get()</code> to safely access nested keys.</li>
+<li><strong>Write facts</strong> &ndash; merge new data into the existing dict and assign it back. The diff engine detects the change and generates a patch operation.</li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Some fields are <strong>read-only</strong> and excluded from diffing: <code>id</code>, <code>created_at</code>, <code>updated_at</code>, lock states, and computed counts. Writing to these fields has no effect -- the platform silently ignores them.</p>
+<p>Some fields are <strong>read-only</strong> and excluded from diffing: <code>id</code>, <code>created_at</code>, <code>updated_at</code>, lock states, and computed counts. Writing to these fields has no effect &ndash; the platform silently ignores them.</p>
 </div>
 <hr />
 <p><strong>Next:</strong> <a href="../30-creating-entities/">Creating Entities</a> to learn how to add new devices, interfaces, and groups from within a function block.</p>
@@ -6510,7 +6580,7 @@ entity whose ID matches the <code>entity_id</code> you pass to the context.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

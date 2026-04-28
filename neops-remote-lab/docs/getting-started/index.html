@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5840,6 +5844,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Get started
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5861,10 +5931,10 @@
 <p>Answer one question: <strong>what runs your tests today?</strong></p>
 <ul>
 <li><strong>Pytest, against a Remote Lab Manager you can already reach</strong> → <a href="10-pytest/">Run your first test</a>. Ten minutes, three lines of test code.</li>
-<li><strong>You're a Neops dev using the Worker SDK</strong> → <a href="15-worker-sdk/">Plug into Worker SDK</a>. Two-step setup, then the Worker SDK testing guide takes over.</li>
-<li><strong>Pytest, but you don't have a server to point at</strong> → <a href="20-local/">Run locally</a>, then return to <a href="10-pytest/">Run your first test</a> from step 3.</li>
+<li><strong>You&rsquo;re a Neops dev using the Worker SDK</strong> → <a href="15-worker-sdk/">Plug into Worker SDK</a>. Two-step setup, then the Worker SDK testing guide takes over.</li>
+<li><strong>Pytest, but you don&rsquo;t have a server to point at</strong> → <a href="20-local/">Run locally</a>, then return to <a href="10-pytest/">Run your first test</a> from step 3.</li>
 <li><strong>Anything else — Go, Robot Framework, shell, your own harness</strong> → <a href="30-curl/">Drive from cURL</a>. Six cURL calls end-to-end; no Python required.</li>
-<li><strong>You're wiring this into CI</strong> → <a href="40-ci/">Wire into CI</a>. Env vars, runner pipeline tabs, queue tuning.</li>
+<li><strong>You&rsquo;re wiring this into CI</strong> → <a href="40-ci/">Wire into CI</a>. Env vars, runner pipeline tabs, queue tuning.</li>
 <li><strong>You operate the lab host (not just consume it)</strong> → skip Get started. Begin at <a href="../40-deployment/10-netlab-host-setup/">Netlab host setup</a>.</li>
 </ul>
 <h2 id="in-this-section">In this section</h2>
@@ -5883,7 +5953,7 @@
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg></span> &nbsp; <strong><a href="20-local/">Run locally</a></strong></p>
 <hr />
-<p>Don't have a remote VM yet? Install Netlab + Containerlab rootless on Ubuntu and run the server on <code>localhost:8000</code>. Point your tests at it; resume the test guide.</p>
+<p>Don&rsquo;t have a remote VM yet? Install Netlab + Containerlab rootless on Ubuntu and run the server on <code>localhost:8000</code>. Point your tests at it; resume the test guide.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9h2.31l.32-3h2l-.32 3h2l.32-3h2l-.32 3H15v2h-1.9l-.2 2H15v2h-2.31l-.32 3h-2l.32-3h-2l-.32 3h-2l.32-3H5v-2h1.9l.2-2H5zm4.1 2-.2 2h2l.2-2M19 6h-2v8h2m0 2h-2v2h2Z"/></svg></span> &nbsp; <strong><a href="30-curl/">Drive from cURL</a></strong></p>
@@ -6062,7 +6132,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>

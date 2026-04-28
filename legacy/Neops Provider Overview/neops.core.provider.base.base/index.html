@@ -45,6 +45,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -82,7 +84,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -213,14 +217,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -420,7 +418,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -5849,6 +5853,14 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -5892,7 +5904,7 @@ The <code>json_schema</code> specifies the required input values to instantiate 
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">provider_type</span><span class="p">:</span> <span class="n">neops</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">enum</span><span class="o">.</span><span class="n">ProviderTypeEnum</span>
 </span></code></pre></div>
 <code>provider_type</code> specifices the provider type, currently we are suppoting vor different types of providers <code>CONFIGURE</code>, <code>FACTS</code>, <code>CHECK</code> and <code>EXECUTE</code>. 
-The provider type can be used by "frontend" applications to have different processes for the provider types. The neops.io frontend the normal handels for example <code>CONFIGURE</code> provider types with a two step run, first dry run then apply.</p>
+The provider type can be used by &ldquo;frontend&rdquo; applications to have different processes for the provider types. The neops.io frontend the normal handels for example <code>CONFIGURE</code> provider types with a two step run, first dry run then apply.</p>
 <hr />
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">result_writer</span><span class="p">:</span> <span class="n">neops</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">base_result_writer</span><span class="o">.</span><span class="n">BaseResultWriter</span>
 </span></code></pre></div>
@@ -5921,7 +5933,7 @@ On <code>GENERIC</code> the task instance must overwrite the run on value with t
 Normally this is the same as the <code>run_on</code> value and if <code>run_on_result</code> is <code>None</code> then the <code>run_on</code> value is used. </p>
 <p>Example for different values of <code>run_on</code> and <code>run_on_result</code>:
 If you build a provider which get facts for interfaces, but those facts are only collectable per device (you always get the facts for all interfaces on this device). 
-In such a case it could make sense to set <code>run_on</code> to <code>DEVICE</code> and <code>run_on_result</code> to <code>INTERFACE</code>, then you got the result per interface and it's visible for which interfaces the facts are collected.</p>
+In such a case it could make sense to set <code>run_on</code> to <code>DEVICE</code> and <code>run_on_result</code> to <code>INTERFACE</code>, then you got the result per interface and it&rsquo;s visible for which interfaces the facts are collected.</p>
 <hr />
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">run_on_strict</span><span class="p">:</span> <span class="nb">bool</span>
 </span></code></pre></div>
@@ -5954,7 +5966,7 @@ On the base provider we add only the json schema of the task instantiation to gi
 <hr />
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">add_nornir_processors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">nornir</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">processor</span><span class="o">.</span><span class="n">Processor</span><span class="p">]</span>
 </span></code></pre></div>
-Add additional Nornir Processors, for more information see https://nornir.readthedocs.io/en/v2.5.0/tutorials/intro/processors.html</p>
+Add additional Nornir Processors, for more information see <a href="https://nornir.readthedocs.io/en/v2.5.0/tutorials/intro/processors.html">https://nornir.readthedocs.io/en/v2.5.0/tutorials/intro/processors.html</a></p>
 <hr />
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">init_adjust_run_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">execute_on</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">execute_on_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">neops</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">enum</span><span class="o">.</span><span class="n">RunOnEnum</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">dry_run</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">task_input_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">search_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">task_kwargs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoneType</span>
 </span></code></pre></div>
@@ -6183,7 +6195,7 @@ Merges the JSON Schemas of instanciated task and those of this provider</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>

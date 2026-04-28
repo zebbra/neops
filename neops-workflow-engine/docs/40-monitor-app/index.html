@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6019,6 +6023,54 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Workflows
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6044,11 +6096,11 @@ UI for workflow management and execution monitoring.</p>
 </div>
 <h2 id="what-you-can-do">What You Can Do</h2>
 <ul>
-<li><strong>Browse workflow definitions</strong> -- See all registered workflows with their versions, steps, and schemas</li>
-<li><strong>Trigger executions</strong> -- Execute workflows with custom parameters and entity scopes</li>
-<li><strong>Monitor executions</strong> -- Watch execution state transitions in real time (NEW → RUNNING → COMPLETED)</li>
-<li><strong>Inspect jobs</strong> -- See which jobs are pending, polled, or completed, and which worker handled each job</li>
-<li><strong>View workers</strong> -- See online workers and their registered function blocks</li>
+<li><strong>Browse workflow definitions</strong> &ndash; See all registered workflows with their versions, steps, and schemas</li>
+<li><strong>Trigger executions</strong> &ndash; Execute workflows with custom parameters and entity scopes</li>
+<li><strong>Monitor executions</strong> &ndash; Watch execution state transitions in real time (NEW → RUNNING → COMPLETED)</li>
+<li><strong>Inspect jobs</strong> &ndash; See which jobs are pending, polled, or completed, and which worker handled each job</li>
+<li><strong>View workers</strong> &ndash; See online workers and their registered function blocks</li>
 </ul>
 <h2 id="quick-start">Quick Start</h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker Compose (recommended)</label><label for="__tabbed_1_2">Local development</label></div>
@@ -6100,11 +6152,11 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <p>The Monitor App accepts workflow definitions in <strong>JSON</strong> format. Since we recommend authoring workflows in YAML for readability, convert before importing:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>yq<span class="w"> </span>-o<span class="o">=</span>json<span class="w"> </span>my-workflow.workflow.yaml<span class="w"> </span>&gt;<span class="w"> </span>my-workflow.workflow.json
 </span></code></pre></div>
-<p>Paste the raw workflow JSON into the Monitor App's definition editor — the app handles the API wrapping automatically.</p>
+<p>Paste the raw workflow JSON into the Monitor App&rsquo;s definition editor — the app handles the API wrapping automatically.</p>
 <div class="admonition tip">
 <p class="admonition-title">Quick conversion alternatives</p>
 <ul>
-<li><strong><code>yq</code></strong> (recommended): <code>yq -o=json &lt; workflow.yaml</code> -- install via <code>brew install yq</code>
+<li><strong><code>yq</code></strong> (recommended): <code>yq -o=json &lt; workflow.yaml</code> &ndash; install via <code>brew install yq</code>
   or see <a href="https://github.com/mikefarah/yq">github.com/mikefarah/yq</a></li>
 <li><strong>Online</strong>: <a href="https://www.json2yaml.com/">json2yaml.com</a> converts both directions</li>
 <li><strong>Python</strong>: <code>python -c "import yaml, json, sys; json.dump(yaml.safe_load(sys.stdin), sys.stdout, indent=2)" &lt; workflow.yaml</code></li>
@@ -6114,12 +6166,12 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <summary>Technology</summary>
 <p>The Monitor App is built with <a href="https://svelte.dev/">Svelte</a> and communicates with the engine
 via browser-side HTTP requests to the REST API (defaulting to <code>http://localhost:3030</code>,
-configurable in the app's Settings page). When started via Docker Compose, it runs as a static
+configurable in the app&rsquo;s Settings page). When started via Docker Compose, it runs as a static
 production build served by nginx. For local development (<code>make run-monitor</code>), it runs as a Vite
 dev server with hot-reload.</p>
 </details>
 <hr />
-<p><strong>Next:</strong> <a href="../getting-started/20-your-first-workflow/">Your First Workflow</a> -- deploy and execute a workflow end to end.</p>
+<p><strong>Next:</strong> <a href="../getting-started/20-your-first-workflow/">Your First Workflow</a> &ndash; deploy and execute a workflow end to end.</p>
 
 
 
@@ -6274,7 +6326,7 @@ dev server with hot-reload.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>

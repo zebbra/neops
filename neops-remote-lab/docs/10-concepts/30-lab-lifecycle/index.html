@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -88,7 +90,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -219,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -428,7 +426,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -6052,6 +6056,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6068,13 +6138,13 @@
 
 
 <h1 id="lab-lifecycle">Lab lifecycle</h1>
-<p><em>Identify, decide, reuse-or-start, count. The bookkeeping that makes "many tests, one lab" work.</em></p>
+<p><em>Identify, decide, reuse-or-start, count. The bookkeeping that makes &ldquo;many tests, one lab&rdquo; work.</em></p>
 <p>When a test asks for a lab, four things happen in order:</p>
 <ol>
 <li><strong>Identify</strong> the topology (by content hash, not filename).</li>
 <li><strong>Decide</strong> whether an existing lab can be reused.</li>
 <li><strong>Reuse</strong> the running lab or <strong>start a fresh one</strong>.</li>
-<li><strong>Count</strong> the acquisition so nothing tears the lab down while it's
+<li><strong>Count</strong> the acquisition so nothing tears the lab down while it&rsquo;s
    still in use.</li>
 </ol>
 <p><code>LabManager</code> encapsulates that bookkeeping.</p>
@@ -6082,8 +6152,8 @@
 <p><strong>Why reference counting?</strong> Many tests need the <em>same</em> topology. Spinning
 it up once and letting several clients share it turns a 5-minute Netlab
 boot into a one-time cost per test session. But sharing has to be opt-in
-(a test that mutates device configs shouldn't silently collide with a
-reader), and the last user has to know it's the last user. That's what the
+(a test that mutates device configs shouldn&rsquo;t silently collide with a
+reader), and the last user has to know it&rsquo;s the last user. That&rsquo;s what the
 ref counter tracks.</p>
 </blockquote>
 <h2 id="topology-identity-is-content-not-filename">Topology identity is content, not filename</h2>
@@ -6096,7 +6166,7 @@ contents are therefore the same topology: a reuse request from one succeeds
 against a lab started by the other.</p>
 <div class="admonition tip">
 <p class="admonition-title">This lets you copy topologies without fragmenting reuse</p>
-<p>A test helper that copies a vendored topology into each test's workdir
+<p>A test helper that copies a vendored topology into each test&rsquo;s workdir
 still gets reuse for free, as long as the content is unchanged. The
 filename is purely cosmetic.</p>
 </div>
@@ -6120,7 +6190,7 @@ filename is purely cosmetic.</p>
 <h2 id="reuse-the-refcount-increments">Reuse: the refcount increments</h2>
 <!-- trace: neops_remote_lab/netlab/lab_manager.py:190 -->
 <p>When the topology content hashes match and the caller sets <code>reuse=True</code>,
-<code>LabManager</code> increments the handle's <code>ref</code> counter and hands back the
+<code>LabManager</code> increments the handle&rsquo;s <code>ref</code> counter and hands back the
 existing device list. Netlab is not invoked — the running containers are
 already up, so the call returns in milliseconds.</p>
 <p>Expected log line on a reuse:</p>
@@ -6128,12 +6198,12 @@ already up, so the call returns in milliseconds.</p>
 </span></code></pre></div>
 <p>The same lab can fan out to as many concurrent sessions as the queue allows.
 In the REST surface this is driven by <code>reuse=true</code> on the multipart upload;
-on the fixture side it's the <code>reuse_lab=True</code> keyword.</p>
+on the fixture side it&rsquo;s the <code>reuse_lab=True</code> keyword.</p>
 <h2 id="release-the-refcount-decrements">Release: the refcount decrements</h2>
 <!-- trace: neops_remote_lab/netlab/lab_manager.py:251 -->
-<p><code>release</code> (or the server's <code>release_current</code> wrapper) decrements the
+<p><code>release</code> (or the server&rsquo;s <code>release_current</code> wrapper) decrements the
 counter. Crucially, <strong>hitting zero does not tear the lab down</strong>. The lab
-becomes "idle": still running, still responsive on its management
+becomes &ldquo;idle&rdquo;: still running, still responsive on its management
 interfaces, but unowned. The next acquire decides its fate.</p>
 <table>
 <thead>
@@ -6189,8 +6259,8 @@ and <code>_start</code> brings up the new topology.</p>
 <p>An ACTIVE session must heartbeat — see <a href="../20-session-queue/#the-heartbeat">Session Queue → The heartbeat</a> — or the lab gets reaped from under it.</p>
 <h2 id="long-running-ci-host-sanity-check">Long-running CI host sanity check</h2>
 <!-- trace: neops_remote_lab/netlab/lab_manager.py:125 -->
-<p>Before starting any new lab, <code>_start</code> forcibly runs <code>netlab down --instance default --cleanup</code> to reclaim a stale default instance left over from a crashed prior job. The call is made with <code>expected_failure=True</code>, so when no default instance exists it's a silent no-op.</p>
-<p>For the operator's view of the same cleanup at server startup time, see <a href="../../30-server/10-administration/#starting-the-server">Administration → Starting the server</a>.</p>
+<p>Before starting any new lab, <code>_start</code> forcibly runs <code>netlab down --instance default --cleanup</code> to reclaim a stale default instance left over from a crashed prior job. The call is made with <code>expected_failure=True</code>, so when no default instance exists it&rsquo;s a silent no-op.</p>
+<p>For the operator&rsquo;s view of the same cleanup at server startup time, see <a href="../../30-server/10-administration/#starting-the-server">Administration → Starting the server</a>.</p>
 <h2 id="where-to-go-next">Where to go next</h2>
 <ul>
 <li><a href="../40-topology-format/">Topology format</a> — what goes inside the YAML
@@ -6357,7 +6427,7 @@ and <code>_start</code> brings up the new topology.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

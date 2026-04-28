@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../assets/extra.css">
+    
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../../.." title="Neops Docs" class="md-header__button md-logo" aria-label="Neops Docs" data-md-component="logo">
       
@@ -217,14 +221,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -426,7 +424,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -4832,7 +4836,7 @@
   <a href="#what-youll-deploy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you'll deploy
+        What you&rsquo;ll deploy
       
     </span>
   </a>
@@ -5988,7 +5992,7 @@
   <a href="#what-youll-deploy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What you'll deploy
+        What you&rsquo;ll deploy
       
     </span>
   </a>
@@ -6094,6 +6098,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Remote Lab
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Deploy & Operate
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
   
@@ -6125,7 +6195,7 @@ crosslink_references: []</p>
 <p>This page is the five-command happy path: a <a href="https://headscale.net/">Headscale</a> control plane, the <a href="https://github.com/tale/headplane">Headplane</a> UI, the lab host as a subnet router, and one client peer that can reach the lab subnet. For ACLs, OIDC, and troubleshooting tables, see <a href="../30-headscale-reference/">Headscale: reference</a>.</p>
 <div class="admonition info">
 <p class="admonition-title">Placeholder convention</p>
-<p>Substitute <code>$HEADSCALE_HOST</code> with your Headscale server's IP or DNS name (<code>export HEADSCALE_HOST=lab.example.com</code>) and <code>$LAB_SUBNET</code> with the IPv4 CIDR of the lab network (<code>export LAB_SUBNET=192.168.121.0/24</code>). The libvirt default is <code>192.168.121.0/24</code>; a Containerlab-only host typically uses a <code>172.20.20.0/24</code> management bridge.</p>
+<p>Substitute <code>$HEADSCALE_HOST</code> with your Headscale server&rsquo;s IP or DNS name (<code>export HEADSCALE_HOST=lab.example.com</code>) and <code>$LAB_SUBNET</code> with the IPv4 CIDR of the lab network (<code>export LAB_SUBNET=192.168.121.0/24</code>). The libvirt default is <code>192.168.121.0/24</code>; a Containerlab-only host typically uses a <code>172.20.20.0/24</code> management bridge.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Replace the <code>CHANGE-ME.example</code> placeholder</p>
@@ -6149,13 +6219,13 @@ crosslink_references: []</p>
 <p>You should see your random hex string, not the <code>CHANGE_ME...</code> placeholder.</p>
 <div class="admonition tip">
 <p class="admonition-title">macOS / BSD <code>sed</code> users</p>
-<p>The <code>-i.bak</code> form works on both GNU and BSD <code>sed</code> — that's why the redundant <code>.bak</code> extension and explicit <code>rm</code> are there. Don't simplify to <code>-i ''</code> unless you're sure it's GNU.</p>
+<p>The <code>-i.bak</code> form works on both GNU and BSD <code>sed</code> — that&rsquo;s why the redundant <code>.bak</code> extension and explicit <code>rm</code> are there. Don&rsquo;t simplify to <code>-i ''</code> unless you&rsquo;re sure it&rsquo;s GNU.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title"><strong>Demo-grade secret hygiene only</strong></p>
-<p>The bootstrap above gives every developer their own random secret per clone — fine for local dev and lab use. <strong>For shared / production deployments</strong>, store the secret outside the repo: drop it in a sealed-secret store (Vault, SOPS-encrypted file, your CI's secrets store) and template it in at deploy time. Cookies signed with a leaked secret can be forged by anyone who has it.</p>
+<p>The bootstrap above gives every developer their own random secret per clone — fine for local dev and lab use. <strong>For shared / production deployments</strong>, store the secret outside the repo: drop it in a sealed-secret store (Vault, SOPS-encrypted file, your CI&rsquo;s secrets store) and template it in at deploy time. Cookies signed with a leaked secret can be forged by anyone who has it.</p>
 </div>
-<h2 id="what-youll-deploy">What you'll deploy</h2>
+<h2 id="what-youll-deploy">What you&rsquo;ll deploy</h2>
 <!-- trace: headscale/docker-compose.yml:32-33 -->
 
 <ul>
@@ -6170,7 +6240,7 @@ crosslink_references: []</p>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>ps<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}&#39;</span>
 </span></code></pre></div>
 <p>Expected ports on the host: <code>8080</code> (Headscale API), <code>9090</code> (Headscale metrics), <code>3000</code> (Headplane UI).</p>
-<p>Open the Headplane UI at <code>http://$HEADSCALE_HOST:3000/admin</code>. If the VM's IP isn't directly reachable, SSH-tunnel:</p>
+<p>Open the Headplane UI at <code>http://$HEADSCALE_HOST:3000/admin</code>. If the VM&rsquo;s IP isn&rsquo;t directly reachable, SSH-tunnel:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">3000</span>:localhost:3000<span class="w"> </span>root@<span class="nv">$HEADSCALE_HOST</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Then open http://127.0.0.1:3000/admin</span>
 </span></code></pre></div>
@@ -6187,7 +6257,7 @@ crosslink_references: []</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>headscale<span class="w"> </span>headscale<span class="w"> </span>users<span class="w"> </span>create<span class="w"> </span>lab-host
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>headscale<span class="w"> </span>headscale<span class="w"> </span>preauthkeys<span class="w"> </span>create<span class="w"> </span>-u<span class="w"> </span>lab-host<span class="w"> </span>-e<span class="w"> </span>24h
 </span></code></pre></div>
-<p>Capture the printed key — you'll pass it to <code>tailscale up</code> next.</p>
+<p>Capture the printed key — you&rsquo;ll pass it to <code>tailscale up</code> next.</p>
 <h2 id="register-the-lab-host-as-a-subnet-router">Register the lab host as a subnet router</h2>
 <p>On the <strong>Remote Lab VM</strong>, install Tailscale and join the tailnet, advertising the lab subnet:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">TS_ALLOW_INSECURE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>tailscale<span class="w"> </span>up<span class="w"> </span><span class="se">\</span>
@@ -6223,7 +6293,7 @@ crosslink_references: []</p>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>-fsS<span class="w"> </span><span class="s2">&quot;http://&lt;lab-host-tailnet-ip&gt;:8000/healthz&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>OK
 </span></code></pre></div>
 <h2 id="other-approaches">Other approaches</h2>
-<p>The lab service is unaware of <em>how</em> it's reached — only that callers can hit <code>:8000</code> and the lab subnet. Pick whichever enclosure fits your infrastructure:</p>
+<p>The lab service is unaware of <em>how</em> it&rsquo;s reached — only that callers can hit <code>:8000</code> and the lab subnet. Pick whichever enclosure fits your infrastructure:</p>
 <table>
 <thead>
 <tr>
@@ -6251,22 +6321,22 @@ crosslink_references: []</p>
 <tr>
 <td><strong>OpenVPN, IPSec, ZeroTier, Nebula, Twingate, Cloudflare Tunnel, …</strong></td>
 <td>Your org already runs and operates one of these well.</td>
-<td>Whatever the specific tool's footprint is.</td>
+<td>Whatever the specific tool&rsquo;s footprint is.</td>
 </tr>
 <tr>
 <td><strong>IP allowlist on a host firewall</strong> (no VPN at all)</td>
 <td>Every caller is already on a single private subnet you control.</td>
-<td>No mesh — peers on other networks can't reach the host.</td>
+<td>No mesh — peers on other networks can&rsquo;t reach the host.</td>
 </tr>
 <tr>
 <td><strong>mTLS at a reverse proxy</strong></td>
-<td>You can't deploy a VPN but you can manage client certs.</td>
-<td>mTLS authenticates the <em>transport</em>, not the lab's session model — layer in front of network restriction, not instead of it.</td>
+<td>You can&rsquo;t deploy a VPN but you can manage client certs.</td>
+<td>mTLS authenticates the <em>transport</em>, not the lab&rsquo;s session model — layer in front of network restriction, not instead of it.</td>
 </tr>
 </tbody>
 </table>
-<p>The <a href="../../30-server/30-security/#operational-guidance">Security model → operational guidance</a> lists the do/don'ts that apply regardless of which approach you pick.</p>
-<p>If you go with one of the alternatives, the Headscale-specific commands and the Headplane UI on this page won't apply — but two things on this page <strong>carry over</strong> to any subnet-routing setup:</p>
+<p>The <a href="../../30-server/30-security/#operational-guidance">Security model → operational guidance</a> lists the do/don&rsquo;ts that apply regardless of which approach you pick.</p>
+<p>If you go with one of the alternatives, the Headscale-specific commands and the Headplane UI on this page won&rsquo;t apply — but two things on this page <strong>carry over</strong> to any subnet-routing setup:</p>
 <ul>
 <li><strong>Prerequisites</strong> — network egress to peers; do not expose <code>:8000</code> to the public internet.</li>
 <li><strong><a href="#system-settings-on-the-lab-host">System settings on the lab host</a></strong> — Docker <code>iptables: false</code> and <code>net.ipv4.ip_forward=1</code> are required for <em>any</em> setup that bridges the lab subnet to peers, regardless of the VPN/coordination plane.</li>
@@ -6275,7 +6345,7 @@ crosslink_references: []</p>
 <ul>
 <li><strong><a href="../30-headscale-reference/">Headscale: reference</a></strong> — ACLs, user management, system settings, troubleshooting (Headscale-specific).</li>
 <li><strong><a href="../../30-server/10-administration/">Operator runbook</a></strong> — install the lab service itself behind the network enclosure you just stood up.</li>
-<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the network boundary is protecting against, and what it isn't.</li>
+<li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the network boundary is protecting against, and what it isn&rsquo;t.</li>
 </ul>
 
 
@@ -6431,7 +6501,7 @@ crosslink_references: []</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "header.autohide", "announce.dismiss", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.tracking", "navigation.instant", "search.share", "search.suggest", "search.highlight", "content.action.edit", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
