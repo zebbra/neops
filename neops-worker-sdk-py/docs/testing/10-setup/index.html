@@ -6342,6 +6342,11 @@ object your function block receives in <code>run()</code>.</p>
 </tr>
 </tbody>
 </table>
+<p>The Remote Lab client also reads three timeout overrides
+(<code>REMOTE_LAB_REQUEST_TIMEOUT</code>, <code>REMOTE_LAB_SESSION_TIMEOUT</code>,
+<code>REMOTE_LAB_ACQUISITION_TIMEOUT</code>) — see the canonical
+<a href="https://docs.neops.io/neops-remote-lab/docs/20-client/30-configuration/">Remote Lab client config</a>
+for defaults and the timeout-coordination guidance.</p>
 <hr />
 <h2 id="running-tests">Running Tests</h2>
 <p>The test suite uses <strong>markers</strong> to separate tests into tiers. By default,

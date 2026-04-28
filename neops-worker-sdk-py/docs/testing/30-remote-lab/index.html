@@ -3692,6 +3692,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -6186,6 +6197,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -6283,7 +6305,10 @@
 <a href="https://netlab.tools/">Netlab</a> network topologies on demand using
 <a href="https://containerlab.dev/">Containerlab</a> as the orchestration provider.
 It lets you test function blocks against real virtual devices (FRR, Cisco IOL,
-etc.) without managing lab infrastructure locally.</p>
+Nokia SR Linux, etc.) without managing lab infrastructure locally. The
+canonical reference for the lab itself — architecture, queue semantics,
+deployment paths — lives in the <a href="https://docs.neops.io/neops-remote-lab/docs/">neops-remote-lab project docs</a>;
+this page is the SDK-consumer view.</p>
 <hr />
 <h2 id="how-it-works">How It Works</h2>
 <pre class="mermaid"><code>sequenceDiagram
@@ -6315,7 +6340,19 @@ etc.) without managing lab infrastructure locally.</p>
 <p>Or add to <code>.env</code> — the test suite auto-loads it via <code>python-dotenv</code>.</p>
 <p>When <code>REMOTE_LAB_URL</code> is unset, fixtures fall back to local execution
 (requires <a href="https://netlab.tools/install/">Netlab</a> and
-<a href="https://containerlab.dev/install/">Containerlab</a> installed on the host).</p>
+<a href="https://containerlab.dev/install/">Containerlab</a> installed on the host).
+The full set of timeout overrides
+(<code>REMOTE_LAB_REQUEST_TIMEOUT</code>, <code>REMOTE_LAB_SESSION_TIMEOUT</code>,
+<code>REMOTE_LAB_ACQUISITION_TIMEOUT</code>) lives in the
+<a href="https://docs.neops.io/neops-remote-lab/docs/20-client/30-configuration/">Remote Lab client config reference</a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Don&rsquo;t have a Remote Lab Manager to point at?</p>
+<p>Two entry points on the Remote Lab side:</p>
+<ul>
+<li><a href="https://docs.neops.io/neops-remote-lab/docs/getting-started/20-local/"><strong>Run locally</strong></a> — install the lab service on <code>localhost:8000</code> for offline dev (~10 min).</li>
+<li><a href="https://docs.neops.io/neops-remote-lab/docs/40-deployment/05-pick-deployment/"><strong>Pick a deployment</strong></a> — decision tree for shared VM / multi-tenant lab / CI runner pool.</li>
+</ul>
+</div>
 <hr />
 <h2 id="creating-lab-fixtures">Creating Lab Fixtures</h2>
 <h3 id="1-write-a-topology-file">1. Write a topology file</h3>
@@ -6328,9 +6365,12 @@ and are stored in <code>tests/topologies/</code>. Here is a minimal two-router l
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">nodes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">r1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">r2</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">links</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">r1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">r2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">r1-r2</span><span class="w"> </span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<p>Change <code>defaults.device</code> to <code>iol</code> for a Cisco IOL lab. For available device
-types, modules, and link options, see the
-<a href="https://netlab.tools/platforms/">Netlab platform support</a> and
+<p>Change <code>defaults.device</code> to <code>iol</code> for Cisco IOL or <code>srlinux</code> for Nokia
+SR Linux. Per-vendor install walkthroughs (image sources, EULA, the
+IOL build path) live on the Remote Lab side at
+<a href="https://docs.neops.io/neops-remote-lab/docs/40-deployment/40-vendor-setup/">Vendor setup</a>.
+For Netlab&rsquo;s full kind catalogue, see
+<a href="https://netlab.tools/platforms/">Netlab platforms</a> and the
 <a href="https://netlab.tools/topology-reference/">topology reference</a>.</p>
 <h3 id="2-register-fixtures-in-conftestpy">2. Register fixtures in <code>conftest.py</code></h3>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_remote_lab.testing.fixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">remote_lab_fixture</span>
@@ -6362,9 +6402,14 @@ types, modules, and link options, see the
 <p>Fixtures yield <code>DeviceInfoDto</code> objects representing lab nodes, including their
 management IPs and credentials assigned by Containerlab.</p>
 <div class="admonition note">
-<p class="admonition-title">One lab per test</p>
-<p>Only one lab fixture can be active per test. The ordering plugin groups
-tests by fixture so the lab is provisioned once and reused within the group.</p>
+<p class="admonition-title">One lab per test; reuse keys on file content</p>
+<p>Only one <code>remote_lab_fixture</code> can be active per test — the ordering
+plugin rejects extras at collection time and groups tests by fixture
+so the lab is provisioned once per group. <code>reuse_lab=True</code> keys on
+the topology&rsquo;s SHA-256, not its filename, so byte-identical files
+share the same running lab. Full reference-counting + teardown
+semantics in
+<a href="https://docs.neops.io/neops-remote-lab/docs/10-concepts/30-lab-lifecycle/">Lab lifecycle</a>.</p>
 </div>
 <hr />
 <h2 id="fb_test_case_with_lab"><code>@fb_test_case_with_lab</code></h2>
@@ -6479,6 +6524,9 @@ executes your function block.</p>
 <li>Waiting sessions are dropped after <strong>600 seconds</strong> without a heartbeat.</li>
 <li>Active sessions are dropped after <strong>300 seconds</strong> of silence.</li>
 </ul>
+<p>The fixture handles all of this for you. Deeper view —
+state machine, heartbeat cadence, 423-Locked semantics — on
+<a href="https://docs.neops.io/neops-remote-lab/docs/10-concepts/20-session-queue/">Session queue</a>.</p>
 <hr />
 <h2 id="running-lab-tests-selectively">Running Lab Tests Selectively</h2>
 <p>Remote lab tests are marked with <code>remote_lab</code> and excluded from the default
@@ -6521,6 +6569,15 @@ executes your function block.</p>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="see-also">See also</h2>
+<ul>
+<li><strong><a href="https://docs.neops.io/neops-remote-lab/docs/getting-started/15-worker-sdk/">Plug into Worker SDK</a></strong> — the Remote Lab side&rsquo;s two-step quickstart for SDK consumers.</li>
+<li><strong><a href="https://docs.neops.io/neops-remote-lab/docs/20-client/15-worker-sdk/">With Worker SDK</a></strong> — multi-vendor patterns and the worker-test-layout notes the SDK consumes.</li>
+<li><strong><a href="https://docs.neops.io/neops-remote-lab/docs/20-client/10-pytest-fixtures/">Pytest fixtures</a></strong> — the full <code>remote_lab_fixture</code> API the SDK imports as a stable contract.</li>
+<li><strong><a href="https://docs.neops.io/neops-remote-lab/docs/99-appendix/cookbook/">Cookbook</a></strong> — runnable end-to-end recipes (FRR, SR Linux, multi-vendor, cURL flows, smoke scripts).</li>
+<li><strong><a href="https://docs.neops.io/neops-remote-lab/docs/10-concepts/10-architecture/">Architecture</a></strong> — the three cooperating components (server, <code>LabManager</code>, client) and the runtime walk-through.</li>
+</ul>
 
 
 

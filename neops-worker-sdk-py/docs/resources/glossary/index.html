@@ -6319,8 +6319,13 @@ execution lifecycle, retry logic, and the Blackboard API.
     parameter/result JSON schemas. Sent to the workflow engine at startup.</p>
 <p><strong>Remote lab</strong>
 :   A FastAPI service that provisions Netlab/Containerlab topologies on
-    demand for integration testing against real virtual devices.
-    See <a href="../../testing/30-remote-lab/">Remote Lab Testing</a>.</p>
+    demand for integration testing against real virtual devices. The SDK
+    imports <code>remote_lab_fixture</code> directly as a stable public API.
+    See <a href="../../testing/30-remote-lab/">Remote Lab Testing</a> for the
+    SDK-consumer view, and the
+    <a href="https://docs.neops.io/neops-remote-lab/docs/">Remote Lab project docs</a>
+    for the canonical reference (architecture, queue semantics, lab
+    lifecycle, REST contract, deployment).</p>
 <p><strong>Result</strong>
 :   Typed output of a function block, defined as a Pydantic model extending
     <code>FunctionBlockResultData</code>. Uses <code>extra="forbid"</code> for strict validation.</p>

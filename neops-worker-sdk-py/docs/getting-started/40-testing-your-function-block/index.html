@@ -6148,10 +6148,11 @@ FRR instances, and more &ndash; so your function blocks run against genuine devi
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REMOTE_LAB_URL</span><span class="o">=</span>https://lab.your-neops-instance.example.com
 </span></code></pre></div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Remote lab tests require network access to the lab environment. They are best suited
-for CI pipelines or dedicated test environments. See the full
-<a href="../../testing/">Testing</a> section for setup details and topology configuration.</p>
+<p class="admonition-title">Remote lab tests need network access to the lab</p>
+<p>Best suited for <strong>CI pipelines</strong> or <strong>dedicated test environments</strong>. Setup details
+and topology configuration in <a href="../../testing/30-remote-lab/">Testing → Remote Lab</a>.</p>
+<p><em>Don&rsquo;t have a lab to point at?</em> <a href="https://docs.neops.io/neops-remote-lab/docs/getting-started/20-local/">Run locally</a>
+is ~10 min for offline dev.</p>
 </div>
 <h2 id="run-your-tests">Run Your Tests</h2>
 <p>Execute the full test suite with verbose output:</p>
