@@ -4629,10 +4629,6 @@
       
         
       
-        
-      
-        
-      
     
     
     
@@ -4660,7 +4656,7 @@
   <span class="md-ellipsis">
     
   
-    Deploy & Operate
+    Set up a host
   
 
     
@@ -4682,7 +4678,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Deploy & Operate
+    Set up a host
   
 
           </label>
@@ -4815,6 +4811,64 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5_3" id="__nav_7_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab platform
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lab platform
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../10-netlab-host-setup/" class="md-nav__link">
         
@@ -4844,63 +4898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../20-headscale-quick-setup/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Headscale: quick
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../30-headscale-reference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Headscale reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../40-vendor-setup/" class="md-nav__link">
+      <a href="../20-vendor-setup/" class="md-nav__link">
         
   
   
@@ -4916,6 +4914,166 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5_4" id="__nav_7_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-network-enclosure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-headscale-quick-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Headscale Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40-headscale-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Headscale Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -5999,7 +6157,7 @@
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Deploy & Operate
+    Set up a host
   </span>
 
         </a>
@@ -6045,48 +6203,52 @@
 </tr>
 <tr>
 <td><strong>Single shared VM</strong> (small team)</td>
-<td><a href="../10-netlab-host-setup/">Netlab host</a> → systemd (<a href="../../30-server/10-administration/">Operator runbook</a>) → <a href="../20-headscale-quick-setup/">Headscale: quick</a></td>
+<td><a href="../10-netlab-host-setup/">Netlab host</a> → systemd (<a href="../../30-server/10-administration/">Operator runbook</a>) → <a href="../30-headscale-quick-setup/">Headscale quick start</a></td>
 <td>~1 hour</td>
 </tr>
 <tr>
 <td><strong>Multi-tenant lab</strong> (large team / multiple sites)</td>
-<td><a href="../10-netlab-host-setup/">Netlab host</a> → systemd + reverse proxy → <a href="../30-headscale-reference/">Headscale reference</a> for ACLs</td>
+<td><a href="../10-netlab-host-setup/">Netlab host</a> → systemd + reverse proxy → <a href="../40-headscale-reference/">Headscale reference</a> for ACLs</td>
 <td>2–3 hours</td>
 </tr>
 <tr>
 <td><strong>CI runner pool</strong></td>
-<td><a href="../../getting-started/40-ci/">Wire into CI</a> → subnet routing for the runners (<a href="../30-headscale-reference/">Headscale reference</a>, or any equivalent VPN)</td>
+<td><a href="../../getting-started/40-ci/">Wire into CI</a> → subnet routing for the runners (<a href="../40-headscale-reference/">Headscale reference</a>, or any equivalent VPN)</td>
 <td>~30 minutes once a host exists</td>
 </tr>
 </tbody>
 </table>
-<p>The shared-VM and multi-tenant rows assume the project&rsquo;s recommended Headscale enclosure. <strong>Any equivalent network boundary works</strong> — managed Tailscale, WireGuard, internal-only VLAN with IP allowlists, mTLS at a reverse proxy. See <a href="../20-headscale-quick-setup/#other-approaches">Headscale: quick → Other approaches</a> before committing.</p>
+<p>The shared-VM and multi-tenant rows assume the project&rsquo;s recommended Headscale enclosure. <strong>Any equivalent network boundary works</strong> — managed Tailscale, NetBird, ZeroTier, plain WireGuard, internal VLAN with IP allowlists, mTLS at a reverse proxy. See <a href="../25-network-enclosure/">Network access</a> for the family of options before committing.</p>
 <h2 id="when-each-shape-is-the-right-call">When each shape is the right call</h2>
 <div class="grid cards">
 <ul>
 <li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg></span> &nbsp; <strong>Local laptop</strong></p>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg></span> &nbsp; <strong><a href="../../getting-started/20-local/">Local laptop</a></strong></p>
 <hr />
 <p><em>One developer, fast iteration, no shared state.</em></p>
 <p>Server runs in your terminal, foreground. Stop it when you stop working. No VPN, no lock recovery, no shared queue. Containerlab is greedy with CPU; offload to a VM when laptop heat or other-people&rsquo;s-tests start to matter.</p>
+<p><a href="../../getting-started/20-local/">Run locally <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
 </li>
 <li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1M9 5h1V3H9zm0 8h1v-2H9zm0 8h1v-2H9zM5 3v2h2V3zm0 8v2h2v-2zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong>Single shared VM</strong></p>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1m0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1M9 5h1V3H9zm0 8h1v-2H9zm0 8h1v-2H9zM5 3v2h2V3zm0 8v2h2v-2zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong><a href="../10-netlab-host-setup/">Single shared VM</a></strong></p>
 <hr />
 <p><em>Small team, one lab host, occasional contention.</em></p>
-<p>Single instance under <code>systemd</code> on a dedicated VM. <strong>Network enclosure</strong> so the team&rsquo;s laptops and CI runners can reach the lab subnet — Headscale is the path we ship docs for, but any VPN/IP-allowlist scheme works. The default deployment shape; covers everything up to maybe a dozen developers.</p>
+<p>Single instance under <code>systemd</code> on a dedicated VM. <strong>Network enclosure</strong> so the team&rsquo;s laptops and CI runners can reach the lab subnet — Headscale is the path we ship docs for, but any VPN or VLAN works equally well. The default deployment shape; covers everything up to maybe a dozen developers.</p>
+<p><a href="../10-netlab-host-setup/">Netlab host setup <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
 </li>
 <li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h1a1 1 0 0 1 1 1h7v2h-7a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1H2v-2h7a1 1 0 0 1 1-1h1v-2H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7zM4 3h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m5 4h1V5H9zm0 8h1v-2H9zM5 5v2h2V5zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong>Multi-tenant lab</strong></p>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h1a1 1 0 0 1 1 1h7v2h-7a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1H2v-2h7a1 1 0 0 1 1-1h1v-2H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7zM4 3h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1m5 4h1V5H9zm0 8h1v-2H9zM5 5v2h2V5zm0 8v2h2v-2z"/></svg></span> &nbsp; <strong><a href="../40-headscale-reference/#acl-configuration">Multi-tenant lab</a></strong></p>
 <hr />
 <p><em>Multiple teams, sometimes several sites, ACLs needed.</em></p>
 <p>Same <code>systemd</code>-managed instance, plus reverse proxy (TLS), and <strong>ACLs restricting subnet access by user/tag</strong> (Headscale ACLs in our reference deployment; any equivalent policy plane fits). The lab queue serializes contention; the ACL restricts who can queue at all. <strong>Still one process per host</strong> — the one-server invariant doesn&rsquo;t change.</p>
+<p><a href="../40-headscale-reference/#acl-configuration">ACL configuration <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
 </li>
 <li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.5 18.5c0-1.1.3-2.1.7-3H12c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5c0 .2 0 .4-.1.5.8-.3 1.6-.5 2.6-.5.5 0 1 .1 1.5.2V12c0-.3 0-.7-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.3-.3-.3-.6-.3l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c.1-.1-.2-.3-.4-.3h-4c-.2 0-.5.2-.5.4l-.4 2.7c-.6.2-1.1.6-1.7.9L5 5c-.3 0-.5 0-.7.3l-2 3.5c-.1.2 0 .4.2.6L4.6 11c0 .3-.1.7-.1 1s0 .7.1 1l-2.1 1.7c-.2.2-.2.4-.1.6l2 3.5c.1.2.3.2.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h2.5c-.7-1.1-1.1-2.3-1.1-3.6m6.5-4V13l-2.2 2.2 2.2 2.2V16c1.4 0 2.5 1.1 2.5 2.5 0 .4-.1.8-.3 1.1l1.1 1.1c1.2-1.8.7-4.3-1.1-5.5-.6-.5-1.4-.7-2.2-.7m0 6.5c-1.4 0-2.5-1.1-2.5-2.5 0-.4.1-.8.3-1.1l-1.1-1.1c-1.2 1.8-.7 4.3 1.1 5.5.7.4 1.4.7 2.2.7V24l2.2-2.2-2.2-2.3z"/></svg></span> &nbsp; <strong>CI runner pool</strong></p>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.5 18.5c0-1.1.3-2.1.7-3H12c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5c0 .2 0 .4-.1.5.8-.3 1.6-.5 2.6-.5.5 0 1 .1 1.5.2V12c0-.3 0-.7-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.3-.3-.3-.6-.3l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c.1-.1-.2-.3-.4-.3h-4c-.2 0-.5.2-.5.4l-.4 2.7c-.6.2-1.1.6-1.7.9L5 5c-.3 0-.5 0-.7.3l-2 3.5c-.1.2 0 .4.2.6L4.6 11c0 .3-.1.7-.1 1s0 .7.1 1l-2.1 1.7c-.2.2-.2.4-.1.6l2 3.5c.1.2.3.2.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h2.5c-.7-1.1-1.1-2.3-1.1-3.6m6.5-4V13l-2.2 2.2 2.2 2.2V16c1.4 0 2.5 1.1 2.5 2.5 0 .4-.1.8-.3 1.1l1.1 1.1c1.2-1.8.7-4.3-1.1-5.5-.6-.5-1.4-.7-2.2-.7m0 6.5c-1.4 0-2.5-1.1-2.5-2.5 0-.4.1-.8.3-1.1l-1.1-1.1c-1.2 1.8-.7 4.3 1.1 5.5.7.4 1.4.7 2.2.7V24l2.2-2.2-2.2-2.3z"/></svg></span> &nbsp; <strong><a href="../../getting-started/40-ci/">CI runner pool</a></strong></p>
 <hr />
 <p><em>Automated tests against an existing host.</em></p>
 <p>Runners need <strong>subnet-route access to the lab host</strong> (tailnet membership in the Headscale path; equivalent on whichever enclosure you picked) and the four <code>REMOTE_LAB_*</code> env vars. Set queue tuning per concurrency. The host itself is one of the three shapes above.</p>
+<p><a href="../../getting-started/40-ci/">Wire into CI <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
 </li>
 </ul>
 </div>
@@ -6150,12 +6312,15 @@
 <h2 id="see-also">See also</h2>
 <ul>
 <li><strong><a href="../10-netlab-host-setup/">Netlab host</a></strong> — install Netlab + Containerlab rootless. Prerequisite for every deployment except &ldquo;Local laptop&rdquo; running on a dev&rsquo;s machine.</li>
-<li><strong><a href="../20-headscale-quick-setup/">Headscale: quick</a></strong> — five-command Headscale + Headplane setup; also lists the alternatives (managed Tailscale, WireGuard, IP allowlists, mTLS).</li>
-<li><strong><a href="../30-headscale-reference/">Headscale reference</a></strong> — ACLs, OIDC, troubleshooting (Headscale-specific).</li>
+<li><strong><a href="../20-vendor-setup/">Vendor setup</a></strong> — pick the device images you&rsquo;ll boot (FRR, SR Linux, Cisco IOL, …).</li>
+<li><strong><a href="../25-network-enclosure/">Network access</a></strong> — the family of network boundary options. Read this if you&rsquo;re not committed to Headscale.</li>
+<li><strong><a href="../30-headscale-quick-setup/">Headscale quick start</a></strong> — five-command Headscale + Headplane setup, the opinionated path.</li>
+<li><strong><a href="../40-headscale-reference/">Headscale reference</a></strong> — ACLs, OIDC, troubleshooting (Headscale-specific).</li>
 <li><strong><a href="../../30-server/10-administration/">Operator runbook</a></strong> — install via uv/pipx, run under <code>systemd</code>, recover from stale locks.</li>
 <li><strong><a href="../../30-server/30-security/">Security model</a></strong> — what the X-Session-ID gate protects against and what it doesn&rsquo;t.</li>
 <li><strong><a href="../../getting-started/40-ci/">Wire into CI</a></strong> — runner pipeline shapes and queue-tuning pointers.</li>
 </ul>
+<p>Next: <strong><a href="../../30-server/">Run the service →</a></strong> once you&rsquo;ve worked through the install path your shape requires.</p>
 
 
 
@@ -6236,7 +6401,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Deploy &amp; Operate">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Set up a host">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -6246,7 +6411,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Deploy & Operate
+                Set up a host
               </div>
             </div>
           </a>
@@ -6317,6 +6482,8 @@
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../../assets/extra.js"></script>
       
     
   </body>
