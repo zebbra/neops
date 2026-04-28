@@ -36,7 +36,7 @@ If you are new to the platform, read **[Concepts → How Neops operates](../conc
 
     Use the Remote Lab pytest fixtures to run your function blocks against a shared Netlab topology.
 
-    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/getting-started/10-quickstart.md)
+    [:octicons-arrow-right-24: Read more](../neops-remote-lab/docs/getting-started/10-pytest.md)
 
 -   :material-numeric-5-box:{ .lg .middle } __Understand the system end-to-end__
 
