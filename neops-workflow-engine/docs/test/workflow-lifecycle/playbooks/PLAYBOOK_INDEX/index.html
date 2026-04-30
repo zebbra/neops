@@ -6072,6 +6072,13 @@
 <td>1</td>
 </tr>
 <tr>
+<td><code>prior-step-results-coexist</code></td>
+<td>SAFETY</td>
+<td>Multiple prior step results for the same entity coexist in JMES interpolation context without engine error</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
 <td><code>job-count-exact</code></td>
 <td>SAFETY</td>
 <td>No spurious or missing jobs created</td>
@@ -6082,8 +6089,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>29</td>
-<td>34</td>
+<td>30</td>
+<td>35</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -6371,6 +6378,12 @@
 <td><code>ConditionInStep</code></td>
 <td>Step with JMES condition context.device.id == 1 executes only for device 1, device 2 skipped</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>condition-excludes-non-matching-entities</code>, <code>single-step-completes</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/prior-step-results-coexist.ts</code></td>
+<td><code>PriorStepResultsCoexist</code></td>
+<td>Three runOn:device steps on a single device — verifies multiple prior step results for the same entity coexist in JMES context</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>prior-step-results-coexist</code></td>
 </tr>
 <tr>
 <td><code>workflow-execution-jmes-resolving/tests/read-from-context-device.ts</code></td>
