@@ -22,9 +22,9 @@
 #   description Optional one-liner shown in the tooltip.
 #
 # Entries below cover the authors currently visible across the served site.
-# Names without a confirmed GitHub handle have `avatar` left empty so the
-# Gravatar fallback applies — replace with a https://github.com/<handle>.png
-# URL once a handle is known.
+# Avatars are the team headshots from https://www.neops.io/team (downloaded
+# into assets/authors/), except Tim who uses his GitHub avatar. Any author not
+# listed here falls back to a Gravatar derived from `email`.
 
 authors:
 
@@ -32,7 +32,8 @@ authors:
     name: Leandro Lerena
     email: leandro.lerena@zebbra.ch
     avatar: assets/authors/leandro-lerena.jpeg
-    # url: https://github.com/<handle>
+    url: https://www.neops.io/team/leandro-lerena
+    description: Software Architect
 
   "Tim Zurbuchen":
     name: Tim Zurbuchen
@@ -43,11 +44,13 @@ authors:
   "Andy Griesbeck":
     name: Andy Griesbeck
     email: andy.griesbeck@zebbra.ch
-    # avatar: https://github.com/<handle>.png   # fill in
-    # url: https://github.com/<handle>
+    avatar: assets/authors/andy-griesbeck.png
+    url: https://www.neops.io/team/andy-griesbeck
+    description: Software Solutioneer
 
   "Simon Obi":
     name: Simon Obi
     email: simon.obi@zebbra.ch
-    # avatar: https://github.com/<handle>.png   # fill in
-    # url: https://github.com/<handle>
+    avatar: assets/authors/simon-obi.png
+    url: https://www.neops.io/team/simon-obi
+    description: Lead Network Automation
