@@ -76,7 +76,7 @@ plugins:
     type: datetime
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
-site_url: https://zebbra.github.io/neops/
+site_url: https://github.com/zebbra/neops/
 theme:
   custom_dir: docs/override
   favicon: assets/favicon.png

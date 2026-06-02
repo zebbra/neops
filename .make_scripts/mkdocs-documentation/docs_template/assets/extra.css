@@ -135,3 +135,22 @@
   content: "▾ ";
   opacity: .8;
 }
+
+/* ─────────────────────────────────────────────────────────────────
+ * document-dates footer tooltips (Tippy.js)
+ *
+ * The bundled Tippy "light" theme (used for the author/date tooltips
+ * in the page footer) ships an oversized drop shadow — one of its
+ * layers is an 80px-blur halo that reads as a huge shadow on hover.
+ * Replace it with a subtle, tight shadow. !important because the
+ * plugin injects its own light.css after this stylesheet.
+ * ───────────────────────────────────────────────────────────────── */
+.tippy-box[data-theme~="light"] {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .15) !important;
+}
+
+/* Dark mode uses the "material" theme, which ships no shadow of its
+ * own — give it a matching subtle one for consistency. */
+.tippy-box[data-theme~="material"] {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .4) !important;
+}
