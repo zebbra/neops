@@ -1,0 +1,27 @@
+# Author profiles for the mkdocs-document-dates plugin.
+#
+# Auto-loaded by the plugin from <docs_dir>/authors.yml. It renders the author
+# avatar(s) and name(s) at the bottom of every page, next to the created/updated
+# dates.
+#
+# The lookup key (the quoted string under `authors:`) MUST match the canonical
+# git author name — i.e. the name after any rewrites from the project's root
+# `.mailmap`. If an author isn't listed here, the plugin falls back to the raw
+# git name and a Gravatar derived from the commit email.
+#
+# Fields (all optional except a matching key):
+#   name    display name (defaults to the key)
+#   email   used for the Gravatar fallback when no avatar is given
+#   avatar  URL or docs-relative path, e.g. assets/authors/jane-doe.jpeg
+#           (GitHub avatars work too: https://github.com/<handle>.png)
+#   url     profile link wrapped around the avatar
+#
+# Fill in your own team below and delete this example.
+
+authors:
+
+  # "Jane Doe":
+  #   name: Jane Doe
+  #   email: jane.doe@example.com
+  #   avatar: assets/authors/jane-doe.jpeg
+  #   url: https://github.com/janedoe

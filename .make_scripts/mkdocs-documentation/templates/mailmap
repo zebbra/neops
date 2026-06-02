@@ -1,0 +1,16 @@
+# Git mailmap — canonicalize author identities for the docs.
+#
+# This file lives at the PROJECT ROOT as `.mailmap`. `git log --use-mailmap`,
+# the mkdocs-document-dates plugin, and hooks/submodule_authors.py all read it
+# to dedupe the author list shown at the bottom of each docs page — so the same
+# person committing under several names/emails shows up once.
+#
+# Format (see `man gitmailmap`):
+#   Canonical Name <canonical@email> <other@email>
+#   Canonical Name <canonical@email> Other Name <other@email>
+#
+# Example — collapse a personal email and a GitHub no-reply email into one
+# canonical identity (delete this and add your own team):
+#
+# Jane Doe <jane.doe@example.com> <jane@personal.example>
+# Jane Doe <jane.doe@example.com> <12345+janedoe@users.noreply.github.com>
