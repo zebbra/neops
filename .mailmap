@@ -1,0 +1,28 @@
+# Canonicalize git author identities for `git log --use-mailmap`.
+#
+# Used by mkdocs-document-dates and utils/submodule_authors_hook.py to dedupe
+# the author list rendered at the bottom of each docs page. Format reference:
+# https://git-scm.com/docs/gitmailmap
+#
+# Syntax recap:
+#   Proper Name <proper@email>                              # change name only (email matches)
+#   <proper@email> <commit@email>                           # change email only
+#   Proper Name <proper@email> <commit@email>               # name + email by commit email
+#   Proper Name <proper@email> Commit Name <commit@email>   # name + email by commit name+email
+
+# Leandro Lerena — same person, multiple committed name spellings; canonicalize
+# to his Zebbra address for the docs.
+Leandro Lerena <leandro.lerena@zebbra.ch> <leandro@lerena.ch>
+Leandro Lerena <leandro.lerena@zebbra.ch> <leandro.lerena@gmail.com>
+
+# Tim Zurbuchen (GitHub: Haigos) — committed as both "Haigos" and "Tim",
+# from a personal email and a GitHub no-reply email. Canonicalize to his
+# Zebbra address.
+Tim Zurbuchen <tim.zurbuchen@zebbra.ch> <86562987+Haigos@users.noreply.github.com>
+Tim Zurbuchen <tim.zurbuchen@zebbra.ch> <timzurb@gmail.com>
+
+# Simon Obi — canonicalize to his Zebbra address for the docs.
+Simon Obi <simon.obi@zebbra.ch> <obi@dfga.ch>
+
+# Andy Griesbeck — canonicalize to his Zebbra address for the docs.
+Andy Griesbeck <andy.griesbeck@zebbra.ch> <andy.griesbeck@gmail.com>

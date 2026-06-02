@@ -1,0 +1,53 @@
+# Author profiles for mkdocs-document-dates.
+#
+# Auto-loaded by the plugin from <docs_dir>/authors.yml.
+#
+# Lookup key (left-hand side of each entry) MUST match the canonical git
+# author name, i.e. `%aN` from `git log --use-mailmap` after .mailmap rewrites
+# are applied. To verify a name, run:
+#     git -c mailmap.file=.mailmap log --use-mailmap --format='%aN' | sort -u
+#
+# Fields:
+#   name        Display name shown in the tooltip.
+#   email       Drives the implicit Gravatar fallback. The plugin's core.js
+#               hashes this email and uses Gravatar when `avatar` is empty.
+#   avatar      Optional explicit avatar source. Either:
+#                 - external URL, e.g. https://github.com/<handle>.png
+#                 - path relative to docs_dir, e.g. assets/authors/<file>.jpg
+#                   (the plugin resolves it relative to each page's URL)
+#               Leaving this empty falls through to a Gravatar derived from
+#               `email` (the plugin's client-side JS handles that).
+#   url         Optional profile URL. Renders as a clickable link in the
+#               author tooltip.
+#   description Optional one-liner shown in the tooltip.
+#
+# Entries below cover the authors currently visible across the served site.
+# Names without a confirmed GitHub handle have `avatar` left empty so the
+# Gravatar fallback applies — replace with a https://github.com/<handle>.png
+# URL once a handle is known.
+
+authors:
+
+  "Leandro Lerena":
+    name: Leandro Lerena
+    email: leandro.lerena@zebbra.ch
+    avatar: assets/authors/leandro-lerena.jpeg
+    # url: https://github.com/<handle>
+
+  "Tim Zurbuchen":
+    name: Tim Zurbuchen
+    email: tim.zurbuchen@zebbra.ch
+    avatar: https://github.com/Haigos.png
+    url: https://github.com/Haigos
+
+  "Andy Griesbeck":
+    name: Andy Griesbeck
+    email: andy.griesbeck@zebbra.ch
+    # avatar: https://github.com/<handle>.png   # fill in
+    # url: https://github.com/<handle>
+
+  "Simon Obi":
+    name: Simon Obi
+    email: simon.obi@zebbra.ch
+    # avatar: https://github.com/<handle>.png   # fill in
+    # url: https://github.com/<handle>
