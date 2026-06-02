@@ -14,9 +14,18 @@ dependencies = [
     "unicode",
     "python-slugify",
     "mkdocs-monorepo-plugin",
+    # Renders dates + authors on every page. Used together with the shipped
+    # submodule_authors hook (mkdocs_base.yml) so authorship is correct for
+    # files inside git submodules too. See README.md → "Author dates and avatars".
+    "mkdocs-document-dates",
+    # Kept for backward compatibility with projects whose mkdocs_custom.yml
+    # still references `git-authors`. New projects should use document-dates.
     "mkdocs-git-authors-plugin",
     "mkdocs-git-revision-date-localized-plugin",
     "pathspec",
+    # Used by doc_serve_watch.py (it's already a transitive mkdocs dep, but
+    # listing it explicitly keeps the watcher working if mkdocs ever drops it).
+    "watchdog",
 ]
 
 [tool.uv]

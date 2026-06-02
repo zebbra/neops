@@ -1,3 +1,4 @@
 site/
 temp_dir/
 **/__pycache__/
+docs/assets/document_dates/

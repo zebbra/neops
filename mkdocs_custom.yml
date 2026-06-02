@@ -1,4 +1,5 @@
 site_name: Neops Docs
+site_url: https://github.com/zebbra/neops/
 
 nav:
   #  - Legacy Documentation: legacy
@@ -56,6 +57,7 @@ extra:
 copyright: Copyright &copy; Zebbra AG
 # --8<-- [end:copyright]
 
-# Overwrite plugins, removes last modified date (git-revision-date-localized)
-plugins:
-  - git-authors
+# The document-dates plugin and the submodule_authors hook now ship from the
+# template (mkdocs_base.yml). No project-specific overrides are needed here —
+# add a `plugins: - document-dates: ...` block below only if this project
+# wants to override the template defaults (position, type, exclude, …).

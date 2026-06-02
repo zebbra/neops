@@ -15,6 +15,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # Both options below are load-bearing:
+          #   - `fetch-depth: 0` is needed because mkdocs-document-dates and
+          #     the submodule_authors hook resolve authors+dates by running
+          #     `git log`. With the default shallow clone the result is just
+          #     the runner's user and the checkout time.
+          #   - `submodules: recursive` is needed so the hook can git-log
+          #     inside each submodule's working tree.
+          # If this project has private submodules, also pass:
+          #     token: ${{ secrets.SUBMODULES_TOKEN }}
           submodules: recursive
           fetch-depth: 0
 

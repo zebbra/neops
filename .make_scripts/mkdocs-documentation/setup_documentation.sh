@@ -3,8 +3,12 @@
 DEPENDENCY_MISSING=0
 
 which uv  > /dev/null          || (echo "uv is not installed on your system      - please install" && DEPENDENCY_MISSING=1)
-which gh  > /dev/null          || (echo "gh is not installed on your system      - please install" && DEPENDENCY_MISSING=1)
-which mktemp  > /dev/null      || (echo "mktemp is not installed on your system  - please install" && DEPENDENCY_MISSING=1)
+# gh and mktemp are only needed to download the GitHub release. When
+# USE_LOCALE_REPO points at a local checkout we copy from there instead.
+if [ -z "${USE_LOCALE_REPO}" ]; then
+  which gh  > /dev/null          || (echo "gh is not installed on your system      - please install" && DEPENDENCY_MISSING=1)
+  which mktemp  > /dev/null      || (echo "mktemp is not installed on your system  - please install" && DEPENDENCY_MISSING=1)
+fi
 
 # shellcheck disable=SC2039
 if [[ $DEPENDENCY_MISSING -eq 1 ]]
@@ -16,12 +20,18 @@ fi
 
 mkdir .make_scripts || true
 mkdir .make_scripts/mkdocs-documentation || true
-tmp_folder=$(mktemp -d)
-gh release --repo "${ZEBBRA_DOC_SCRIPTS:-zebbra/mkdocs-documentation}" download -A zip -D "$tmp_folder"
-(cd "$tmp_folder" && unzip *.zip)
-\cp -r "$tmp_folder"/**/assets/* .make_scripts/mkdocs-documentation/
-\cp -r "$tmp_folder"/**/assets/.github .make_scripts/mkdocs-documentation/
-rm -rf "$tmp_folder"
+if [ -n "${USE_LOCALE_REPO}" ]; then
+  echo "doc-update-assets: using local repo ${USE_LOCALE_REPO} (skipping GitHub release)"
+  \cp -r "${USE_LOCALE_REPO}/assets/"* .make_scripts/mkdocs-documentation/
+  \cp -r "${USE_LOCALE_REPO}/assets/.github" .make_scripts/mkdocs-documentation/
+else
+  tmp_folder=$(mktemp -d)
+  gh release --repo "${ZEBBRA_DOC_SCRIPTS:-zebbra/mkdocs-documentation}" download -A zip -D "$tmp_folder"
+  (cd "$tmp_folder" && unzip *.zip)
+  \cp -r "$tmp_folder"/**/assets/* .make_scripts/mkdocs-documentation/
+  \cp -r "$tmp_folder"/**/assets/.github .make_scripts/mkdocs-documentation/
+  rm -rf "$tmp_folder"
+fi
 
 
 MAKEFILE=./Makefile

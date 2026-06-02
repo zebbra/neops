@@ -4,8 +4,16 @@ MKDOCS_ENV= .make_scripts/mkdocs-documentation
 PROJECT_NAME := $(notdir $(CURDIR))
 
 
+# USE_LOCALE_REPO=<path-to-mkdocs-documentation-checkout> copies the template
+# assets straight from a local repo checkout instead of downloading the latest
+# GitHub release. Use it while iterating on the template itself, e.g.
+#   make doc-update-assets USE_LOCALE_REPO=/home/you/projects/.../mkdocs-documentation
 doc-update-assets:
+ifdef USE_LOCALE_REPO
+	USE_LOCALE_REPO="$(USE_LOCALE_REPO)" /bin/sh "$(USE_LOCALE_REPO)/assets/setup_documentation.sh"
+else
 	gh release download --repo zebbra/mkdocs-documentation --pattern setup_documentation.sh --output - | /bin/sh
+endif
 
 doc-create-mkdocs:
 	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/setup_documentation.py
@@ -14,7 +22,12 @@ doc-create-mkdocs:
 doc-serve:
 	uv sync --project $(MKDOCS_ENV)
 	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/setup_documentation.py
-	uv run --project $(MKDOCS_ENV) mkdocs serve
+	# doc_serve_watch.py wraps `mkdocs serve --livereload` so edits to
+	# mkdocs_custom.yml / mkdocs_base.yml regenerate mkdocs.yml on the fly,
+	# and so --livereload is set explicitly (mkdocs 1.6 + Click 8 resolves
+	# the default to False without it). See the docstring at the top of
+	# doc_serve_watch.py for details.
+	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/doc_serve_watch.py
 
 doc-build:
 	uv run --project $(MKDOCS_ENV) python $(MKDOCS_ENV)/setup_documentation.py

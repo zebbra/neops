@@ -11,6 +11,10 @@ theme:
     - navigation.indexes
     - navigation.sections
     - navigation.tabs
+    # Top tabs stay visible while scrolling.
+    - navigation.tabs.sticky
+    # Breadcrumb path under the top tabs on every page.
+    - navigation.path
     - navigation.top
     - navigation.tracking
     - navigation.instant
@@ -18,12 +22,33 @@ theme:
     - search.suggest
     - search.highlight
     - content.action.edit
+    # Right-side TOC scroll-syncs with the reading position.
+    - toc.follow
   logo: assets/logo.svg
   favicon: assets/favicon.png
+
+# Shared styling — extra.css is a "managed asset" copied into each project's
+# docs/assets/ on every `make doc-update-assets` cycle (see
+# setup_documentation.py::sync_managed_docs_assets). Project-specific styling
+# should live in a separate file referenced alongside this one.
+extra_css:
+  - assets/extra.css
+
+# Shared scripting — extra.js is a "managed asset" same as extra.css.
+# Provides the tab-aware TOC behaviour (synthetic per-tab parents in the
+# right sidebar, deep-link tab activation, URL pollution guard) for any
+# project using pymdownx.tabbed with alternate_style: true. No-op on pages
+# without tabbed content.
+extra_javascript:
+  - assets/extra.js
 
 hooks:
   - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
   - .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py
+  # Backfills git authorship and dates for files inside git submodules into
+  # the mkdocs-document-dates plugin's cache. No-op when the project has no
+  # submodules. See the hook's module docstring for the full mechanism.
+  - .make_scripts/mkdocs-documentation/hooks/submodule_authors.py
 
 # --8<-- [start:markdown_extensions]
 markdown_extensions:
@@ -62,6 +87,15 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - md_in_html
+  # Interaction features
+  - pymdownx.tasklist:      # visible checklist boxes
+      custom_checkbox: true
+  - abbr                    # *[ACL]: ... tooltips on hover
+  # Typographic refinement
+  - smarty                  # 'curly' / "quotes", em-dashes (---), en-dashes (--), …
+  - pymdownx.smartsymbols   # --> → / <== ⇐ / (c) (r) (tm)
+  - pymdownx.magiclink      # bare URLs render as live links
+  - pymdownx.betterem       # cleaner bold/italic edge-case parsing
 # --8<-- [end:markdown_extensions]
 
 # --8<-- [start:plugins]
@@ -71,5 +105,14 @@ plugins:
   # Allows to add a whole directory in the navigation instead of just files
   # Sub-nav items are automatically created if the provided dir contains subdirectories
   - include_dir_to_nav
-
+  # Renders created/updated dates and author info at the bottom of every page.
+  # Reads `<docs_dir>/authors.yml` for explicit author profiles (avatar, url,
+  # description) and respects `.mailmap` at the project root for identity
+  # canonicalization. Override these defaults from each project's
+  # mkdocs_custom.yml (deepmerge will replace matching keys).
+  - document-dates:
+      position: bottom
+      type: datetime
+      exclude:
+        - coming-soon.md
 # --8<-- [end:plugins]
