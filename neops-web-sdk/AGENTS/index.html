@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://github.com/zebbra/neops/neops-web-sdk/CLAUDE/">
+        <link rel="canonical" href="https://github.com/zebbra/neops/neops-web-sdk/AGENTS/">
       
       
       
@@ -5941,10 +5941,148 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#corrections" class="md-nav__link">
+  <a href="#development" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Corrections
+        Development
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code style
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gotchas-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gotchas &amp; Boundaries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gotchas &amp; Boundaries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-level-gotchas-these-have-bitten-contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code-level gotchas (these have bitten contributors)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecosystem-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ecosystem Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patterns-worth-knowing-before-changing-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patterns worth knowing before changing things
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-ask-a-human" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to ask a human
       
     </span>
   </a>
@@ -5977,7 +6115,7 @@
 
 
   
-    <a href="https://github.com/zebbra/neops/edit/main/docs/neops-web-sdk/CLAUDE.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/zebbra/neops/edit/main/docs/neops-web-sdk/AGENTS.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -5986,16 +6124,236 @@
 
 
 <h1 id="neops-web-sdk">neops-web-sdk</h1>
-<p>Read AGENTS.md for full project context.</p>
-<p>@AGENTS.md</p>
-<h2 id="corrections">Corrections</h2>
-<p>When asked to update this file with a correction or rule:
-- Project convention or gotcha → update AGENTS.md
-- Path-specific rule → create/update <code>.claude/rules/</code> file
-- Claude Code-specific only → add below</p>
-<!-- Claude-specific corrections only -->
-
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-31 07:25:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-31T07:25:26+00:00'>2026-03-31 07:25:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<p>Angular monorepo producing publishable <code>@zebbra/</code> NPM library packages that provide the shared foundation for all neops web frontends. Includes UI components built on IBM Carbon Design System, GraphQL-backed domain services, JSON schema-driven form rendering, file storage integration, and shared build/deployment artifacts. Also contains a demo application (port 4201) serving as a living integration test.</p>
+<p>Tech: Angular 20, TypeScript 5.8, Carbon Design System, Apollo GraphQL 4, JSON Forms, Leaflet, ng-packagr, Karma/Jasmine, SCSS, Node 20.19</p>
+<h2 id="development">Development</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nvm<span class="w"> </span>use<span class="w">                 </span><span class="c1"># Node 20.19</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install<span class="w">             </span><span class="c1"># also runs postinstall -&gt; build-schematics</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>npm<span class="w"> </span>start<span class="w">               </span><span class="c1"># demo app at http://localhost:4201</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">                </span><span class="c1"># Karma/Jasmine unit tests</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w">            </span><span class="c1"># ESLint (8GB memory limit; prelint runs check:icons)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>npm<span class="w"> </span>run<span class="w"> </span>format:fix<span class="w">      </span><span class="c1"># Prettier</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>make<span class="w"> </span>libraries<span class="w">          </span><span class="c1"># build all libraries in dependency order</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>make<span class="w"> </span>scan-bad-imports<span class="w">   </span><span class="c1"># check for incorrect cross-library imports</span>
+</span></code></pre></div>
+<p>Backend expected at <code>http://localhost:8000/graphql</code> during local dev.</p>
+<h2 id="packages">Packages</h2>
+<p>Seven libraries live under <code>projects/zebbra/</code> and must be built in the order <code>make libraries</code>
+uses (it is the dependency order; <code>ngx-neops-icons</code> is first):</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Package</th>
+<th>NPM Name</th>
+<th>Purpose</th>
+<th>Key Exports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>ngx-neops-icons</td>
+<td><code>@zebbra/ngx-neops-icons</code></td>
+<td>Carbon icon resolution + preloading</td>
+<td><code>preloadIcons()</code>, icon renderer component</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ngx-jsonforms-carbon</td>
+<td><code>@zebbra/ngx-jsonforms-carbon</code></td>
+<td>JSON Forms renderers styled with Carbon Design System</td>
+<td>Text, textarea, number, autocomplete, date, checkbox, toggle, time, range controls; vertical, horizontal, group, array, categorization layouts</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ngx-neops-app-services</td>
+<td><code>@zebbra/ngx-neops-app-services</code></td>
+<td>Cross-cutting application services</td>
+<td><code>AlertService</code>, <code>DialogService</code>, <code>NotificationsService</code>, <code>DownloadService</code>, <code>AppUpdateService</code>, <code>HealthCheckService</code>, <code>AutoRefreshService</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>ngx-neops-client</td>
+<td><code>@zebbra/ngx-neops-client</code></td>
+<td>Domain services and GraphQL API client</td>
+<td><code>AuthService</code>, <code>AuthGuard</code>, <code>GraphQLModule</code>, <code>ConfigService</code>, <code>ContextService</code>, entity services (Device, Interface, Client, Group, Task, Execution, Location, Scope, Topology, Report), <code>ElementSearch&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>ngx-neops-app-components</td>
+<td><code>@zebbra/ngx-neops-app-components</code></td>
+<td>UI component library</td>
+<td><code>GenericTableComponent</code>, <code>DynamicTableConfigService</code>, dashboard cards (many types), <code>HeaderComponent</code>, <code>TaskCockpitComponent</code>, <code>NetworkDiagramComponent</code>, <code>MultiDashboardComponent</code>, <code>EditorComponent</code> (Monaco)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ngx-neops-sdk-artifacts</td>
+<td><code>@zebbra/ngx-neops-sdk-artifacts</code></td>
+<td>Shared build config, webpack, nginx, styles</td>
+<td>Custom webpack config (url-loader, raw-loader), nginx SPA config, Docker entrypoint, IBM Plex fonts, SCSS base styles</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ngx-neops-storage-client</td>
+<td><code>@zebbra/ngx-neops-storage-client</code></td>
+<td>Angular client for neops-storage file API</td>
+<td><code>NeopsStorageClientService</code> (upload, download, get, tag), <code>FilesComponent</code></td>
+</tr>
+</tbody>
+</table>
+<p>The actual class names and exact public surface are authoritative in each library&rsquo;s
+<code>public-api.ts</code> — re-list sparingly here, since these tables drift.</p>
+<h2 id="verification">Verification</h2>
+<p><code>npm run lint &amp;&amp; npm test &amp;&amp; make scan-bad-imports</code></p>
+<h2 id="conventions">Conventions</h2>
+<ul>
+<li>Default branch is <code>develop</code>. Branch from <code>develop</code> for all changes.</li>
+<li>Libraries MUST NOT import from each other using relative paths &ndash; only via <code>@zebbra/</code> package names (enforced by <code>make scan-bad-imports</code>)</li>
+<li>All libraries use <code>ng-packagr</code> for building</li>
+<li>Each library has a <code>public-api.ts</code> defining its public surface</li>
+<li>Component prefixes: <code>app</code> (demo app), <code>neops</code> (client/components/icons libraries), <code>lib</code> (jsonforms/artifacts/storage)</li>
+<li>All entity services follow the <code>ElementSearch&lt;T&gt;</code> interface pattern</li>
+<li>Version placeholder <code>0.0.0-placeholder</code> in all library <code>package.json</code> files &ndash; CI replaces via <code>sed</code></li>
+<li>SCSS is the default style language across all projects</li>
+<li>Carbon v11 <code>cds--</code> prefix is dominant (~240 uses); v10 <code>bx--</code> is legacy/minimal (~15 uses)</li>
+</ul>
+<h2 id="code-style">Code style</h2>
+<p><code>tsconfig.json</code> is strict (<code>strict</code>, <code>noImplicitOverride</code>, <code>noPropertyAccessFromIndexSignature</code>,
+<code>noFallthroughCasesInSwitch</code>, <code>strictTemplates</code>) and <code>.eslintrc.json</code> enforces most rules. The
+non-obvious conventions:</p>
+<ul>
+<li><strong>Standalone components by default</strong> (<code>standalone: true</code>). Module wiring in
+  <code>ngx-neops-app-components.module.ts</code> exists for legacy reasons — prefer not to add to it.</li>
+<li><strong>Angular control flow</strong> (<code>@if</code> / <code>@for</code> / <code>@switch</code>), not <code>*ngIf</code> / <code>*ngFor</code>. Older templates are
+  mid-migration; write new ones entirely in the new syntax.</li>
+<li><strong><code>inject()</code> over constructor params</strong> for new code.</li>
+<li><strong><code>*.spec.ts</code> next to the source file.</strong> Karma + Jasmine — no Jest.</li>
+<li><strong>Index-signature properties need bracket access</strong> (<code>obj['title']</code>, not <code>obj.title</code>) under
+  <code>noPropertyAccessFromIndexSignature</code> — hits commonly when typing JSON-shape data.</li>
+<li><strong>Property selectors use the <code>neops-</code> prefix</strong> (<code>selector: 'neops-execution-panel'</code>).</li>
+<li><strong>GraphQL types come from <code>@zebbra/neops-angular-graphql-client</code>.</strong> Wrap them in <code>Neops*</code> classes
+  in <code>ngx-neops-client/src/lib/neops-api/model/</code> when adding behavior (see <code>NeopsExecution.ts</code>&rsquo;s
+  <code>mergeFrom</code>).</li>
+<li><strong>Commit messages: descriptive prose, no enforced prefix.</strong> Match recent <code>git log</code>.</li>
+</ul>
+<h2 id="gotchas-boundaries">Gotchas &amp; Boundaries</h2>
+<ul>
+<li>NEVER build libraries out of order &ndash; dependencies between them will cause compilation failures. Use <code>make libraries</code></li>
+<li>NEVER modify the custom webpack config without understanding that ALL library builds, tests, AND consumer projects (neops-web-client) depend on it</li>
+<li>ALWAYS run <code>make scan-bad-imports</code> after changing library imports</li>
+<li>The <code>postinstall</code> script builds schematics &ndash; <code>npm install</code> will fail if the schematics build fails</li>
+<li>npm overrides are extensive to force compatible peer deps for Angular 20</li>
+<li>Lint requires <code>NODE_OPTIONS=--max-old-space-size=8192</code> (configured in package.json script)</li>
+<li>The Docker build sets <code>NODE_OPTIONS=--max_old_space_size=4096</code> to prevent OOM (Dockerfile, not the local <code>npm run build</code>)</li>
+<li>Token is stored in localStorage with the <code>Bearer</code> prefix already included (<code>auth.service.ts</code>); the access token auto-refreshes every 2 minutes</li>
+</ul>
+<h3 id="code-level-gotchas-these-have-bitten-contributors">Code-level gotchas (these have bitten contributors)</h3>
+<ul>
+<li><strong>Dev server port is 4201, not 4200.</strong> Configured in <code>angular.json</code> under the serve options.</li>
+<li><strong>Monorepo build order matters.</strong> The dev app and <code>ngx-neops-app-components</code> import via
+  <code>file:projects/zebbra/&lt;project&gt;</code> references and consume the <code>dist/zebbra/&lt;project&gt;/</code> output. If you
+  change <code>ngx-neops-client</code>, rebuild it before building app-components or running tests that import the
+  new API, or the type checker sees a stale <code>.d.ts</code>.</li>
+<li><strong><code>fetchPolicy: 'network-only'</code> still writes results into the Apollo normalized cache</strong> even though it
+  bypasses it for reads, so other observers of the same query get re-notified on every poll. When you
+  don&rsquo;t want cache side-effects, fetch once with <code>firstValueFrom(gql.fetch({...}))</code> instead of <code>watch()</code>.</li>
+<li><strong><code>exhaustMap</code> propagates inner errors</strong> and tears down the outer <code>timer(...)</code>. Wrap the inner
+  Observable with <code>catchError(... -&gt; EMPTY)</code> if polling should survive transient failures
+  (see <code>NeopsExecutionService.fetchExecution</code>).</li>
+<li><strong><code>AuthGuard</code> protects most app routes</strong> (<code>/network/*</code>, <code>/tasks</code>, <code>/executions/:id</code>, &hellip;). The
+  <code>/integration/*</code> demo routes are unauthenticated.</li>
+<li><strong>Carbon combo-box event payload shape varies by handler.</strong> Single-select emits a <code>ListItem</code>,
+  multi-select emits <code>Array&lt;ListItem&gt;</code>, and some versions wrap with <code>{ item: X }</code>. Read defensively:
+  <code>event?.item ?? event</code>.</li>
+<li><strong>Carbon <code>listItems</code> carry their <code>selected</code> flag inside the array element</strong>, not via two-way binding.
+  Mutate the item, then push a fresh array reference to trigger change detection.</li>
+<li><strong>JSON Forms can return <code>colorMapping</code> (and other complex fields) as a parsed object OR a JSON
+  string</strong> depending on the renderer path. Always normalize with a parse-or-passthrough helper before
+  dereferencing.</li>
+<li><strong><code>generic-table</code> opens a row-detail modal on double-click by default.</strong> For read-only tables set
+  <code>rowModalDisabled: true</code> on the <code>NeopsTableConfiguration</code>.</li>
+<li><strong>Monaco needs an explicit <code>editor.layout()</code> call after the host resizes.</strong> <code>EditorComponent</code> uses
+  <code>ResizeObserver</code> + double <code>requestAnimationFrame</code>; reuse that pattern if you embed Monaco elsewhere.</li>
+<li><strong><code>schema.graphql</code> at the repo root is a captured introspection dump for grepping field names — not
+  the source of truth.</strong> The generated <code>@zebbra/neops-angular-graphql-client</code> is. Do not edit it.</li>
+</ul>
+<h2 id="ecosystem-context">Ecosystem Context</h2>
+<ul>
+<li><strong>Consumed by</strong>: neops-web-client (and other neops frontends) via the published <code>@zebbra/</code> packages</li>
+<li><strong>Depends on</strong>: <code>@zebbra/neops-angular-graphql-client</code> (code-generated GraphQL ops), <code>@zebbra/neops-storage-angular-client</code> (generated storage API client)</li>
+<li><strong>Depends on at runtime</strong>: neops-core (GraphQL API), neops-storage (file API)</li>
+<li>Libraries published to GitHub Packages NPM registry (<code>https://npm.pkg.github.com</code> under <code>@zebbra</code> scope)</li>
+</ul>
+<h2 id="key-configuration">Key Configuration</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FRONTEND_GRAPHQL_ENDPOINT</code></td>
+<td><code>/graphql</code></td>
+<td>GraphQL API URL</td>
+</tr>
+<tr>
+<td><code>FRONTEND_FILEAPI_ENDPOINT</code></td>
+<td><code>/</code></td>
+<td>File storage API URL</td>
+</tr>
+<tr>
+<td><code>NEOPS_VERSION</code></td>
+<td><code>develop</code></td>
+<td>Build version (Docker build arg)</td>
+</tr>
+<tr>
+<td><code>NEOPS_WEB_ENVIRONMENT</code></td>
+<td><code>prod</code></td>
+<td>Controls which build output to serve</td>
+</tr>
+</tbody>
+</table>
+<h2 id="architecture">Architecture</h2>
+<p><strong>Monorepo layout</strong>: library projects under <code>projects/zebbra/</code>, one demo app at <code>src/</code>, schematics at <code>neops-schematics/</code>.</p>
+<p><strong>State management</strong>: No NgRx. RxJS <code>BehaviorSubject</code> patterns throughout. <code>ContextService</code> holds app-wide state (current scope, query filters, task context). <code>AuthService</code> manages auth state.</p>
+<p><strong>Data flow</strong>: Pages create <code>ElementSearch&lt;T&gt;</code> instances -&gt; GraphQL queries via Apollo -&gt; results populate <code>GenericTable</code> or dashboard cards. Query filters synced to URL params via <code>ContextService</code>.</p>
+<p><strong>Auth</strong>: Dual mode &ndash; GraphQL username/password and OIDC (Keycloak). JWT in localStorage. OIDC configurations are loaded from the backend at startup via <code>AuthService.getOidcConfigurations()</code> and applied through <code>angular-auth-oidc-client</code>.</p>
+<p><strong>Search</strong>: Uses <code>liqe</code> for Lucene-like query parsing in search autocomplete/filters.</p>
+<h2 id="patterns-worth-knowing-before-changing-things">Patterns worth knowing before changing things</h2>
+<ul>
+<li><strong>Race-guard</strong> for async work whose results may arrive late: <code>RequestVersionGuard</code>
+  (<code>ngx-neops-client/common/</code>). Start a token at the beginning of an async flow, check
+  <code>guard.isStale(token)</code> before mutating state at any <code>await</code> boundary, and call <code>guard.invalidate()</code>
+  in <code>ngOnDestroy</code>. Used by <code>execution-panel</code> and <code>execution-details-shell</code>.</li>
+<li><strong>Wrapper merge for polling refreshes</strong>: <code>NeopsExecution.mergeFrom()</code> preserves fields a smaller
+  follow-up query did not return. Reuse this if you add another wrapper that needs partial refreshes.</li>
+<li><strong>Element-search for paginated lists</strong>: most list-backed components compose
+  <code>ElementSearchArrayResult</code> rather than driving GraphQL directly (<code>ngx-neops-client/element-search/</code>).</li>
+<li><strong>Card config form adapters</strong> round-trip a different editor shape than the stored shape at the
+  configurator boundary (see <code>chart-color-mapping-form-adapter.ts</code>).</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<ul>
+<li><code>npm run test:ci</code> runs all libraries&rsquo; Karma configs via the Angular CLI (<code>ChromeHeadlessCI</code>).</li>
+<li>Scope to one library: <code>npx ng test @zebbra/&lt;project&gt; --browsers=ChromeHeadlessCI --watch=false</code>.
+  The <code>@zebbra/</code> prefix matters. Each <code>karma.conf.js</code> binds <code>localhost:9876</code>, so parallel runs collide
+  with <code>EADDRINUSE</code> — serialize them or pass <code>--port</code>.</li>
+<li>Stub generated <code>*GQL</code> services with spies in <code>TestBed.providers</code> (or use <code>ApolloTestingModule</code>).</li>
+<li>For <code>timer(...)</code>/<code>interval(...)</code> pipelines, use <code>fakeAsync</code> + <code>tick(ms)</code> + <code>flush()</code>.</li>
+<li>Monaco-based components need the shared shim at <code>src/testing/monaco-loader-test-shim.ts</code>.</li>
+<li><strong><code>singleRun</code> is <code>false</code> in the karma config</strong> but <code>--watch=false</code> overrides it. If a TS compile
+  error stops karma from loading any test file, the runner can hang instead of exiting — kill it and
+  fix the compile error.</li>
+</ul>
+<h2 id="when-to-ask-a-human">When to ask a human</h2>
+<p>Schema/GraphQL-type changes (they come from a separate repo), routing/<code>AuthGuard</code> changes, new
+<code>Neops*</code> wrapper classes, reordering any library&rsquo;s published <code>public-api.ts</code>, or refactors that require
+backend behavior changes — all affect external consumers. Surface them rather than deciding solo.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-06-03 14:43:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-06-03T14:43:43+00:00'>2026-06-03 14:43:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
