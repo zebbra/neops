@@ -2,2366 +2,2366 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/zebbra/neops/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/coming-soon/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/concepts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/concepts/10-overview/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/concepts/20-how-neops-operates/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/getting-started/00-index/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/installation/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/00-index/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/05-usage/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/10-facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/15-checks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/20-tasks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/25-provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/30-provider_overview/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/35-architecture/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/40-appendix/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/CONTRIBUTING/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/contribute_documentation/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/development/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/installation/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Appendix/appendix_jinja2/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Appendix/appendix_jsonform/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Appendix/appendix_textfsm/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_check/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_configure/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_process_result_cycle/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_result_writer/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_run_arguments/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.base_run_cycle/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.element_resolver/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.enum/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.execution_updater/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.coupled_provider_result_types/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.exception/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.exception.related_result_failed/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.provider_global_result/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.provider_result/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.base.result.provider_result_composite/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_check/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_interface_textfsm_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_regex_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_test_provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_textfsm_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_textfsm_facts_by_param/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.device_textfsm_ntc_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.global_from_excel/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.global_test_provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.group_test_provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.interface_check/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.interface_regex_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.interface_test_provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated.interface_textfsm_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.deprecated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_configure_from_jinja/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_discovery/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_exec_from_jinja/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_image_cleanup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_napalm_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_restart/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_rollback/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_rommon_upgrade/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_rommon_upgrade_unattended/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_snmp_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_stack_auto_upgrade/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_upgrade/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_upgrade_direct/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.device_upgrade_unattended/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.exceptions.base/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.exceptions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_check_aggregation/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_from_excel/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_jinja_check/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_jinja_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_ping/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_report/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_rest_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_simple_workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_test_provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_textfsm_facts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.generic_textfsm_facts_v2/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.global_mail/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.interface_configure_from_jinja/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.interface_rollback/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.registry/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/legacy/Neops%20Provider%20Overview/neops.core.provider.registry.provider_loader/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/modules/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/AGENTS/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/CLAUDE/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/05-tour/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/10-architecture/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/20-session-queue/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/30-lab-lifecycle/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/10-concepts/40-topology-format/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/20-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/20-client/10-pytest-fixtures/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/20-client/15-worker-sdk/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/20-client/20-python-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/20-client/30-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/10-administration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/20-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/30-security/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/40-rest-api/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/30-server/50-debugging/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/05-pick-deployment/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/10-netlab-host-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/20-vendor-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/25-network-enclosure/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/30-headscale-quick-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/40-deployment/40-headscale-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/05-first-pr/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/10-dev-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/20-invariants/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/30-internals-async/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/40-internals-lab-manager/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/50-internals-atexit/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/60-internals-test-stubbing/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/50-contributing/70-anti-patterns/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/99-appendix/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/99-appendix/cookbook/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/99-appendix/glossary/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/99-appendix/neops-ecosystem/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/examples/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/10-pytest/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/15-worker-sdk/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/20-local/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/30-curl/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/getting-started/40-ci/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/docs/includes/abbreviations/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-remote-lab/examples/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-secure-gateway/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-secure-gateway/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-secure-gateway/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-secure-gateway/docs/dir/architecture/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-client/angular-README/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-client/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-client/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/AGENTS/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/ANGULAR-README/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/CLAUDE/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/neops-schematics/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-jsonforms-carbon/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-app-components/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-app-components/src/lib/dashboard/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-app-services/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-client/src/lib/neops-api/cron-job-browser.service/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-icons/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-sdk-artifacts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/projects/zebbra/ngx-neops-storage-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/docs/src/app/pages/dashboard-demo/data/markdown/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/neops-schematics/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-jsonforms-carbon/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-app-components/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-app-components/src/lib/dashboard/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-app-services/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-client/src/lib/neops-api/cron-job-browser.service/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-icons/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-sdk-artifacts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/projects/zebbra/ngx-neops-storage-client/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-sdk/src/app/pages/dashboard-demo/data/markdown/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/AGENTS/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/CLAUDE/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/deployment/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/deployment/10-worker-lifecycle/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/deployment/20-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/deployment/30-production-patterns/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/10-obtaining-a-connection/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/20-proxies-and-capabilities/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/30-plugins/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/40-writing-capabilities/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/50-writing-plugins/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/60-resolution-and-defaults/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/70-architecture-deep-dive/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/device-connections/80-best-practices/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/10-anatomy/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/20-working-with-data/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/30-creating-entities/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/50-async-and-concurrency/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/60-advanced-patterns/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/function-blocks/70-best-practices/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/getting-started/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/getting-started/10-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/getting-started/20-your-first-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/getting-started/30-connecting-to-devices/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/getting-started/40-testing-your-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/neops_worker_sdk/testing/docs/remote-lab/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/neops_worker_sdk/testing/docs/testing-framework/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/resources/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/resources/ai-development/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/resources/examples/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/resources/glossary/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/10-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/20-testing-function-blocks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/30-remote-lab/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/40-testing-plugins/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/docs/testing/50-debugging/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/neops_worker_sdk/testing/docs/remote-lab/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-worker-sdk-py/neops_worker_sdk/testing/docs/testing-framework/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/AGENTS/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/CLAUDE/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/pull_request_template/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/10-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/20-function-blocks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/30-context/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/40-workflow-as-a-transaction/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/50-execution/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/10-concepts/60-blackboard/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/10-definition/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/20-steps/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/30-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/40-conditions-and-assertions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/50-acquire/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/60-retry-and-rollback/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/70-lifecycle/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/80-scheduling/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/20-workflows/90-examples/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/30-function-blocks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/30-function-blocks/10-definition/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/30-function-blocks/20-resolving/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/30-function-blocks/30-registration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/30-function-blocks/40-types-and-safety/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/40-monitor-app/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/50-deployment/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/50-deployment/10-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/50-deployment/20-docker/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/50-deployment/30-worker-management/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/50-deployment/40-operations/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/60-development/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/60-development/10-architecture/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/60-development/20-testing/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/60-development/30-adding-handlers/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/60-development/40-e2e-playbooks/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/99-appendix/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/99-appendix/api-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/99-appendix/schema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/getting-started/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/getting-started/10-setup/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/getting-started/20-your-first-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-allow-concurrency/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-elasticsearch-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-enabled/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-execution-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration-properties-job-title/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-cron-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-day-of-month/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-day-of-week/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-hours/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-minutes/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-month/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-seconds/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration-properties-timezone/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-crontab-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-elasticsearch-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-limit/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-expandfromseedentity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirebyexpansion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-filter/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirecontext/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquirereference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-entityacquiretype/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-jmescondition-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-jmescondition-properties-jmes/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-jmescondition-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-jmescondition/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-function-block-semver-identifier/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-parametrized-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-repeat-configuration-properties-iteration-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-repeat-configuration-properties-repeats-count/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-retry-configuration-properties-max-retries/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-retry-configuration-properties-retry-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-timezone/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-execution-strategy-properties-execute-in-job-sequences-in-parallel-when-possible/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-execution-strategy/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-workflow-name/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-properties-workflow-steps/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-execution-strategy/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-referenced-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-0-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-0/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if-properties-step-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-1-workflow-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-2-parametrized-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-allof-2/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow-step/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-definitions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-cron-schedule/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-entity-type-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-hideforexecution/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-majorversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-minorversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-package/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-parameterschema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-patchversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-schema-uri/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-workflow-name/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow-properties-workflow-steps/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/schema/doc/rootworkflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/src/model/workflow/schema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/test/workflow-lifecycle/playbooks/PLAYBOOK_INDEX/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/docs/test/workflow-lifecycle/playbooks/design-doc/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/rest/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/rest/monitor-app/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-allow-concurrency/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-elasticsearch-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-enabled/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-execution-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration-properties-job-title/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-cron-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-day-of-month/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-day-of-week/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-hours/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-minutes/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-month/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-seconds/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration-properties-timezone/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-crontab-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-elasticsearch-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-limit/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-query/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyelasticquery/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-expandfromseedentity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirebyexpansion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-filter/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirecontext/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference-properties-assertnotempty/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquirereference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-entityacquiretype/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-jmescondition-properties-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-jmescondition-properties-jmes/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-jmescondition-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-jmescondition/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-function-block-semver-identifier/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-parametrized-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-repeat-configuration-properties-iteration-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-repeat-configuration-properties-repeats-count/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-retry-configuration-properties-max-retries/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-retry-configuration-properties-retry-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-timezone/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-execution-strategy-properties-execute-in-job-sequences-in-parallel-when-possible/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-execution-strategy/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-workflow-name/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-properties-workflow-steps/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-execution-strategy/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-referenced-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference-properties-step-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-0-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-0-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-0/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if-properties-step-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-1-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-1-workflow-reference/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if-properties/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-2-if/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-2-parametrized-function-block/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-allof-2/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow-step/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions-workflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-definitions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-acquire-entity/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-assert-conditions/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-continue-on-error/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-cron-schedule/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-entity-type-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-entity-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-execution-delay/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-hideforexecution/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-label/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-majorversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-minorversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-package/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-parameterschema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-patchversion/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-raw-step-parameters-not-interpolated-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-raw-step-parameters-not-interpolated/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-repeat-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-repeat-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-retry-configuration-anyof-1/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-retry-configuration/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-schema-uri/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-step-description/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-step-parameters-default/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-step-parameters/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-type/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-workflow-name/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow-properties-workflow-steps/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/schema/doc/rootworkflow/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/src/model/workflow/schema/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/test/workflow-lifecycle/playbooks/PLAYBOOK_INDEX/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-workflow-engine/test/workflow-lifecycle/playbooks/design-doc/</loc>
-         <lastmod>2026-06-04</lastmod>
+         <lastmod>2026-06-05</lastmod>
     </url>
 </urlset>
