@@ -21,7 +21,7 @@
     
     
       
-        <title>Neops Secure Gateway - Neops Docs</title>
+        <title>neops-gql-gtw - Neops Docs</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-secure-gateway" class="md-skip">
+        <a href="#neops-gql-gtw" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Secure Gateway
+              neops-gql-gtw
             
           </span>
         </div>
@@ -5941,21 +5941,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Description
+        Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#docs" class="md-nav__link">
+  <a href="#architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Docs
+        Architecture
       
     </span>
   </a>
@@ -5971,66 +5988,49 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Development">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Configuration
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#install-dependencies" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install dependencies
+        Docker
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#building-the-app" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Building the app
+        See Also
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#running-the-app" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running the app
+        Contributing
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -6068,47 +6068,121 @@
   
 
 
-<h1 id="neops-secure-gateway">Neops Secure Gateway</h1>
-<h2 id="description">Description</h2>
-<p>This is a GraphQL gateway for the Neops project. It is a proxy that provides a single endpoint for all the graphql services in the Neops project.</p>
-<p>It can be used to transform the schema that is served to the client, as well as to modify the data that is returned from queries and mutations. The configuration is done using environment variables (check <code>docker-compose.yml</code>) and a configuration file (check <code>config/example-rules.json</code>). The gateway is designed to be used to prevent 3<sup>rd</sup> party systems from accessing sensitive data, starting processes, running reports, or accessing data structures exposed by the Neops Graphql API.</p>
-<h2 id="docs">Docs</h2>
-<p>For more information about the projects underlying concepts, please refer to the <a href="https://docs.neops.io/">documentation</a>.</p>
-<h2 id="development">Development</h2>
-<p>The project is built using <a href="https://nestjs.com/">NestJS</a> and <a href="https://graphql.org/">GraphQL</a>. Setup for development is done using <a href="https://nodejs.org/">NodeJs</a>, <a href="https://www.docker.com/">Docker</a> and <a href="https://docs.docker.com/compose/">Docker Compose</a>.</p>
+<h1 id="neops-gql-gtw">neops-gql-gtw</h1>
+<p>GraphQL schema-stitching gateway that proxies the neops-core GraphQL API with configurable policy-driven transforms.</p>
+<blockquote>
+<p><strong>Note:</strong> This codebase is identical to <a href="https://github.com/zebbra/neops-secure-gateway">neops-secure-gateway</a>. Both repos are deployed as separate instances with different <code>rules.json</code> configurations.</p>
+</blockquote>
+<h2 id="quick-start">Quick Start</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install dependencies (requires access to @zebbra GitHub npm registry)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Verify setup</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Configure environment</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Create .env with required variables:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">#   GRAPHQL_ENDPOINT_NEOPS=&lt;neops-core GraphQL URL&gt;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">#   PATH_TO_RULES=config/rules.json</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># Start in development mode</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>npm<span class="w"> </span>run<span class="w"> </span>start:dev
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># Or run with Docker</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>docker-compose<span class="w"> </span>up
+</span></code></pre></div>
 <h3 id="prerequisites">Prerequisites</h3>
 <ul>
-<li>Node.js &gt;= 20.x</li>
-<li>Docker (for running the Neops Graphql API)</li>
-<li>Running Neops Graphql API (for testing the gateway)</li>
+<li>Node.js 20</li>
+<li>Access to <code>@zebbra</code> GitHub npm registry (requires <code>NODE_AUTH_TOKEN</code>)</li>
+<li>A running neops-core instance with GraphQL API</li>
 </ul>
-<h3 id="install-dependencies">Install dependencies</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>npm<span class="w"> </span>install
+<p>This project uses <code>@zebbra</code> scoped packages from GitHub Packages. Authenticate with: <code>npm login --scope=@zebbra --registry=https://npm.pkg.github.com</code> (requires GitHub PAT with <code>read:packages</code> scope)</p>
+<h2 id="architecture">Architecture</h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Client --&gt; neops-gql-gtw (NestJS + Apollo Server) --&gt; neops-core GraphQL API
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                |
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>          config/rules.json
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                |
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>     +----------+----------+
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>     |                      |
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  TransformerService    ResolverService
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  (schema transforms)  (field-level rules)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>     |                      |
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  - OperationAllow       - valueErasers
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  - OperationDeny        - jsonData filtering
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  - TasksAndReports      - tasks/reports
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    Filter                 allow/deny
 </span></code></pre></div>
-<h3 id="building-the-app">Building the app</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
+<p>The gateway fetches and introspects the remote neops-core GraphQL schema at startup, then wraps it with configurable transforms:</p>
+<ul>
+<li><strong>Operation filtering</strong> &ndash; allow or deny specific GraphQL operations by name</li>
+<li><strong>Value erasure</strong> &ndash; return <code>null</code> for specified type/field combinations</li>
+<li><strong>JSON data filtering</strong> &ndash; filter JSON string fields by path arrays or regex patterns</li>
+<li><strong>Task/report restrictions</strong> &ndash; control which tasks and reports can be executed</li>
+</ul>
+<p>All configuration is driven by a single <code>rules.json</code> file mounted at runtime.</p>
+<h2 id="development">Development</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">            </span><span class="c1"># Build production bundle</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>npm<span class="w"> </span>run<span class="w"> </span>start:dev<span class="w">        </span><span class="c1"># Development with hot reload</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>npm<span class="w"> </span>run<span class="w"> </span>start:debug<span class="w">      </span><span class="c1"># Development with debugger</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w">             </span><span class="c1"># Lint check</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>npm<span class="w"> </span>run<span class="w"> </span>lint:fix<span class="w">         </span><span class="c1"># Lint auto-fix</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w">             </span><span class="c1"># Run unit tests</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>npm<span class="w"> </span>run<span class="w"> </span>test:e2e<span class="w">         </span><span class="c1"># Run E2E tests</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>npm<span class="w"> </span>run<span class="w"> </span>test:cov<span class="w">         </span><span class="c1"># Tests with coverage report</span>
 </span></code></pre></div>
-<h3 id="running-the-app">Running the app</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># development with debugger</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>start:debug
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># watch mode</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>start:dev
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># production mode</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>start:prod
+<h2 id="configuration">Configuration</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GRAPHQL_ENDPOINT_NEOPS</code></td>
+<td>Yes</td>
+<td>&ndash;</td>
+<td>neops-core GraphQL API URL</td>
+</tr>
+<tr>
+<td><code>PATH_TO_RULES</code></td>
+<td>Yes</td>
+<td>&ndash;</td>
+<td>Path to rules.json (relative to CWD)</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td>No</td>
+<td><code>3000</code></td>
+<td>HTTP listen port</td>
+</tr>
+<tr>
+<td><code>STATIC_AUTH_TOKEN</code></td>
+<td>No</td>
+<td>&ndash;</td>
+<td>Static bearer token for login mutations</td>
+</tr>
+</tbody>
+</table>
+<p>See <code>config/example-rules.json</code> for the rules configuration format.</p>
+<h2 id="docker">Docker</h2>
+<p>Multi-stage Dockerfile (node:20) with lint, test, and build stages. The <code>rules.json</code> is mounted as a Docker volume:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">gqlgateway</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">env_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.env</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./config/rules.json:/app/config/rules.json</span>
 </span></code></pre></div>
-<h3 id="test">Test</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># unit tests</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># e2e tests</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>test:e2e
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># test coverage</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>test:cov
-</span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2024-02-28 10:42:16'><span class='material-icons' data-icon='doc_created'></span><time datetime='2024-02-28T10:42:16+00:00'>2024-02-28 10:42:16</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2025-04-11 10:11:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2025-04-11T10:11:01+00:00'>2025-04-11 10:11:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='claudios' data-tippy-content data-tippy-raw='<a href="mailto:claudio.siegenthaler@zebbra.ch">claudios</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='claudio.siegenthaler@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claudio Siegenthaler' data-tippy-content data-tippy-raw='<a href="mailto:cloedu@gmail.com">Claudio Siegenthaler</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='cloedu@gmail.com' /></div></div></div></div></div>
+<h2 id="see-also">See Also</h2>
+<p>See <a href="AGENTS/">AGENTS.md</a> for AI agent context, conventions, and gotchas.</p>
+<h2 id="contributing">Contributing</h2>
+<p>Default branch: <code>develop</code>. Branch from <code>develop</code> for all changes. Run verification: <code>npm run lint &amp;&amp; npm run test</code></p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2024-02-28 10:42:16'><span class='material-icons' data-icon='doc_created'></span><time datetime='2024-02-28T10:42:16+00:00'>2024-02-28 10:42:16</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-31 07:25:58'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-31T07:25:58+00:00'>2026-03-31 07:25:58</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='claudios' data-tippy-content data-tippy-raw='<a href="mailto:claudio.siegenthaler@zebbra.ch">claudios</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='claudio.siegenthaler@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claudio Siegenthaler' data-tippy-content data-tippy-raw='<a href="mailto:cloedu@gmail.com">Claudio Siegenthaler</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='cloedu@gmail.com' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
