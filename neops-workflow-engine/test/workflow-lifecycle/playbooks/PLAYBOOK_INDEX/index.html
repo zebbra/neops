@@ -6065,15 +6065,15 @@
 <td><code>reject-incomplete-parameter-mapping</code></td>
 <td>SAFETY</td>
 <td>Missing required FB parameters rejected</td>
-<td>2</td>
-<td>2</td>
+<td>4</td>
+<td>4</td>
 </tr>
 <tr>
 <td><code>reject-wrong-parameter-type</code></td>
 <td>SAFETY</td>
 <td>Type-mismatched parameters rejected</td>
-<td>1</td>
-<td>1</td>
+<td>9</td>
+<td>9</td>
 </tr>
 <tr>
 <td><code>assertion-halts-on-violation</code></td>
@@ -6107,8 +6107,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>30</td>
-<td>35</td>
+<td>70</td>
+<td>75</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -6233,15 +6233,15 @@
 <td><code>schema-validation-passes-correct-mapping</code></td>
 <td>LIVENESS</td>
 <td>Valid params pass FB JSON schema</td>
-<td>1</td>
-<td>1</td>
+<td>10</td>
+<td>10</td>
 </tr>
 <tr>
 <td><code>jmes-in-schema-validation-resolves</code></td>
 <td>LIVENESS</td>
 <td>JMES in param mappings validated</td>
-<td>2</td>
-<td>2</td>
+<td>3</td>
+<td>3</td>
 </tr>
 <tr>
 <td><code>allowed-labels-accepted</code></td>
@@ -6263,6 +6263,27 @@
 <td>Heterogeneous FB types in one workflow</td>
 <td>1</td>
 <td>3</td>
+</tr>
+<tr>
+<td><code>validation-defers-step-result-references</code></td>
+<td>LIVENESS</td>
+<td>Pre-flight schema validation defers fields whose JMES tokens reference step results, completing successfully when those results are valid at runtime</td>
+<td>16</td>
+<td>16</td>
+</tr>
+<tr>
+<td><code>raw-parameters-ship-verbatim</code></td>
+<td>LIVENESS</td>
+<td>Step rawParameters bypass JMES interpolation and reach the worker verbatim, taking precedence over interpolated parameters of the same key</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>raw-parameters-validated-preflight</code></td>
+<td>LIVENESS</td>
+<td>Pre-flight schema validation merges rawParameters with parameters, so a required field supplied only via rawParameters is accepted at submission</td>
+<td>1</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
@@ -6512,6 +6533,246 @@
 <td><code>reject-missing-fb-version</code></td>
 </tr>
 <tr>
+<td><code>workflow-validation-and-resolving/raw-parameters/tests/parameters-jinja-token-is-clobbered.ts</code></td>
+<td><code>ParametersJinjaTokenIsClobbered</code></td>
+<td>A worker-side Jinja2 {{ }} token placed in parameters (not rawParameters) is JMES-interpolated and clobbered to null (&ldquo;interface null&rdquo;) before reaching the worker — documenting why such templates must use rawParameters.</td>
+<td><code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/raw-parameters/tests/raw-parameters-override-interpolated.ts</code></td>
+<td><code>RawParametersOverrideInterpolated</code></td>
+<td>rawParameters take precedence over an interpolated parameters value of the same key: fieldFromParameters resolves to the rawParameters value, not the {{ parameters.requestedMode }} interpolation.</td>
+<td><code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/raw-parameters/tests/raw-parameters-ship-verbatim.ts</code></td>
+<td><code>RawParametersShipVerbatim</code></td>
+<td>A step jinjaTemplate provided via rawParameters reaches the EXECUTE job verbatim — its {{ }} Jinja2 tokens are NOT JMES-interpolated or clobbered to null.</td>
+<td><code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/raw-parameters/tests/raw-parameters-validation-no-overlap.ts</code></td>
+<td><code>RawParametersValidationNoOverlap</code></td>
+<td>Pre-flight validation accepts a schema-required field supplied only via rawParameters while parameters supplies a different (non-overlapping) field; both reach the EXECUTE job.</td>
+<td><code>raw-parameters-validated-preflight</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/acquire-phase-uses-deferred-parameter.ts</code></td>
+<td><code>AcquirePhaseUsesDeferredParameter</code></td>
+<td>P2a contract: ACQUIRE job for a consumer whose deferred parameter references a step result has the key OMITTED (not present as null). Runtime EXECUTE fills it from the producer result.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-array-of-objects-static.ts</code></td>
+<td><code>ValidationAcceptsArrayOfObjectsStatic</code></td>
+<td>Single-step consumer with a static array of objects (each row carrying both required nested fields). Pre-flight validates both array and per-item shape and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-array-static.ts</code></td>
+<td><code>ValidationAcceptsArrayStatic</code></td>
+<td>Single-step consumer with a statically-valid array of integers. Pre-flight validates the field directly (no deferral) and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-enum-static.ts</code></td>
+<td><code>ValidationAcceptsEnumStatic</code></td>
+<td>Single-step consumer with a static enum value (mode: &ldquo;monitor&rdquo;). Pre-flight validates the enum membership directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-jmes-function-over-parameters.ts</code></td>
+<td><code>ValidationAcceptsJmesFunctionOverParameters</code></td>
+<td>Single-step consumer with count: &ldquo;{{ length(parameters.list) }}&rdquo; — a JMES function over a workflow parameter that resolves at validation time. Pre-flight validates the resolved integer directly (no deferral, since the root identifier <code>parameters</code> is in scope at validation time).</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-in-schema-validation-resolves</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-multiple-of-static.ts</code></td>
+<td><code>ValidationAcceptsMultipleOfStatic</code></td>
+<td>Single-step consumer with a static integer that is a multiple of 4 (ports: 8). Pre-flight validates divisibility directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-multiple-static-fields.ts</code></td>
+<td><code>ValidationAcceptsMultipleStaticFields</code></td>
+<td>Single-step consumer with both required fields set statically (array + pattern-matching label). Pre-flight validates both and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-nested-object-static.ts</code></td>
+<td><code>ValidationAcceptsNestedObjectStatic</code></td>
+<td>Single-step consumer with a static config object containing both required nested fields. Pre-flight validates the nested schema directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-number-range-static.ts</code></td>
+<td><code>ValidationAcceptsNumberRangeStatic</code></td>
+<td>Single-step consumer with a static integer inside the schema range [1, 10]. Pre-flight validates directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-string-min-length-static.ts</code></td>
+<td><code>ValidationAcceptsStringMinLengthStatic</code></td>
+<td>Single-step consumer with a static label string of length ≥ 5. Pre-flight validates the minLength constraint directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-accepts-string-pattern-static.ts</code></td>
+<td><code>ValidationAcceptsStringPatternStatic</code></td>
+<td>Single-step consumer with a static command string that matches the pattern ^show .+. Pre-flight validates directly and the workflow completes.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>schema-validation-passes-correct-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-array-of-objects-step-ref.ts</code></td>
+<td><code>ValidationDefersArrayOfObjectsStepRef</code></td>
+<td>Consumer requires rows: array of structured objects with required nested fields (textfsm-style); value references producer step result. Pre-flight defers the whole array; runtime validates both shape and each row.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-array-step-ref.ts</code></td>
+<td><code>ValidationDefersArrayStepRef</code></td>
+<td>Consumer requires items: array<integer>; value references producer step result. Pre-flight validation must defer this field — array cannot be parsed from null at submission time.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-deeply-nested-step-ref.ts</code></td>
+<td><code>ValidationDefersDeeplyNestedStepRef</code></td>
+<td>Parameter value config: { host: &ldquo;static-host</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-embedded-string-step-ref.ts</code></td>
+<td><code>ValidationDefersEmbeddedStringStepRef</code></td>
+<td>Parameter value &ldquo;ssh://{{ producer.result.data.host }}:22&rdquo; — embedded JMES token inside a larger string. Pre-flight defers; runtime interpolation produces &ldquo;ssh://router-01:22&rdquo; which the consumer accepts.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-enum-string-step-ref.ts</code></td>
+<td><code>ValidationDefersEnumStringStepRef</code></td>
+<td>Consumer requires mode: enum (enable</td>
+<td>disable</td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-fallback-on-step-ref.ts</code></td>
+<td><code>ValidationDefersFallbackOnStepRef</code></td>
+<td>Parameter value &ldquo;{{ producer.result.data.x. !! 'fallback_label' }}&rdquo; — LHS is a JMES parse error; runtime fallback fires and substitutes &ldquo;fallback_label&rdquo;.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-jmes-function-on-step-ref.ts</code></td>
+<td><code>ValidationDefersJmesFunctionOnStepRef</code></td>
+<td>Consumer references a JMES function call (length(&hellip;)) over a step result. The first identifier is &ldquo;length&rdquo; (a function), not &ldquo;parameters&rdquo; — must be deferred even though the path is wrapped in a function call.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-mixed-static-and-step-ref.ts</code></td>
+<td><code>ValidationDefersMixedStaticAndStepRef</code></td>
+<td>Consumer requires items (array) + label (string with pattern); items references producer, label is a static valid value. Pre-flight defers items but still validates label.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-multiple-deferred-fields.ts</code></td>
+<td><code>ValidationDefersMultipleDeferredFields</code></td>
+<td>Consumer with two required fields, BOTH referencing producer step results. Confirms the deferral helper handles multiple deferred fields per step independently.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-multiple-of-step-ref.ts</code></td>
+<td><code>ValidationDefersMultipleOfStepRef</code></td>
+<td>Consumer requires ports: integer divisible by 4 (multipleOf:4, minimum:4); value references producer step result. Pre-flight cannot check divisibility of null — must defer.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-nested-object-step-ref.ts</code></td>
+<td><code>ValidationDefersNestedObjectStepRef</code></td>
+<td>Consumer requires config: object { host, port }; value references producer step result. Pre-flight validation must defer — null cannot satisfy a nested-required object schema.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-number-range-step-ref.ts</code></td>
+<td><code>ValidationDefersNumberRangeStepRef</code></td>
+<td>Consumer requires count: integer in [1,10]; value references producer step result. Pre-flight validation must defer — null cannot satisfy integer-with-range constraints.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-string-min-length-step-ref.ts</code></td>
+<td><code>ValidationDefersStringMinLengthStepRef</code></td>
+<td>Consumer requires label: string with minLength: 5; value references producer step result. Pre-flight cannot check minLength on null — must defer.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-string-pattern-step-ref.ts</code></td>
+<td><code>ValidationDefersStringPatternStepRef</code></td>
+<td>Consumer requires command: string matching ^show .+; value references producer step result. Pre-flight validation must defer — null cannot satisfy a string pattern.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-then-runtime-rejects-constraint.ts</code></td>
+<td><code>ValidationDefersThenRuntimeRejectsConstraint</code></td>
+<td>Pre-flight defers count (step-result reference); producer returns count: -5 against a [1, 10] constraint. Runtime parameter validation rejects with the constraint violation before consumer EXECUTE dispatches.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-then-runtime-rejects-wrong-type.ts</code></td>
+<td><code>ValidationDefersThenRuntimeRejectsWrongType</code></td>
+<td>Pre-flight defers items (step-result reference); producer returns items: &ldquo;oops&rdquo; (string instead of array). Runtime parameter validation rejects the consumer step with a &ldquo;must be array&rdquo; error before EXECUTE is dispatched.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-handles-producer-failure-before-consumer.ts</code></td>
+<td><code>ValidationHandlesProducerFailureBeforeConsumer</code></td>
+<td>Producer step fails with JobResultStatus.FAILURE; consumer references producer.result.data.items. Workflow terminates without dispatching the consumer EXECUTE job.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>validation-defers-step-result-references</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-mixed-deferred-and-static-invalid.ts</code></td>
+<td><code>ValidationRejectsMixedDeferredAndStaticInvalid</code></td>
+<td>Consumer with deferred items (step ref) + static label &ldquo;BAD-LABEL!&rdquo; violating ^[a-z_]+$. The deferral fix must NOT mask the static field's violation — pre-flight must still reject.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-parameter-null-required-array.ts</code></td>
+<td><code>ValidationRejectsParameterNullRequiredArray</code></td>
+<td>Single-step consumer references parameters.absent (not provided in executeWorkflowDto.parameters). The first identifier is &ldquo;parameters&rdquo; — resolvable at validation time — so the field is NOT deferred and the validator must reject the resulting null.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-incomplete-parameter-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-parameter-pattern-violation.ts</code></td>
+<td><code>ValidationRejectsParameterPatternViolation</code></td>
+<td>Single-step consumer with command: &ldquo;{{ parameters.cmd }}</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-parameter-wrong-type.ts</code></td>
+<td><code>ValidationRejectsParameterWrongType</code></td>
+<td>Single-step consumer references parameters.bad which is provided as a non-numeric string. The first identifier is &ldquo;parameters&rdquo; — resolvable at validation time — so the field is NOT deferred and AJV correctly rejects the type mismatch.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-enum-violation.ts</code></td>
+<td><code>ValidationRejectsStaticEnumViolation</code></td>
+<td>Single-step consumer with static mode: &ldquo;invalid_choice&rdquo; not in the enum. Not deferred (no JMES) — pre-flight must reject.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-null-required-number.ts</code></td>
+<td><code>ValidationRejectsStaticNullRequiredNumber</code></td>
+<td>Single-step consumer with literal count: null in workflow YAML — not deferred (no JMES token), so pre-flight validation rejects it.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-incomplete-parameter-mapping</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-pattern-violation.ts</code></td>
+<td><code>ValidationRejectsStaticPatternViolation</code></td>
+<td>Single-step consumer with static command: &ldquo;ping host&rdquo; that violates the schema pattern ^show .+. Not deferred — pre-flight must reject.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-range-violation.ts</code></td>
+<td><code>ValidationRejectsStaticRangeViolation</code></td>
+<td>Single-step consumer with static count: 100 outside the schema range [1, 10]. Not deferred — pre-flight must reject.</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+</tr>
+<tr>
 <td><code>workflow-validation-and-resolving/workflow-definition-validation/tests/empty-steps-validation-fail.ts</code></td>
 <td><code>EmptyStepsValidationFail</code></td>
 <td>Zero-step workflow definition rejected with BAD_REQUEST at submission</td>
@@ -6543,7 +6804,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-04-25 09:12:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-04-25T09:12:35+00:00'>2026-04-25 09:12:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-06-02 08:50:02'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-06-02T08:50:02+00:00'>2026-06-02 08:50:02</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
