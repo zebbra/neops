@@ -6063,10 +6063,10 @@
 
 
 <h1 id="neops-web-client">neops-web-client</h1>
-<p>Production Angular web application for the neops network automation platform. Provides scope-based entity management (devices, interfaces, clients, groups, locations), configurable dashboards with many card types, and task execution views. Consumes shared libraries from neops-web-sdk via <code>@zebbra/</code> packages at version <code>3.0.0-beta.3</code>.</p>
-<p>Tech: Angular 15, TypeScript 4.8, Carbon Design System v10, Apollo GraphQL, Karma/Jasmine, SCSS, Node 18.17</p>
+<p>Production Angular web application for the neops network automation platform. Provides scope-based entity management (devices, interfaces, clients, groups, locations), configurable dashboards with many card types, and task execution views. Consumes shared libraries from neops-web-sdk via <code>@zebbra/</code> packages at version <code>3.3.0</code>.</p>
+<p>Tech: Angular 20, TypeScript 5.8, Carbon Design System v11, Apollo GraphQL, Karma/Jasmine, SCSS, Node 20.19</p>
 <h2 id="development">Development</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nvm<span class="w"> </span>use<span class="w">               </span><span class="c1"># Node 18.17</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nvm<span class="w"> </span>use<span class="w">               </span><span class="c1"># Node 20.19</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install<span class="w">           </span><span class="c1"># requires GitHub Packages auth for @zebbra scope</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>npm<span class="w"> </span>start<span class="w">             </span><span class="c1"># dev server at http://localhost:4202</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">              </span><span class="c1"># Karma/Jasmine unit tests</span>
@@ -6081,14 +6081,14 @@
 <li>Default branch is <code>develop</code>. Branch from <code>develop</code> for all changes.</li>
 <li>All entity pages follow a <strong>JSON-driven table pattern</strong>: a static JSON config in the page&rsquo;s <code>model/</code> directory defines columns/search/edit, paired with a TypeScript template model extending <code>BaseTableModel&lt;T&gt;</code></li>
 <li>Component prefix is <code>app</code> (declared in angular.json)</li>
-<li>No standalone components &ndash; all declared in <code>AppModule</code> (Angular 15 module pattern)</li>
-<li>SCSS styles imported from SDK artifacts: <code>@import 'node_modules/@zebbra/ngx-neops-sdk-artifacts/src/assets/styles'</code></li>
-<li>Carbon v10 CSS classes use <code>bx--</code> prefix (not <code>cds--</code>)</li>
+<li>No standalone components &ndash; all declared in <code>AppModule</code> (NgModule pattern)</li>
+<li>SCSS styles imported from SDK artifacts: <code>@use 'node_modules/@zebbra/ngx-neops-sdk-artifacts/src/assets/styles'</code></li>
+<li>Carbon v11 CSS classes use <code>cds--</code> prefix (not <code>bx--</code>); import spacing/layout tokens via <code>@use '@carbon/layout' as layout;</code> and reference them namespaced (e.g. <code>layout.$spacing-05</code>)</li>
 <li>SDK packages consumed from GitHub Packages NPM registry, never local file references</li>
 </ul>
 <h2 id="gotchas-boundaries">Gotchas &amp; Boundaries</h2>
 <ul>
-<li>NEVER upgrade Angular without coordinating with neops-web-sdk &ndash; the client is on Angular 15 while the SDK is on Angular 20. SDK packages at <code>3.0.0-beta.3</code> must be built from a compatible branch</li>
+<li>NEVER upgrade Angular without coordinating with neops-web-sdk &ndash; the client and SDK are both on Angular 20 and must stay aligned. SDK packages at <code>3.3.0</code> must be built from a compatible branch</li>
 <li>NEVER modify the custom webpack config &ndash; it lives in <code>node_modules/@zebbra/ngx-neops-sdk-artifacts/config/custom-webpack.config.js</code></li>
 <li>ALWAYS use <code>DynamicTableConfigService</code> + JSON config for new entity pages; do not create ad-hoc table implementations</li>
 <li>The <code>FRONTEND_DEVMODE</code> env var controls dashboard editing visibility &ndash; without it, dashboards are read-only</li>
@@ -6212,7 +6212,7 @@
 <p><strong>Auth</strong>: Dual mode &ndash; GraphQL username/password and OIDC (Keycloak). JWT tokens in localStorage. OIDC config loaded from backend at startup via <code>AppSettings</code> GraphQL query.</p>
 <p><strong>Dashboard system</strong>: <code>DashboardModule.withCards()</code> registers many card types. Dashboards are per-scope, rendered via <code>MultiDashboardComponent</code> with gridster layout.</p>
 <p><strong>Docker</strong>: Multi-stage build (Node 18.17 builder, nginx runner). Nginx config comes from <code>node_modules/@zebbra/ngx-neops-sdk-artifacts/config/nginx/</code>.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:03'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:03+00:00'>2026-03-30 16:46:03</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-31 09:48:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-31T09:48:32+00:00'>2026-03-31 09:48:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:03'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:03+00:00'>2026-03-30 16:46:03</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-06-17 08:53:51'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-06-17T08:53:51+00:00'>2026-06-17 08:53:51</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
