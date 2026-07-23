@@ -51,17 +51,17 @@
     
       <link rel="stylesheet" href="../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../assets/document_dates/tippy/material.css">
     
-      <link rel="stylesheet" href="../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../assets/document_dates/tippy/backdrop.css">
     
+      <link rel="stylesheet" href="../../assets/document_dates/tippy/scale.css">
+    
       <link rel="stylesheet" href="../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../assets/document_dates/tippy/scale.css">
+      <link rel="stylesheet" href="../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../assets/document_dates/core/core.css">
     
@@ -6264,8 +6264,10 @@ non-obvious conventions:</p>
 <li><strong><code>AuthGuard</code> protects most app routes</strong> (<code>/network/*</code>, <code>/tasks</code>, <code>/executions/:id</code>, &hellip;). The
   <code>/integration/*</code> demo routes are unauthenticated.</li>
 <li><strong>Carbon combo-box event payload shape varies by handler.</strong> Single-select emits a <code>ListItem</code>,
-  multi-select emits <code>Array&lt;ListItem&gt;</code>, and some versions wrap with <code>{ item: X }</code>. Read defensively:
-  <code>event?.item ?? event</code>.</li>
+  multi-select emits <code>Array&lt;ListItem&gt;</code>, and some versions wrap with <code>{ item: X }</code>. Use
+  <code>unwrapListItem()</code> from <code>ngx-neops-app-components/src/lib/utils/carbon-selection.util</code> rather than
+  hand-rolling <code>event?.item ?? event</code> - the naive form returns the wrapper itself for a cleared
+  <code>{ item: undefined }</code> payload. Several older call sites still hand-roll it.</li>
 <li><strong>Carbon <code>listItems</code> carry their <code>selected</code> flag inside the array element</strong>, not via two-way binding.
   Mutate the item, then push a fresh array reference to trigger change detection.</li>
 <li><strong>JSON Forms can return <code>colorMapping</code> (and other complex fields) as a parsed object OR a JSON
@@ -6321,7 +6323,7 @@ non-obvious conventions:</p>
 <p><strong>Monorepo layout</strong>: library projects under <code>projects/zebbra/</code>, one demo app at <code>src/</code>, schematics at <code>neops-schematics/</code>.</p>
 <p><strong>State management</strong>: No NgRx. RxJS <code>BehaviorSubject</code> patterns throughout. <code>ContextService</code> holds app-wide state (current scope, query filters, task context). <code>AuthService</code> manages auth state.</p>
 <p><strong>Data flow</strong>: Pages create <code>ElementSearch&lt;T&gt;</code> instances -&gt; GraphQL queries via Apollo -&gt; results populate <code>GenericTable</code> or dashboard cards. Query filters synced to URL params via <code>ContextService</code>.</p>
-<p><strong>Auth</strong>: Dual mode &ndash; GraphQL username/password and OIDC (Keycloak). JWT in localStorage. OIDC configurations are loaded from the backend at startup via <code>AuthService.getOidcConfigurations()</code> and applied through <code>angular-auth-oidc-client</code>.</p>
+<p><strong>Auth</strong>: Dual mode &ndash; GraphQL username/password and backend-driven OIDC. The backend owns the OIDC handshake (django-allauth); the SPA discovers providers via the <code>appSettings.oidcProviders</code> GraphQL field, redirects to the provider <code>loginUrl</code>, and exchanges the one-time <code>?code=</code> on the <code>auth/callback</code> route for neops JWTs via the <code>exchangeOidcCode</code> mutation (<code>AuthService.handleOidcTokens()</code>). JWTs in localStorage.</p>
 <p><strong>Search</strong>: Uses <code>liqe</code> for Lucene-like query parsing in search autocomplete/filters.</p>
 <h2 id="patterns-worth-knowing-before-changing-things">Patterns worth knowing before changing things</h2>
 <ul>
@@ -6353,7 +6355,7 @@ non-obvious conventions:</p>
 <p>Schema/GraphQL-type changes (they come from a separate repo), routing/<code>AuthGuard</code> changes, new
 <code>Neops*</code> wrapper classes, reordering any library&rsquo;s published <code>public-api.ts</code>, or refactors that require
 backend behavior changes — all affect external consumers. Surface them rather than deciding solo.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-06-03 14:43:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-06-03T14:43:43+00:00'>2026-06-03 14:43:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-15 09:10:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-07-15T09:10:39+00:00'>2026-07-15 09:10:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
