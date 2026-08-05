@@ -6086,8 +6086,8 @@
 <td><code>condition-excludes-non-matching-entities</code></td>
 <td>SAFETY</td>
 <td>Conditional steps skip non-matching entities</td>
-<td>1</td>
-<td>1</td>
+<td>4</td>
+<td>4</td>
 </tr>
 <tr>
 <td><code>prior-step-results-coexist</code></td>
@@ -6100,15 +6100,22 @@
 <td><code>job-count-exact</code></td>
 <td>SAFETY</td>
 <td>No spurious or missing jobs created</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>step-after-embedded-workflow-waits</code></td>
+<td>SAFETY</td>
+<td>A step following an embedded workflow is not scheduled until all of that workflow&rsquo;s jobs for the entity completed</td>
 <td>1</td>
-<td>2</td>
+<td>1</td>
 </tr>
 <tr>
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>70</td>
-<td>75</td>
+<td>73</td>
+<td>78</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -6170,8 +6177,8 @@
 <td><code>jmes-resolves-context-device</code></td>
 <td>LIVENESS</td>
 <td>context.device.* resolves against CMS state</td>
-<td>1</td>
-<td>1</td>
+<td>2</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>jmes-resolves-workflow-params-absolute</code></td>
@@ -6411,6 +6418,24 @@
 <td><code>DbUpdatesTwoDevices</code></td>
 <td>Single-step workflow on 2 devices, each writing PATCH updates to its own entity, verifies CMS state</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>db-updates-applied</code>, <code>no-cross-context-write</code>, <code>multi-entity-parallel-execution</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-embedded-workflows/tests/embedded-workflows-condition-without-delimiters.ts</code></td>
+<td><code>EmbeddedWorkflowsConditionWithoutDelimiters</code></td>
+<td>Embedded workflow conditions written without {{ }} delimiters are evaluated as JMES, not swallowed as literal strings</td>
+<td><code>condition-excludes-non-matching-entities</code>, <code>job-count-exact</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-embedded-workflows/tests/embedded-workflows-per-platform.ts</code></td>
+<td><code>EmbeddedWorkflowsPerPlatform</code></td>
+<td>Two platform-conditional embedded workflows each execute exactly once against their single matching device</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>condition-excludes-non-matching-entities</code>, <code>job-count-exact</code>, <code>step-after-embedded-workflow-waits</code>, <code>jmes-resolves-context-device</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-embedded-workflows/tests/embedded-workflows-unresolvable-platform-field.ts</code></td>
+<td><code>EmbeddedWorkflowsUnresolvablePlatformField</code></td>
+<td>Branch conditions on a non-existent context path (platform.short_name) skip both embedded workflows and still reach COMPLETED_ACK</td>
+<td><code>condition-excludes-non-matching-entities</code>, <code>job-count-exact</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>workflow-execution-jmes-resolving/tests/condition-in-step.ts</code></td>
@@ -6804,7 +6829,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-06-02 08:50:02'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-06-02T08:50:02+00:00'>2026-06-02 08:50:02</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 11:55:37'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T11:55:37+00:00'>2026-08-05 11:55:37</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
