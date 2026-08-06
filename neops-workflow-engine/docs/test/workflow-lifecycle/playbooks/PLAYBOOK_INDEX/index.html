@@ -1268,6 +1268,8 @@
       
         
       
+        
+      
     
     
     
@@ -1337,6 +1339,34 @@
     
   
     Definition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../20-workflows/15-publishing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publishing & Versioning
   
 
     
@@ -6114,22 +6144,22 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>73</td>
 <td>78</td>
+<td>83</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
 <td>LIVENESS</td>
 <td>Minimal single-step workflow runs to COMPLETED_ACK</td>
-<td>4</td>
-<td>4</td>
+<td>8</td>
+<td>8</td>
 </tr>
 <tr>
 <td><code>multi-step-sequential-completes</code></td>
 <td>LIVENESS</td>
 <td>Multi-step workflow executes steps in DFS order</td>
-<td>2</td>
 <td>3</td>
+<td>4</td>
 </tr>
 <tr>
 <td><code>db-updates-applied</code></td>
@@ -6292,6 +6322,41 @@
 <td>1</td>
 <td>1</td>
 </tr>
+<tr>
+<td><code>publish-route-lifecycle-equivalence</code></td>
+<td>LIVENESS</td>
+<td>A workflow definition registered through POST /workflow-definition/publish executes to completion identically to one registered through the retired POST /workflow-definition</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>below-floor-rejection-preserves-resolution</code></td>
+<td>SAFETY</td>
+<td>A publish refused as 422 BelowFloor is never written, so loose-pin (:M, :M.m) execution keeps resolving to the version it would have displaced</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>accept-bump-displaces-resolution</code></td>
+<td>LIVENESS</td>
+<td>A publish accepted below the floor via acceptBump becomes the new head, and loose-pin execution picks it up on the next run</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>tombstone-revival-restores-resolution</code></td>
+<td>LIVENESS</td>
+<td>Republishing identical content onto a soft-deleted coordinate clears the deletion tombstone and makes the exact pin resolvable and executable again</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>explicit-restore-restores-resolution</code></td>
+<td>LIVENESS</td>
+<td>POST /workflow-definition/{id}/restore clears the deletion tombstone by ID, with no document needed, and makes the exact pin resolvable and executable again</td>
+<td>1</td>
+<td>1</td>
+</tr>
 </tbody>
 </table>
 <h2 id="playbooks">Playbooks</h2>
@@ -6334,6 +6399,36 @@
 <td><code>SimpleSuccessOnSingleDevice</code></td>
 <td>Interface toggle workflow with 3 FBs (show, check, configure) on a single device resolved from interface context</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>multi-step-sequential-completes</code>, <code>multi-fb-workflow-completes</code>, <code>acquisition-phase-completes</code>, <code>job-count-exact</code></td>
+</tr>
+<tr>
+<td><code>publish-resolution/tests/accept-bump-displaces-resolution.ts</code></td>
+<td><code>AcceptBumpDisplacesResolution</code></td>
+<td>Loose-pin execution picks up an acceptBump-published version on the next run</td>
+<td><code>accept-bump-displaces-resolution</code>, <code>lifecycle-reaches-terminal-state</code>, <code>single-step-completes</code></td>
+</tr>
+<tr>
+<td><code>publish-resolution/tests/below-floor-leaves-resolution-untouched.ts</code></td>
+<td><code>BelowFloorLeavesResolutionUntouched</code></td>
+<td>Loose-pin execution keeps resolving the previous head after a later publish is rejected as 422 BelowFloor</td>
+<td><code>below-floor-rejection-preserves-resolution</code>, <code>lifecycle-reaches-terminal-state</code>, <code>multi-step-sequential-completes</code></td>
+</tr>
+<tr>
+<td><code>publish-resolution/tests/publish-lifecycle-equivalence.ts</code></td>
+<td><code>PublishLifecycleEquivalence</code></td>
+<td>A single-step workflow registered through POST /workflow-definition/publish runs to completion exactly like one registered through the retired create route</td>
+<td><code>publish-route-lifecycle-equivalence</code>, <code>lifecycle-reaches-terminal-state</code>, <code>single-step-completes</code></td>
+</tr>
+<tr>
+<td><code>publish-resolution/tests/restore-route-resolves-again.ts</code></td>
+<td><code>RestoreRouteResolvesAgain</code></td>
+<td>An explicitly restored (previously soft-deleted) version resolves and executes again for an exact pin</td>
+<td><code>explicit-restore-restores-resolution</code>, <code>lifecycle-reaches-terminal-state</code>, <code>single-step-completes</code></td>
+</tr>
+<tr>
+<td><code>publish-resolution/tests/tombstone-revival-resolves-again.ts</code></td>
+<td><code>TombstoneRevivalResolvesAgain</code></td>
+<td>A revived (previously soft-deleted) version resolves and executes again for an exact pin</td>
+<td><code>tombstone-revival-restores-resolution</code>, <code>lifecycle-reaches-terminal-state</code>, <code>single-step-completes</code></td>
 </tr>
 <tr>
 <td><code>tests/assertion-halts-on-violation.ts</code></td>
@@ -6829,7 +6924,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 11:55:37'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T11:55:37+00:00'>2026-08-05 11:55:37</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 13:50:40'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T13:50:40+00:00'>2026-08-05 13:50:40</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

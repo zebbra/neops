@@ -1285,6 +1285,8 @@
       
         
       
+        
+      
     
     
     
@@ -1357,6 +1359,34 @@
     
   
     Definition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/15-publishing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publishing & Versioning
   
 
     
@@ -2390,10 +2420,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#deploy-a-workflow" class="md-nav__link">
+  <a href="#publish-a-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deploy a workflow
+        Publish a workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-and-restore-a-workflow-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delete and restore a workflow definition
       
     </span>
   </a>
@@ -6120,10 +6161,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#deploy-a-workflow" class="md-nav__link">
+  <a href="#publish-a-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deploy a workflow
+        Publish a workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-and-restore-a-workflow-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delete and restore a workflow definition
       
     </span>
   </a>
@@ -6275,7 +6327,7 @@
 <tr>
 <td>Workflow Definitions</td>
 <td><code>/workflow-definition</code></td>
-<td>Create, update, list, and delete workflow definitions</td>
+<td>Publish, list, delete, and restore workflow definitions (the old create/update routes are removed)</td>
 </tr>
 <tr>
 <td>Workflow Executions</td>
@@ -6310,20 +6362,42 @@
 </tbody>
 </table>
 <h2 id="common-operations">Common Operations</h2>
-<h3 id="deploy-a-workflow">Deploy a workflow</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition<span class="w"> </span><span class="se">\</span>
+<h3 id="publish-a-workflow">Publish a workflow</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition/publish<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;workflow&quot;: { ... }}&#39;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{ &quot;workflow&quot;: { ... } }&#39;</span>
 </span></code></pre></div>
-<p>The request body wraps the workflow definition in a <code>workflow</code> key (as JSON). See <a href="../../getting-started/20-your-first-workflow/">Your First Workflow</a> for a complete walkthrough.</p>
+<p>The request body is one DTO: the workflow document under <code>workflow</code>, with the options
+(<code>increment</code>, <code>dryRun</code>, <code>acceptBump</code>) beside it. The engine compares the document
+against the version it would displace and refuses a declared version that doesn&rsquo;t bump enough to
+honestly describe the change. See <a href="../../20-workflows/15-publishing/">Publishing &amp; Versioning</a> for
+the full contract &ndash; the options, every response status, and the version floor &ndash; or
+<a href="../../getting-started/20-your-first-workflow/">Your First Workflow</a> for a walkthrough.</p>
+<div class="admonition warning">
+<p class="admonition-title">Removed: <code>POST /workflow-definition</code> and <code>POST /workflow-definition/update</code></p>
+<p>The routes <code>/publish</code> replaces are gone and answer <code>404</code>. See
+<a href="../../20-workflows/15-publishing/#the-old-routes-are-gone">The old routes are gone</a> for the
+payload mapping if you still have a client on the old shapes.</p>
+</div>
+<h3 id="delete-and-restore-a-workflow-definition">Delete and restore a workflow definition</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A1.0.0
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A1.0.0/restore
+</span></code></pre></div>
+<p><code>DELETE</code> soft-deletes: the version stops resolving and disappears from listings, but its
+number stays taken and its content is kept. <code>POST .../{id}/restore</code> clears the tombstone again
+(so does republishing the identical document &ndash; restore is the way back when you don&rsquo;t have the
+original content at hand). Restoring returns <code>400</code> if the definition is not soft-deleted, <code>404</code>
+if it does not exist, and <code>403</code> if it would exceed the workflow-definition license cap &ndash;
+soft-deleting the last live version of a <code>(package, name)</code> frees a licensed slot, so restoring
+re-claims one.</p>
 <h3 id="execute-a-workflow">Execute a workflow</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="s1">    &quot;workflow&quot;: &quot;wf.example.neops.io/hello_world:1.0.0&quot;,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="s1">    &quot;executeOnParameters&quot;: { &quot;ids&quot;: [1, 2, 3] },</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s1">    &quot;parameters&quot;: {}</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s1">  }&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s1">    &quot;workflow&quot;: &quot;wf.example.neops.io/hello_world:1.0.0&quot;,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s1">    &quot;executeOnParameters&quot;: { &quot;ids&quot;: [1, 2, 3] },</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s1">    &quot;parameters&quot;: {}</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s1">  }&#39;</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -6348,11 +6422,11 @@
 </tbody>
 </table>
 <h3 id="health-check">Health check</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># {&quot;status&quot;: &quot;ok&quot;}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># {&quot;status&quot;: &quot;ok&quot;}</span>
 </span></code></pre></div>
 <h3 id="get-the-workflow-schema">Get the workflow schema</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>http://localhost:3030/schema/
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>http://localhost:3030/schema/
 </span></code></pre></div>
 <p>Returns the full <code>RootWorkflow</code> JSON Schema. Point your IDE at this endpoint for live validation &ndash; see <a href="../../getting-started/10-setup/#6-ide-setup-recommended">IDE Setup</a>.</p>
 <div class="admonition tip">
@@ -6360,7 +6434,7 @@
 <p>For the full list of endpoints, request/response schemas, and interactive testing,
 open the <strong><a href="http://localhost:3030/api">Swagger UI</a></strong> (requires a running engine).</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-04 08:37:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-04T08:37:15+00:00'>2026-08-04 08:37:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

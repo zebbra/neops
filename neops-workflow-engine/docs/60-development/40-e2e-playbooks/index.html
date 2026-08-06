@@ -1285,6 +1285,8 @@
       
         
       
+        
+      
     
     
     
@@ -1357,6 +1359,34 @@
     
   
     Definition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/15-publishing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publishing & Versioning
   
 
     
@@ -6496,7 +6526,7 @@
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="p">},</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="c1">// Workflow definition — the YAML/JSON equivalent as a TypeScript object</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="nx">createWorkflowDefinitionDto</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="nx">publishWorkflowDefinitionDto</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="nx">workflow</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;workflow&#39;</span><span class="p">,</span>
 </span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;my_workflow&#39;</span><span class="p">,</span>
@@ -6608,7 +6638,7 @@
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w">                    </span><span class="c1">// What this playbook tests</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nx">verifiesProperties</span><span class="o">:</span><span class="w"> </span><span class="kt">SystemPropertyVerification</span><span class="p">[]</span><span class="w">  </span><span class="c1">// Properties + reasoning</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nx">cmsDbBeforeExecution</span><span class="o">:</span><span class="w"> </span><span class="kt">CmsDB</span><span class="w">            </span><span class="c1">// Mock CMS state (devices, deviceGroups, interfaces — all required)</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nx">createWorkflowDefinitionDto</span><span class="o">:</span><span class="w"> </span><span class="kt">InstanceType</span><span class="o">&lt;</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">CreateWorkflowDefinitionDto</span><span class="o">&gt;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nx">publishWorkflowDefinitionDto</span><span class="o">:</span><span class="w"> </span><span class="kt">PublishWorkflowDefinitionDto</span><span class="w"> </span><span class="c1">// the publish endpoint&#39;s own request DTO, sent as-is</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nx">registerFunctionBlockDtos</span><span class="o">:</span><span class="w"> </span><span class="kt">RegisterFunctionBlockPlaybookDto</span><span class="p">[]</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nx">executeWorkflowDto?</span><span class="o">:</span><span class="w"> </span><span class="kt">InstanceType</span><span class="o">&lt;</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">ExecuteWorkflowDto</span><span class="o">&gt;</span><span class="w">  </span><span class="c1">// Omit = registration-only test</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="nx">expectedWorkflowExecutionStateAfterSubmit?</span><span class="o">:</span><span class="w"> </span><span class="kt">WorkflowExecutionStatus</span>
@@ -6623,8 +6653,8 @@
 <h2 id="execution-flow">Execution Flow</h2>
 <p>The <code>PlaybookExecutor</code> runs the playbook in this order:</p>
 <ol>
+<li><strong>Register workflow</strong> &ndash; <code>POST /workflow-definition/publish</code>. If <code>expectedStateOverrides.workflowDefinitionPostResponse</code> is set to BAD_REQUEST, assert and abort early</li>
 <li><strong>Initialize CMS</strong> &ndash; Set up mock CMS data via <code>CmsLockMockService</code></li>
-<li><strong>Register workflow</strong> &ndash; <code>POST /workflow-definition</code>. If <code>expectedStateOverrides.workflowDefinitionPostResponse</code> is set to BAD_REQUEST, assert and abort early</li>
 <li><strong>Register function blocks</strong> &ndash; <code>POST /function-blocks/register</code> for each FB</li>
 <li><strong>Execute workflow</strong> &ndash; <code>POST /workflow-execution</code>. If no <code>executeWorkflowDto</code>, abort (registration-only test)</li>
 <li><strong>Wait for RESOURCE_DISCOVERY</strong> &ndash; Or a terminal state if validation fails early</li>
@@ -6635,6 +6665,7 @@
 <li><strong>Assert terminal state</strong> &ndash; Verify the execution ended in the expected state</li>
 <li><strong>Assert CMS state</strong> &ndash; If <code>cmsDbAfterExecution</code> is set, verify via <code>isSubset()</code>. On mismatch, the <code>intersection()</code> helper shows the overlap for debugging</li>
 </ol>
+<p>Steps 2-11 live in <code>runAssumingPublished(app)</code>, which <code>execute()</code> delegates to after step 1. That split is deliberate: the <code>Playbook</code> shape has room for exactly one registration, so a test whose point is a publish <em>sequence</em> &ndash; &ldquo;publish v1, a later publish is rejected as <code>422 BelowFloor</code>, then a loose-pin execution must still resolve v1&rdquo; &ndash; cannot be a plain playbook. Such tests (see <code>publish-resolution.e2e-spec.ts</code>) drive their publishes directly via supertest, then call <code>runAssumingPublished</code> to reuse the same acquire/execute/rollback machinery instead of duplicating it.</p>
 <h2 id="state-transitions-test-observable">State Transitions (Test-Observable)</h2>
 <p>The executor observes this subset of the full state machine. States collapsed into <code>[engine-internal]</code> are traversed automatically by the engine and not visible to playbook tests:</p>
 <pre class="mermaid"><code>stateDiagram-v2
@@ -6699,7 +6730,7 @@
 </tr>
 <tr>
 <td><code>registerWorkflow(dto, expectedStatus?)</code></td>
-<td><code>POST /workflow-definition</code></td>
+<td><code>POST /workflow-definition/publish</code></td>
 <td>Deploy a workflow definition</td>
 </tr>
 <tr>

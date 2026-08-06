@@ -1268,6 +1268,8 @@
       
         
       
+        
+      
     
     
     
@@ -1337,6 +1339,34 @@
     
   
     Definition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/20-workflows/15-publishing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publishing & Versioning
   
 
     
@@ -6190,6 +6220,7 @@
 <li>Use <code>const</code>/<code>let</code> (never <code>var</code>), <code>async</code>/<code>await</code> (never <code>.then()</code>)</li>
 <li>All types explicit on function parameters and return values</li>
 <li>Use NestJS CLI for scaffolding: <code>nest g resource &lt;name&gt;</code>, <code>nest g service &lt;name&gt;</code></li>
+<li>Request bodies are always DTO classes (class-validator + <code>@Type</code>), never a bare domain model: the payload and its options travel in one DTO (e.g. publish takes <code>{ workflow, increment, dryRun, acceptBump }</code>), and write endpoints take no query parameters</li>
 <li>Example function block package across all repos: <code>fb.examples.neops.io</code></li>
 <li>Migrations run automatically on startup; manual: <code>npx mikro-orm migration:up</code></li>
 <li>Logging: NestJS built-in Logger. Format configurable via <code>LOG_FORMAT</code> env var (pretty/json)</li>
@@ -6231,7 +6262,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 15:11:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-25T15:11:41+00:00'>2026-03-25 15:11:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 09:14:25'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T09:14:25+00:00'>2026-08-05 09:14:25</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

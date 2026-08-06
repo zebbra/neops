@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../20-steps/">
+        <link rel="next" href="../15-publishing/">
       
       
         
@@ -1287,6 +1287,8 @@
       
         
       
+        
+      
     
     
     
@@ -1483,10 +1485,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#registering-with-the-engine" class="md-nav__link">
+  <a href="#publishing-to-the-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Registering with the Engine
+        Publishing to the Engine
       
     </span>
   </a>
@@ -1497,6 +1499,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-publishing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publishing & Versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -6180,10 +6210,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#registering-with-the-engine" class="md-nav__link">
+  <a href="#publishing-to-the-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Registering with the Engine
+        Publishing to the Engine
       
     </span>
   </a>
@@ -6313,24 +6343,30 @@ currently accept JSON. Convert with <code>yq -o=json workflow.yaml</code> or see
 <thead>
 <tr>
 <th>Version part</th>
-<th>When to increment</th>
+<th>What it signals</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>majorVersion</code></td>
-<td>Breaking changes to the step structure or parameter schema</td>
+<td>Breaking changes to the step structure, <code>runOn</code>/<code>seedEntity</code>, or a step&rsquo;s function block/workflow pin</td>
 </tr>
 <tr>
 <td><code>minorVersion</code></td>
-<td>New optional steps or parameters (backward-compatible)</td>
+<td>New optional steps, parameters, or acquire/assert rules (backward-compatible)</td>
 </tr>
 <tr>
 <td><code>patchVersion</code></td>
-<td>Fixes to parameter values, conditions, or descriptions</td>
+<td>Fixes to parameter values, conditions, descriptions, or retry/repeat config</td>
 </tr>
 </tbody>
 </table>
+<p>These are conventions you still have to intend &ndash; the engine cannot know <em>why</em> you changed
+something. What it does enforce is a <strong>floor</strong>: publishing computes the smallest bump your
+changes honestly justify from the previous version, and refuses a declared version that bumps
+by less than that, unless you tell it explicitly that the floor is wrong. See
+<a href="../15-publishing/#the-version-floor">Publishing &amp; Versioning</a> for the full classification and
+how to override it.</p>
 <p>The engine stores all versions. When you reference a workflow by partial version (e.g., <code>1.0</code> or <code>1</code>), the engine resolves it to the latest matching patch or minor version.</p>
 <h3 id="seed-entity">Seed Entity</h3>
 <p>The <code>seedEntity</code> determines what type of entity this workflow operates on:</p>
@@ -6434,21 +6470,28 @@ currently accept JSON. Convert with <code>yq -o=json workflow.yaml</code> or see
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup_type</span>
 </span></code></pre></div>
 <p>The schema is validated when the workflow is executed. It also drives parameter form generation in the UI.</p>
-<h2 id="registering-with-the-engine">Registering with the Engine</h2>
-<p>Deploy a workflow definition via the REST API:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition<span class="w"> </span><span class="se">\</span>
+<h2 id="publishing-to-the-engine">Publishing to the Engine</h2>
+<p>Deploy a workflow definition with <code>POST /workflow-definition/publish</code>, sending the document itself with no envelope:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition/publish<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;workflow&quot;: { ... }}&#39;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-d<span class="w"> </span>@workflow.json
 </span></code></pre></div>
-<p>Or use the Monitor App&rsquo;s workflow definition editor.</p>
+<p>See <a href="../15-publishing/">Publishing &amp; Versioning</a> for the full request and response contract &ndash; the body and its options, every status code with example bodies, and how the engine decides whether your declared version is honest.</p>
+<p>Or use the Monitor App&rsquo;s workflow definition editor, which drives the same endpoint.</p>
 <div class="admonition tip">
 <p class="admonition-title">Schema validation</p>
 <p>The engine validates workflow definitions against the
-<a href="../../schema/doc/">RootWorkflow JSON Schema</a> on registration.
+<a href="../../schema/doc/">RootWorkflow JSON Schema</a> on publish.
 Invalid definitions are rejected with descriptive error messages.
 You can also validate locally before deployment &ndash; see <a href="../../99-appendix/schema/">Schema Reference</a>.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class="admonition warning">
+<p class="admonition-title">The old routes are gone</p>
+<p><code>POST /workflow-definition</code> (create) and <code>POST /workflow-definition/update</code> have been
+removed in favor of <code>/publish</code>; both answer <code>404</code>. See
+<a href="../15-publishing/#the-old-routes-are-gone">The old routes are gone</a> for the payload mapping.</p>
+</div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 09:14:25'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T09:14:25+00:00'>2026-08-05 09:14:25</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
@@ -6525,13 +6568,13 @@ You can also validate locally before deployment &ndash; see <a href="../../99-ap
         
         
           
-          <a href="../20-steps/" class="md-footer__link md-footer__link--next" aria-label="Next: Steps">
+          <a href="../15-publishing/" class="md-footer__link md-footer__link--next" aria-label="Next: Publishing &amp; Versioning">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Steps
+                Publishing & Versioning
               </div>
             </div>
             <div class="md-footer__button md-icon">
