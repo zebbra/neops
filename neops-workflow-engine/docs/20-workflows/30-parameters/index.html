@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -1530,11 +1530,39 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#jmespath-functions" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whole-string-vs-embedded-tokens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        JMESPath Functions
+        Whole-String vs Embedded Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Whole-String vs Embedded Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#null-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Null Semantics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_string-and-object-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_string() and Object Encoding
       
     </span>
   </a>
@@ -1543,6 +1571,56 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-errors-halt-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Errors Halt the Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-error-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The !! Error Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jmespath-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JMESPath Functions
+      
+    </span>
+  </a>
   
 </li>
       
@@ -6149,11 +6227,39 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#jmespath-functions" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whole-string-vs-embedded-tokens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        JMESPath Functions
+        Whole-String vs Embedded Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Whole-String vs Embedded Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#null-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Null Semantics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_string-and-object-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_string() and Object Encoding
       
     </span>
   </a>
@@ -6162,6 +6268,56 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-errors-halt-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Errors Halt the Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-error-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The !! Error Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jmespath-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JMESPath Functions
+      
+    </span>
+  </a>
   
 </li>
       
@@ -6348,6 +6504,21 @@
 <td>Whether a step succeeded</td>
 <td><code>{{ ping.result.success }}</code></td>
 </tr>
+<tr>
+<td><code>&lt;step_label&gt;.results</code></td>
+<td>Per-entity result map of a previous entity-scoped step</td>
+<td><code>{{ ping.results }}</code></td>
+</tr>
+<tr>
+<td><code>steps.&lt;step_label&gt;.result.*</code></td>
+<td>Explicit path to a previous step&rsquo;s result</td>
+<td><code>{{ steps.ping.result.success }}</code></td>
+</tr>
+<tr>
+<td><code>&lt;workflow_label&gt;.*</code></td>
+<td>The whole context, aliased under the workflow&rsquo;s <code>label</code></td>
+<td><code>{{ my_workflow.parameters.timeout }}</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="accessing-previous-step-results">Accessing Previous Step Results</h3>
@@ -6356,23 +6527,82 @@
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">is_reachable</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">check_reachability.result.data.reachable</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">latency_ms</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">check_reachability.result.data.latency</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
-<h3 id="jmespath-functions">JMESPath Functions</h3>
+<p>A previous step&rsquo;s result is exposed in two forms:</p>
+<ul>
+<li><strong><code>&lt;step_label&gt;.result</code></strong> (singular) &ndash; the one result relevant to the current step: for a previous step with the <strong>same scope</strong> (<code>runOn</code>), the result produced for the entity the current step is running on; for a previous <strong><code>runOn: global</code></strong> step, its single result.</li>
+<li><strong><code>&lt;step_label&gt;.results</code></strong> (per-entity map) &ndash; for entity-scoped previous steps, a map from entity id to that entity&rsquo;s result, covering the entities in the current step&rsquo;s context.</li>
+</ul>
+<p>The same data is available under <code>steps.&lt;step_label&gt;.result</code>, and &ndash; absolute form &ndash; under <code>&lt;workflow_label&gt;.steps.&lt;step_label&gt;.result</code> (the workflow&rsquo;s <code>label</code> aliases the entire context, which is useful inside embedded workflows).</p>
+<details class="info">
+<summary>Global step results are visible to steps of every scope</summary>
+<p>A <code>runOn: global</code> step produces exactly one result. That result is exposed via <code>&lt;step_label&gt;.result</code> to all later steps regardless of their scope &ndash; a <code>runOn: device</code> step can read <code>{{ render_config.result.data.template }}</code> from a previous global <code>render_config</code> step. For global steps <code>&lt;step_label&gt;.results</code> is an empty map: use <code>.result</code>.</p>
+</details>
+<h2 id="whole-string-vs-embedded-tokens">Whole-String vs Embedded Tokens</h2>
+<p>How a token&rsquo;s value lands in the parameter depends on whether the token is the <em>entire</em> parameter string:</p>
+<ul>
+<li><strong>Whole-string token</strong> &ndash; a parameter that is exactly one <code>{{ ... }}</code> token yields the <strong>raw JMES value</strong>, whatever its type: numbers stay numbers, booleans stay booleans, objects and arrays stay structured values, and <code>null</code> stays <code>null</code>. Nothing is coerced to a string.</li>
+<li><strong>Embedded token(s)</strong> &ndash; tokens inside a larger string are <strong>stringified</strong> and concatenated in place: strings pass through, numbers and booleans are converted via <code>String()</code>, objects and arrays are JSON-encoded.</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ping.result.data.nextMaxRtt</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">   </span><span class="c1"># raw number, e.g. 110</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rtt={{</span><span class="nv"> </span><span class="s">ping.result.data.nextMaxRtt</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">meta={{</span><span class="nv"> </span><span class="s">ping.result.data</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="c1"># -&gt; &#39;rtt=110 meta={&quot;nextMaxRtt&quot;:110}&#39;</span>
+</span></code></pre></div>
+<h3 id="null-semantics">Null Semantics</h3>
+<p><code>null</code> is a value, not an error &ndash; but only where a value of any type is allowed:</p>
+<ul>
+<li>A <strong>whole-string</strong> token that resolves to <code>null</code> (a literal null, or an unresolvable path such as a mistyped step label) ships <code>null</code> as the parameter value. The function block&rsquo;s parameter schema then decides: if the schema does not allow null, the workflow fails during parameter validation with a <code>does not allow null</code> reason &ndash; the step&rsquo;s execute job is never created, so no coerced or empty value reaches a worker.</li>
+<li>A token <strong>embedded</strong> in a larger string that resolves to <code>null</code> is an <strong>evaluation error</strong>: null cannot be meaningfully embedded into a string. The workflow fails with a reason naming the expression (<code>cannot embed null into a string for expression '...'</code>) instead of shipping corrupted text like <code>host=null</code>.</li>
+</ul>
+<p>In both cases the terminal state follows the usual <a href="../../10-concepts/40-workflow-as-a-transaction/">failure classification</a>: <code>FAILED_SAFE</code> if only pure steps executed before the failure, <code>FAILED_UNSAFE</code> otherwise.</p>
+<h3 id="to_string-and-object-encoding"><code>to_string()</code> and Object Encoding</h3>
+<p><code>to_string()</code> JSON-encodes its argument, which is handy for passing structured data as a string:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">resultJson</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">to_string(ping.result.data)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">   </span><span class="c1"># &#39;{&quot;nextMaxRtt&quot;:110}&#39;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">rttString</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">to_string(ping.result.data.nextMaxRtt)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">   </span><span class="c1"># &#39;110&#39;</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Key order of multi-key objects is not deterministic</p>
+<p>Step results pass through PostgreSQL <code>jsonb</code> storage, which rewrites object key order. The JSON encoding produced by <code>to_string()</code> (or by embedding an object into a string) is only byte-for-byte predictable for objects with a <strong>single key</strong>. Do not build logic on the exact string encoding of multi-key objects.</p>
+</div>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="evaluation-errors-halt-the-workflow">Evaluation Errors Halt the Workflow</h3>
+<p>A JMES expression that cannot be evaluated &ndash; a malformed expression (parse error) or an embedded token resolving to null &ndash; fails the workflow, and <strong>the offending step&rsquo;s execute job is never created</strong>: broken values (error markers, clobbered strings, coerced empties) are never shipped to a worker. This applies to expressions in <code>parameters</code>, in <code>acquire</code> clauses, and in context-acquire <code>filter</code> expressions. The failure reason names the offending expression, and the terminal state follows the <a href="../../10-concepts/40-workflow-as-a-transaction/">failure classification</a> rules: <code>FAILED_SAFE</code> when only pure steps executed before the failure, <code>FAILED_UNSAFE</code> otherwise.</p>
+<p>Conditions are the deliberate exception: an erroring condition simply evaluates to false and skips its step &ndash; see <a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a>.</p>
+<h3 id="the-error-fallback">The <code>!!</code> Error Fallback</h3>
+<p>An expression can declare a fallback value with the <code>!!</code> operator:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mode={{</span><span class="nv"> </span><span class="s">parameters.mode</span><span class="nv"> </span><span class="s">!!</span><span class="nv"> </span><span class="s">unknown</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">   </span><span class="c1"># embedded null -&gt; &quot;mode=unknown&quot;</span>
+</span></code></pre></div>
+<p>The fallback applies on <strong>evaluation errors</strong> only &ndash; a parse error, or an embedded token resolving to null. It does <strong>not</strong> apply when a whole-string expression resolves to null: null is a legitimate value, so the parameter becomes <code>null</code> and schema validation decides (see <a href="#null-semantics">Null Semantics</a>). A <code>!!</code> inside a JMES string literal (e.g. <code>contains(note, '!!')</code>) is not treated as the fallback operator.</p>
+<h2 id="jmespath-functions">JMESPath Functions</h2>
 <p>JMESPath supports built-in functions for filtering, transforming, and testing data:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">condition</span><span class="p">:</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jmes</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="c1"># Check if any interface is in DOWN state</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">jmes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">length(context.interfaces[?state</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;DOWN&#39;])</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">`0`</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">condition</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jmes</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="c1"># Check if any interface is in DOWN state</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">jmes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">length(context.interfaces[?state</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;DOWN&#39;])</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">`0`</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
 <p>Common functions: <code>length()</code>, <code>contains()</code>, <code>starts_with()</code>, <code>type()</code>, <code>keys()</code>, <code>values()</code>, <code>sort()</code>, <code>join()</code>. See the <a href="https://jmespath.org/specification.html#built-in-functions">JMESPath specification</a> for the full list.</p>
 <h2 id="raw-parameters">Raw Parameters</h2>
 <p>Use <code>rawParameters</code> when you need literal strings that contain <code>{{ }}</code> (e.g., Jinja templates):</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">context.device.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">     </span><span class="c1"># interpolated at runtime</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">rawParameters</span><span class="p">:</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">jinja_template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hostname</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">hostname</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">      </span><span class="c1"># literal, not interpolated</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">context.device.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">     </span><span class="c1"># interpolated at runtime</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">rawParameters</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">jinja_template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hostname</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">hostname</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">      </span><span class="c1"># literal, not interpolated</span>
 </span></code></pre></div>
 <p><code>rawParameters</code> are merged with <code>parameters</code>. If a key exists in both, <code>rawParameters</code> takes precedence.</p>
 <p>This is essential when your function block receives a Jinja template or JMESPath expression as a parameter value &ndash; you want the curly braces passed through as-is, not evaluated by the engine.</p>
+<div class="admonition warning">
+<p class="admonition-title">Worker-side Jinja templates belong in <code>rawParameters</code></p>
+<p>Worker-side Jinja2 templating shares the <code>{{ }}</code> delimiters with the engine&rsquo;s JMES
+interpolation. A Jinja template placed in <code>parameters</code> is treated as a set of JMES
+expressions by the engine: a Jinja token like <code>{{ interface.name }}</code> references a
+loop variable that does not exist in the engine&rsquo;s context, resolves to null embedded
+in the template string, and <strong>halts the workflow</strong> (see
+<a href="#null-semantics">Null Semantics</a>). The engine will not silently ship a clobbered
+template. Fields in <code>rawParameters</code> bypass interpolation entirely and reach the
+worker byte-for-byte.</p>
+</div>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
@@ -6380,7 +6610,7 @@
 <li><a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a> &ndash; JMESPath in conditions and assertions</li>
 <li><a href="../../99-appendix/schema/#parametrizedfunctionblock">Schema Reference</a> &ndash; Full schema for step parameters</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 10:40:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T10:40:34+00:00'>2026-03-18 10:40:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-06 20:01:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-06T20:01:08+00:00'>2026-08-06 20:01:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

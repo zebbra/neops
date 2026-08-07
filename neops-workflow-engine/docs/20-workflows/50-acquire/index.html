@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -6468,10 +6468,21 @@
 <tr>
 <td><code>filter</code></td>
 <td>No</td>
-<td>JMESPath filter expression</td>
+<td>JMESPath filter expression &ndash; see note below</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Filter expression syntax is under review</p>
+<p>The exact form a <code>filter</code> expression must take (delimiters, how entity fields are
+addressed) is currently under review &ndash; treat the example above as illustrative.
+What is guaranteed: evaluation is strict. A filter expression that fails to evaluate
+(e.g. a JMES parse error) fails the workflow instead of silently matching &ndash; and
+locking &ndash; every entity in the context (terminal state per
+<a href="../../10-concepts/40-workflow-as-a-transaction/">failure classification</a>), and a
+filter that resolves to null or false for an entity excludes that entity without
+error.</p>
+</div>
 <h3 id="reference">Reference</h3>
 <p>Reference entities acquired by a previous step:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">acquire</span><span class="p">:</span>
@@ -6543,7 +6554,7 @@ specified statically in the workflow definition.</p>
 <li><a href="../../10-concepts/40-workflow-as-a-transaction/#entity-locking">Entity Locking</a> &ndash; How acquired entities are locked for transactional safety</li>
 <li><a href="/neops-worker-sdk-py/docs/function-blocks/10-anatomy/#lifecycle-methods">Implementing <code>acquire()</code> (Worker SDK)</a> &ndash; How to implement the <code>acquire()</code> method in Python function blocks</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 10:40:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T10:40:34+00:00'>2026-03-18 10:40:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-06 20:01:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-06T20:01:08+00:00'>2026-08-06 20:01:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

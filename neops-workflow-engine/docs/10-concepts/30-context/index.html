@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -6397,7 +6397,15 @@
 </tr>
 <tr>
 <td><code>&lt;step_label&gt;.result</code></td>
-<td>Result payloads from previous steps.</td>
+<td>Result payload from a previous step (same scope, or a <code>runOn: global</code> step).</td>
+</tr>
+<tr>
+<td><code>&lt;step_label&gt;.results</code></td>
+<td>Per-entity result map of a previous entity-scoped step.</td>
+</tr>
+<tr>
+<td><code>steps.&lt;step_label&gt;</code></td>
+<td>Explicit path to previous step results (same data as above).</td>
 </tr>
 </tbody>
 </table>
@@ -6408,7 +6416,7 @@
 </ul>
 <h3 id="dynamic-context-populated-during-execution">Dynamic context (populated during execution)</h3>
 <ul>
-<li><strong><code>&lt;step_label&gt;.result</code></strong> &ndash; The result data from a completed step. For example, if a step labeled <code>ping</code> returns <code>{ "reachable": true }</code>, subsequent steps can access <code>{{ ping.result.data.reachable }}</code></li>
+<li><strong><code>&lt;step_label&gt;.result</code></strong> &ndash; The result data from a completed step. For example, if a step labeled <code>ping</code> returns <code>{ "reachable": true }</code>, subsequent steps can access <code>{{ ping.result.data.reachable }}</code>. A <code>runOn: global</code> step&rsquo;s single result is visible to later steps of every scope; entity-scoped steps additionally expose a per-entity map under <code>&lt;step_label&gt;.results</code></li>
 <li><strong>Acquired entities</strong> &ndash; Additional entities pulled in through <code>acquire</code> clauses</li>
 </ul>
 <h2 id="how-context-gets-populated">How Context Gets Populated</h2>
@@ -6491,13 +6499,14 @@ similarly: <code>context.device.facts.version</code>. The
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hostname</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">hostname</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">        </span><span class="c1"># literal string, not interpolated</span>
 </span></code></pre></div>
 <p><code>rawParameters</code> and <code>parameters</code> are merged, with <code>rawParameters</code> taking precedence for duplicate keys.</p>
+<p>Worker-side Jinja templates share the <code>{{ }}</code> delimiters and <strong>must</strong> go into <code>rawParameters</code>: placed in <code>parameters</code>, the engine treats their tokens as JMES expressions, and an unresolvable token halts the workflow instead of shipping a corrupted template.</p>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
 <li><a href="../../20-workflows/50-acquire/">Acquire</a> &ndash; How entities are acquired and added to the context</li>
-<li><a href="../../20-workflows/30-parameters/">Parameters &amp; Interpolation</a> &ndash; JMESPath interpolation in detail</li>
+<li><a href="../../20-workflows/30-parameters/">Parameters &amp; Interpolation</a> &ndash; The full interpolation contract: whole-string vs embedded tokens, null semantics, error handling</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-06 20:01:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-06T20:01:08+00:00'>2026-08-06 20:01:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

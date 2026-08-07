@@ -51,17 +51,17 @@
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/fonts/material-icons.css">
     
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/material.css">
+    
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/scale.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/core/core.css">
     
@@ -6102,8 +6102,8 @@
 <td><code>reject-wrong-parameter-type</code></td>
 <td>SAFETY</td>
 <td>Type-mismatched parameters rejected</td>
-<td>9</td>
-<td>9</td>
+<td>10</td>
+<td>10</td>
 </tr>
 <tr>
 <td><code>assertion-halts-on-violation</code></td>
@@ -6123,8 +6123,8 @@
 <td><code>prior-step-results-coexist</code></td>
 <td>SAFETY</td>
 <td>Multiple prior step results for the same entity coexist in JMES interpolation context without engine error</td>
-<td>1</td>
-<td>1</td>
+<td>2</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>job-count-exact</code></td>
@@ -6132,6 +6132,13 @@
 <td>No spurious or missing jobs created</td>
 <td>4</td>
 <td>5</td>
+</tr>
+<tr>
+<td><code>invalid-interpolation-halts-safely</code></td>
+<td>SAFETY</td>
+<td>A step whose JMES interpolation cannot be evaluated halts the workflow safely; no error marker reaches a worker</td>
+<td>4</td>
+<td>4</td>
 </tr>
 <tr>
 <td><code>step-after-embedded-workflow-waits</code></td>
@@ -6144,8 +6151,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>78</td>
-<td>83</td>
+<td>88</td>
+<td>93</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -6165,15 +6172,15 @@
 <td><code>db-updates-applied</code></td>
 <td>LIVENESS</td>
 <td>CMS reflects PATCH/CREATE operations after success</td>
-<td>2</td>
-<td>5</td>
+<td>3</td>
+<td>6</td>
 </tr>
 <tr>
 <td><code>entity-creation-applied</code></td>
 <td>LIVENESS</td>
 <td>CREATE db-update operations produce new CMS entities</td>
-<td>1</td>
 <td>2</td>
+<td>3</td>
 </tr>
 <tr>
 <td><code>fb-version-resolved-by-major</code></td>
@@ -6235,8 +6242,22 @@
 <td><code>jmes-resolves-previous-step-result-relative</code></td>
 <td>LIVENESS</td>
 <td>Relative path to prior step result resolves</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>jmes-resolves-cross-scope-step-result</code></td>
+<td>LIVENESS</td>
+<td>Prior step results resolve across differing runOn scopes (e.g. a device step reading a global step result)</td>
 <td>1</td>
 <td>1</td>
+</tr>
+<tr>
+<td><code>jmes-string-encoding-correct</code></td>
+<td>LIVENESS</td>
+<td>JMES interpolation produces the expected string encodings: functions like to_string() JSON-encode values, and tokens embedded in larger strings stringify primitives and JSON-encode objects</td>
+<td>3</td>
+<td>3</td>
 </tr>
 <tr>
 <td><code>step-data-flows-to-next-step</code></td>
@@ -6263,8 +6284,8 @@
 <td><code>fb-level-acquisition-works</code></td>
 <td>LIVENESS</td>
 <td>FB-level acquires produce correct context</td>
-<td>3</td>
 <td>4</td>
+<td>5</td>
 </tr>
 <tr>
 <td><code>schema-validation-passes-correct-mapping</code></td>
@@ -6437,6 +6458,18 @@
 <td><code>lifecycle-reaches-terminal-state</code>, <code>assertion-halts-on-violation</code></td>
 </tr>
 <tr>
+<td><code>tests/completed-step-survives-condition-flip.ts</code></td>
+<td><code>CompletedStepSurvivesConditionFlip</code></td>
+<td>A completed step&rsquo;s result stays available after a later step&rsquo;s dbUpdates flip the completed step&rsquo;s condition to false</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-resolves-previous-step-result-relative</code>, <code>prior-step-results-coexist</code></td>
+</tr>
+<tr>
+<td><code>tests/context-acquire-invalid-filter-halts-safely.ts</code></td>
+<td><code>ContextAcquireInvalidFilterHaltsSafely</code></td>
+<td>A step-level context acquire whose per-entity JMES filter is malformed fails the workflow safely instead of matching all entities</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
+</tr>
+<tr>
 <td><code>tests/device-step-with-context-interface-acquisition.ts</code></td>
 <td><code>DeviceStepWithContextInterfaceAcquisition</code></td>
 <td>Device step with workflow-level elastic interface acquisition and step-level context acquire populates device.interfaces as id refs and context.interfaces as full objects</td>
@@ -6455,9 +6488,21 @@
 <td><code>lifecycle-reaches-terminal-state</code>, <code>single-step-completes</code></td>
 </tr>
 <tr>
+<td><code>tests/embedded-null-halts-safely.ts</code></td>
+<td><code>EmbeddedNullHaltsSafely</code></td>
+<td>A step whose string parameter embeds a null-resolving JMES token inside a larger string halts the workflow safely instead of shipping the corrupted text &ldquo;host=null&rdquo;</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
+</tr>
+<tr>
 <td><code>tests/fb-level-acquisition.ts</code></td>
 <td><code>FbLevelAcquisition</code></td>
 <td>Global workflow where a step uses FB-level elastic acquire to resolve devices into context</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>fb-level-acquisition-works</code></td>
+</tr>
+<tr>
+<td><code>tests/interface-step-after-device-acquire.ts</code></td>
+<td><code>InterfaceStepAfterDeviceAcquire</code></td>
+<td>Interfaces acquired at STEP level by a device step propagate to the traversal context, so a later interface step fans out over them</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>fb-level-acquisition-works</code></td>
 </tr>
 <tr>
@@ -6515,6 +6560,12 @@
 <td><code>lifecycle-reaches-terminal-state</code>, <code>db-updates-applied</code>, <code>no-cross-context-write</code>, <code>multi-entity-parallel-execution</code></td>
 </tr>
 <tr>
+<td><code>workflow-execution-db-updates/tests/global-step-db-updates-multi-device.ts</code></td>
+<td><code>GlobalStepDbUpdatesMultiDevice</code></td>
+<td>Global CREATE step followed by a device step on 2 devices: the global db-update is applied exactly once despite per-device re-harvests</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>entity-creation-applied</code>, <code>db-updates-applied</code></td>
+</tr>
+<tr>
 <td><code>workflow-execution-embedded-workflows/tests/embedded-workflows-condition-without-delimiters.ts</code></td>
 <td><code>EmbeddedWorkflowsConditionWithoutDelimiters</code></td>
 <td>Embedded workflow conditions written without {{ }} delimiters are evaluated as JMES, not swallowed as literal strings</td>
@@ -6537,6 +6588,18 @@
 <td><code>ConditionInStep</code></td>
 <td>Step with JMES condition context.device.id == 1 executes only for device 1, device 2 skipped</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>condition-excludes-non-matching-entities</code>, <code>single-step-completes</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/embedded-token-stringification.ts</code></td>
+<td><code>EmbeddedTokenStringification</code></td>
+<td>Tokens embedded in a larger string stringify context values, result primitives, and result objects into one concatenated parameter</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-string-encoding-correct</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/invalid-jmes-expression-halts-safely.ts</code></td>
+<td><code>InvalidJmesExpressionHaltsSafely</code></td>
+<td>A step whose parameter contains a malformed JMES expression halts the workflow safely instead of shipping the !!token!! error marker</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
 </tr>
 <tr>
 <td><code>workflow-execution-jmes-resolving/tests/prior-step-results-coexist.ts</code></td>
@@ -6573,6 +6636,24 @@
 <td><code>ReadFromPreviousStepResultRelative</code></td>
 <td>Step 2 reads ping.result.data.nextMaxRtt (relative path to prior step result)</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-resolves-previous-step-result-relative</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/read-global-step-result-from-device-step.ts</code></td>
+<td><code>ReadGlobalStepResultFromDeviceStep</code></td>
+<td>A runOn:device step reads {{ render_config.result.data.template }} produced by a prior runOn:global step</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-resolves-cross-scope-step-result</code>, <code>jmes-string-encoding-correct</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/to-string-interpolation.ts</code></td>
+<td><code>ToStringInterpolation</code></td>
+<td>to_string() on a step result object, a numeric result field, and a workflow parameter produces the expected string encodings</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>jmes-string-encoding-correct</code></td>
+</tr>
+<tr>
+<td><code>workflow-execution-jmes-resolving/tests/unresolved-step-reference-halts-safely.ts</code></td>
+<td><code>UnresolvedStepReferenceHaltsSafely</code></td>
+<td>A step whose parameter interpolates an unresolvable JMES reference halts the workflow safely instead of shipping a coerced empty value</td>
+<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/format-resolving-simple-fail-1.ts</code></td>
@@ -6653,10 +6734,10 @@
 <td><code>reject-missing-fb-version</code></td>
 </tr>
 <tr>
-<td><code>workflow-validation-and-resolving/raw-parameters/tests/parameters-jinja-token-is-clobbered.ts</code></td>
-<td><code>ParametersJinjaTokenIsClobbered</code></td>
-<td>A worker-side Jinja2 {{ }} token placed in parameters (not rawParameters) is JMES-interpolated and clobbered to null (&ldquo;interface null&rdquo;) before reaching the worker — documenting why such templates must use rawParameters.</td>
-<td><code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
+<td><code>workflow-validation-and-resolving/raw-parameters/tests/parameters-jinja-token-halts-loudly.ts</code></td>
+<td><code>ParametersJinjaTokenHaltsLoudly</code></td>
+<td>A worker-side Jinja2 {{ }} token placed in parameters (not rawParameters) resolves to an embedded null and halts the workflow safely instead of shipping a clobbered template — documenting why such templates must use rawParameters.</td>
+<td><code>invalid-interpolation-halts-safely</code>, <code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/raw-parameters/tests/raw-parameters-override-interpolated.ts</code></td>
@@ -6924,7 +7005,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 13:50:40'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T13:50:40+00:00'>2026-08-05 13:50:40</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-06 20:01:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-06T20:01:08+00:00'>2026-08-06 20:01:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
