@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/my-neops-function-blocks.iml" filepath="$PROJECT_DIR$/.idea/my-neops-function-blocks.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/neops.iml" filepath="$PROJECT_DIR$/.idea/neops.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/neops-lab.iml" filepath="$PROJECT_DIR$/.idea/neops-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/neops-remote-lab.iml" filepath="$PROJECT_DIR$/.idea/neops-remote-lab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/neops_worker_sdk.iml" filepath="$PROJECT_DIR$/.idea/neops_worker_sdk.iml" />
     </modules>
   </component>
 </project>

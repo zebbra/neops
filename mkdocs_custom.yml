@@ -10,7 +10,10 @@ nav:
   - "User Guide": coming-soon.md
   - Workflows: "!include ./docs/neops-workflow-engine/mkdocs_custom.yml"
   - "Function Blocks": "!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml"
-  - "Remote Lab": "!include ./docs/neops-remote-lab/mkdocs_custom.yml"
+  - Lab:
+      - lab/index.md
+      - "Local Lab": "!include ./docs/neops-lab/mkdocs_custom.yml"
+      - "Remote Lab": "!include ./docs/neops-remote-lab/mkdocs_custom.yml"
   - "Installation & Deployment": installation
   - Modules:
       - Index: modules/index.md

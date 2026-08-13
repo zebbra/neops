@@ -16,3 +16,6 @@
 [submodule "submodules/neops-remote-lab"]
 	path = docs/neops-remote-lab
 	url = https://github.com/zebbra/neops-remote-lab.git
+[submodule "submodules/neops-lab"]
+	path = docs/neops-lab
+	url = https://github.com/zebbra/neops-lab.git
