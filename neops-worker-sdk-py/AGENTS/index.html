@@ -21,7 +21,7 @@
     
     
       
-        <title>Neops Worker SDK (Python) - Neops Docs</title>
+        <title>neops-worker-sdk-py - Neops Docs</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-worker-sdk-python" class="md-skip">
+        <a href="#neops-worker-sdk-py" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Worker SDK (Python)
+              neops-worker-sdk-py
             
           </span>
         </div>
@@ -6960,43 +6960,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tech-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tech Stack
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#development" class="md-nav__link">
     <span class="md-ellipsis">
       
         Development
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project Structure
       
     </span>
   </a>
@@ -7015,6 +6982,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gotchas-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gotchas &amp; Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ecosystem-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ecosystem Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7026,10 +7015,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#neops-ecosystem" class="md-nav__link">
+  <a href="#architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Neops Ecosystem
+        Architecture
       
     </span>
   </a>
@@ -7037,30 +7026,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ai-agent-guidance" class="md-nav__link">
+  <a href="#verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AI Agent Guidance
+        Verification
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="AI Agent Guidance">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#knowledge-file-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Knowledge File Index
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -7098,54 +7070,52 @@
   
 
 
-<h1 id="neops-worker-sdk-python">Neops Worker SDK (Python)</h1>
-<p>Python SDK for writing reusable, type-safe function blocks for the neops network automation platform. Workers built with this SDK auto-register function blocks with the workflow engine, poll for jobs, execute them, and push results back via the blackboard API.</p>
-<h2 id="tech-stack">Tech Stack</h2>
-<ul>
-<li><strong>Language</strong>: Python 3.12+</li>
-<li><strong>Typing</strong>: Pydantic for parameter/result validation, Pyrefly for static type checking</li>
-<li><strong>Async</strong>: asyncio event loop + ThreadPoolExecutor for sync FB execution</li>
-<li><strong>Connections</strong>: Scrapli, Netmiko, Napalm, NETCONF, RESTCONF (via proxy/plugin system)</li>
-<li><strong>Testing</strong>: pytest (asyncio mode), remote lab integration</li>
-<li><strong>Linting</strong>: Ruff (line length 120)</li>
-<li><strong>Build</strong>: hatchling, entry point <code>neops_worker</code></li>
-</ul>
-<h2 id="architecture">Architecture</h2>
-<p>Function blocks are Python classes inheriting from <code>FunctionBlock[ParamsT, ResultDataT]</code> with three lifecycle methods: <code>acquire()</code>, <code>run()</code>, <code>rollback()</code>. The SDK discovers FBs via <code>@register_function_block</code> decorators, generates JSON schemas from Pydantic models, and registers with the engine at startup. A hybrid sync/async worker loop polls the blackboard, executes FBs in a thread pool (max_workers=1), and pushes results.</p>
-<p>Device communication uses a three-layer connection system: capability interfaces (abstract contracts) → connection proxies (user API) → connection plugins (platform/library implementations).</p>
+<h1 id="neops-worker-sdk-py">neops-worker-sdk-py</h1>
+<p>Python SDK for building typed, testable function blocks that execute within the neops 2.0 workflow system. Provides the <code>FunctionBlock</code> ABC, a decorator-based registration system, pluggable device connections, automatic context change tracking, and a CLI worker process that polls the workflow engine&rsquo;s blackboard API.</p>
+<p>Tech: Python 3.12, Pydantic, httpx, asyncio, netmiko, napalm, ncclient, scrapli, loguru, pytest, uv, ruff, pyrefly</p>
 <h2 id="development">Development</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>sync<span class="w">                                          </span><span class="c1"># Install dependencies</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>uv<span class="w"> </span>run<span class="w"> </span>neops_worker<span class="w">                               </span><span class="c1"># Start worker</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;not function_block&quot;</span><span class="w">          </span><span class="c1"># Fast tests</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;function_block&quot;</span><span class="w">              </span><span class="c1"># FB integration tests</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.<span class="w"> </span>--fix<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.<span class="w"> </span><span class="c1"># Lint + format</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>uv<span class="w"> </span>run<span class="w"> </span>pyrefly<span class="w"> </span>check<span class="w">                              </span><span class="c1"># Type check</span>
-</span></code></pre></div>
-<h2 id="project-structure">Project Structure</h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>neops_worker_sdk/
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  cli/                Worker entry point, job processing loop
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  concurrency/        @run_in_thread, run_parallel, BlockingDetector
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  connection/         Proxy/Plugin device connection system
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    capabilities/     Abstract capability interfaces
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    plugins/          Platform-specific plugin implementations
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  function_block/     FunctionBlock ABC, result types, registration
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  logger/             Loguru-based structured logging
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  registry/           FB discovery and registration
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  testing/            Test framework (fb_test_case, context factories)
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  workflow/           WorkflowContext, entity wrappers, DB update diffing
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>examples/             Example function blocks (getting-started, ping, use-cases)
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>docs/                 MkDocs documentation source
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>tests/                Test suites and topologies
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>--extra<span class="w"> </span><span class="nb">test</span><span class="w">          </span><span class="c1"># install all dependencies</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env<span class="w">                      </span><span class="c1"># configure URL_BLACKBOARD, DIR_FUNCTION_BLOCKS</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>uv<span class="w"> </span>run<span class="w"> </span>neops_worker<span class="w">                       </span><span class="c1"># start worker (polls for jobs)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w">                             </span><span class="c1"># unit tests (excludes remote_lab by default)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span>function_block<span class="w">           </span><span class="c1"># function block integration tests</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-m<span class="w"> </span>remote_lab<span class="w">               </span><span class="c1"># remote lab tests (needs REMOTE_LAB_URL)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>neops_worker_sdk<span class="w">        </span><span class="c1"># lint</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>neops_worker_sdk<span class="w">  </span><span class="c1"># format check</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>uv<span class="w"> </span>run<span class="w"> </span>pyrefly<span class="w"> </span>check<span class="w">                      </span><span class="c1"># type check</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>make<span class="w"> </span>lint<span class="w">                                 </span><span class="c1"># `ruff format --check` + `ruff check` (read-only verification, does not auto-fix)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>make<span class="w"> </span><span class="nb">test</span><span class="w">                                 </span><span class="c1"># same as uv run pytest -q</span>
 </span></code></pre></div>
 <h2 id="conventions">Conventions</h2>
 <ul>
-<li>Ruff: line length 120, target Python 3.12</li>
-<li>All function blocks must have typed parameters (Pydantic, <code>extra="ignore"</code>) and results (<code>extra="forbid"</code>)</li>
+<li>Default branch is <code>develop</code>. Branch from <code>develop</code> for all changes.</li>
+<li>Function block parameters: Pydantic BaseModel with <code>extra="ignore"</code></li>
+<li>Function block results: Pydantic BaseModel with <code>extra="forbid"</code></li>
 <li>Use <code>@run_in_thread</code> for blocking I/O in async contexts</li>
-<li>Never use <code>../../</code> in doc snippet includes — use symlinks in <code>docs/</code></li>
-<li>Example FB package: <code>fb.examples.neops.io</code> (consistent across all repos)</li>
+<li>Example function block package name: <code>fb.examples.neops.io</code> (consistent across all neops repos)</li>
+<li>Logging: loguru-based (<code>neops_worker_sdk/logger/</code>), use <code>logger.with_context()</code> for structured fields</li>
 </ul>
+<h2 id="gotchas-boundaries">Gotchas &amp; Boundaries</h2>
+<ul>
+<li>NEVER: modify excluded fields on entities (including but not limited to: id, created_at, updated_at, permission (many fields total &ndash; see <code>workflow/db_updates.py</code>)) &ndash; they are silently ignored by the diff engine</li>
+<li>NEVER: rely on nested object diffing &ndash; <code>compute_db_updates()</code> compares top-level fields only; nested changes produce full field replacement</li>
+<li>ALWAYS: run <code>uv run pytest &amp;&amp; make lint &amp;&amp; uv run pyrefly check</code> before pushing</li>
+<li>ALWAYS: set <code>URL_BLACKBOARD</code> and <code>DIR_FUNCTION_BLOCKS</code> env vars before starting the worker</li>
+<li>Config lives in <code>examples/config.py</code>, not the SDK &ndash; <code>registry.py</code> imports from <code>examples.config</code>, so <code>examples/</code> must be on the Python path</li>
+<li>Registry is a module-level singleton &ndash; <code>@register_function_block</code> adds to a global <code>Registry()</code> instance; import order matters for discovery</li>
+<li>Function blocks run in a single thread (<code>ThreadPoolExecutor(max_workers=1)</code>) &ndash; jobs execute sequentially, not in parallel</li>
+<li>Each job gets its own <code>asyncio.run()</code> event loop inside the thread pool worker</li>
+<li>Base <code>FunctionBlock.rollback()</code> returns <code>success=False, message="Rollback not implemented"</code> by default</li>
+<li>Connection plugin precedence: user plugins silently override SDK defaults for <code>default_for_platform</code>; two user plugins conflicting raises <code>PluginRegistrationError</code></li>
+<li>Version compatibility check (<code>client_version_compatible_with_backend()</code>) always returns <code>True</code> &ndash; it is not implemented</li>
+<li><code>neops_workflow_engine_client</code> is exact-pinned to <code>0.42.0-beta.26</code> &ndash; SDK updates required for engine API changes</li>
+<li>Worker-engine communication has no authentication</li>
+</ul>
+<h2 id="ecosystem-context">Ecosystem Context</h2>
+<p>This SDK is the worker-side component of neops 2.0. The workflow engine (neops-workflow-engine, NestJS) orchestrates execution and provides the blackboard REST API that workers poll. The CMS (neops-core, Django/GraphQL) provides device/interface/group entity data. The SDK uses an OpenAPI-generated client (<code>neops_workflow_engine_client</code>) built from the engine&rsquo;s Swagger spec.</p>
+<p>Called by: user function block implementations. Calls: neops-workflow-engine (blackboard API via OpenAPI client). This SDK consumes neops-remote-lab as a pytest plugin for integration testing function blocks against real virtual devices via <code>@fb_test_case_with_lab</code> and <code>remote_lab_fixture()</code>.</p>
 <h2 id="key-configuration">Key Configuration</h2>
+<p>Loaded in <code>examples/config.py</code> via <code>python-dotenv</code>. Only non-obvious vars listed:</p>
 <table>
 <thead>
 <tr>
@@ -7157,74 +7127,41 @@
 <tbody>
 <tr>
 <td><code>URL_BLACKBOARD</code></td>
-<td><code>http://localhost:3030</code></td>
-<td>Workflow engine URL</td>
+<td>(required)</td>
+<td>Workflow engine base URL (e.g., <code>http://localhost:3030</code>)</td>
 </tr>
 <tr>
 <td><code>DIR_FUNCTION_BLOCKS</code></td>
-<td><code>.</code></td>
-<td>Directory to scan for function blocks</td>
+<td>(required)</td>
+<td>Comma-separated dirs to scan for function blocks</td>
 </tr>
 <tr>
-<td><code>WORKER_NAME</code></td>
-<td>hostname</td>
-<td>Worker display name</td>
+<td><code>HEARTBEAT_INTERVAL</code></td>
+<td><code>20</code></td>
+<td>Seconds between pings &ndash; engine expects pings within 120s</td>
 </tr>
 <tr>
-<td><code>NEOPS_BLOCKING_DETECTOR</code></td>
-<td><code>true</code></td>
-<td>Enable blocking call detection</td>
+<td><code>POLL_INTERVAL</code></td>
+<td><code>10</code></td>
+<td>Seconds between job poll requests</td>
+</tr>
+<tr>
+<td><code>SHUTDOWN_TIMEOUT</code></td>
+<td><code>60</code></td>
+<td>Seconds to wait for running job on graceful shutdown</td>
+</tr>
+<tr>
+<td><code>BLOCKING_DETECTION_THRESHOLD</code></td>
+<td><code>0.5</code></td>
+<td>Seconds threshold for blocking warnings (0 to disable)</td>
 </tr>
 </tbody>
 </table>
-<h2 id="neops-ecosystem">Neops Ecosystem</h2>
-<p>This SDK is the worker-side component of the neops platform. The workflow engine (NestJS, neops-workflow-engine) orchestrates execution and provides the blackboard API. The CMS (Django, neops-core) provides entity data. For full ecosystem context, see <code>.agent/knowledge/_shared/neops-ecosystem-overview.md</code>.</p>
-<h2 id="ai-agent-guidance">AI Agent Guidance</h2>
-<ul>
-<li>Read this file first, then explore <code>.agent/knowledge/</code> for deeper knowledge</li>
-<li>Shared ecosystem knowledge: <code>.agent/knowledge/_shared/</code> (identical across all neops repos)</li>
-<li>Project-specific knowledge: <code>.agent/knowledge/</code> root (doc audit, link tracking)</li>
-<li>For Cursor-specific rules: <code>.cursor/rules/</code></li>
-<li>Connection proxy/plugin system is the most complex subsystem — read <code>connection/</code> carefully</li>
-<li>The <code>fb.examples.neops.io</code> package is used for all example function blocks across repos</li>
-<li>Logging: Loguru-based (<code>neops_worker_sdk/logger/</code>). Use <code>logger.with_context()</code> for structured fields.</li>
-</ul>
-<h3 id="knowledge-file-index">Knowledge File Index</h3>
-<table>
-<thead>
-<tr>
-<th>Task</th>
-<th>Read</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>How neops components interact</td>
-<td><code>_shared/neops-ecosystem-overview.md</code></td>
-</tr>
-<tr>
-<td>Architecture details (connections, CMS, blackboard)</td>
-<td><code>_shared/component-architectures.md</code></td>
-</tr>
-<tr>
-<td>Writing or editing documentation</td>
-<td><code>_shared/documentation-playbook.md</code></td>
-</tr>
-<tr>
-<td>Cross-project example/terminology sync</td>
-<td><code>_shared/cross-project-patterns.md</code></td>
-</tr>
-<tr>
-<td>Setting up AI knowledge in a new repo</td>
-<td><code>_shared/ai-knowledge-base-guide.md</code></td>
-</tr>
-<tr>
-<td>Doc quality assessment or gap analysis</td>
-<td><code>documentation-audit.md</code></td>
-</tr>
-</tbody>
-</table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-03 15:59:27'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-03T15:59:27+00:00'>2026-03-03 15:59:27</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-03 15:59:27'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-03T15:59:27+00:00'>2026-03-03 15:59:27</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<h2 id="architecture">Architecture</h2>
+<p>Three-layer connection system: <code>CapabilityInterface</code> (abstract contracts) -&gt; <code>ConnectionPlugin</code> (platform/library-specific) -&gt; <code>ConnectionProxy</code> (metaclass-based proxy resolving plugins by platform/type/library). Function blocks discovered via <code>@register_function_block</code> decorator -&gt; global <code>Registry</code> -&gt; registered with engine at startup. Worker runs two concurrent async tasks: heartbeat pings + job polling with <code>ThreadPoolExecutor(max_workers=1)</code> dispatch.</p>
+<h2 id="verification">Verification</h2>
+<p><code>uv run pytest -x -q &amp;&amp; uv run ruff format --check neops_worker_sdk &amp;&amp; uv run ruff check neops_worker_sdk &amp;&amp; uv run pyrefly check</code></p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-03 15:59:27'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-03T15:59:27+00:00'>2026-03-03 15:59:27</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-31 12:46:31'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-31T12:46:31+00:00'>2026-03-31 12:46:31</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

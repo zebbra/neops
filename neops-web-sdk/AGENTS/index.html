@@ -7155,10 +7155,10 @@
 
 <h1 id="neops-web-sdk">neops-web-sdk</h1>
 <p>Angular monorepo producing publishable <code>@zebbra/</code> NPM library packages that provide the shared foundation for all neops web frontends. Includes UI components built on IBM Carbon Design System, GraphQL-backed domain services, JSON schema-driven form rendering, file storage integration, and shared build/deployment artifacts. Also contains a demo application (port 4201) serving as a living integration test.</p>
-<p>Tech: Angular 20, TypeScript 5.8, Carbon Design System, Apollo GraphQL 4, JSON Forms, Leaflet, ng-packagr, Karma/Jasmine, SCSS, Node 20.19</p>
+<p>Tech: Angular 20, TypeScript 5.8, Carbon Design System, Apollo GraphQL 4, JSON Forms, Leaflet, ng-packagr, Karma/Jasmine, SCSS, Node 20.20, npm 10.8.2</p>
 <h2 id="development">Development</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nvm<span class="w"> </span>use<span class="w">                 </span><span class="c1"># Node 20.19</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install<span class="w">             </span><span class="c1"># also runs postinstall -&gt; build-schematics</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nvm<span class="w"> </span>use<span class="w">                 </span><span class="c1"># Node 20.20 (see .nvmrc)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install<span class="w">             </span><span class="c1"># npm 10.8.2; also runs postinstall -&gt; build-schematics</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>npm<span class="w"> </span>start<span class="w">               </span><span class="c1"># demo app at http://localhost:4201</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w">                </span><span class="c1"># Karma/Jasmine unit tests</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>npm<span class="w"> </span>run<span class="w"> </span>lint<span class="w">            </span><span class="c1"># ESLint (8GB memory limit; prelint runs check:icons)</span>

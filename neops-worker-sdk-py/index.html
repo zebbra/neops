@@ -21,7 +21,7 @@
     
     
       
-        <title>Neops Worker SDK for Python - Neops Docs</title>
+        <title>neops-worker-sdk-py - Neops Docs</title>
       
     
     
@@ -90,7 +90,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-worker-sdk-for-python" class="md-skip">
+        <a href="#neops-worker-sdk-py" class="md-skip">
           Skip to content
         </a>
       
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Worker SDK for Python
+              neops-worker-sdk-py
             
           </span>
         </div>
@@ -6960,22 +6960,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation
+        Prerequisites
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Installation">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#for-users-pip" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For users (pip):
+        Install
       
     </span>
   </a>
@@ -6983,10 +7016,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#for-contributors-uv" class="md-nav__link">
+  <a href="#run" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For contributors (uv):
+        Run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Quality
       
     </span>
   </a>
@@ -6999,51 +7043,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-the-worker" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run the Worker
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#development-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Development Tools
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Development Tools">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Commands
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#code-quality-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code Quality Commands
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#testing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7053,59 +7052,15 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#make-targets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Make Targets
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Code Style
+        Configuration
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Code Style">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#type-checking" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Type Checking
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#formatting-and-linting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Formatting and Linting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -7114,6 +7069,39 @@
     <span class="md-ellipsis">
       
         Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contributing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
       
     </span>
   </a>
@@ -7154,8 +7142,8 @@
   
 
 
-<h1 id="neops-worker-sdk-for-python">Neops Worker SDK for Python</h1>
-<p>Build network automation as small, typed Python units — <strong>function blocks</strong> — that the neops platform orchestrates, schedules, and scales for you.</p>
+<h1 id="neops-worker-sdk-py">neops-worker-sdk-py</h1>
+<p>Python SDK for building network automation function blocks for the neops 2.0 platform. Write small, typed Python units that the workflow engine orchestrates, schedules, and scales.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@register_function_block</span><span class="p">(</span><span class="n">Registration</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;show_version&quot;</span><span class="p">,</span> <span class="n">run_on</span><span class="o">=</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">))</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">ShowVersion</span><span class="p">(</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">ShowVersionParams</span><span class="p">,</span> <span class="n">ShowVersionResult</span><span class="p">]):</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -7163,147 +7151,65 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>            <span class="n">output</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s2">&quot;show version&quot;</span><span class="p">)</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ShowVersionResult</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">))</span>
 </span></code></pre></div>
-<blockquote>
-<p><strong><a href="docs/">Full Documentation</a></strong> — Getting started, function blocks, device connections, testing, deployment.</p>
-</blockquote>
-<hr />
-<h2 id="installation">Installation</h2>
-<h3 id="for-users-pip">For users (pip):</h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>neops-worker-sdk
-</span></code></pre></div>
-<h3 id="for-contributors-uv">For contributors (uv):</h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Install uv if not already installed</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Clone the repository and install dependencies</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>--extra<span class="w"> </span><span class="nb">test</span>
-</span></code></pre></div>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>Use a .env file (with <code>python-dotenv</code>):</li>
+<li><strong>Python</strong> 3.12+</li>
+<li><strong>uv</strong> (recommended) or pip</li>
+<li>A running <strong>neops-workflow-engine</strong> instance (default: <a href="http://localhost:3030">http://localhost:3030</a>)</li>
 </ul>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cp<span class="w"> </span>.env.test<span class="w"> </span>.env
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>dotenv<span class="w"> </span>-f<span class="w"> </span>.env<span class="w"> </span>run<span class="w"> </span>--<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>neops_worker
+<h2 id="quick-start">Quick Start</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>--extra<span class="w"> </span><span class="nb">test</span><span class="w">   </span><span class="c1"># install all dependencies</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env<span class="w">               </span><span class="c1"># configure URL_BLACKBOARD, DIR_FUNCTION_BLOCKS</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>uv<span class="w"> </span>run<span class="w"> </span>neops_worker<span class="w">                </span><span class="c1"># start worker (polls engine for jobs)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-x<span class="w"> </span>-q<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>neops_worker_sdk<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>neops_worker_sdk<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pyrefly<span class="w"> </span>check<span class="w">  </span><span class="c1"># verify</span>
 </span></code></pre></div>
-<h2 id="run-the-worker">Run the Worker</h2>
-<p>To run the worker locally:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>neops_worker
+<h2 id="architecture">Architecture</h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Your Function Blocks (@register_function_block)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    |
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    v
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Registry (global singleton, discovers FBs from DIR_FUNCTION_BLOCKS dirs)
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    |
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    v
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Worker Startup
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  |- Register worker with engine (POST /workers/register -&gt; UUID)
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  |- Register function blocks (POST /function-blocks/register for each)
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  |- Start heartbeat task (POST /workers/:uuid/ping every 20s)
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  \- Start job polling task (POST /blackboard/job every 10s)
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        |
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        v
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    ThreadPoolExecutor (max_workers=1)
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        |
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        v
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    FunctionBlock.acquire() / run() / rollback()
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        |
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        v
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    ConnectionProxy -&gt; ConnectionPlugin -&gt; BaseConnection
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        |                                      |
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        v                                      v
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    WorkflowContext (snapshot + diff)    Device (netmiko/napalm/scrapli/ncclient)
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        |
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>        v
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    Push result to engine (POST /blackboard/job/result)
 </span></code></pre></div>
-<p>If installed via pip, run it from your virtual environment:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>neops_worker
+<h2 id="development">Development</h2>
+<h3 id="install">Install</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>sync<span class="w">                              </span><span class="c1"># production deps only</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev<span class="w">                  </span><span class="c1"># + dev tools (ruff, pyrefly)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>--extra<span class="w"> </span><span class="nb">test</span><span class="w">     </span><span class="c1"># + test deps (pytest, remote-lab)</span>
 </span></code></pre></div>
-<p>You can also use the module form:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>-m<span class="w"> </span>neops_worker_sdk.cli.neops_worker
+<h3 id="run">Run</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>neops_worker<span class="w">                  </span><span class="c1"># start worker process</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>python<span class="w"> </span>-m<span class="w"> </span>neops_worker_sdk.cli.neops_worker<span class="w">  </span><span class="c1"># alternative</span>
 </span></code></pre></div>
-<h2 id="development-tools">Development Tools</h2>
-<p>This project uses a modern Python toolchain for development:</p>
-<table>
-<thead>
-<tr>
-<th>Tool</th>
-<th>Purpose</th>
-<th>Documentation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://docs.astral.sh/uv/">uv</a></td>
-<td>Fast Python package and project manager</td>
-<td><a href="https://docs.astral.sh/uv/getting-started/installation/">Getting Started</a></td>
-</tr>
-<tr>
-<td><a href="https://docs.astral.sh/ruff/">ruff</a></td>
-<td>Extremely fast Python linter and formatter</td>
-<td><a href="https://docs.astral.sh/ruff/configuration/">Configuration</a></td>
-</tr>
-<tr>
-<td><a href="https://pyrefly.org/">pyrefly</a></td>
-<td>Fast type checker for Python</td>
-<td><a href="https://pyrefly.org/en/docs/">Documentation</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="common-commands">Common Commands</h3>
-<table>
-<thead>
-<tr>
-<th>Action</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Install dependencies</td>
-<td><code>uv sync</code></td>
-</tr>
-<tr>
-<td>Install with dev deps</td>
-<td><code>uv sync --group dev</code></td>
-</tr>
-<tr>
-<td>Install with all groups</td>
-<td><code>uv sync --group dev --extra test</code></td>
-</tr>
-<tr>
-<td>Add a package</td>
-<td><code>uv add &lt;pkg&gt;</code></td>
-</tr>
-<tr>
-<td>Add dev package</td>
-<td><code>uv add --group dev &lt;pkg&gt;</code></td>
-</tr>
-<tr>
-<td>Run a command</td>
-<td><code>uv run &lt;cmd&gt;</code></td>
-</tr>
-<tr>
-<td>Run the worker</td>
-<td><code>uv run neops_worker</code></td>
-</tr>
-<tr>
-<td>Build wheel</td>
-<td><code>uv build</code></td>
-</tr>
-<tr>
-<td>Publish package</td>
-<td><code>uv publish</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="code-quality-commands">Code Quality Commands</h3>
-<table>
-<thead>
-<tr>
-<th>Action</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Format code</td>
-<td><code>uv run ruff format .</code></td>
-</tr>
-<tr>
-<td>Check formatting</td>
-<td><code>uv run ruff format --check .</code></td>
-</tr>
-<tr>
-<td>Lint code</td>
-<td><code>uv run ruff check .</code></td>
-</tr>
-<tr>
-<td>Fix lint issues</td>
-<td><code>uv run ruff check --fix .</code></td>
-</tr>
-<tr>
-<td>Type check</td>
-<td><code>uv run pyrefly check</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="testing">Testing</h3>
-<p>Tests are organized in <strong>tiers</strong> using pytest markers. By default, only fast
-unit tests run — integration and example tests are excluded to keep local
-iteration quick.</p>
+<h3 id="code-quality">Code Quality</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>neops_worker_sdk<span class="w"> </span>examples<span class="w"> </span>tests<span class="w">  </span><span class="c1"># format check</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>neops_worker_sdk<span class="w"> </span>examples<span class="w"> </span>tests<span class="w">            </span><span class="c1"># lint</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>neops_worker_sdk<span class="w"> </span>examples<span class="w"> </span>tests<span class="w">      </span><span class="c1"># lint + auto-fix</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>uv<span class="w"> </span>run<span class="w"> </span>pyrefly<span class="w"> </span>check<span class="w">                                         </span><span class="c1"># type check</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>make<span class="w"> </span>lint<span class="w">                                                    </span><span class="c1"># format + lint combined</span>
+</span></code></pre></div>
+<h2 id="testing">Testing</h2>
+<p>Tests are organized in tiers using pytest markers. By default, remote lab tests are excluded.</p>
 <table>
 <thead>
 <tr>
@@ -7314,19 +7220,27 @@ iteration quick.</p>
 <tbody>
 <tr>
 <td><code>uv run pytest</code></td>
-<td>Unit tests only (default)</td>
+<td>Unit + SDK tests (default)</td>
+</tr>
+<tr>
+<td><code>uv run pytest -m function_block</code></td>
+<td>Function block integration tests</td>
+</tr>
+<tr>
+<td><code>uv run pytest -m remote_lab</code></td>
+<td>Remote lab tests (needs <code>REMOTE_LAB_URL</code>)</td>
 </tr>
 <tr>
 <td><code>make test</code></td>
-<td>Same as above</td>
+<td>Unit tests (<code>uv run pytest -q</code>)</td>
 </tr>
 <tr>
 <td><code>make test-examples</code></td>
-<td>Example function block tests (no lab required)</td>
+<td>Example function block tests</td>
 </tr>
 <tr>
 <td><code>make test-function-blocks</code></td>
-<td>Function block + remote lab integration tests</td>
+<td>Function block + remote lab tests</td>
 </tr>
 <tr>
 <td><code>make test-all</code></td>
@@ -7334,10 +7248,6 @@ iteration quick.</p>
 </tr>
 </tbody>
 </table>
-<p>Remote lab tests require <code>REMOTE_LAB_URL</code> to be set:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">REMOTE_LAB_URL</span><span class="o">=</span>http://&lt;remote-lab-host&gt;:8000
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>make<span class="w"> </span>test-all
-</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -7362,58 +7272,93 @@ iteration quick.</p>
 <td>Auto (conftest.py)</td>
 <td>All tests collected from <code>examples/</code></td>
 </tr>
+<tr>
+<td><code>sdk</code></td>
+<td>&ndash;</td>
+<td>SDK internal tests</td>
+</tr>
 </tbody>
 </table>
-<h3 id="make-targets">Make Targets</h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Run linting (format check + lint check)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>make<span class="w"> </span>lint
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Auto-format code</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>make<span class="w"> </span>format
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Run type checking (pyrefly)</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>make<span class="w"> </span>typeCheck
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="c1"># Run tests</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>make<span class="w"> </span><span class="nb">test</span><span class="w">               </span><span class="c1"># unit tests (default)</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>make<span class="w"> </span>test-examples<span class="w">      </span><span class="c1"># example tests</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>make<span class="w"> </span>test-function-blocks<span class="w">   </span><span class="c1"># function block + remote lab tests</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>make<span class="w"> </span>test-all<span class="w">           </span><span class="c1"># everything</span>
-</span></code></pre></div>
-<h2 id="code-style">Code Style</h2>
-<h3 id="type-checking">Type Checking</h3>
-<p>We enforce strict typing for all Python files. The codebase is checked with pyrefly:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pyrefly<span class="w"> </span>check
-</span></code></pre></div>
-<h3 id="formatting-and-linting">Formatting and Linting</h3>
-<p>Code formatting and linting are enforced by ruff:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Check formatting</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>./neops_worker_sdk<span class="w"> </span>./examples
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Auto-format</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>./neops_worker_sdk<span class="w"> </span>./examples
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Lint</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>./neops_worker_sdk<span class="w"> </span>./examples
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># Lint and auto-fix</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>./neops_worker_sdk<span class="w"> </span>./examples
-</span></code></pre></div>
+<h2 id="configuration">Configuration</h2>
+<p>Environment variables loaded via <code>python-dotenv</code> from <code>.env</code>. See <code>.env.example</code> for all options.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>URL_BLACKBOARD</code></td>
+<td>(required)</td>
+<td>Workflow engine base URL</td>
+</tr>
+<tr>
+<td><code>DIR_FUNCTION_BLOCKS</code></td>
+<td>(required)</td>
+<td>Comma-separated dirs to scan for function blocks</td>
+</tr>
+<tr>
+<td><code>WORKER_NAME</code></td>
+<td>(none)</td>
+<td>Human-readable worker name</td>
+</tr>
+<tr>
+<td><code>HEARTBEAT_INTERVAL</code></td>
+<td><code>20</code></td>
+<td>Seconds between heartbeat pings</td>
+</tr>
+<tr>
+<td><code>POLL_INTERVAL</code></td>
+<td><code>10</code></td>
+<td>Seconds between job poll requests</td>
+</tr>
+<tr>
+<td><code>SHUTDOWN_TIMEOUT</code></td>
+<td><code>60</code></td>
+<td>Seconds to wait for running job on shutdown</td>
+</tr>
+<tr>
+<td><code>BLOCKING_DETECTION_THRESHOLD</code></td>
+<td><code>0.5</code></td>
+<td>Seconds threshold for blocking warnings</td>
+</tr>
+</tbody>
+</table>
 <h2 id="docker">Docker</h2>
-<p>Build and run with Docker:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Build the image</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk<span class="w"> </span>.
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Run the worker</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>docker<span class="w"> </span>run<span class="w"> </span>neops-worker-sdk
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Run linting (CI target)</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>linter<span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk:lint<span class="w"> </span>.
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1"># Run tests (CI target)</span>
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk:test<span class="w"> </span>.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk<span class="w"> </span>.<span class="w">                          </span><span class="c1"># production image</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker<span class="w"> </span>run<span class="w"> </span>--env-file<span class="w"> </span>.env<span class="w"> </span>neops-worker-sdk<span class="w">                 </span><span class="c1"># run worker</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>linter<span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk:lint<span class="w"> </span>.<span class="w">     </span><span class="c1"># lint stage</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-t<span class="w"> </span>neops-worker-sdk:test<span class="w"> </span>.<span class="w">       </span><span class="c1"># test stage</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2024-09-29 19:53:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2024-09-29T19:53:35+00:00'>2024-09-29 19:53:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 18:07:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-02-26T18:07:28+00:00'>2026-02-26 18:07:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Jean Pool' data-tippy-content data-tippy-raw='<a href="mailto:pool.pereyra@zebbra.ch">Jean Pool</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='pool.pereyra@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<p>Build stages: <code>base</code> (Python 3.12 + uv + deps), <code>deps-dev</code> (+ dev/test deps), <code>linter</code> (ruff + pyrefly), <code>test</code> (pytest), <code>run-ci</code> (combined results).</p>
+<h2 id="project-structure">Project Structure</h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>neops_worker_sdk/
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  cli/                Worker entry point, job processing loop
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  concurrency/        @run_in_thread, run_parallel, BlockingDetector
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  connection/         3-tier device connection system
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    capabilities/     Abstract capability interfaces
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    plugins/          Platform-specific implementations (netmiko, napalm, scrapli, ncclient)
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  function_block/     FunctionBlock ABC, result types
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  logger/             Loguru-based structured logging
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  registry/           FB discovery, registration decorator, global registry
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  testing/            Test framework (@fb_test_case, context factories)
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  workflow/           WorkflowContext, entity wrappers, DB update diffing
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  worker/             Worker registration with engine
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>examples/             Example function blocks (getting-started, ping, use-cases)
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>tests/                Test suites and topologies
+</span></code></pre></div>
+<h2 id="contributing">Contributing</h2>
+<p>Default branch: <code>develop</code>. Branch from <code>develop</code> for all changes. Run verification before committing: <code>uv run pytest -x -q &amp;&amp; uv run ruff format --check neops_worker_sdk &amp;&amp; uv run ruff check neops_worker_sdk &amp;&amp; uv run pyrefly check</code></p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li>See <a href="AGENTS/">AGENTS.md</a> for AI agent context, conventions, and gotchas.</li>
+<li><a href=".env.example">.env.example</a> &ndash; environment variable reference</li>
+</ul>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2024-09-29 19:53:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2024-09-29T19:53:35+00:00'>2024-09-29 19:53:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-31 07:24:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-31T07:24:52+00:00'>2026-03-31 07:24:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Jean Pool' data-tippy-content data-tippy-raw='<a href="mailto:pool.pereyra@zebbra.ch">Jean Pool</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='pool.pereyra@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
