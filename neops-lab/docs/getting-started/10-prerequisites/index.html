@@ -7362,6 +7362,17 @@ to run the lab.</p>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>root:root<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">4755</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1"># SUID -&gt; -rwsr-xr-x</span>
 </span></code></pre></div>
+<p><code>make clab-suid</code> does the SUID half for you: idempotent, it prompts for sudo
+only when the bit is actually missing, and warns if you are not in
+<code>clab_admins</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Re-run <code>make clab-suid</code> after every containerlab upgrade</p>
+<p>A package upgrade replaces the binary and silently drops the SUID bit.
+The next <code>make local-lab-up</code> then fails with <em>&ldquo;This containerlab command
+requires root privileges or root via SUID to run&rdquo;</em> — group membership
+survives the upgrade, so <code>id</code> looks fine and only the file mode gives it
+away.</p>
+</div>
 <p>Verify the SUID bit is set:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ls<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span><span class="w">   </span><span class="c1"># expect -rwsr-xr-x</span>
 </span></code></pre></div>
@@ -7483,7 +7494,7 @@ registry.</p>
 <p><code>make local-env-init</code> depends on <code>lab-jwt</code>, so in practice you only run the four quickstart commands.</p>
 <h2 id="next">Next</h2>
 <p><a href="../20-quickstart/">Quickstart <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-19 11:21:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-19T11:21:26+00:00'>2026-08-19 11:21:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
