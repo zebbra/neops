@@ -7370,7 +7370,7 @@ image by hand with plain <code>docker run</code>, you must add them yourself.</p
 </div>
 <p>Interface <em>descriptions</em> are not baked into the image: containerlab <code>exec</code>s <code>devices/frr/set-aliases.sh</code> after the links are wired, which sets each interface&rsquo;s Linux alias from the generated <code>.iface</code> file. See <a href="../../10-concepts/20-topology/">Topology as source of truth</a>.</p>
 <h3 id="neops-lab-bootstrap"><code>neops-lab-bootstrap</code></h3>
-<p>A <code>python:3.12-slim</code> image with <code>pyyaml</code> and <code>requests</code>, whose entrypoint is <code>register.py</code>. It runs once per <code>docker compose up</code>, POSTs every <code>workflows/*.yaml</code> to the engine&rsquo;s <code>/workflow-definition</code>, and exits. <code>docker compose wait lab_bootstrap</code> in <code>local-lab-up</code> blocks on that exit and propagates the code.</p>
+<p>A <code>python:3.12-slim</code> image with <code>pyyaml</code> and <code>requests</code>, whose entrypoint is <code>register.py</code>. It runs once per <code>docker compose up</code>, publishes every <code>workflows/*.yaml</code> through the engine&rsquo;s <code>POST /workflow-definition/publish</code>, and exits. Publishing is idempotent: an unchanged document answers <code>200 unchanged</code>, which is the normal outcome of re-running <code>make local-lab-up</code>. Published content is immutable, so <em>editing</em> a workflow without bumping its version answers <code>409</code> and fails the target — bump <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code> instead. Engines older than <a href="https://github.com/zebbra/neops-workflow-engine/commit/068753a0"><code>068753a0</code></a> have no publish route; <code>register.py</code> falls back to the legacy <code>POST /workflow-definition</code> on a 404. <code>docker compose wait lab_bootstrap</code> in <code>local-lab-up</code> blocks on that exit and propagates the code.</p>
 <h2 id="pulled-the-neops-control-plane">Pulled — the NeOps control plane</h2>
 <table>
 <thead>
@@ -7398,7 +7398,7 @@ image by hand with plain <code>docker run</code>, you must add them yourself.</p
 </tr>
 <tr>
 <td><code>worker</code></td>
-<td><code>quay.io/zebbra/neops-worker-sdk:develop</code></td>
+<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> ⚠️ <strong>unusable — build locally</strong></td>
 <td><code>NEOPS_WORKER_SDK_IMAGE</code></td>
 </tr>
 </tbody>
@@ -7421,7 +7421,17 @@ unaffected.</p>
 </div>
 <h3 id="why-you-would">Why you would</h3>
 <ul>
-<li><strong>Worker SDK</strong> — the most common case. The lab depends on <code>fb.base.neops.io/global_discover_network:0.1.0</code> shipping inside the worker image; point <code>NEOPS_WORKER_SDK_IMAGE</code> at a local build to exercise a function-block change before it is released.</li>
+<li><strong>Worker SDK — not optional today.</strong> The published <code>develop</code> tag is built from
+  <code>neops-worker-sdk-py</code>&rsquo;s <code>develop</code>, where <code>neops/</code> holds only <code>.gitkeep</code> files and
+  the Dockerfile copies neither <code>neops/</code> nor <code>README.md</code>. The container therefore
+  dies at start (<code>OSError: Readme file does not exist: README.md</code>) and carries no
+  function blocks. The lab depends on
+  <code>fb.base.neops.io/global_discover_network:0.1.0</code> shipping <em>inside</em> the worker
+  image — it is not bind-mounted from here — and that block plus the <code>COPY ./neops</code>
+  that ships it live on the SDK&rsquo;s <code>feature/technopark</code> branch (open PR
+  <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">#127</a>). Until it merges
+  and CI republishes the tag, build the image yourself and point
+  <code>NEOPS_WORKER_SDK_IMAGE</code> at it.</li>
 <li><strong>Workflow engine</strong> — discovery emits a few hundred <code>Interface</code> rows in one job result, so it needs an engine with the large-payload and reference-resolution fixes. If the published <code>develop</code> tag lags, run a local build.</li>
 <li><strong>Web client</strong> — to preview UI changes against a populated CMS.</li>
 </ul>
@@ -7431,7 +7441,7 @@ unaffected.</p>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb<span class="w"> </span><span class="c1"># base function blocks in the image</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab<span class="w">      </span><span class="c1"># this repo, through the read-only mount</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

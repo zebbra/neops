@@ -7401,7 +7401,7 @@ or export the variable yourself:</p>
   worker -- "URL_BLACKBOARD&lt;br/&gt;http://workflow_engine:3030" --&gt; engine
   worker -- "SSH 22" --&gt; dev1
   worker -- "SSH 22" --&gt; dev2
-  boot -- "POST /workflow-definition" --&gt; engine</code></pre>
+  boot -- "POST /workflow-definition/publish" --&gt; engine</code></pre>
 <p><code>lab-net</code> is declared by <code>docker-compose.worker.yml</code> with an explicit IPAM subnet of <code>172.30.0.0/24</code>, and containerlab&rsquo;s topology sets <code>mgmt.network: lab-net</code> with the same subnet. That is the join: compose creates the bridge, containerlab attaches the devices to it at their fixed <code>mgmt-ipv4</code>, and the worker — a member of both networks — can reach the engine by service name <em>and</em> the devices by IP.</p>
 <div class="admonition note">
 <p class="admonition-title">Ordering matters</p>
@@ -7539,7 +7539,7 @@ in the lab routes between them today.</p>
 </tbody>
 </table>
 <p>Everything under <code>generated/</code> is rebuilt from <code>topology.json</code> on every <code>make local-lab-up</code>. Never commit it — containerlab mints TLS private keys in there.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

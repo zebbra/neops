@@ -7100,10 +7100,12 @@ engine + a worker that runs the <code>global_discover_network</code> function bl
 a one-shot bootstrap container — runs on docker-compose; the devices attach to
 the same <code>lab-net</code> bridge (172.30.0.0/24) at fixed management IPs, so the worker
 reaches them at those IPs.</p>
-<p>Everything the control plane runs comes from <strong>published images</strong> on
-<code>quay.io/zebbra</code> (CMS, workflow engine, web client, worker SDK). This repo owns
-the lab itself: the topology, the device configs, the workflow, the bootstrap
-sequencing and the two small helper images.</p>
+<p>The control plane runs from <strong>published images</strong> on <code>quay.io/zebbra</code> (CMS,
+workflow engine, web client) — except the <strong>worker</strong>, whose published <code>develop</code>
+tag is currently unusable and must be built locally; see
+<a href="#prerequisites">Prerequisites</a>. This repo owns the lab itself: the topology,
+the device configs, the workflow, the bootstrap sequencing and the two small
+helper images.</p>
 <p>End state: run a make target, click Run in the engine UI (or use the matching
 make target), and <strong>15 <code>Device</code> rows</strong> (FRR <code>vendor=FRRouting</code>, Nokia
 <code>vendor=Nokia</code>) appear in the CMS — each with its interfaces recorded. The
@@ -7154,16 +7156,38 @@ topologies for automated tests. It shares no code with this one. See
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code>; the lab itself needs nothing
   but <code>python3</code> (all host scripts are stdlib-only).</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
-<li><strong>A workflow-engine image with the large-payload + reference-resolution fixes.</strong>
-  Discovery emits a few hundred <code>Interface</code> rows in one job result. To run a
-  locally-built engine instead of the published <code>develop</code> image, set
-  <code>NEOPS_WORKFLOW_ENGINE_IMAGE</code> (e.g. <code>export NEOPS_WORKFLOW_ENGINE_IMAGE=neops-workflow-engine:latest</code>)
-  before <code>make local-lab-up</code>. Unset, it defaults to the published engine.
-  <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work the same way — see
-  <code>.env.example</code>.</li>
-<li>Host resources: the 5 SR Linux nodes are RAM/CPU-hungry (budget a few GB) and
-  boot slower than FRR, so the first <code>make local-lab-up</code> takes a couple of minutes.</li>
+<li><strong>A locally-built worker image — the published <code>develop</code> tag does not work.</strong>
+  <code>quay.io/zebbra/neops-worker-sdk:develop</code> is built from <code>neops-worker-sdk-py</code>&rsquo;s
+  <code>develop</code>, which carries no <code>neops/fb</code> and no <code>README.md</code> in the image, so the
+  container dies at start with <code>OSError: Readme file does not exist: README.md</code>
+  and would register no function blocks even if it started. The discovery block
+  <code>fb.base.neops.io/global_discover_network:0.1.0</code> and the <code>COPY ./neops</code> that
+  ships it live on the SDK&rsquo;s <code>feature/technopark</code> branch (open PR
+  <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">zebbra/neops-worker-sdk-py#127</a>).
+  Until that merges and CI republishes the tag, build it yourself:</li>
 </ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>switch<span class="w"> </span>feature/technopark
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+</span></code></pre></div>
+<p>Check what you got before bringing the lab up — the image must carry the
+  block, not just build:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global&#39;</span>
+</span></code></pre></div>
+<p>Without this the worker container exits, <code>local-lab-up</code> burns its full
+  <code>wait_ready</code> budget and gives up with <code>timeout: no online worker for
+  fb.base.neops.io/global_discover_network:0.1.0</code>.
+- <strong>A workflow-engine image with the publish route and the large-payload +
+  reference-resolution fixes.</strong> Discovery emits a few hundred <code>Interface</code> rows in
+  one job result, and <code>bootstrap/register.py</code> writes definitions through
+  <code>POST /workflow-definition/publish</code>. The published <code>develop</code> tag has both. To
+  run a locally-built engine instead, set <code>NEOPS_WORKFLOW_ENGINE_IMAGE</code> (e.g.
+  <code>export NEOPS_WORKFLOW_ENGINE_IMAGE=neops-workflow-engine:latest</code>) before
+  <code>make local-lab-up</code>. Unset, it defaults to the published engine.
+  <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work the same way — see
+  <code>.env.example</code>.
+- Host resources: the 5 SR Linux nodes are RAM/CPU-hungry (budget a few GB) and
+  boot slower than FRR, so the first <code>make local-lab-up</code> takes a couple of minutes.</p>
 <h2 id="devices">Devices</h2>
 <table>
 <thead>
@@ -7274,25 +7298,25 @@ containerlab runtime and the TLS material containerlab mints there); only
 <code>topology.json</code>, the generator, and the committed discovery parameter files are
 tracked.</p>
 <h2 id="layout">Layout</h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>topology.json           # single source of truth: mgmt_ip + interfaces per device
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>gen_clab_topology       # renders topology.json -&gt; generated/ + discover-params.json
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>gen_device_configs      # per-device renderers, reused by gen_clab_topology
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>generated/              # git-ignored: clab.json, frr/*.iface, srl/*.cli, clab runtime
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint + set-aliases.sh
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>cms/                    # oidc-config.json + the git-ignored jwt/ keypair (make lab-jwt)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>scope/Global/           # table columns, drill-down and dashboard applied by apply_cms_config
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>workflows/              # workflow YAMLs registered by the bootstrap container
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>function_blocks/        # lab-local function blocks, auto-discovered by the worker
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>bootstrap/              # one-shot container that POSTs every workflow YAML
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>apply_cms_config        # seeds the neops role + Global scope in the CMS
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>wait_devices            # blocks until every lab device (topology.json) accepts SSH
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>workflow-execution-parameters/   # generated discovery inputs
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>tests/                  # unit tests for the two generators
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>topology.json           # single source of truth: mgmt_ip + interfaces per device
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>gen_clab_topology       # renders topology.json -&gt; generated/ + discover-params.json
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>gen_device_configs      # per-device renderers, reused by gen_clab_topology
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>generated/              # git-ignored: clab.json, frr/*.iface, srl/*.cli, clab runtime
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint + set-aliases.sh
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>cms/                    # oidc-config.json + the git-ignored jwt/ keypair (make lab-jwt)
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>scope/Global/           # table columns, drill-down and dashboard applied by apply_cms_config
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>workflows/              # workflow YAMLs registered by the bootstrap container
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>function_blocks/        # lab-local function blocks, auto-discovered by the worker
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>bootstrap/              # one-shot container that POSTs every workflow YAML
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>apply_cms_config        # seeds the neops role + Global scope in the CMS
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>wait_devices            # blocks until every lab device (topology.json) accepts SSH
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>workflow-execution-parameters/   # generated discovery inputs
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>tests/                  # unit tests for the two generators
 </span></code></pre></div>
 <p>The base stack + worker compose files are combined via docker compose&rsquo;s
 <code>COMPOSE_FILE</code> (target-scoped in the <code>Makefile</code>); containerlab provisions the
@@ -7395,7 +7419,7 @@ skipped for hosts declared as another one.</p>
 <li><code>make test</code> — the generator tests assert the regenerated parameter files match
    what is committed, so they fail until you commit the regenerated JSON.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-19 11:21:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-19T11:21:26+00:00'>2026-08-19 11:21:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

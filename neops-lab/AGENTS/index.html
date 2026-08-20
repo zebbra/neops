@@ -7095,9 +7095,14 @@ pytest/ruff/pyrefly and is marked <code>[tool.uv] package = false</code>.</p>
   lab/wait_devices</code>. Host-side paths never have one. A <code>lab/</code> in a Makefile
   recipe or a host script is a bug; a <code>lab/</code> inside a <code>docker compose exec</code> or an
   env var read by the container is correct.</li>
-<li><strong><code>neops/fb</code> ships inside the published worker image</strong>, it is not mounted from
-  here. If discovery fails with &ldquo;Function block … not found&rdquo;, check that the
-  <code>NEOPS_WORKER_SDK_IMAGE</code> you pinned actually carries <code>neops/fb</code>.</li>
+<li><strong><code>neops/fb</code> ships inside the worker image</strong>, it is not mounted from here. If
+  discovery fails with &ldquo;Function block … not found&rdquo;, check that the
+  <code>NEOPS_WORKER_SDK_IMAGE</code> you pinned actually carries <code>neops/fb</code>.
+  ⚠️ <strong>The published <code>quay.io/zebbra/neops-worker-sdk:develop</code> tag does not</strong>, and
+  its container exits at start on a missing <code>README.md</code>. The function blocks and
+  the <code>COPY ./neops</code> that ships them are on the SDK&rsquo;s <code>feature/technopark</code> branch
+  (open PR zebbra/neops-worker-sdk-py#127). Until that merges, the lab requires a
+  locally-built worker image — see README &ldquo;Prerequisites&rdquo;.</li>
 <li><strong><code>gen_clab_topology</code> emits <code>"../devices/frr/set-aliases.sh:…"</code></strong> as a
   containerlab bind. That path is relative to <code>generated/</code>, where the topology
   file lives — it is correct as written. Do not &ldquo;fix&rdquo; it to <code>devices/…</code>.</li>
@@ -7150,7 +7155,7 @@ depends on:</p>
   (renaming it in neops-worker-sdk-py breaks <code>workflows/*.yaml</code> and the Makefile&rsquo;s
   <code>DISCOVER_FB</code>, with no compile-time check),</li>
 <li>the <strong>workflow-engine REST API</strong> used by <code>run_workflow</code>, <code>wait_ready</code> and
-  <code>bootstrap/register.py</code> (<code>/workflow-execution</code>, <code>/workflow-definition</code>,
+  <code>bootstrap/register.py</code> (<code>/workflow-execution</code>, <code>/workflow-definition/publish</code>,
   <code>/function-blocks/…/workers</code>, <code>/health</code>),</li>
 <li>the <strong>CMS GraphQL mutation <code>scopesUpsert</code></strong> and the <code>neops.core.models</code> ORM
   shape used by <code>apply_cms_config</code>.</li>
@@ -7167,7 +7172,7 @@ depends on:</p>
   than guessing — the web client&rsquo;s failure modes (blank <code>&lt;app-root&gt;</code>) don&rsquo;t
   surface through curl.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

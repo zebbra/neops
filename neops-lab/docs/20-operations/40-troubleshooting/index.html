@@ -4695,6 +4695,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-worker-container-exits-immediately-no-online-worker-at-wait_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The worker container exits immediately / no online worker at wait_ready
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-fails-with-404-or-409-on-the-workflow-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bootstrap fails with 404 or 409 on the workflow definition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#devices-never-become-reachable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7184,6 +7206,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-worker-container-exits-immediately-no-online-worker-at-wait_ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The worker container exits immediately / no online worker at wait_ready
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-fails-with-404-or-409-on-the-workflow-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bootstrap fails with 404 or 409 on the workflow definition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#devices-never-become-reachable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7409,12 +7453,56 @@
 <p><strong>You raced the worker.</strong> The worker registers its function blocks with the engine <em>asynchronously</em> after its container starts. <code>make local-lab-up</code> and <code>make local-lab-discover</code> both run <code>./wait_ready fb.base.neops.io/global_discover_network:0.1.0</code> first, which polls the engine&rsquo;s per-function-block worker registry until an online worker exists. Run the make target rather than <code>run_workflow</code> directly.</p>
 </li>
 <li>
-<p><strong>The image does not carry the block.</strong> <code>neops/fb</code> ships <em>inside</em> the published <code>neops-worker-sdk</code> image; it is not mounted from this repo. If you pinned <code>NEOPS_WORKER_SDK_IMAGE</code> at a local or older build, check it:</p>
+<p><strong>The image does not carry the block.</strong> <code>neops/fb</code> ships <em>inside</em> the <code>neops-worker-sdk</code> image; it is not mounted from this repo. Check what you are running:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb
 </span></code></pre></div>
+<p>⚠️ The published <code>quay.io/zebbra/neops-worker-sdk:develop</code> tag <strong>does not carry it</strong> — see the next entry.</p>
 </li>
 </ol>
 <p>See <a href="../../10-concepts/30-discovery/">Discovery</a> and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a>.</p>
+<hr />
+<h2 id="the-worker-container-exits-immediately-no-online-worker-at-wait_ready">The worker container exits immediately / <code>no online worker</code> at <code>wait_ready</code></h2>
+<p><strong>Where:</strong> <code>make local-lab-up</code> burns its full <code>wait_ready</code> budget and gives up with</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>timeout: no online worker for fb.base.neops.io/global_discover_network:0.1.0 within 180s
+</span></code></pre></div>
+<p>and <code>docker compose logs worker</code> ends in</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>OSError: Readme file does not exist: README.md
+</span></code></pre></div>
+<p><strong>Cause:</strong> you are running the published <code>quay.io/zebbra/neops-worker-sdk:develop</code>
+image. It is built from <code>neops-worker-sdk-py</code>&rsquo;s <code>develop</code> branch, where <code>neops/</code>
+contains only <code>.gitkeep</code> files and the Dockerfile copies neither <code>neops/</code> nor
+<code>README.md</code>. <code>CMD ["uv", "run", "neops_worker"]</code> installs the project at container
+start, hatchling reads <code>readme = "README.md"</code>, and the container dies before the
+worker ever connects. Even if it started, it would register no function blocks.</p>
+<p><strong>Fix:</strong> build the image from the SDK branch that has the function blocks
+(open PR <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">zebbra/neops-worker-sdk-py#127</a>)
+and point the lab at it:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>switch<span class="w"> </span>feature/technopark
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">          </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global&#39;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>make<span class="w"> </span>local-lab-up
+</span></code></pre></div>
+<p>This entry disappears once #127 merges and CI republishes the <code>develop</code> tag.</p>
+<hr />
+<h2 id="bootstrap-fails-with-404-or-409-on-the-workflow-definition"><code>bootstrap</code> fails with <code>404</code> or <code>409</code> on the workflow definition</h2>
+<p><strong>Where:</strong> <code>docker compose wait lab_bootstrap</code> returns non-zero and
+<code>docker compose logs lab_bootstrap</code> shows a <code>FAILED</code> line.</p>
+<ul>
+<li><strong><code>409</code></strong> — the version already exists with <em>different</em> content. Published
+  workflow definitions are <strong>immutable</strong>; editing <code>workflows/*.yaml</code> in place and
+  re-running is exactly what triggers this. Bump
+  <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code> in the YAML, and update the
+  matching <code>wf.lab.neops.io/simple_lab_discovery:&lt;version&gt;</code> in the <code>Makefile</code>&rsquo;s
+  <code>local-lab-discover</code> recipe.</li>
+<li><strong><code>422</code></strong> — the document is publishable but the engine computed a higher
+  version floor than the document declares. Raise the version.</li>
+<li><strong>A <code>404</code> handled silently</strong> — the engine predates
+  <a href="https://github.com/zebbra/neops-workflow-engine/commit/068753a0"><code>068753a0</code></a>
+  and has no <code>/workflow-definition/publish</code>; <code>register.py</code> falls back to the
+  legacy <code>POST /workflow-definition</code>. Nothing to fix, but you are on an old
+  engine image.</li>
+</ul>
 <hr />
 <h2 id="devices-never-become-reachable">Devices never become reachable</h2>
 <p><strong>Where:</strong> <code>wait_devices</code> times out — <code>timeout: 172.30.0.31:22, … not reachable within 240s</code>.</p>
@@ -7422,7 +7510,7 @@
 <p><strong>The guard:</strong> <code>make local-lab-up</code> deploys containerlab <em>early</em> — before the worker-readiness wait — precisely so SR Linux boot time overlaps with something useful, then polls TCP 22 on every mgmt IP.</p>
 <div class="admonition important">
 <p class="admonition-title">The poll runs from <em>inside</em> the lab network, on purpose</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>worker<span class="w"> </span>python3<span class="w"> </span>lab/wait_devices
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>worker<span class="w"> </span>python3<span class="w"> </span>lab/wait_devices
 </span></code></pre></div>
 <p>Not from the host. On macOS and Docker Desktop the host has <strong>no route</strong> to
 the <code>lab-net</code> bridge IPs (<code>172.30.0.0/24</code>), so a host-side poll hangs until
@@ -7433,8 +7521,8 @@ actually uses — works on every platform.</p>
 at <code>/app/lab</code> inside the worker.</p>
 </div>
 <p><strong>Fix:</strong> give it more time (<code>./wait_devices --timeout 600</code> from inside the worker), or check the device itself:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>spine-01
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>spine-01
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Never replace a wait with a <code>sleep</code></p>
@@ -7446,7 +7534,7 @@ fixed sleep is both slower on a fast machine and still racy on a slow one.</p>
 <p><strong>Symptom:</strong> the <code>cms</code> container exits or never becomes healthy; the log mentions <code>token_service check_keys</code>.</p>
 <p><strong>Cause:</strong> missing <code>cms/jwt/{private,public}.pem</code>. Newer <code>neops-cms-free</code> images require an RSA keypair for RS256 JWT issuance, and <code>docker-compose.yml</code> mounts <code>cms/jwt</code> read-only into the container.</p>
 <p><strong>Fix:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>lab-jwt
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>lab-jwt
 </span></code></pre></div>
 <p>Idempotent, and a prerequisite of <code>local-env-init</code> / <code>local-env-up</code> — so this only bites when the stack is started by hand.</p>
 <hr />
@@ -7464,7 +7552,7 @@ checking lab or UI behaviour. This failure mode is invisible to <code>curl</code
 <p><strong>Symptom:</strong> the web client&rsquo;s device table is back to default columns after a CMS restart.</p>
 <p><strong>Cause:</strong> the CMS image seeds a scope named <code>Global</code> on every startup with <code>always_update_on_restart=True</code>, and <code>init_scopes</code> runs on <em>every</em> <code>manage.py</code> invocation — rewriting the seeded scope&rsquo;s columns, filters and drill-down. <code>dashboard_configuration</code> is not affected; <code>init_scopes</code> never writes it.</p>
 <p><strong>Fix:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>apply-cms-config
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>apply-cms-config
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">The scope is <code>Global</code>, capital G</p>
@@ -7480,26 +7568,26 @@ a silent <em>duplicate</em> scope rather than updating the seeded one.</p>
 <h2 id="containerlab-deploy-says-it-requires-root-privileges"><code>containerlab deploy</code> says it requires root privileges</h2>
 <p><strong>Cause:</strong> containerlab is not set up for sudo-less operation. The make targets never call <code>sudo</code>. The usual trigger is a <strong>containerlab upgrade</strong>: the new binary is installed without the SUID bit, while your <code>clab_admins</code> membership survives — so <code>id</code> still looks right and only <code>ls -l "$(command -v containerlab)"</code> shows the missing <code>s</code>.</p>
 <p><strong>Fix:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>clab-suid
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>clab-suid
 </span></code></pre></div>
 <p>Idempotent, and it only asks for a password when the bit is actually missing. For the full setup (including the <code>clab_admins</code> group) see <a href="../../getting-started/10-prerequisites/#containerlab-and-sudo-less-operation">Prerequisites</a>. Then confirm with the two-node probe:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml
 </span></code></pre></div>
 <hr />
 <h2 id="duplicate-interface-rows-after-re-running-discovery">Duplicate interface rows after re-running discovery</h2>
 <p><strong>Cause:</strong> devices are keyed by IP so they are skipped on a second run, but <strong>interfaces are always recorded</strong>.</p>
 <p><strong>Fix:</strong> run discovery against a fresh CMS.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <hr />
 <h2 id="nothing-works-and-you-want-to-start-over">Nothing works and you want to start over</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-19 11:21:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-19T11:21:26+00:00'>2026-08-19 11:21:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
