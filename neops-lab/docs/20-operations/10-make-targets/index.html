@@ -7374,7 +7374,7 @@
 <tbody>
 <tr>
 <td><code>make local-lab-up</code></td>
-<td>Depends on <code>build-docker</code>. Generates the containerlab topology + device configs from <code>topology.json</code>, brings up the base stack <strong>plus</strong> the worker and <code>lab_bootstrap</code> (creating <code>lab-net</code>), waits for workflow registration, <code>containerlab deploy</code>s the 15 devices, waits for the worker&rsquo;s function blocks, then waits for every device&rsquo;s SSH. Refuses to run without <code>cms_api_key.env</code>.</td>
+<td>Depends on <code>build-docker</code>. Generates the containerlab topology + device configs from <code>topology.json</code>, refreshes the worker image, brings up the base stack <strong>plus</strong> the worker and <code>lab_bootstrap</code> (creating <code>lab-net</code>), waits for workflow registration, <code>./containerlab deploy --reconfigure</code>s the 15 devices (re-runnable), waits for the worker&rsquo;s function blocks, then waits for every device&rsquo;s SSH. Refuses to run without <code>cms_api_key.env</code>.</td>
 </tr>
 <tr>
 <td><code>make local-lab-discover</code></td>
@@ -7386,11 +7386,11 @@
 </tr>
 <tr>
 <td><code>make local-lab-down</code></td>
-<td><code>containerlab destroy --cleanup</code> (removes the devices and <code>generated/clab-neops-lab/</code>), then <code>docker compose down</code>. Volumes survive.</td>
+<td><code>./containerlab destroy --cleanup</code> (removes the devices and <code>generated/clab-neops-lab/</code>), then <code>docker compose down</code>. Volumes survive.</td>
 </tr>
 <tr>
 <td><code>make clab-suid</code></td>
-<td>Sets the SUID bit on the <code>containerlab</code> binary so the other lab targets can deploy without <code>sudo</code>. Idempotent — it only prompts for a password when the bit is missing — and warns if you are not in <code>clab_admins</code>. Run it once after installing containerlab and again after every upgrade. Deliberately <strong>not</strong> a prerequisite of <code>local-lab-up</code>, which must never stop for a password mid-run. See <a href="../../getting-started/10-prerequisites/#containerlab-and-sudo-less-operation">Prerequisites</a>.</td>
+<td>For the <code>CLAB_NATIVE</code> (host binary) path: sets the SUID bit on the <code>containerlab</code> binary so the lab targets can deploy without <code>sudo</code>. Idempotent — it only prompts for a password when the bit is missing — and warns if you are not in <code>clab_admins</code>. Re-run after every containerlab upgrade. See <a href="../../getting-started/10-prerequisites/#native-binary-optional">Prerequisites</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -7420,8 +7420,29 @@
 <td><code>generated/neops-lab.clab.json</code></td>
 <td>The generated containerlab topology</td>
 </tr>
+<tr>
+<td><code>CONTAINERLAB</code></td>
+<td><code>./containerlab</code></td>
+<td>The containerlab launcher</td>
+</tr>
+<tr>
+<td><code>CLAB_IMAGE</code> (env)</td>
+<td><code>ghcr.io/srl-labs/clab:0.78.2</code></td>
+<td>containerlab version the launcher runs</td>
+</tr>
+<tr>
+<td><code>WAIT_READY_TIMEOUT</code></td>
+<td><code>180</code></td>
+<td>Seconds <code>wait_ready</code> waits for an online worker</td>
+</tr>
+<tr>
+<td><code>WAIT_DEVICES_TIMEOUT</code></td>
+<td><code>240</code></td>
+<td>Seconds <code>wait_devices</code> waits for device SSH</td>
+</tr>
 </tbody>
 </table>
+<p>These are make/environment variables (<code>make local-lab-up WAIT_READY_TIMEOUT=600</code>); the Makefile does not read <code>.env</code> — only docker compose does.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>local-lab-discover<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>workflow-execution-parameters/discover-params-autodetect.json
 </span></code></pre></div>
@@ -7435,12 +7456,16 @@
 </thead>
 <tbody>
 <tr>
+<td><code>make doctor</code></td>
+<td>Host preflight (<code>./doctor</code>): docker + RAM, amd64 emulation on Apple Silicon, mount round-trip, subnet overlaps, the clab image, python3. Read-only apart from pulling two images; the fix is printed per failure.</td>
+</tr>
+<tr>
 <td><code>make lab-jwt</code></td>
-<td>Mints <code>cms/jwt/{private,public}.pem</code> with <code>openssl</code> if absent. Idempotent. A prerequisite of both <code>local-env-init</code> and <code>local-env-up</code>.</td>
+<td>Mints <code>cms/jwt/{private,public}.pem</code> with <code>openssl genpkey</code> if absent. Idempotent. A prerequisite of both <code>local-env-init</code> and <code>local-env-up</code>.</td>
 </tr>
 <tr>
 <td><code>make local-env-init</code></td>
-<td>One-time per environment: pull + start the base stack, mint the CMS API key into <code>cms_api_key.env</code>, run <code>apply_cms_config</code>, then force-recreate the engine so it picks up the token.</td>
+<td>One-time per environment: pull (<code>--policy always</code>) + start the base stack, resolve the <code>neops</code> user and mint the CMS API key into <code>cms_api_key.env</code> (fails on an empty key), run <code>apply_cms_config</code>, then force-recreate the engine so it picks up the token.</td>
 </tr>
 <tr>
 <td><code>make local-env-up</code></td>
@@ -7511,11 +7536,19 @@ the lab&rsquo;s columns and drill-down.</p>
 </tr>
 <tr>
 <td><code>make test</code></td>
-<td><code>pytest tests</code> — the generator unit tests</td>
+<td><code>pytest tests</code> — the generator unit tests + repo invariants (subnets, the Python-3.9 rule)</td>
+</tr>
+<tr>
+<td><code>make py39-check</code></td>
+<td>Imports the host scripts under Python 3.9 (the stock macOS python3)</td>
+</tr>
+<tr>
+<td><code>make shell-syntax</code></td>
+<td><code>bash -n</code> over <code>apply_cms_config</code>, <code>containerlab</code>, <code>doctor</code></td>
 </tr>
 <tr>
 <td><code>make check</code></td>
-<td><code>lint typeCheck test</code> — the one to run before pushing</td>
+<td><code>lint typeCheck test py39-check shell-syntax</code> — the one to run before pushing</td>
 </tr>
 </tbody>
 </table>
@@ -7598,7 +7631,7 @@ that have them. This one has none.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-19 11:21:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-19T11:21:26+00:00'>2026-08-19 11:21:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

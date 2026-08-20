@@ -7298,14 +7298,15 @@
 <div class="admonition warning">
 <p class="admonition-title">Do not run this casually</p>
 <p><code>make local-lab-up</code> builds two images, pulls the whole NeOps stack and
-deploys 15 device containers. The SR Linux nodes alone want a few GB of
+deploys 15 device containers. The SR Linux nodes alone want several GB of
 RAM, and the first run takes a couple of minutes. Make sure you have been
-through <a href="../10-prerequisites/">Prerequisites</a>.</p>
+through <a href="../10-prerequisites/">Prerequisites</a> — <code>make doctor</code> checks the
+host first.</p>
 </div>
 <h2 id="1-mint-the-cms-keypair">1. Mint the CMS keypair</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>lab-jwt
 </span></code></pre></div>
-<p>Writes <code>cms/jwt/{private,public}.pem</code> with <code>openssl</code> if they are not already there. The CMS mounts them read-only and refuses to start without them. Idempotent — an existing keypair is left alone.</p>
+<p>Writes <code>cms/jwt/{private,public}.pem</code> with <code>openssl genpkey</code> if they are not already there. The CMS mounts them read-only and refuses to start without them. Idempotent — an existing keypair is left alone.</p>
 <p>You rarely run this directly: <code>local-env-init</code> depends on it.</p>
 <h2 id="2-bring-up-the-control-plane">2. Bring up the control plane</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-env-init
@@ -7313,8 +7314,8 @@ through <a href="../10-prerequisites/">Prerequisites</a>.</p>
 <p>This is the one-time-per-environment step. In order, it:</p>
 <ol>
 <li><code>touch cms_api_key.env</code> — the engine&rsquo;s <code>env_file</code> must exist before compose reads it.</li>
-<li><code>docker compose pull</code> then <code>docker compose up -d</code> — the base stack (<code>docker-compose.yml</code>): CMS, workflow engine, monitor app, web client, Postgres, Elasticsearch, Redis. A <code>wait_health</code> service makes <code>up -d</code> block until CMS, engine and web client report healthy.</li>
-<li>Mints a CMS API key via <code>manage.py generate_api_key</code> and writes it into <code>cms_api_key.env</code>.</li>
+<li><code>docker compose pull --policy always</code> then <code>docker compose up -d</code> — the base stack (<code>docker-compose.yml</code>): CMS, workflow engine, monitor app, web client, Postgres, Elasticsearch, Redis (the CMS&rsquo;s channel layer and cache). A <code>wait_health</code> service makes <code>up -d</code> block until CMS, engine and web client report healthy.</li>
+<li>Resolves the <code>neops</code> user&rsquo;s id, mints a CMS API key via <code>manage.py generate_api_key</code> and writes it into <code>cms_api_key.env</code> (an empty key fails here, not later).</li>
 <li>Runs <code>./apply_cms_config</code> — grants the <code>neops</code> user a full-permission role (<code>lab-admin</code>, <code>default_permission=7</code>) and configures the <code>Global</code> scope&rsquo;s columns, drill-down and dashboard.</li>
 <li><code>docker compose up -d --force-recreate workflow_engine</code> — <code>env_file</code> changes do not trigger a recreate on their own, so the engine is restarted to pick up the new token.</li>
 </ol>
@@ -7332,13 +7333,14 @@ Granting first means the first <code>neops</code> query caches the grant.</p>
 <p>The long one. It depends on <code>build-docker</code>, then:</p>
 <ol>
 <li><strong><code>./gen_clab_topology</code></strong> — renders <code>generated/neops-lab.clab.json</code>, the per-device FRR/SR&nbsp;Linux configs, and three of the four discovery parameter files from <a href="../../10-concepts/20-topology/"><code>topology.json</code></a>.</li>
+<li><strong><code>docker compose pull --policy always worker</code></strong> — refreshes the worker image (the base-stack pulls never see it).</li>
 <li><strong><code>docker compose up -d</code></strong> with the worker overlay — adds the <code>worker</code> and the one-shot <code>lab_bootstrap</code> containers and creates the <code>lab-net</code> bridge (<code>172.30.0.0/24</code>) that containerlab attaches the devices to.</li>
-<li><strong><code>docker compose wait lab_bootstrap</code></strong> — blocks until the one-shot container that POSTs every <code>workflows/*.yaml</code> to the engine has <em>exited</em>, and propagates its exit code.</li>
-<li><strong><code>containerlab deploy</code></strong> — the 15 devices with real point-to-point links. Deployed early on purpose: SR Linux boots slowly, so it overlaps with the waits below.</li>
-<li><strong><code>./wait_ready fb.base.neops.io/global_discover_network:0.1.0</code></strong> — the worker registers its function blocks with the engine <em>asynchronously</em> after its container starts; this polls the engine&rsquo;s per-function-block worker registry until an online worker exists.</li>
-<li><strong><code>docker compose exec -T worker python3 lab/wait_devices</code></strong> — polls TCP 22 on every device&rsquo;s management IP, <strong>from inside the lab network</strong>.</li>
+<li><strong><code>docker compose wait lab_bootstrap</code></strong> — blocks until the one-shot container that publishes every <code>workflows/*.yaml</code> to the engine has <em>exited</em>, and propagates its exit code.</li>
+<li><strong><code>./containerlab deploy --reconfigure</code></strong> — the 15 devices with real point-to-point links. Deployed early on purpose: SR Linux boots slowly, so it overlaps with the waits below; <code>--reconfigure</code> redeploys an existing lab, so the target is re-runnable.</li>
+<li><strong><code>./wait_ready fb.base.neops.io/global_discover_network:0.1.0</code></strong> — the worker registers its function blocks with the engine <em>asynchronously</em> after its container starts; this polls the engine&rsquo;s per-function-block worker registry until an online worker exists (<code>WAIT_READY_TIMEOUT</code>, default 180 s).</li>
+<li><strong><code>docker compose exec -T worker python3 lab/wait_devices</code></strong> — polls TCP 22 on every device&rsquo;s management IP, <strong>from inside the lab network</strong> (<code>WAIT_DEVICES_TIMEOUT</code>, default 240 s).</li>
 </ol>
-<p>Each of those waits exists because of a real, reproduced failure. See <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> for the symptom each one prevents, and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a> for why step 6 has a <code>lab/</code> prefix that host commands do not.</p>
+<p>Each of those waits exists because of a real, reproduced failure. See <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> for the symptom each one prevents, and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a> for why step 7 has a <code>lab/</code> prefix that host commands do not.</p>
 <p>When it finishes you get a banner:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Lab is up (containerlab: 10 FRR + 5 Nokia SR Linux, real links).
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Web client:   http://localhost:8080/
@@ -7392,7 +7394,7 @@ Granting first means the first <code>neops</code> query caches the grant.</p>
 </span></code></pre></div>
 <h2 id="next">Next</h2>
 <p><a href="../30-first-discovery/">Your first discovery <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

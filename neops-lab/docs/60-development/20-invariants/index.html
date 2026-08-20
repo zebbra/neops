@@ -4928,6 +4928,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#13-containerlab-is-only-ever-called-as-containerlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. containerlab is only ever called as ./containerlab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-every-project-network-has-a-fixed-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Every project network has a fixed subnet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-host-scripts-import-under-python-39" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Host scripts import under Python 3.9
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7293,6 +7326,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#13-containerlab-is-only-ever-called-as-containerlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. containerlab is only ever called as ./containerlab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-every-project-network-has-a-fixed-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Every project network has a fixed subnet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-host-scripts-import-under-python-39" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Host scripts import under Python 3.9
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7429,14 +7495,20 @@
 <p>Related: <strong>the scope is <code>Global</code>, capital G.</strong> The CMS image seeds a scope by that exact name, and Postgres name uniqueness is case-sensitive — a lowercase <code>global</code> creates a silent duplicate.</p>
 <h2 id="11-the-race-ordering-in-local-lab-up-is-deliberate">11. The race ordering in <code>local-lab-up</code> is deliberate</h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker compose wait lab_bootstrap    # workflow registration
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>containerlab deploy                  # SR Linux boots slowly — start it early
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./containerlab deploy --reconfigure  # SR Linux boots slowly — start it early
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>./wait_ready &lt;fb&gt;                    # the worker registers FBs asynchronously
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>wait_devices, from inside the worker # the host has no route to lab-net on macOS
 </span></code></pre></div>
 <p>Each wait exists because of a real, reproduced failure, and each has a distinctive symptom listed in <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a>. <strong>Do not replace one with a <code>sleep</code>.</strong></p>
 <h2 id="12-everything-generated-goes-under-generated-and-it-is-git-ignored">12. Everything generated goes under <code>generated/</code>, and it is git-ignored</h2>
 <p>Never commit it — containerlab mints TLS private keys in there. The one exception to &ldquo;generated output is ignored&rdquo; is the three <code>workflow-execution-parameters/*.json</code> files, which <em>are</em> tracked precisely so the tests can diff against them (invariant 5).</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h2 id="13-containerlab-is-only-ever-called-as-containerlab">13. containerlab is only ever called as <code>./containerlab</code></h2>
+<p>In the Makefile (<code>$(CONTAINERLAB)</code>) and in every doc. The launcher runs <code>ghcr.io/srl-labs/clab</code> privileged through the docker socket on both hosts (<code>CLAB_NATIVE=/path</code> selects a host binary). The repo is mounted at the <strong>same absolute path</strong> inside that container: containerlab resolves the topology&rsquo;s relative binds (invariant 4) to absolute host paths for the daemon, so the path inside must equal the daemon&rsquo;s — mounting the repo at <code>/work</code> would give every FRR node a silently empty bind. <strong>Do not &ldquo;tidy&rdquo; it.</strong></p>
+<h2 id="14-every-project-network-has-a-fixed-subnet">14. Every project network has a fixed subnet</h2>
+<p><code>lab-net</code> carries <code>172.30.0.0/24</code> and the compose <code>default</code> network is pinned to <code>172.30.1.0/24</code> — docker auto-allocates subnet-less networks from its <code>172.16/12</code> pool, which on a busy host collides with the lab&rsquo;s fixed <code>/24</code> (&ldquo;Pool overlaps&rdquo;). The subnet is single-sourced in <code>gen_clab_topology</code> (<code>LAB_SUBNET</code>) and cross-checked by <code>tests/test_host_invariants.py</code>. A new network in either compose file needs a fixed subnet too.</p>
+<h2 id="15-host-scripts-import-under-python-39">15. Host scripts import under Python 3.9</h2>
+<p>A stock macOS ships <code>/usr/bin/python3</code> 3.9, where a PEP 604 <code>X | None</code> annotation is evaluated at import time and raises. Every host script therefore starts with <code>from __future__ import annotations</code>. <code>make py39-check</code> (in <code>make check</code> and CI) proves it at runtime; ruff at <code>target-version = "py312"</code> will <strong>not</strong> warn you.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

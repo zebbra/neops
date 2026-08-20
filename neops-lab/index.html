@@ -7129,32 +7129,34 @@ topologies for automated tests. It shares no code with this one. See
 <a href="docs/99-appendix/neops-ecosystem/"><code>docs/99-appendix/neops-ecosystem.md</code></a>.</p>
 </blockquote>
 <h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li><strong>Docker</strong> + docker compose.</li>
-<li><strong>containerlab</strong> (Linux host — it wires real veths via network namespaces).
-  Sudo-less operation is required so the make targets can <code>containerlab deploy</code>
-  without a password:
-  <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>clab_admins<span class="w"> </span><span class="nv">$USER</span><span class="w">          </span><span class="c1"># then re-login for the group to apply</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>root:root<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">4755</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1"># SUID -&gt; -rwsr-xr-x</span>
+<p>Supported hosts: <strong>Linux and macOS</strong> (Docker Desktop or OrbStack). Run the
+preflight first — it checks everything below and prints the fix next to each
+failure:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>doctor
 </span></code></pre></div>
-  <code>make clab-suid</code> does the SUID half of that for you (idempotent, prompts for
-  sudo only when the bit is actually missing) and warns if you are not in
-  <code>clab_admins</code>. <strong>Re-run it after every containerlab upgrade</strong> — a package
-  upgrade replaces the binary and drops the SUID bit, after which <code>local-lab-up</code>
-  fails with <code>This containerlab command requires root privileges or root via
-  SUID to run</code>.
-  Verify: <code>ls -l $(command -v containerlab)</code> shows the <code>s</code> bit, and
-  <code>containerlab deploy -t clab/probe.clab.yml</code> (a 2-node probe) stands up
-  without the &ldquo;requires root privileges&rdquo; error (<code>containerlab destroy -t
-  clab/probe.clab.yml</code> to clean up).</li>
-<li><strong><code>openssl</code></strong> — <code>make lab-jwt</code> mints the dev RSA keypair under <code>cms/jwt/</code> that
-  the CMS image requires for RS256 JWT issuance. Without it the CMS crashes at
-  startup (<code>token_service check_keys</code>) and nothing else comes up. It is chained
-  into <code>make local-env-init</code>, and is idempotent, so you rarely run it directly.
-  The keypair is git-ignored: it is a throwaway lab credential, not a secret.</li>
-<li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code>; the lab itself needs nothing
-  but <code>python3</code> (all host scripts are stdlib-only).</li>
+<ul>
+<li><strong>Docker</strong> + <code>docker compose</code> ≥ 2.20. <code>quay.io/zebbra</code> is private:
+  <code>docker login quay.io</code>.</li>
+<li><strong>containerlab</strong> needs no install: every make target and documented command
+  uses <code>./containerlab</code>, which runs the official <code>ghcr.io/srl-labs/clab</code> image
+  through the docker socket — the same command and the same pinned containerlab
+  version on both hosts. <code>CLAB_IMAGE</code> overrides the version;
+  <code>CLAB_NATIVE=/path/to/containerlab</code> selects a host binary instead. Verify
+  with the 2-node probe:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml<span class="w"> </span>--cleanup
+</span></code></pre></div>
+  Prefer a native binary instead? Set
+  <code>CLAB_NATIVE=$(command -v containerlab)</code>. On Linux that path needs the SUID
+  setup — <code>make clab-suid</code> does it (idempotent; re-run after a containerlab
+  upgrade, which replaces the binary and drops the SUID bit).</li>
+<li><strong><code>openssl</code></strong> — <code>make lab-jwt</code> mints the dev RSA keypair under <code>cms/jwt/</code>
+  that the CMS requires for RS256 JWT issuance (chained into
+  <code>make local-env-init</code>, idempotent; OpenSSL 3 and the LibreSSL a stock macOS
+  ships both work). The keypair is git-ignored: a throwaway lab credential.</li>
+<li><strong><code>python3</code> ≥ 3.9</strong> — the lab itself needs nothing else; all host scripts are
+  stdlib-only and import under the <code>/usr/bin/python3</code> a stock macOS ships.</li>
+<li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
 <li><strong>A locally-built worker image — the published <code>develop</code> tag does not work.</strong>
   <code>quay.io/zebbra/neops-worker-sdk:develop</code> is built from <code>neops-worker-sdk-py</code>&rsquo;s
@@ -7166,13 +7168,13 @@ topologies for automated tests. It shares no code with this one. See
   <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">zebbra/neops-worker-sdk-py#127</a>).
   Until that merges and CI republishes the tag, build it yourself:</li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>switch<span class="w"> </span>feature/technopark
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>switch<span class="w"> </span>feature/technopark
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
 </span></code></pre></div>
 <p>Check what you got before bringing the lab up — the image must carry the
   block, not just build:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global&#39;</span>
 </span></code></pre></div>
 <p>Without this the worker container exits, <code>local-lab-up</code> burns its full
   <code>wait_ready</code> budget and gives up with <code>timeout: no online worker for
@@ -7183,11 +7185,18 @@ topologies for automated tests. It shares no code with this one. See
   <code>POST /workflow-definition/publish</code>. The published <code>develop</code> tag has both. To
   run a locally-built engine instead, set <code>NEOPS_WORKFLOW_ENGINE_IMAGE</code> (e.g.
   <code>export NEOPS_WORKFLOW_ENGINE_IMAGE=neops-workflow-engine:latest</code>) before
-  <code>make local-lab-up</code>. Unset, it defaults to the published engine.
+  <code>make local-lab-up</code>; <code>NEOPS_ENGINE_TAG=&lt;tag&gt;</code> in <code>.env</code> pins just the
+  published tag. Unset, it defaults to the published engine.
   <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work the same way — see
   <code>.env.example</code>.
-- Host resources: the 5 SR Linux nodes are RAM/CPU-hungry (budget a few GB) and
-  boot slower than FRR, so the first <code>make local-lab-up</code> takes a couple of minutes.</p>
+- <strong>Host resources</strong>: the 5 SR Linux nodes want ≈1.5–2 GB each; with
+  Elasticsearch and the control plane the lab needs roughly <strong>14–16 GB</strong> for
+  containers. On macOS that is the Docker Desktop <strong>VM</strong> budget (Settings →
+  Resources → Memory; the 8 GB default is too small). On Apple Silicon enable
+  <em>Use Rosetta for x86_64/amd64 emulation</em> — the <code>quay.io/zebbra</code> images are
+  amd64-only. The first <code>make local-lab-up</code> takes a couple of minutes; on a
+  slow host raise the wait budgets
+  (<code>make local-lab-up WAIT_READY_TIMEOUT=600 WAIT_DEVICES_TIMEOUT=600</code>).</p>
 <h2 id="devices">Devices</h2>
 <table>
 <thead>
@@ -7298,25 +7307,27 @@ containerlab runtime and the TLS material containerlab mints there); only
 <code>topology.json</code>, the generator, and the committed discovery parameter files are
 tracked.</p>
 <h2 id="layout">Layout</h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>topology.json           # single source of truth: mgmt_ip + interfaces per device
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>gen_clab_topology       # renders topology.json -&gt; generated/ + discover-params.json
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>gen_device_configs      # per-device renderers, reused by gen_clab_topology
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>generated/              # git-ignored: clab.json, frr/*.iface, srl/*.cli, clab runtime
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint + set-aliases.sh
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>cms/                    # oidc-config.json + the git-ignored jwt/ keypair (make lab-jwt)
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>scope/Global/           # table columns, drill-down and dashboard applied by apply_cms_config
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>workflows/              # workflow YAMLs registered by the bootstrap container
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>function_blocks/        # lab-local function blocks, auto-discovered by the worker
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>bootstrap/              # one-shot container that POSTs every workflow YAML
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>apply_cms_config        # seeds the neops role + Global scope in the CMS
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>wait_devices            # blocks until every lab device (topology.json) accepts SSH
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>workflow-execution-parameters/   # generated discovery inputs
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>tests/                  # unit tests for the two generators
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>topology.json           # single source of truth: mgmt_ip + interfaces per device
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>gen_clab_topology       # renders topology.json -&gt; generated/ + discover-params.json
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>gen_device_configs      # per-device renderers, reused by gen_clab_topology
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>generated/              # git-ignored: clab.json, frr/*.iface, srl/*.cli, clab runtime
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint + set-aliases.sh
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>cms/                    # oidc-config.json + the git-ignored jwt/ keypair (make lab-jwt)
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>scope/Global/           # table columns, drill-down and dashboard applied by apply_cms_config
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>workflows/              # workflow YAMLs registered by the bootstrap container
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>function_blocks/        # lab-local function blocks, auto-discovered by the worker
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>bootstrap/              # one-shot container that POSTs every workflow YAML
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>containerlab            # containerlab launcher (runs ghcr.io/srl-labs/clab via the docker socket)
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>doctor                  # host preflight (docker, RAM, mount round-trip, subnets, images)
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>apply_cms_config        # seeds the neops role + Global scope in the CMS
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>wait_devices            # blocks until every lab device (topology.json) accepts SSH
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>workflow-execution-parameters/   # generated discovery inputs
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>tests/                  # unit tests for the two generators
 </span></code></pre></div>
 <p>The base stack + worker compose files are combined via docker compose&rsquo;s
 <code>COMPOSE_FILE</code> (target-scoped in the <code>Makefile</code>); containerlab provisions the
@@ -7419,7 +7430,7 @@ skipped for hosts declared as another one.</p>
 <li><code>make test</code> — the generator tests assert the regenerated parameter files match
    what is committed, so they fail until you commit the regenerated JSON.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:24:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:24:45+00:00'>2026-08-20 09:24:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

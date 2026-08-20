@@ -7321,7 +7321,7 @@ or export the variable yourself:</p>
 <td><code>cms</code></td>
 <td><code>quay.io/zebbra/neops-cms-free:develop</code></td>
 <td><code>8001</code> → 8000</td>
-<td>Django CMS + GraphQL. Runs <code>migrate</code>, creates the <code>neops</code> superuser, builds the ES index, then <code>runserver</code></td>
+<td>Django CMS + GraphQL. Runs <code>migrate</code>, creates the <code>neops</code> superuser, builds the ES index, then <code>runserver</code>. <code>REDIS_URL</code> points it at <code>redis</code></td>
 </tr>
 <tr>
 <td><code>workflow_engine</code></td>
@@ -7363,13 +7363,13 @@ or export the variable yourself:</p>
 <td><code>elasticsearch</code></td>
 <td><code>docker.elastic.co/elasticsearch/elasticsearch:8.9.2</code></td>
 <td>—</td>
-<td>Volume <code>elasticsearch</code>; 2 CPU / 8 GB limits</td>
+<td>Volume <code>elasticsearch</code>; 2 CPU / 4 GB limits (2 GB heap)</td>
 </tr>
 <tr>
 <td><code>redis</code></td>
-<td><code>redis:5-alpine</code></td>
+<td><code>redis:7-alpine</code></td>
 <td>—</td>
-<td>On its own <code>redis-net</code> bridge</td>
+<td>The CMS&rsquo;s channel layer (GraphQL subscriptions), cache and Celery broker</td>
 </tr>
 <tr>
 <td><code>wait_health</code></td>
@@ -7404,10 +7404,21 @@ or export the variable yourself:</p>
   boot -- "POST /workflow-definition/publish" --&gt; engine</code></pre>
 <p><code>lab-net</code> is declared by <code>docker-compose.worker.yml</code> with an explicit IPAM subnet of <code>172.30.0.0/24</code>, and containerlab&rsquo;s topology sets <code>mgmt.network: lab-net</code> with the same subnet. That is the join: compose creates the bridge, containerlab attaches the devices to it at their fixed <code>mgmt-ipv4</code>, and the worker — a member of both networks — can reach the engine by service name <em>and</em> the devices by IP.</p>
 <div class="admonition note">
+<p class="admonition-title">Every project network has a fixed subnet</p>
+<p>The compose <code>default</code> network is pinned to <code>172.30.1.0/24</code>
+(<code>docker-compose.yml</code>). docker hands auto-allocated networks the next free
+<code>/16</code> from its <code>172.16/12</code> pool, and on a host with many projects that can
+be <code>172.30.0.0/16</code> — which blocks <code>lab-net</code>&rsquo;s fixed <code>/24</code> with &ldquo;Pool
+overlaps&rdquo;. With every subnet pinned, the allocator never competes with the
+lab. The subnet is single-sourced in <code>gen_clab_topology</code> (<code>LAB_SUBNET</code>)
+and cross-checked by <code>tests/test_host_invariants.py</code>; <code>make doctor</code> names
+any existing network overlapping <code>172.30.0.0/23</code>.</p>
+</div>
+<div class="admonition note">
 <p class="admonition-title">Ordering matters</p>
 <p><code>make local-lab-up</code> runs <code>docker compose up -d</code> <strong>before</strong>
-<code>containerlab deploy</code>, because compose is what creates <code>lab-net</code>. Deploying
-containerlab first would fail to find the network.</p>
+<code>./containerlab deploy</code>, because compose is what creates <code>lab-net</code>.
+Deploying containerlab first would fail to find the network.</p>
 </div>
 <h2 id="the-devices">The devices</h2>
 <table>
@@ -7539,7 +7550,7 @@ in the lab routes between them today.</p>
 </tbody>
 </table>
 <p>Everything under <code>generated/</code> is rebuilt from <code>topology.json</code> on every <code>make local-lab-up</code>. Never commit it — containerlab mints TLS private keys in there.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

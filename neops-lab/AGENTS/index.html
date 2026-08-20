@@ -7046,20 +7046,30 @@ ends with 15 <code>Device</code> rows — each with its interfaces — visible i
 this repo&rsquo;s root</strong> — there is no <code>lab/</code> subdirectory here. Host-side paths
 therefore have no <code>lab/</code> prefix; in-container ones still do (see Invariants).</p>
 <p>Branch from <code>develop</code>. CI (<code>.github/workflows/ci.yml</code>) runs ruff, pyrefly,
-<code>pytest tests</code>, and <code>make build-docker</code>. Read <code>README.md</code> first — it is the
-operator-facing doc and covers prerequisites, the device table and the make
-targets.</p>
+<code>pytest tests</code>, <code>make py39-check</code>, <code>make shell-syntax</code> (plus a bash-3.2 parse),
+and <code>make build-docker</code>. Read <code>README.md</code> first — it is the operator-facing doc
+and covers prerequisites, the device table and the make targets.</p>
+<p><strong>Supported hosts are Linux and macOS.</strong> containerlab always runs in container
+mode through <code>./containerlab</code> (ghcr.io/srl-labs/clab via the docker socket), so
+both hosts use the same command and the same pinned containerlab version; a
+host binary is used only with <code>CLAB_NATIVE=/path</code>.</p>
 <p><strong>This is not a distributable package.</strong> Nothing here is published: no wheel, no
 npm package, no registry image. <code>pyproject.toml</code> exists only to configure
 pytest/ruff/pyrefly and is marked <code>[tool.uv] package = false</code>.</p>
 <h2 id="conventions">Conventions</h2>
 <ul>
-<li>Ruff: line length 120, target Python 3.12. Pyrefly for types.</li>
-<li><strong>Host scripts are stdlib-only</strong> (<code>gen_clab_topology</code>, <code>gen_device_configs</code>,
-  <code>run_workflow</code>, <code>wait_ready</code>, <code>wait_devices</code>). They run on a bare host before
-  any virtualenv exists — do not add a third-party import to them.</li>
-<li><code>apply_cms_config</code> is bash, not Python; it is deliberately absent from ruff&rsquo;s
-  <code>extend-include</code>.</li>
+<li>Ruff: line length 120, target Python 3.12 (dev tooling). Pyrefly for types.</li>
+<li><strong>Host scripts are stdlib-only and Python-3.9-safe</strong> (<code>gen_clab_topology</code>,
+  <code>gen_device_configs</code>, <code>run_workflow</code>, <code>wait_ready</code>, <code>wait_devices</code>). They run
+  on a bare host before any virtualenv exists — do not add a third-party import
+  to them — and each starts with <code>from __future__ import annotations</code> so a
+  stock macOS <code>/usr/bin/python3</code> (3.9) imports them. <code>make py39-check</code>
+  enforces this; ruff at <code>py312</code> does not.</li>
+<li><code>apply_cms_config</code> and <code>containerlab</code> are bash, not Python; they are
+  deliberately absent from ruff&rsquo;s <code>extend-include</code>. Keep them bash-3.2 and
+  BSD-userland compatible (no arrays under <code>set -u</code>, no <code>grep -P</code>, no
+  <code>base64 FILE</code>, no <code>sed -i</code> without a suffix); <code>make shell-syntax</code> parses
+  them, CI also with a real bash 3.2.</li>
 <li>Example/lab function block package: <code>fb.lab.neops.io</code>; the workflow package is
   <code>wf.lab.neops.io</code>. The discovery block itself is <code>fb.base.neops.io/global_discover_network</code>
   and lives in <strong>neops-worker-sdk-py</strong>, not here.</li>
@@ -7138,12 +7148,22 @@ pytest/ruff/pyrefly and is marked <code>[tool.uv] package = false</code>.</p>
   name; Postgres name uniqueness is case-sensitive, so a lowercase <code>global</code> would
   create a silent duplicate.</li>
 <li><strong>Race ordering in <code>local-lab-up</code> is deliberate</strong>: <code>docker compose wait
-  lab_bootstrap</code> (workflow registration) → <code>containerlab deploy</code> (SR Linux boots
-  slowly, so start it early) → <code>wait_ready</code> (the worker registers its function
-  blocks asynchronously) → <code>wait_devices</code> <strong>from inside the worker container</strong>
+  lab_bootstrap</code> (workflow registration) → <code>./containerlab deploy --reconfigure</code>
+  (SR Linux boots slowly, so start it early; <code>--reconfigure</code> makes the target
+  re-runnable) → <code>wait_ready</code> (the worker registers its function blocks
+  asynchronously) → <code>wait_devices</code> <strong>from inside the worker container</strong>
   (on macOS/Docker Desktop the host has no route to the <code>172.30.0.0/24</code> bridge,
   so a host-side poll always times out). Each wait exists because of a real,
   reproduced failure; do not replace one with a <code>sleep</code>.</li>
+<li><strong>containerlab is only ever invoked as <code>./containerlab</code></strong> — in the Makefile
+  (<code>$(CONTAINERLAB)</code>) and in every doc. It runs <code>ghcr.io/srl-labs/clab</code>
+  privileged through the docker socket on both hosts; <code>CLAB_NATIVE</code> selects a
+  host binary. The repo is mounted at the <strong>same absolute path</strong> inside that
+  container: containerlab resolves the topology&rsquo;s relative binds to absolute
+  host paths for the daemon, so the path inside must equal the daemon&rsquo;s —
+  mounting the repo at <code>/work</code> would give every FRR node an empty bind.
+  Side effects (<code>/etc/hosts</code>, <code>ssh_config.d</code>) stay inside the ephemeral clab
+  container; reach devices with <code>docker exec &lt;node&gt;</code>.</li>
 </ul>
 <h2 id="neops-ecosystem">Neops Ecosystem</h2>
 <p>The lab is a consumer, not a producer: it wires together published images from
@@ -7172,7 +7192,7 @@ depends on:</p>
   than guessing — the web client&rsquo;s failure modes (blank <code>&lt;app-root&gt;</code>) don&rsquo;t
   surface through curl.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:24:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:24:45+00:00'>2026-08-20 09:24:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

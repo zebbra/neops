@@ -4673,10 +4673,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pool-overlaps-with-other-one-on-this-address-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pool overlaps with other one on this address space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#workflow-with-id-null-not-found" class="md-nav__link">
     <span class="md-ellipsis">
       
         Workflow with ID null not found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discovery-stays-running-the-worker-log-says-413-payload-too-large" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discovery stays running, the worker log says 413 Payload Too Large
       
     </span>
   </a>
@@ -4772,10 +4794,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#containerlab-deploy-says-it-requires-root-privileges" class="md-nav__link">
+  <a href="#containerlab-deploy-fails-to-start-or-cannot-reach-docker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        containerlab deploy says it requires root privileges
+        containerlab deploy fails to start or cannot reach docker
       
     </span>
   </a>
@@ -7184,10 +7206,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pool-overlaps-with-other-one-on-this-address-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pool overlaps with other one on this address space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#workflow-with-id-null-not-found" class="md-nav__link">
     <span class="md-ellipsis">
       
         Workflow with ID null not found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discovery-stays-running-the-worker-log-says-413-payload-too-large" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discovery stays running, the worker log says 413 Payload Too Large
       
     </span>
   </a>
@@ -7283,10 +7327,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#containerlab-deploy-says-it-requires-root-privileges" class="md-nav__link">
+  <a href="#containerlab-deploy-fails-to-start-or-cannot-reach-docker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        containerlab deploy says it requires root privileges
+        containerlab deploy fails to start or cannot reach docker
       
     </span>
   </a>
@@ -7428,13 +7472,19 @@
 <h1 id="troubleshooting">Troubleshooting</h1>
 <p><em>Indexed by what you actually see. Most of these are boot-order races that already have a wait guarding them — if you hit one, the usual cause is a hand-run command that skipped the wait.</em></p>
 <h2 id="start-here">Start here</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">COMPOSE_FILE</span><span class="o">=</span>docker-compose.yml:docker-compose.worker.yml
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>ps<span class="w">                 </span><span class="c1"># what is running, what exited</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span>local-lab-logs<span class="w">               </span><span class="c1"># worker + lab_bootstrap, followed</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>cms<span class="w">           </span><span class="c1"># CMS startup crashes land here</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>doctor<span class="w">                       </span><span class="c1"># host preflight: RAM, subnets, mount, images</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">COMPOSE_FILE</span><span class="o">=</span>docker-compose.yml:docker-compose.worker.yml
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>ps<span class="w">                 </span><span class="c1"># what is running, what exited</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>make<span class="w"> </span>local-lab-logs<span class="w">               </span><span class="c1"># worker + lab_bootstrap, followed</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>cms<span class="w">           </span><span class="c1"># CMS startup crashes land here</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>./containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
 </span></code></pre></div>
 <p>Without <code>COMPOSE_FILE</code> exported, plain <code>docker compose</code> commands do not see the <code>worker</code> or <code>lab_bootstrap</code> services — the base compose file does not declare them. The make targets set it themselves.</p>
+<hr />
+<h2 id="pool-overlaps-with-other-one-on-this-address-space"><code>Pool overlaps with other one on this address space</code></h2>
+<p><strong>Where:</strong> <code>docker compose up</code>, creating <code>lab-net</code> or the project <code>default</code> network.</p>
+<p><strong>Cause:</strong> another docker network overlaps <code>172.30.0.0/23</code>. On a host with many compose projects docker&rsquo;s auto-assigned <code>/16</code> blocks run out and some other project&rsquo;s <code>default</code> network landed on <code>172.30.0.0/16</code> before the lab&rsquo;s networks existed. (The lab&rsquo;s own networks all carry fixed subnets, so they never compete with each other.)</p>
+<p><strong>Fix:</strong> <code>make doctor</code> names the overlapping network. If it is an unused leftover (<code>docker network inspect &lt;name&gt;</code> shows no containers): <code>docker network rm &lt;name&gt;</code> — the owning project&rsquo;s next <code>up</code> recreates it. If it is genuinely in use, stop that stack first.</p>
 <hr />
 <h2 id="workflow-with-id-null-not-found"><code>Workflow with ID null not found</code></h2>
 <p><strong>Where:</strong> the engine, when you trigger discovery.</p>
@@ -7443,7 +7493,12 @@
 <p><strong>Fix:</strong> let <code>make local-lab-up</code> finish before running discovery. If the container exited non-zero, read its log:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>lab_bootstrap
 </span></code></pre></div>
-<p>A <code>409</code> or an &ldquo;already exists&rdquo; body is treated as success, so a real failure here means the engine rejected the definition.</p>
+<p><code>200 unchanged</code> is the idempotent re-run. A <code>409</code> means the version in the YAML already exists with different content — bump <code>patchVersion</code>/<code>minorVersion</code> (the log prints the engine&rsquo;s <code>suggestedVersion</code>); a <code>404</code> on <code>/workflow-definition/publish</code> means an engine older than <code>0.42.2-beta.3</code>.</p>
+<hr />
+<h2 id="discovery-stays-running-the-worker-log-says-413-payload-too-large">Discovery stays <code>running</code>, the worker log says <code>413 Payload Too Large</code></h2>
+<p><strong>Where:</strong> <code>make local-lab-discover</code> after the worker discovered every device (<code>Generated 448 db update(s)</code>) and then <code>Failed to push job result … (413)</code>.</p>
+<p><strong>Cause:</strong> an engine image without the raised per-route body limits (older than <code>0.42.2-beta.3</code>). Discovery returns a few hundred <code>Interface</code> rows in one job result; the engine rejects the push and re-dispatches the job.</p>
+<p><strong>Fix:</strong> refresh the engine (<code>make local-env-up</code> pulls with <code>--policy always</code>), or pin a known-good tag: <code>NEOPS_ENGINE_TAG=0.42.2-beta.3</code> in <code>.env</code>.</p>
 <hr />
 <h2 id="function-block-not-found"><code>Function block … not found</code></h2>
 <p><strong>Where:</strong> the execution&rsquo;s terminal state, as <code>failed_safe_ack — Function block with id fb.base.neops.io/global_discover_network:0.1.0 not found</code>.</p>
@@ -7522,7 +7577,7 @@ at <code>/app/lab</code> inside the worker.</p>
 </div>
 <p><strong>Fix:</strong> give it more time (<code>./wait_devices --timeout 600</code> from inside the worker), or check the device itself:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>spine-01
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>./containerlab<span class="w"> </span>inspect<span class="w"> </span>-t<span class="w"> </span>generated/neops-lab.clab.json
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Never replace a wait with a <code>sleep</code></p>
@@ -7565,29 +7620,27 @@ a silent <em>duplicate</em> scope rather than updating the seeded one.</p>
 <p><strong>Cause:</strong> you set <code>NEOPS_*_IMAGE</code> to a local tag with no registry host, so docker resolves it as <code>docker.io/library/…</code>.</p>
 <p><strong>Fix:</strong> run the pull with <code>--ignore-pull-failures</code>, or skip it — <code>pull_policy: missing</code> means <code>docker compose up -d</code> uses the present local image without contacting a registry.</p>
 <hr />
-<h2 id="containerlab-deploy-says-it-requires-root-privileges"><code>containerlab deploy</code> says it requires root privileges</h2>
-<p><strong>Cause:</strong> containerlab is not set up for sudo-less operation. The make targets never call <code>sudo</code>. The usual trigger is a <strong>containerlab upgrade</strong>: the new binary is installed without the SUID bit, while your <code>clab_admins</code> membership survives — so <code>id</code> still looks right and only <code>ls -l "$(command -v containerlab)"</code> shows the missing <code>s</code>.</p>
-<p><strong>Fix:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>clab-suid
-</span></code></pre></div>
-<p>Idempotent, and it only asks for a password when the bit is actually missing. For the full setup (including the <code>clab_admins</code> group) see <a href="../../getting-started/10-prerequisites/#containerlab-and-sudo-less-operation">Prerequisites</a>. Then confirm with the two-node probe:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml
+<h2 id="containerlab-deploy-fails-to-start-or-cannot-reach-docker"><code>containerlab deploy</code> fails to start or cannot reach docker</h2>
+<p><strong>Cause:</strong> <code>./containerlab</code> runs containerlab in a container through the docker socket; it needs a rootful docker daemon and, on Docker Desktop, the repo under a shared path. <code>make doctor</code> checks both.</p>
+<p>With <code>CLAB_NATIVE</code> (a host binary) the classic failure is <em>&ldquo;This containerlab command requires root privileges or root via SUID to run&rdquo;</em> — usually after a <strong>containerlab upgrade</strong>: the new binary is installed without the SUID bit while your <code>clab_admins</code> membership survives, so <code>id</code> still looks right and only <code>ls -l "$(command -v containerlab)"</code> shows the missing <code>s</code>. <code>make clab-suid</code> restores it (idempotent).</p>
+<p><strong>Fix:</strong> <code>make doctor</code>, or <code>make clab-suid</code> for the native path; details in <a href="../../getting-started/10-prerequisites/#containerlab--one-command-both-hosts-no-install">Prerequisites</a>. Then confirm with the two-node probe:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>./containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml<span class="w"> </span>--cleanup
 </span></code></pre></div>
 <hr />
 <h2 id="duplicate-interface-rows-after-re-running-discovery">Duplicate interface rows after re-running discovery</h2>
 <p><strong>Cause:</strong> devices are keyed by IP so they are skipped on a second run, but <strong>interfaces are always recorded</strong>.</p>
 <p><strong>Fix:</strong> run discovery against a fresh CMS.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <hr />
 <h2 id="nothing-works-and-you-want-to-start-over">Nothing works and you want to start over</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
-<p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>./containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

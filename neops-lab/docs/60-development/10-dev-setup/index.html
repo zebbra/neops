@@ -7360,13 +7360,21 @@
 <td><code>make test</code></td>
 <td><code>uv run pytest tests</code></td>
 </tr>
+<tr>
+<td><code>make py39-check</code></td>
+<td>imports the host scripts under Python 3.9 (<code>uv run --python 3.9</code>)</td>
+</tr>
+<tr>
+<td><code>make shell-syntax</code></td>
+<td><code>bash -n</code> over the bash entry points</td>
+</tr>
 </tbody>
 </table>
 <p>Ruff is configured with line length 120, target <code>py312</code>, and a broad rule selection (<code>F E W I B UP N S A C4 SIM RET PIE ARG PTH PERF PT PL RUF</code>) with <code>E501</code> delegated to the formatter.</p>
 <h2 id="what-ci-runs">What CI runs</h2>
 <p><code>.github/workflows/ci.yml</code>, on pushes to <code>main</code>/<code>develop</code> and on every PR:</p>
 <ol>
-<li><strong><code>lint-test</code></strong> on <code>ubuntu-latest</code> — <code>uv sync --group dev --frozen</code>, then ruff format check, ruff lint, pyrefly, pytest. Exactly <code>make check</code>.</li>
+<li><strong><code>lint-test</code></strong> on <code>ubuntu-latest</code> — <code>uv sync --group dev --frozen</code>, then ruff format check, ruff lint, pyrefly, pytest, <code>make py39-check</code>, <code>make shell-syntax</code>, a parse of the bash entry points with a real bash 3.2 (the <code>bash:3.2</code> image — the shell macOS ships), and a check that <code>gen_clab_topology</code> reproduces the committed parameter files. Exactly <code>make check</code> plus the 3.2 parse.</li>
 <li><strong><code>docker</code></strong> on the self-hosted <code>hetzner</code> runner, gated on <code>lint-test</code> — <code>make build-docker</code>. The images are local-only, so this job exists purely to make a broken Dockerfile fail in CI rather than on a developer&rsquo;s first <code>make local-lab-up</code>.</li>
 </ol>
 <p>There is no job that stands the lab up: 15 device containers and a few GB of SR Linux RAM do not belong in CI.</p>
@@ -7396,9 +7404,10 @@ is no warning; the gate just passes.</p>
 </ul>
 <p>Renaming them to <code>*.py</code> is not an option — it would break every caller.</p>
 <div class="admonition note">
-<p class="admonition-title"><code>apply_cms_config</code> is bash, not Python</p>
-<p>It is deliberately absent from both include lists. Do not &ldquo;fix&rdquo; that by
-adding it — ruff would try to parse shell as Python.</p>
+<p class="admonition-title"><code>apply_cms_config</code>, <code>containerlab</code> and <code>doctor</code> are bash, not Python</p>
+<p>They are deliberately absent from both include lists. Do not &ldquo;fix&rdquo; that by
+adding them — ruff would try to parse shell as Python. Keep them bash-3.2
+and BSD-userland compatible; <code>make shell-syntax</code> parses them.</p>
 <p>Note also that CI lints <code>.</code> (a directory walk) rather than an explicit file
 list, because <code>extend-include</code> only applies to discovery.</p>
 </div>
@@ -7488,7 +7497,7 @@ deep-merged over the shared <code>mkdocs_base.yml</code> (vendored under
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>check
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>make<span class="w"> </span>doc-build<span class="w">   </span><span class="c1"># if you touched docs/ or mkdocs_custom.yml</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="What your host needs before the first make target — Docker, containerlab with sudo-less operation, openssl, uv, and Quay pull access.">
+        <meta name="description" content="What your host needs before the first make target — Docker, the containerlab launcher, openssl, python3, RAM, Quay access — and the preflight that checks it all.">
       
       
       
@@ -4216,6 +4216,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#run-the-preflight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run the preflight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#host-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4227,22 +4238,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#containerlab-and-sudo-less-operation" class="md-nav__link">
+  <a href="#containerlab-one-command-both-hosts-no-install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        containerlab and sudo-less operation
+        containerlab — one command, both hosts, no install
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="containerlab and sudo-less operation">
+    <nav class="md-nav" aria-label="containerlab — one command, both hosts, no install">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prove-it-works-before-the-15-node-deploy" class="md-nav__link">
+  <a href="#native-binary-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prove it works before the 15-node deploy
+        Native binary (optional)
       
     </span>
   </a>
@@ -4251,6 +4262,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macos-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        macOS notes
+      
+    </span>
+  </a>
   
 </li>
       
@@ -7113,6 +7135,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#run-the-preflight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run the preflight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#host-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7124,22 +7157,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#containerlab-and-sudo-less-operation" class="md-nav__link">
+  <a href="#containerlab-one-command-both-hosts-no-install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        containerlab and sudo-less operation
+        containerlab — one command, both hosts, no install
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="containerlab and sudo-less operation">
+    <nav class="md-nav" aria-label="containerlab — one command, both hosts, no install">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prove-it-works-before-the-15-node-deploy" class="md-nav__link">
+  <a href="#native-binary-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prove it works before the 15-node deploy
+        Native binary (optional)
       
     </span>
   </a>
@@ -7148,6 +7181,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macos-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        macOS notes
+      
+    </span>
+  </a>
   
 </li>
       
@@ -7306,7 +7350,11 @@
 
 
 <h1 id="prerequisites">Prerequisites</h1>
-<p><em>Check these first. Every one of them fails late and confusingly if you skip it.</em></p>
+<p><em>Check these first. Every one of them fails late and confusingly if you skip it — which is why <code>make doctor</code> exists.</em></p>
+<h2 id="run-the-preflight">Run the preflight</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>doctor
+</span></code></pre></div>
+<p>Read-only apart from pulling two small images. It checks the docker daemon and the RAM it has, amd64 emulation on Apple Silicon, that the repo bind-mounts at its own path, docker networks overlapping the lab&rsquo;s subnets, the containerlab image, and that <code>python3</code> imports the host scripts — and prints the fix next to each failure.</p>
 <h2 id="host-requirements">Host requirements</h2>
 <table>
 <thead>
@@ -7318,23 +7366,23 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>Docker</strong> + <code>docker compose</code></td>
-<td>The whole control plane and every device container</td>
+<td><strong>Docker</strong> + <code>docker compose</code> ≥ 2.20</td>
+<td>The whole control plane, the devices, and containerlab itself</td>
 <td>everything</td>
 </tr>
 <tr>
-<td><strong>containerlab</strong></td>
-<td>Wires real veth links via network namespaces — Linux only</td>
-<td><code>make local-lab-up</code></td>
-</tr>
-<tr>
 <td><strong><code>openssl</code></strong></td>
-<td>Mints the dev RSA keypair the CMS needs for RS256 JWTs</td>
+<td>Mints the dev RSA keypair the CMS needs for RS256 JWTs (OpenSSL 3 or macOS LibreSSL)</td>
 <td><code>make lab-jwt</code></td>
 </tr>
 <tr>
+<td><strong><code>python3</code> ≥ 3.9</strong></td>
+<td>The host scripts are stdlib-only and import under a stock macOS <code>/usr/bin/python3</code></td>
+<td><code>gen_clab_topology</code>, <code>run_workflow</code>, <code>wait_ready</code></td>
+</tr>
+<tr>
 <td><strong><code>uv</code></strong></td>
-<td>Runs ruff / pyrefly / pytest and the MkDocs tooling</td>
+<td>ruff / pyrefly / pytest and the MkDocs tooling</td>
 <td><code>make check</code>, <code>make doc-*</code></td>
 </tr>
 <tr>
@@ -7343,28 +7391,53 @@
 <td><code>make local-env-init</code></td>
 </tr>
 <tr>
-<td><strong>RAM/CPU</strong></td>
-<td>The 5 SR Linux nodes are hungry — budget a few GB</td>
+<td><strong>RAM</strong></td>
+<td>5 SR Linux nodes (≈1.5–2 GB each) + Elasticsearch + control plane ≈ <strong>14–16 GB</strong> for containers</td>
 <td><code>make local-lab-up</code></td>
+</tr>
+<tr>
+<td><strong>A worker image with the discovery block</strong></td>
+<td>Published with <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">neops-worker-sdk-py#127</a>; until then build it from a checkout</td>
+<td><a href="../../20-operations/20-images/">Images</a></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">The lab scripts themselves need nothing but <code>python3</code></p>
-<p><code>gen_clab_topology</code>, <code>gen_device_configs</code>, <code>run_workflow</code>, <code>wait_ready</code> and
-<code>wait_devices</code> are <strong>stdlib-only</strong> on purpose: they run on a bare host
-before any virtualenv exists. <code>uv</code> is only needed for the dev tooling, not
-to run the lab.</p>
-</div>
-<h2 id="containerlab-and-sudo-less-operation">containerlab and sudo-less operation</h2>
-<p>containerlab creates network namespaces and veth pairs, so it needs privileges. The make targets call <code>containerlab deploy</code> directly, with no <code>sudo</code>, so it must work password-free:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>clab_admins<span class="w"> </span><span class="nv">$USER</span><span class="w">          </span><span class="c1"># then re-login for the group to apply</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>root:root<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">4755</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1"># SUID -&gt; -rwsr-xr-x</span>
+<h2 id="containerlab-one-command-both-hosts-no-install">containerlab — one command, both hosts, no install</h2>
+<p>Every make target and every command in these docs calls <strong><code>./containerlab</code></strong>, a small launcher committed at the repo root. It runs the official <code>ghcr.io/srl-labs/clab</code> image privileged through the docker socket — on Linux exactly as on macOS — so the containerlab version is pinned (<code>CLAB_IMAGE</code>) and the host needs nothing but docker. This is containerlab&rsquo;s documented container mode; it needs a rootful docker daemon (podman is not supported by clab&rsquo;s container mode — set <code>CLAB_NATIVE=/path/to/containerlab</code> to use a host binary there).</p>
+<p>Three things follow from the container mode:</p>
+<ul>
+<li>The repo is mounted at the <strong>same absolute path</strong> inside the clab container, because containerlab hands the topology&rsquo;s bind paths to the docker daemon as absolute host paths. On Docker Desktop the checkout must therefore live under a shared path (<code>/Users</code>, <code>/Volumes</code>, <code>/private</code>, <code>/tmp</code> by default) and must not contain spaces — <code>make doctor</code> checks the mount round-trips.</li>
+<li>containerlab&rsquo;s convenience entries (<code>/etc/hosts</code>, <code>ssh_config.d</code>) land inside the ephemeral container, on both hosts. Reach devices with <code>docker exec &lt;node&gt;</code> / <code>docker logs &lt;node&gt;</code> — the topology sets <code>prefix: ""</code>, so node names are container names.</li>
+<li>On plain Linux the lab runtime dir (<code>generated/clab-neops-lab/</code>) is written as root; the launcher chowns it back to you after each run.</li>
+</ul>
+<p>Verify with the two-node probe — it confirms the whole chain (docker socket, privileged mode, veth wiring) without pulling the NeOps stack:</p>
+<div class="language-yaml highlight"><span class="filename">clab/probe.clab.yml</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Minimal containerlab probe: confirms containerlab can deploy on this host</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># (privileges) and that a `linux`-kind FRR node takes a `swpN` interface over a</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># real veth link. Uses the same multi-arch frrouting/frr:v8.4.1 the lab image</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># is built from (`latest` is amd64-only), so no local build is needed.</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">neops-clab-probe</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nt">topology</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">r1</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frrouting/frr:v8.4.1</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">r2</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frrouting/frr:v8.4.1</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">endpoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;r1:swp1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;r2:swp1&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<p><code>make clab-suid</code> does the SUID half for you: idempotent, it prompts for sudo
-only when the bit is actually missing, and warns if you are not in
-<code>clab_admins</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml<span class="w"> </span>--cleanup
+</span></code></pre></div>
+<h3 id="native-binary-optional">Native binary (optional)</h3>
+<p><code>CLAB_NATIVE=$(command -v containerlab)</code> makes the launcher exec a host
+binary instead. On Linux that path needs sudo-less operation — membership in
+<code>clab_admins</code> plus the SUID bit; <code>make clab-suid</code> does the SUID half for you:
+idempotent, it prompts for sudo only when the bit is actually missing, and
+warns if you are not in <code>clab_admins</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Re-run <code>make clab-suid</code> after every containerlab upgrade</p>
 <p>A package upgrade replaces the binary and silently drops the SUID bit.
@@ -7373,44 +7446,17 @@ requires root privileges or root via SUID to run&rdquo;</em> — group membershi
 survives the upgrade, so <code>id</code> looks fine and only the file mode gives it
 away.</p>
 </div>
-<p>Verify the SUID bit is set:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ls<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>containerlab<span class="k">)</span><span class="s2">&quot;</span><span class="w">   </span><span class="c1"># expect -rwsr-xr-x</span>
-</span></code></pre></div>
-<h3 id="prove-it-works-before-the-15-node-deploy">Prove it works before the 15-node deploy</h3>
-<p>The repo ships a two-node probe so you can confirm privileges <em>and</em> that a <code>linux</code>-kind FRR node accepts a <code>swpN</code> interface over a real veth link — without pulling the whole stack:</p>
-<div class="language-yaml highlight"><span class="filename">clab/probe.clab.yml</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Minimal containerlab probe: confirms containerlab can deploy on this host</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># (privileges) and that a `linux`-kind FRR node takes a `swpN` interface over a</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># real veth link. Uses only frrouting/frr:latest (no build/pull needed).</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">neops-clab-probe</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nt">topology</span><span class="p">:</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">r1</span><span class="p">:</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frrouting/frr:latest</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nt">r2</span><span class="p">:</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frrouting/frr:latest</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="nt">links</span><span class="p">:</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">endpoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;r1:swp1&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;r2:swp1&quot;</span><span class="p p-Indicator">]</span>
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>containerlab<span class="w"> </span>deploy<span class="w">  </span>-t<span class="w"> </span>clab/probe.clab.yml
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml
-</span></code></pre></div>
-<p>A successful deploy means containerlab is ready. The failure you are checking for is <code>... requires root privileges</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Linux only</p>
-<p>containerlab wires veths through Linux network namespaces. The lab&rsquo;s
-control plane runs anywhere Docker does, but the 15 devices do not come up
-on macOS or Windows. Where macOS <em>does</em> still matter is the
-<a href="../../20-operations/40-troubleshooting/#devices-never-become-reachable">device-readiness poll</a>,
-which deliberately runs from inside the lab network for exactly this
-class of reason.</p>
-</div>
+<h2 id="macos-notes">macOS notes</h2>
+<ul>
+<li><strong>Docker Desktop VM sizing.</strong> The VM&rsquo;s memory is the whole budget: Settings → Resources → Memory ≥ <strong>16 GB</strong> (the 8 GB default cannot hold 5 SR Linux nodes plus Elasticsearch), then <em>Apply &amp; restart</em>.</li>
+<li><strong>Apple Silicon.</strong> The four <code>quay.io/zebbra</code> images are amd64-only; enable <em>Use Rosetta for x86_64/amd64 emulation</em> (Settings → General) or they run under QEMU, much slower. containerlab, FRR and SR Linux are native arm64.</li>
+<li><strong>No route from the Mac to <code>lab-net</code></strong> (<code>172.30.0.0/24</code>): the make targets poll device readiness from inside the worker, and nothing in these docs reaches a device from the host.</li>
+<li>A slow first run wants larger wait budgets, not fewer waits: <code>make local-lab-up WAIT_READY_TIMEOUT=600 WAIT_DEVICES_TIMEOUT=600</code>.</li>
+<li><code>make doc-fix-symlinks</code> needs <code>brew install symlinks</code>; nothing else in the docs workflow differs.</li>
+</ul>
 <h2 id="registry-access">Registry access</h2>
-<p>The lab is a <strong>consumer of published images</strong>. Four of the services pull from <code>quay.io/zebbra</code>, which is a <strong>private</strong> organisation — an anonymous pull is rejected with <code>401</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>login<span class="w"> </span>quay.io
+<p>Four services pull from <code>quay.io/zebbra</code>, a <strong>private</strong> organisation — an anonymous pull is rejected with <code>401</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>login<span class="w"> </span>quay.io
 </span></code></pre></div>
 <table>
 <thead>
@@ -7434,21 +7480,19 @@ class of reason.</p>
 </tr>
 <tr>
 <td><code>quay.io/zebbra/neops-worker-sdk:develop</code></td>
-<td><code>worker</code></td>
+<td><code>worker</code> — see <a href="../../20-operations/20-images/">Images</a></td>
 </tr>
 </tbody>
 </table>
-<p><code>ghcr.io/nokia/srlinux:26.3</code> (the SR Linux devices) is public and needs no login.</p>
+<p><code>ghcr.io/nokia/srlinux:26.3</code> (the SR Linux devices) and <code>ghcr.io/srl-labs/clab</code> (containerlab) are public and need no login.</p>
 <div class="admonition tip">
 <p class="admonition-title"><code>NPM_TOKEN</code> is <strong>not</strong> needed here</p>
-<p>Most NeOps repos require an <code>NPM_TOKEN</code> with <code>read:packages</code> to install
-<code>@zebbra/*</code> npm packages. This repo installs no npm packages and publishes
-nothing — Quay credentials are the only registry access it needs. (In the
-shared dev environment <code>NPM_TOKEN</code> and <code>PYPI_TOKEN</code> are exported anyway;
-they are simply unused by this lab.)</p>
+<p>Most NeOps repos require an <code>NPM_TOKEN</code> to install <code>@zebbra/*</code> npm
+packages. This repo installs no npm packages and publishes nothing — Quay
+credentials are the only registry access it needs.</p>
 </div>
 <h2 id="running-locally-built-images-instead">Running locally-built images instead</h2>
-<p>Every published image can be swapped for a local tag through an environment variable — this is how you exercise an unreleased engine or worker against the lab. Copy <code>.env.example</code> to <code>.env</code> and uncomment what you need:</p>
+<p>Every published image can be swapped for a local tag through an environment variable; copy <code>.env.example</code> to <code>.env</code> (docker compose reads it automatically) or export the variable:</p>
 <table>
 <thead>
 <tr>
@@ -7459,7 +7503,7 @@ they are simply unused by this lab.)</p>
 <tbody>
 <tr>
 <td><code>NEOPS_WORKFLOW_ENGINE_IMAGE</code></td>
-<td><code>quay.io/zebbra/neops-workflow-engine:develop</code></td>
+<td><code>quay.io/zebbra/neops-workflow-engine:${NEOPS_ENGINE_TAG:-develop}</code></td>
 </tr>
 <tr>
 <td><code>NEOPS_WEB_CLIENT_IMAGE</code></td>
@@ -7471,30 +7515,16 @@ they are simply unused by this lab.)</p>
 </tr>
 </tbody>
 </table>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_WORKER_SDK_IMAGE</span><span class="o">=</span>neops-worker-sdk:latest
-</span></code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">A local tag breaks the explicit <code>docker compose pull</code> step</p>
-<p>A tag with no registry host (<code>neops-worker-sdk:latest</code>) resolves as
-<code>docker.io/library/neops-worker-sdk:latest</code>, which does not exist, so the
-<code>docker compose pull</code> inside <code>make local-env-init</code> / <code>make local-env-up</code>
-<strong>fails</strong>. Run that step yourself with <code>--ignore-pull-failures</code> when you
-override an image this way.</p>
-<p><code>docker compose up -d</code> is unaffected: every overridable service sets
-<code>pull_policy: missing</code> (itself overridable via <code>NEOPS_*_PULL_POLICY</code>), so a
-local image that is already present is used without contacting any
-registry.</p>
-</div>
+<p>Every overridable service sets <code>pull_policy: missing</code>, so a local image already present is used without a registry call; the make targets pull the published tags with <code>--policy always --ignore-pull-failures</code>, so a local override tag is a warning, not an error.</p>
 <h2 id="files-the-lab-needs-but-does-not-ship">Files the lab needs but does not ship</h2>
-<p>Two things are git-ignored and created for you on first run. If either is missing the stack does not start:</p>
+<p>Two things are git-ignored and created on first run; without them the stack does not start:</p>
 <ul>
-<li><strong><code>cms/jwt/{private,public}.pem</code></strong> — dev-only RSA keypair minted by <code>make lab-jwt</code>. Newer <code>neops-cms-free</code> images require it for RS256 JWT issuance and crash at startup (<code>token_service check_keys</code>) without it. Idempotent, so re-running never invalidates issued tokens. These are throwaway lab credentials, never secrets.</li>
-<li><strong><code>cms_api_key.env</code></strong> — the CMS API key the workflow engine authenticates with, minted by <code>make local-env-init</code>.</li>
+<li><strong><code>cms/jwt/{private,public}.pem</code></strong> — dev-only RSA keypair minted by <code>make lab-jwt</code> (<code>openssl genpkey</code>, so OpenSSL and LibreSSL emit the same PKCS#8 PEM). Idempotent; a throwaway lab credential.</li>
+<li><strong><code>cms_api_key.env</code></strong> — the CMS API key the engine authenticates with, minted by <code>make local-env-init</code>.</li>
 </ul>
-<p><code>make local-env-init</code> depends on <code>lab-jwt</code>, so in practice you only run the four quickstart commands.</p>
 <h2 id="next">Next</h2>
 <p><a href="../20-quickstart/">Quickstart <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-19 11:21:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-19T11:21:26+00:00'>2026-08-19 11:21:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:24:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:24:45+00:00'>2026-08-20 09:24:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
