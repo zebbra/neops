@@ -7306,11 +7306,78 @@ non-obvious conventions:</p>
   the accessible name comes out doubled; and <code>.cds--toggle__label</code> is a block box whose inline-grid
   switch picks up baseline leading and rides ~2px above centre. See <code>.toolbar-toggle</code> in
   <code>generic-table.component.scss</code> for the worked-out fix.</li>
+<li><strong><code>angular-gridster2</code> has a native <code>scale</code> option</strong> (<code>GridsterConfig.scale</code>, default 1). It divides pointer
+  deltas during drag and resize, so a CSS <code>transform: scale()</code> on the grid container stays correct as long as
+  the same factor is handed to gridster. This is what the dashboard <code>fit</code> display scale uses
+  (<code>dashboard-grid.component.ts</code> + <code>core/model/DashboardDisplayScale.ts</code>). Note gridster measures itself with
+  <code>offsetWidth</code>/<code>offsetHeight</code>, which transforms do not affect - but any card content that measures itself with
+  <code>getBoundingClientRect()</code> will read scaled pixels and mis-size itself.</li>
+<li><strong><code>GridType.Fit</code> spreads the <em>whole</em> grid over its container</strong>, so a dashboard that leaves trailing columns or
+  rows empty pays for them in screen space; the rendered cell size is the container divided by <code>maxCols</code>/<code>maxRows</code>,
+  never by what the cards use. <code>gridster.curColWidth</code>/<code>curRowHeight</code> are the cell <em>pitch</em> with the margin already
+  in it (<code>(width + margin) / cols</code>), and an item spanning <code>n</code> cells is <code>n * pitch - margin</code> wide. The dashboard
+  <code>fit</code> display scale sizes its container from that arithmetic so the occupied cells cover the viewport exactly.</li>
+<li><strong>The dashboard&rsquo;s design size is 1500x900</strong> (<code>.dashboard-min-area</code> min-width/min-height) inside an available
+  area of <code>calc(100vh - 160px)</code>. <code>DASHBOARD_NOMINAL_WIDTH</code>/<code>_HEIGHT</code> mirror those numbers; change both together.</li>
+<li><strong>The fit scale deliberately has no lower bound. Do not add one back.</strong> The container is laid out at
+  <code>available / scale</code>, which is at or above the design surface only while the scale is free. Hold the scale above
+  what the area can take and the container drops below the surface the cards were drawn for, so every card gets
+  less room while its type stays at design size and card titles collapse and clip. A 0.5 floor did exactly that
+  at 200% browser zoom: the container came out 1046x578, and the dynamic status card&rsquo;s <code>h3</code> was left with
+  <code>clientHeight: 0</code> against a <code>scrollHeight</code> of 28. A floor could not be expressed here anyway, because it would
+  be in CSS pixels, which browser zoom redefines: at 200% zoom a CSS pixel is two device pixels, so scale 0.25
+  there is the same physical size as 0.5 at 100%.</li>
+<li><strong>The view-mode dashboard header bar is a flex row, not a title with floated actions.</strong> A float only shares a
+  line with content that fits beside it, so once the title outgrew the width the actions left over, it wrapped,
+  the actions dropped to a second line and both spilled out of the fixed 48px bar - reproducible with a long
+  title at 200% zoom. The title truncates on one line and carries <code>neopsShowTooltipOnOverflow</code> for the full text;
+  <code>min-width: 0</code> on it is load-bearing, since without it a flex item will not shrink below its own content. Edit
+  mode (<code>.top-bar-active</code>) has no title and still uses floats.</li>
+<li><strong>A card gets fewer layout pixels in normal display scale than in fit.</strong> Normal lays the grid out at the
+  1500x900 design surface (<code>.dashboard-min-area</code> min-width/min-height), while fit lays it out at
+  <code>available / scale</code>, which is at or above that surface and usually well above it - 1082px tall at 1280x800.
+  So a 5-row card is 370px in normal and 443px in fit on the same screen. Anything sized in fixed pixels has to
+  fit the <em>normal</em> number, or it overflows and the card holder clips it; the pie chart adaptors&rsquo; <code>height: '350px'</code>
+  did exactly that and cut the chart legend off in normal mode only. Prefer content that fills the card.</li>
+<li><strong><code>ngx-graph</code> only re-measures on a window <code>resize</code> event</strong>, so a network-diagram card whose <em>card</em> is resized
+  keeps its old SVG size until the window changes. Reproducible on <code>develop</code> by resizing a diagram card in
+  dashboard edit mode. The Cytoscape renderer replacing it derives its own scale from
+  <code>rect.width / clientWidth</code>, so it does not have either problem.</li>
 <li><strong>JSON Forms can return <code>colorMapping</code> (and other complex fields) as a parsed object OR a JSON
   string</strong> depending on the renderer path. Always normalize with a parse-or-passthrough helper before
   dereferencing.</li>
 <li><strong><code>generic-table</code> opens a row-detail modal on double-click by default.</strong> For read-only tables set
   <code>rowModalDisabled: true</code> on the <code>NeopsTableConfiguration</code>.</li>
+<li><strong>A popup drawn inside a dashboard card is clipped, and <code>z-index</code> cannot save it.</strong> Three ancestors
+  hide their overflow: <code>gridster.fit</code>, <code>.dashboard-overflow-control.dashboard-fit-to-screen</code> and the
+  edit-mode card holder. <code>query-autocomplete</code> draws its suggestion list in a CDK Overlay attached to
+  the body instead; copy that if you add another popup. Carbon&rsquo;s <code>cds-dropdown</code>/<code>cds-combo-box</code> are
+  safe (they detect a scrollable parent and append to the body placeholder), but <code>cds-tooltip</code> and
+  <code>cds-tooltip-definition</code> still render their popover inline and are still clipped inside a card.</li>
+<li><strong>An overlay attached to the body is outside the dashboard&rsquo;s fit scale, so it must carry that scale
+  itself.</strong> Read the factor off the transform chain, not from <code>rect.width / offsetWidth</code> —
+  <code>offsetWidth</code> is rounded, so that ratio is not 1 for an unscaled element of fractional width. Scale
+  the panel with <code>zoom</code>, not <code>transform</code>: the CDK owns the pane&rsquo;s <code>transform</code> and rewrites it on every
+  reposition, and a transform stays out of layout so the overlay can neither measure nor clamp it.
+  Also set <code>withGrowAfterOpen(true)</code>, or the panel can only ever shrink once it is open.</li>
+<li><strong>Carbon&rsquo;s own popups are re-scaled centrally, so a card never has to opt in.</strong>
+  <code>PortaledOverlayScaler</code> (<code>dashboard-grid/portaled-overlay-scaler.ts</code>) watches the grid and
+  <code>cds-placeholder</code> with one <code>MutationObserver</code> and hands the fit scale to whatever Carbon draws out
+  of a card, so a card written by an SDK consumer is covered on the same terms. It recognises the two
+  things Carbon portals by what each does to the DOM: <code>cds-dropdown</code>/<code>cds-combo-box</code> <em>move</em> their
+  menu element out of the card, so the node&rsquo;s new parent is the wrapper; <code>cds-overflow-menu</code> and the
+  other dialogs <em>create</em> their pane on the placeholder and only flip the trigger to
+  <code>aria-expanded="true"</code>. Both mutations reach one observer in a single batch, which is what makes the
+  pane attributable to the card rather than guessed at. Popups the placeholder lays out itself
+  (modals, notifications) are told apart by having no inline <code>top</code>/<code>left</code>.</li>
+<li><strong>Scale a portaled popup on its children, never on the popup itself.</strong> Carbon rewrites a portaled
+  popup&rsquo;s <code>top</code>/<code>left</code> every animation frame, and <code>zoom</code> multiplies an element&rsquo;s own offsets along
+  with its contents: measured in Chrome, <code>top: 300px; left: 200px; width: 240px</code> with <code>zoom: 0.5</code>
+  renders at 150/100 and 120px wide. The children carry no offsets, and an absolutely positioned
+  popup follows their rendered size, so Carbon keeps measuring rendered pixels. The exception is an
+  inline <code>width</code>: Carbon sizes a dropdown panel from its trigger&rsquo;s <code>offsetWidth</code>, which is unscaled,
+  so <code>applyOverlayScale</code> scales that width too - which also feeds the right number into Carbon&rsquo;s own
+  centering. See <code>utils/overlay-scale.util.ts</code>.</li>
 <li><strong>Monaco needs an explicit <code>editor.layout()</code> call after the host resizes.</strong> <code>EditorComponent</code> uses
   <code>ResizeObserver</code> + double <code>requestAnimationFrame</code>; reuse that pattern if you embed Monaco elsewhere.</li>
 <li><strong><code>schema.graphql</code> at the repo root is a captured introspection dump for grepping field names — not
@@ -7396,7 +7463,7 @@ backend behavior changes — all affect external consumers. Surface them rather 
 Do not repeat what the codebase already shows; point to the authoritative file or command instead.
 Prefer rewriting or pruning existing entries over appending new ones.
 When updating this file, preserve this bar for all agents and keep entries concise.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 16:27:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T16:27:16+00:00'>2026-08-10 16:27:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 11:35:22'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T11:35:22+00:00'>2026-08-20 11:35:22</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
