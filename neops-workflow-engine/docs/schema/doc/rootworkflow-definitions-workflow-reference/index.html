@@ -7309,9 +7309,9 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-label/">Label</a>)</p>
 <h3 id="label-constraints">label Constraints</h3>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>^\w+$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
 </span></code></pre></div>
-<p><a href="https://regexr.com/?expression=%5E%5Cw%2B%24" title="try regular expression with regexr.com">try pattern</a></p>
+<p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h3 id="label-examples">label Examples</h3>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="s2">&quot;ping&quot;</span>
 </span></code></pre></div>
@@ -7565,10 +7565,14 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-referenced-workflow/">Referenced Workflow</a>)</p>
 <h3 id="workflow-constraints">workflow Constraints</h3>
 <p><strong>minimum length</strong>: the minimum number of characters for this string is: <code>1</code></p>
-<h3 id="workflow-examples">workflow Examples</h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
+<p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 11:21:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-02-26T11:21:34+00:00'>2026-02-26 11:21:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<p><a href="https://regexr.com/?expression=%5E(%5B%5E%2F%3A%5D%2B)%5C%2F(%5B%5E%2F%3A%5D%2B)%3A%5Cd%2B(%5C.%5Cd%2B)%3F(%5C.%5Cd%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
+<h3 id="workflow-examples">workflow Examples</h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
+</span></code></pre></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 15:46:04'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T15:46:04+00:00'>2026-08-20 15:46:04</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -7103,13 +7103,14 @@
 <h3 id="assertnotempty-type">assertNotEmpty Type</h3>
 <p><code>boolean</code></p>
 <h2 id="description">description</h2>
+<p>Optional description of the entity acquisition intent.</p>
 <p><code>description</code></p>
 <ul>
 <li>
 <p>is optional</p>
 </li>
 <li>
-<p>Type: <code>string</code></p>
+<p>Type: <code>string</code> (<a href="../rootworkflow-definitions-entityacquirereference-properties-description/">Description</a>)</p>
 </li>
 <li>
 <p>cannot be null</p>
@@ -7119,7 +7120,7 @@
 </li>
 </ul>
 <h3 id="description-type">description Type</h3>
-<p><code>string</code></p>
+<p><code>string</code> (<a href="../rootworkflow-definitions-entityacquirereference-properties-description/">Description</a>)</p>
 <h2 id="entity">entity</h2>
 <p>Types of entities that workflows can operate on</p>
 <p><code>entity</code></p>
@@ -7172,6 +7173,7 @@
 </tbody>
 </table>
 <h2 id="label">label</h2>
+<p>Label of the step whose acquired entities this step reuses</p>
 <p><code>label</code></p>
 <ul>
 <li>
@@ -7189,6 +7191,11 @@
 </ul>
 <h3 id="label-type">label Type</h3>
 <p><code>string</code></p>
+<h3 id="label-constraints">label Constraints</h3>
+<p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
+</span></code></pre></div>
+<p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h2 id="type">type</h2>
 <p><code>type</code></p>
 <ul>
@@ -7209,9 +7216,9 @@
 <p><code>string</code></p>
 <h3 id="type-constraints">type Constraints</h3>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="s2">&quot;reference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="s2">&quot;reference&quot;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-10-02 08:54:05'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-10-02T08:54:05+00:00'>2025-10-02 08:54:05</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2025-10-02 08:54:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2025-10-02T08:54:05+00:00'>2025-10-02 08:54:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-10-02 08:54:05'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-10-02T08:54:05+00:00'>2025-10-02 08:54:05</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 15:46:04'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T15:46:04+00:00'>2026-08-20 15:46:04</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
