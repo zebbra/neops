@@ -7070,6 +7070,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#engine-api-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine API access
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7124,13 +7135,17 @@
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <ul>
-<li>Node.js 18+ </li>
-<li>npm or pnpm</li>
+<li>Node.js 20.19+</li>
+<li>npm</li>
+<li>A JRE (11+) — the engine API client is generated on install; see <a href="#engine-api-access">Engine API access</a></li>
 </ul>
 <h3 id="installation">Installation</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>rest/monitor-app
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>install
 </span></code></pre></div>
+<p><code>npm install</code> generates the API client when it can, and reports without failing when it
+cannot. <code>npm run dev</code>, <code>build</code>, <code>test</code> and <code>check</code> require it and stop if it is missing —
+<code>make gen-fetch-client</code> from the repository root regenerates it.</p>
 <h3 id="development">Development</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
 </span></code></pre></div>
@@ -7148,7 +7163,16 @@
 <li><a href="https://tailwindcss.com/">Tailwind CSS</a> - Styling</li>
 <li>Darcula-inspired dark theme</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-12-01 08:55:59'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-12-01T08:55:59+00:00'>2025-12-01 08:55:59</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2025-12-01 08:55:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2025-12-01T08:55:59+00:00'>2025-12-01 08:55:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h2 id="engine-api-access">Engine API access</h2>
+<p>Every engine call goes through <code>src/lib/api/client.js</code> — a façade over the typescript-fetch
+client in <code>src/lib/api/generated/</code>. That directory is generated from the engine&rsquo;s OpenAPI
+spec by <code>scripts/ensure-api-client.mjs</code> (npm lifecycle hooks) and is not committed; it
+refreshes itself whenever the engine changes, and <code>make gen-fetch-client</code> forces a rebuild.
+Components import enums from
+<code>src/lib/api/enums.js</code> and model types from <code>src/lib/api/types.js</code>; nothing outside
+<code>src/lib/api/</code> hand-writes an engine URL, payload shape or status vocabulary.
+<code>npm run check</code> type-checks against the generated types (ratcheted baseline).</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-12-01 08:55:59'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-12-01T08:55:59+00:00'>2025-12-01 08:55:59</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-24 12:35:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-24T12:35:32+00:00'>2026-08-24 12:35:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

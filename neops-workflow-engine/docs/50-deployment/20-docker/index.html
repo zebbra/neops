@@ -7340,6 +7340,7 @@
 <h2 id="docker-image">Docker Image</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>quay.io/zebbra/neops-workflow-engine:latest
 </span></code></pre></div>
+<p>The image also carries the Monitor App sources together with a generated engine API client (built in the Dockerfile&rsquo;s <code>client-gen</code> stage), so the app can be served directly from the image — neops-lab runs it this way with <code>npm install &amp;&amp; npm run dev</code> inside <code>/app/rest/monitor-app</code>.</p>
 <p>Tags follow the branch/release naming:</p>
 <table>
 <thead>
@@ -7369,7 +7370,8 @@
 </table>
 <h2 id="docker-compose">Docker Compose</h2>
 <p>The repository includes a ready-to-use <a href="https://github.com/zebbra/neops-workflow-engine/blob/develop/docker-compose.yml"><code>docker-compose.yml</code></a> that starts the development dependency stack (PostgreSQL + Monitor App):</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>gen-fetch-client<span class="w">   </span><span class="c1"># the Monitor App image builds from the generated API client</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </span></code></pre></div>
 <p>Run the engine locally with <code>npm run start:dev</code> (see <a href="../../getting-started/10-setup/">Setup</a>). The base compose file only starts supporting services — the engine is not included.</p>
 <table>
@@ -7516,7 +7518,7 @@ built image.</p>
 </span></code></pre></div>
 <hr />
 <p><strong>See also:</strong> <a href="../10-configuration/">Configuration Reference</a> for all environment variables, <a href="../../getting-started/10-setup/">Setup</a> for local development.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 16:28:21'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T16:28:21+00:00'>2026-08-10 16:28:21</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-25 13:00:44'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-25T13:00:44+00:00'>2026-08-25 13:00:44</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
