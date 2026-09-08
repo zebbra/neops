@@ -64,3 +64,24 @@ copyright: Copyright &copy; Zebbra AG
 # template (mkdocs_base.yml). No project-specific overrides are needed here —
 # add a `plugins: - document-dates: ...` block below only if this project
 # wants to override the template defaults (position, type, exclude, …).
+
+# Each submodule is a whole repository, not a docs folder, so mkdocs would
+# otherwise publish every `.md` in it — a child's own `exclude` globs cannot
+# prevent that, because the `!include` hook takes only its `nav`. These globs
+# drop the internal records that have no place on a public site. `plugins` is a
+# list and the template deep-merge concatenates lists, so this appends `exclude`
+# to the base plugins rather than replacing them.
+plugins:
+  - exclude:
+      glob:
+        # superpowers design specs and implementation plans
+        - '*/superpowers/*'
+        - '*/superpowers/**/*'
+        # per-repo agent guides and PR scaffolding, published today by accident
+        - '*/AGENTS.md'
+        - '*/CLAUDE.md'
+        - '*/pull_request_template.md'
+        # scenario READMEs are inlined into the Scenarios page by `--8<--`;
+        # left alone they publish twice more as orphans. The snippet resolves on
+        # the filesystem, so excluding the page does not break the include.
+        - '*/scenarios/*/README.md'
