@@ -7382,6 +7382,40 @@ non-obvious conventions:</p>
   <code>ResizeObserver</code> + double <code>requestAnimationFrame</code>; reuse that pattern if you embed Monaco elsewhere.</li>
 <li><strong><code>schema.graphql</code> at the repo root is a captured introspection dump for grepping field names — not
   the source of truth.</strong> The generated <code>@zebbra/neops-angular-graphql-client</code> is. Do not edit it.</li>
+<li><strong>A schema field being reachable does not mean a query selects it.</strong> Before assuming a JMESPath in a
+  card config can read some nested value, check the actual query document in
+  <code>node_modules/@zebbra/neops-angular-graphql-client/fesm2020/*.mjs</code> (grep for <code>&lt;Name&gt;Document</code>).</li>
+<li><strong><code>CytoscapeNetworkDiagramComponent</code> is the diagram renderer.</strong> The three network-diagram cards,
+  the Schilthorn diagram and the demo page all draw through it; <code>NetworkDiagramComponent</code> remains
+  only as a deprecated facade over it for published consumers of the old <code>neops-network-diagram</code>
+  element. Per-node content is an Angular template passed as <code>nodeTemplate</code>, rendered by the
+  component&rsquo;s own overlay - the overlay switches pointer events off so taps reach the canvas, so a
+  template that needs its own clicks turns them back on for the element that needs them.</li>
+<li><strong>A link end carries an opaque, ordered attribute list, not named fields.</strong> <code>LinkEndpoint.attributes</code>
+  is <code>{ key, label, value }[]</code>; the diagram renders it and names none of it, so a diagram of locations
+  or groups attaches its own. <code>key</code> is the config contract - an <code>attribute</code>-source link field reads it
+  role-prefixed (<code>ip</code> -&gt; <code>sourceIp</code>) - so it is not display text and must not be derived from <code>label</code>.
+  The device-shaped answer is written once, in <code>dashboard/adaptors/device-link-endpoint.ts</code>.</li>
+<li><strong>Node cards that bind <code>connectionLabel</code> must publish it themselves.</strong> The renderer emits no hover
+  output; the Schilthorn diagram and the <code>neops-network-diagram</code> facade both call
+  <code>network-diagram/connection-labels.ts</code> from their own template&rsquo;s <code>(mouseenter)</code>/<code>(mouseleave)</code>. A
+  card that binds the label without wiring those shows &ldquo;no label&rdquo; forever, which is exactly how it
+  regressed once.</li>
+<li><strong>The three cards share their config surface</strong> via <code>dashboard/adaptors/network-diagram-card-binding.ts</code>
+  (runtime defaults and click handling), <code>network-diagram-settings-form.ts</code> (form schema) and
+  <code>node-field-config-form.ts</code> (node/link field list plus its expert-mode registration). Add a shared
+  diagram setting in those three places rather than per card.</li>
+<li><strong>A card that links to another dashboard resolves the link per item and navigates through
+  <code>DashboardNavigationHelper</code>.</strong> The table cards do it with a column&rsquo;s <code>linkExpression</code> (JMESPath per
+  row); the network-diagram cards do it with <code>nodeUrlExpression</code> / <code>linkUrlExpression</code>. Always
+  navigate via <code>DashboardNavigationHelper.navigateToDashboardLink</code>, never the router directly, or the
+  link will carry the local dashboard filters of the page being left.</li>
+<li><strong>Element-search-backed reads go through the shared element-search services and their facades.</strong> A
+  card or dashboard component must not reach past them to a generated <code>*GQL</code> service; the one known
+  exception is <code>task-panel/task-panel.component.ts</code>, whose <code>JsonFormGQL</code> has no facade behind it. A
+  scoped read that must not disturb the shared remembered search passes its own
+  <code>ElementSearchArrayResult</code> and <code>{ rememberSearch: false }</code> - see the topology card&rsquo;s
+  <code>loadDeviceAttributes</code>.</li>
 </ul>
 <h2 id="ecosystem-context">Ecosystem Context</h2>
 <ul>
@@ -7463,7 +7497,7 @@ backend behavior changes — all affect external consumers. Surface them rather 
 Do not repeat what the codebase already shows; point to the authoritative file or command instead.
 Prefer rewriting or pruning existing entries over appending new ones.
 When updating this file, preserve this bar for all agents and keep entries concise.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 11:35:22'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T11:35:22+00:00'>2026-08-20 11:35:22</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-30 16:46:17'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-30T16:46:17+00:00'>2026-03-30 16:46:17</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 09:28:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T09:28:54+00:00'>2026-08-26 09:28:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
