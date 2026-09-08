@@ -916,6 +916,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -956,13 +967,41 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#keep-dashboards-usable-on-smaller-screens" class="md-nav__link">
+  <a href="#keep-dashboards-usable-and-easier-to-diagnose" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keep dashboards usable on smaller screens
+        Keep dashboards usable and easier to diagnose
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Keep dashboards usable and easier to diagnose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fit-a-dashboard-to-the-available-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fit a dashboard to the available screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understand-what-an-expert-mode-field-evaluated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understand what an expert-mode field evaluated
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -974,6 +1013,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Manage the complete task lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compare-an-earlier-configuration-with-the-current-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compare an earlier configuration with the current version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -7435,6 +7491,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7475,13 +7542,41 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#keep-dashboards-usable-on-smaller-screens" class="md-nav__link">
+  <a href="#keep-dashboards-usable-and-easier-to-diagnose" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keep dashboards usable on smaller screens
+        Keep dashboards usable and easier to diagnose
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Keep dashboards usable and easier to diagnose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fit-a-dashboard-to-the-available-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fit a dashboard to the available screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understand-what-an-expert-mode-field-evaluated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understand what an expert-mode field evaluated
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -7493,6 +7588,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Manage the complete task lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compare-an-earlier-configuration-with-the-current-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compare an earlier configuration with the current version
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -7623,6 +7735,53 @@
 <p>Released 2026-09-08</p>
 <p>This release improves how users explore network relationships, manage dashboards and tasks, compare configuration versions, and follow running executions.
 It also adds an optional link to the Workflow manager for deployments that provide one.</p>
+<h2 id="at-a-glance">At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>What changed</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network diagrams</td>
+<td>Detail and cluster layouts replace the legacy graph renderer and add configurable fields, labels, arrows, tooltips, dialogs, and dashboard links.</td>
+<td>Users can read a small topology in depth or scan a larger one without losing access to operational details.</td>
+</tr>
+<tr>
+<td>Dashboard display</td>
+<td>A fit-to-screen action scales the dashboard to the available viewport and keeps popup content usable.</td>
+<td>Dashboards designed for a larger workspace remain accessible on smaller screens and at higher browser zoom.</td>
+</tr>
+<tr>
+<td>Dashboard expert mode</td>
+<td>Field evaluation now reports results per item, explains empty data, and exposes the card configuration being edited.</td>
+<td>Dashboard authors can see why an expression works for some items, fails for others, or returns nothing.</td>
+</tr>
+<tr>
+<td>Task cockpit</td>
+<td>Active tasks can be archived, archived tasks can be restored, and permanent deletion requires confirmation.</td>
+<td>The everyday task list stays focused without losing the ability to recover or deliberately remove old tasks.</td>
+</tr>
+<tr>
+<td>Configuration history</td>
+<td>Selecting an earlier configuration reliably opens a side-by-side diff.</td>
+<td>Users can identify the lines changed before applying, troubleshooting, or reviewing a configuration.</td>
+</tr>
+<tr>
+<td>Executions</td>
+<td>Progress is scoped to the current user, rows prioritize the task name, and the slide-in is chronological.</td>
+<td>Users can follow their own work from the first execution to the newest without another username hiding the task name.</td>
+</tr>
+<tr>
+<td>Workflow manager</td>
+<td>Deployments can expose an optional header link to the Workflow manager.</td>
+<td>Users can move from Neops to workflow monitoring without knowing or bookmarking a separate URL.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="highlights">Highlights</h2>
 <h3 id="explore-richer-network-diagrams">Explore richer network diagrams</h3>
 <p>Network diagram cards now offer detail and cluster layouts for different information densities.
@@ -7632,6 +7791,34 @@ You can configure the content shown for nodes and links, display interface label
 <p><em>Detail view shows configured node fields and interface labels directly on the topology.</em></p>
 <p><img alt="The same network diagram in Cluster view with compact colored nodes" src="../assets/v5.0.0/network-diagram-cluster.png" /></p>
 <p><em>Cluster view presents the same topology more compactly for larger diagrams.</em></p>
+<p>Choose the view based on the question you are answering:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Best for</th>
+<th>What remains visible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Detail</td>
+<td>A smaller topology where device identity and interface context matter immediately.</td>
+<td>Node fields, device-style cards, link labels, and the configured interaction details.</td>
+</tr>
+<tr>
+<td>Cluster</td>
+<td>A larger topology where shape, grouping, and highly connected nodes matter first.</td>
+<td>Compact colored nodes, links, hover details, and access to the same dialogs.</td>
+</tr>
+<tr>
+<td>Auto</td>
+<td>Dashboards that can receive both small and large results.</td>
+<td>Detail view below the configured threshold and Cluster view at or above it.</td>
+</tr>
+</tbody>
+</table>
+<p>A user can start with the topology shape, hover a node or link for a quick answer, open its detail dialog for the configured fields, and follow a configured dashboard link for deeper investigation.</p>
 <h4 id="configuration-you-can-use">Configuration you can use</h4>
 <p>The existing <code>network-diagram-static</code>, <code>network-diagram-jmes</code>, and <code>network-diagram-topology</code> cards keep their card IDs, but now accept a shared set of display and interaction settings.</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
@@ -7691,36 +7878,186 @@ In <code>auto</code> mode, diagrams switch to Cluster view at <code>autoThreshol
 Optional <code>nodeUrlExpression</code> and <code>linkUrlExpression</code> settings can turn nodes and links into navigation targets.</p>
 <p>Existing saved network diagram cards migrate automatically to the new configuration version.
 Their previous card IDs and data continue to work, while the new display and interaction defaults are applied without manual changes.</p>
-<h3 id="keep-dashboards-usable-on-smaller-screens">Keep dashboards usable on smaller screens</h3>
-<p>A new fit-to-screen display mode scales the dashboard grid for smaller viewports and higher browser zoom levels.
-Cards and popup content remain accessible instead of being clipped outside the visible area.</p>
-<p>Use the <strong>Fit dashboard to screen</strong> action in the dashboard toolbar to enable it.
-The selection is saved in the browser and reused for other dashboards until you switch back to normal size.</p>
+<h3 id="keep-dashboards-usable-and-easier-to-diagnose">Keep dashboards usable and easier to diagnose</h3>
+<h4 id="fit-a-dashboard-to-the-available-screen">Fit a dashboard to the available screen</h4>
+<p>Dashboards were designed around a 1500 by 900 pixel workspace.
+On a smaller viewport or at higher browser zoom, the grid could extend beyond the visible area, forcing the user to zoom out manually and allowing card popups to be clipped.</p>
+<p>The dashboard toolbar now includes <strong>Fit dashboard to screen</strong> beside refresh.</p>
+<ol>
+<li>Open the dashboard on the screen and at the browser zoom you want to use.</li>
+<li>Select <strong>Fit dashboard to screen</strong>.</li>
+<li>Neops measures the available dashboard area and scales the grid to fit it.</li>
+<li>Use <strong>Use normal dashboard size</strong> to return to the original scale.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Before</th>
+<th>With fit-to-screen enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The fixed-size grid can overflow the visible area.</td>
+<td>The complete grid scales into the available area.</td>
+</tr>
+<tr>
+<td>Users may need to change browser zoom manually.</td>
+<td>The dashboard handles the scale while browser zoom remains unchanged.</td>
+</tr>
+<tr>
+<td>Query suggestions and other portaled popups can be clipped by card boundaries.</td>
+<td>Popup content is positioned against the scaled dashboard and remains accessible.</td>
+</tr>
+</tbody>
+</table>
+<p>The selected mode is saved in the browser under the current browser profile and is reused across dashboards.
+Normal size remains the default for a browser that has no saved preference.</p>
+<h4 id="understand-what-an-expert-mode-field-evaluated">Understand what an expert-mode field evaluated</h4>
+<p>Dashboard expert mode now distinguishes direct attribute names from JMESPath expressions according to each field&rsquo;s configured source.
+It also reports evaluation per card item instead of presenting one result that may hide partial failures.</p>
+<p>For example, if a field is evaluated across 20 diagram nodes and only 18 contain the requested data, expert mode reports the item count and shows labelled samples instead of implying that one sample represents every node.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What expert mode now shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The card contains several items</td>
+<td>A match count and a labelled sample for each evaluated item.</td>
+</tr>
+<tr>
+<td>The expression matches nothing</td>
+<td>A clear empty-result explanation and the keys that are actually available.</td>
+</tr>
+<tr>
+<td>The card receives no items</td>
+<td><code>0 of 0</code>, without falling back to unrelated dashboard-level data.</td>
+</tr>
+<tr>
+<td>The user is editing card configuration</td>
+<td>The configuration being edited as its own inspectable data section.</td>
+</tr>
+</tbody>
+</table>
+<p>This is particularly useful when building node fields, link fields, dashboard navigation expressions, and other settings whose result depends on each item in the card.</p>
 <h3 id="manage-the-complete-task-lifecycle">Manage the complete task lifecycle</h3>
-<p>The task cockpit now lets you archive active tasks, show archived tasks, restore them, or permanently delete them after confirmation.</p>
-<p>Configuration comparison has also been improved.
-You can select an earlier configuration version and review it beside the current version with differences highlighted.</p>
+<p>The task cockpit separates everyday work from retained history without treating archived tasks as deleted.
+The row menu changes with the current view:</p>
+<table>
+<thead>
+<tr>
+<th>Current view</th>
+<th>Available lifecycle actions</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Active tasks</td>
+<td><strong>Archive</strong></td>
+<td>The task leaves the active list and remains recoverable.</td>
+</tr>
+<tr>
+<td>Archived tasks</td>
+<td><strong>Unarchive</strong></td>
+<td>The task returns to the active list.</td>
+</tr>
+<tr>
+<td>Archived tasks</td>
+<td><strong>Delete permanently</strong></td>
+<td>Neops asks for confirmation before the task is removed permanently.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the <strong>Show archived</strong> toggle in the table toolbar to switch between active and archived tasks.
+Each successful action displays a confirmation notification, and reopening the task cockpit starts in the active view.</p>
+<h4 id="compare-an-earlier-configuration-with-the-current-version">Compare an earlier configuration with the current version</h4>
+<p>The Facts, Checks, and Config dialog now reliably opens a side-by-side diff when a previous configuration version is selected.</p>
+<ol>
+<li>Open the configuration view for the device or interface you are investigating.</li>
+<li>Select an earlier version from the comparison control.</li>
+<li>Review the older and current configuration together.</li>
+<li>Use the highlighted additions and removals to identify the exact change.</li>
+</ol>
+<p>This also handles version identifiers returned by older backends as strings, so selecting a valid version no longer leaves the comparison view empty.</p>
 <h3 id="follow-executions-more-clearly">Follow executions more clearly</h3>
-<p>Dashboard execution progress is now scoped to the current user.
-Execution rows have more space for readable task names, and the execution slide-in lists older entries first so progress follows chronological order.</p>
+<p>Dashboard cards that show task progress now ask only for active executions belonging to the authenticated user.
+A task started by another user no longer leaves a spinner on someone else&rsquo;s card, and no user-specific spinner is shown before Neops knows who is signed in.</p>
+<p>Execution rows now use two lines:</p>
+<table>
+<thead>
+<tr>
+<th>First line</th>
+<th>Second line</th>
+<th>Fixed actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task name and execution ID</td>
+<td>Execution type, username, timestamp, and run time</td>
+<td>State icon and <strong>Show details</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The task name receives the flexible space on the first line, so a long username cannot reduce it to an unreadable fragment.
+When a task name or username still needs truncation, the full value is available through its overflow tooltip.</p>
+<p>The execution slide-in orders entries from oldest to newest while preserving the current page and page size.
+Users can therefore read progress as a chronology, with earlier executions above the runs that followed them.</p>
 <h3 id="open-the-workflow-manager-from-neops">Open the Workflow manager from Neops</h3>
 <p>Deployments that configure a Workflow manager URL now show a link in the application header.
-The link opens the manager in a new browser tab.</p>
+The link includes the standard external-link indicator and opens the manager in a new browser tab, leaving the current Neops page open.</p>
+<p>For a user, the flow is simply:</p>
+<ol>
+<li>Select <strong>Workflow manager</strong> in the Neops header.</li>
+<li>Use the manager to inspect workflow definitions and runs.</li>
+<li>Return to the original Neops tab without losing the current scope or dashboard.</li>
+</ol>
 <p>Set the web client environment variable to the manager&rsquo;s absolute URL:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">FRONTEND_WORKFLOW_MANAGER_URL</span><span class="o">=</span>https://workflow.example.net
 </span></code></pre></div>
-<p>Leave it empty to hide the link.</p>
+<p>Leave it empty to hide the link.
+The value must be the absolute URL users should open, including <code>https://</code>.</p>
 <h2 id="upgrade-notes">Upgrade notes</h2>
-<p>The standard Neops Web Client image requires no configuration migration.</p>
-<p>Custom client extensions that use the legacy network diagram renderer must migrate to the SDK 5 Cytoscape-based renderer.
-Saved dashboard configurations continue to use backward-compatible defaults.</p>
+<table>
+<thead>
+<tr>
+<th>Reader</th>
+<th>Required action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard Neops Web Client user</td>
+<td>No migration is required.</td>
+</tr>
+<tr>
+<td>Dashboard author</td>
+<td>Existing saved network-diagram configurations continue to load with backward-compatible defaults. Add the new display and interaction fields only when needed.</td>
+</tr>
+<tr>
+<td>Operator</td>
+<td>Set <code>FRONTEND_WORKFLOW_MANAGER_URL</code> only if the deployment should expose the Workflow manager link.</td>
+</tr>
+<tr>
+<td>Custom extension maintainer</td>
+<td>Migrate code that directly uses the removed ngx-graph renderer API to the SDK 5 Cytoscape-based renderer.</td>
+</tr>
+</tbody>
+</table>
+<p>The compatibility <code>neops-network-diagram</code> selector and its primary control input remain available, but legacy renderer properties and rendered edge, SVG definition, and cluster templates are no longer part of the visual implementation.
+Extensions that customize the diagram renderer should use <code>neops-cytoscape-network-diagram</code> and its <code>nodeTemplate</code> input.</p>
 <h2 id="technical-details">Technical details</h2>
 <ul>
 <li><a href="https://github.com/zebbra/neops-web-client/compare/v4.0.0...v5.0.0">Full client changelog</a></li>
 <li><a href="https://github.com/zebbra/neops-web-sdk/releases/tag/v4.1.0">Neops Web SDK 4.1.0 release</a></li>
 <li><a href="https://github.com/zebbra/neops-web-sdk/releases/tag/v5.0.0">Included Neops Web SDK 5.0.0 release</a></li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:16:24'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:16:24+00:00'>2026-09-08 11:16:24</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:16:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:16:24+00:00'>2026-09-08 11:16:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:16:24'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:16:24+00:00'>2026-09-08 11:16:24</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 13:38:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T13:38:05+00:00'>2026-09-08 13:38:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
