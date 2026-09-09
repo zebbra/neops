@@ -61,20 +61,56 @@ jobs:
 
       - name: Build Project
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # `make doc-build` must stay ahead of `npm ci`: MkDocs crawls docs/ as its
+          # docs_dir, and `npm ci` materialises docs/neops-web-client/node_modules
+          # inside it, so any doc-build after the install would publish the whole
+          # dependency tree. The guards below keep that ordering enforced.
+          if [ -e docs/neops-web-client/node_modules ]; then
+            echo "docs/neops-web-client/node_modules already exists before the MkDocs build and would be crawled into the site" >&2
+            exit 1
+          fi
+
           make doc-build
           npm ci --prefix docs/neops-web-client
           npm run --prefix docs/neops-web-client build:card-lab
 
-          card_lab_version="$(node -p "require('./docs/neops-web-client/package.json').dependencies['@zebbra/ngx-neops-app-components']")"
+          card_lab_version="$(node -p "require('./docs/neops-web-client/package.json').dependencies?.['@zebbra/ngx-neops-app-components'] ?? ''")"
+          card_lab_semver='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?([+][0-9A-Za-z.-]+)?$'
+          if [[ ! "${card_lab_version}" =~ $card_lab_semver ]]; then
+            echo "expected an exact @zebbra/ngx-neops-app-components version in docs/neops-web-client/package.json, got '${card_lab_version}'" >&2
+            exit 1
+          fi
+
           card_lab_target="site/neops-web-client/docs/card-lab/${card_lab_version}"
 
           mkdir -p "${card_lab_target}"
           cp -R docs/neops-web-client/dist/card-lab/. "${card_lab_target}/"
 
-          test -f "${card_lab_target}/index.html"
-          test -z "$(find "${card_lab_target}" -type l -print -quit)"
+          if [ ! -f "${card_lab_target}/index.html" ]; then
+            echo "card lab entry point missing at ${card_lab_target}/index.html" >&2
+            exit 1
+          fi
+
+          if ! card_lab_symlinks="$(find "${card_lab_target}" -type l -print)"; then
+            echo "failed to scan ${card_lab_target} for symlinks" >&2
+            exit 1
+          fi
+          if [ -n "${card_lab_symlinks}" ]; then
+            echo "card lab contains symlinks:" >&2
+            echo "${card_lab_symlinks}" >&2
+            exit 1
+          fi
+
+          if ! site_node_modules="$(find site -type d -name node_modules -print -quit)"; then
+            echo "failed to scan site for node_modules" >&2
+            exit 1
+          fi
+          if [ -n "${site_node_modules}" ]; then
+            echo "node_modules leaked into the published site at ${site_node_modules}" >&2
+            exit 1
+          fi
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
