@@ -31,7 +31,8 @@ Function blocks are written in Python with the worker SDK and tested against rea
 
     ---
 
-    Use the web client to browse entity data, trigger workflows, and watch executions live.
+    The dashboard card catalog for the web client, with the Card Lab that renders each card in the browser.
+    The rest of the web client guide (entity data, triggering workflows, watching executions live) is still in progress.
 
     [:octicons-arrow-right-24: Read more](coming-soon.md)
 

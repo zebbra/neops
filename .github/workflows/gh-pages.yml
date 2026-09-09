@@ -74,6 +74,10 @@ jobs:
           # docs_dir, and `npm ci` materialises docs/neops-web-client/node_modules
           # inside it, so any doc-build after the install would publish the whole
           # dependency tree. The guards below keep that ordering enforced.
+          # The card lab is copied in afterwards for a second reason: `make doc-build`
+          # ends with clean_sites_directory.py, which strips everything from site/
+          # except index.html and a few asset paths, so a doc-build run after the copy
+          # would delete the lab's JS/CSS while leaving its index.html guard passing.
           if [ -e docs/neops-web-client/node_modules ]; then
             echo "docs/neops-web-client/node_modules already exists before the MkDocs build and would be crawled into the site" >&2
             exit 1

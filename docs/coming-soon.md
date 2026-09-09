@@ -2,8 +2,8 @@
 
 !!! info "Documentation in progress"
 
-    The Neops **web client** docs are still being prepared.
-    We'll publish them here as soon as they're ready.
+    The dashboard card catalog is already published under **User Guide → Dashboard cards**.
+    The remaining Neops **web client** docs are still being prepared, and we'll publish them here as soon as they're ready.
 
 ## In the meantime
 
