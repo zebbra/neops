@@ -29,6 +29,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Narrower than the workflow-level set: the build job never publishes to
+    # Pages and never mints an OIDC token, and NODE_AUTH_TOKEN is exported to
+    # `npm ci` install scripts. Only the deploy job inherits pages/id-token write.
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -73,7 +80,10 @@ jobs:
           fi
 
           make doc-build
-          npm ci --prefix docs/neops-web-client
+          if ! npm ci --prefix docs/neops-web-client; then
+            echo "npm ci failed. If the error above is a 401 or 403 from npm.pkg.github.com, the repository GITHUB_TOKEN cannot read @zebbra/ngx-neops-app-components: open that package in zebbra/neops-web-client and grant zebbra/neops read access under Package settings > Manage Actions access." >&2
+            exit 1
+          fi
           npm run --prefix docs/neops-web-client build:card-lab
 
           card_lab_version="$(node -p "require('./docs/neops-web-client/package.json').dependencies?.['@zebbra/ngx-neops-app-components'] ?? ''")"
