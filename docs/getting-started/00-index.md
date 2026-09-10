@@ -10,9 +10,9 @@ If you are new to the platform, read **[Concepts → How Neops operates](../conc
 
     ---
 
-    Open the web client, browse entity data, trigger a workflow, and watch it execute.
+    Explore the web client's dashboard cards, configuration fields, and interactive Card Lab examples.
 
-    [:octicons-arrow-right-24: Read more](../coming-soon.md)
+    [:octicons-arrow-right-24: Read more](../neops-web-client/docs/dashboard-cards/)
 
 -   :material-numeric-2-box:{ .lg .middle } __Run your first workflow__
 
