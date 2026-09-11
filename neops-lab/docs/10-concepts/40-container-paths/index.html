@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4600,6 +4602,8 @@
       
         
       
+        
+      
     
     
     
@@ -4766,6 +4770,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4804,7 +4906,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4826,14 +4928,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4939,7 +5041,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4961,14 +5063,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7602,13 +7704,18 @@
 </tr>
 <tr>
 <td>env var read <strong>by the container</strong></td>
-<td><code>DIR_FUNCTION_BLOCKS: lab/function_blocks,neops/fb</code></td>
+<td><code>DIR_FUNCTION_BLOCKS: lab/generated/${SCENARIO}/scenario/function_blocks,neops/fb</code></td>
 <td>✅</td>
 </tr>
 <tr>
 <td>env var read by the host</td>
 <td>anything with <code>lab/</code></td>
 <td>❌</td>
+</tr>
+<tr>
+<td>compose bind <strong>source</strong> (host side)</td>
+<td><code>./generated/${SCENARIO}/scenario/workflows</code></td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
@@ -7617,7 +7724,15 @@
 <p>This repo was extracted from <code>neops-worker-sdk-py/lab/</code>. In the SDK repo the lab genuinely <em>was</em> a subdirectory called <code>lab/</code>, and the mount reproduced that path inside the container. When the directory became its own repository, its contents were flattened to the repo root — <strong>there is no <code>lab/</code> subdirectory here any more</strong> — but the mount point stayed <code>/app/lab</code>, because the in-container layout is what <code>DIR_FUNCTION_BLOCKS</code> and every <code>exec</code> line depend on.</p>
 <p>The result is an asymmetry that looks like an inconsistency and is not.</p>
 <h2 id="where-you-meet-it">Where you meet it</h2>
-<p><strong><code>DIR_FUNCTION_BLOCKS</code></strong> — the worker&rsquo;s function-block search path, <code>lab/function_blocks,neops/fb</code>. The first entry is this repo&rsquo;s <code>function_blocks/</code> through the mount; the second is <code>/app/neops/fb</code>, baked into the image. See <a href="../30-discovery/">Discovery</a>.</p>
+<p><strong><code>DIR_FUNCTION_BLOCKS</code></strong> — the worker&rsquo;s function-block search path, <code>lab/generated/${SCENARIO}/scenario/function_blocks,neops/fb</code>. The first entry is the resolved <a href="../../30-scenarios/">scenario</a> tree through the mount; the second is <code>/app/neops/fb</code>, baked into the image. See <a href="../30-discovery/">Discovery</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">The resolved scenario is inside the repo, which is why this works</p>
+<p><code>make scenario-resolve</code> materialises <code>scenarios/_base</code> + <code>scenarios/$SCENARIO</code>
+into <code>generated/$SCENARIO/scenario/</code> — under the repo root, so the whole-repo
+mount carries it into the container for free. Only the prefix differs:
+<code>generated/…</code> on the host, <code>lab/generated/…</code> inside the worker. The rule is
+unchanged; the path simply got longer.</p>
+</div>
 <p><strong>Device readiness</strong> — <code>make local-lab-up</code> and <code>make local-lab-discover</code> both run:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>worker<span class="w"> </span>python3<span class="w"> </span>lab/wait_devices
 </span></code></pre></div>
@@ -7635,13 +7750,14 @@ in <code>generated/</code>, written by the <strong>host</strong> script.</p>
 discovery fails with <code>Function block … not found</code>, the question is not
 &ldquo;is my mount right&rdquo; but &ldquo;does the <code>NEOPS_WORKER_SDK_IMAGE</code> I pinned carry
 <code>/app/neops/fb</code>&rdquo;.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>wan-and-fabric<span class="w">   </span><span class="c1"># or run these through make</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab
 </span></code></pre></div>
 <p>The first lists what the image ships; the second should show this repo&rsquo;s
-root — <code>topology.json</code>, <code>function_blocks/</code>, <code>wait_devices</code>, and so on.</p>
+root — <code>scenarios/</code>, <code>generated/</code>, <code>wait_devices</code>, and so on.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

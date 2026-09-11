@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="From a clean checkout to 15 discovered devices — prerequisites, the four-command quickstart, and your first discovery run.">
+        <meta name="description" content="From a clean checkout to a discovered network — prerequisites, the four-command quickstart, and your first discovery run.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4509,6 +4511,8 @@
       
         
       
+        
+      
     
     
     
@@ -4675,6 +4679,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4713,7 +4815,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4735,14 +4837,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4848,7 +4950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4870,14 +4972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7466,17 +7568,28 @@
 <h2 id="the-short-version">The short version</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>lab-jwt<span class="w">          </span><span class="c1"># dev RSA keypair for the CMS (idempotent)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>local-env-init<span class="w">   </span><span class="c1"># pull + start the base stack, mint the CMS API key, seed CMS config</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span>local-lab-up<span class="w">     </span><span class="c1"># generate topology, build lab images, deploy 15 devices</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span>local-lab-up<span class="w">     </span><span class="c1"># resolve the scenario, build lab images, deploy the devices</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <p>If any of those four words mean nothing to you yet, read on — each page below explains one step and the failure modes it protects you from.</p>
+<div class="admonition tip">
+<p class="admonition-title">In a hurry, or short on RAM</p>
+<p>Those commands run the default <code>wan-and-fabric</code> scenario: 15 devices, five
+of them slow-booting Nokia SR Linux nodes. <code>make scenarios</code> lists the
+alternatives, and <code>SCENARIO=frr-only</code> gives you a 10-device FRR-only lab
+that comes up in a fraction of the time:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>frr-only
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>make<span class="w"> </span>local-lab-discover<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>frr-only
+</span></code></pre></div>
+<p>See <a href="../30-scenarios/">Scenarios</a>.</p>
+</div>
 <h2 id="in-this-section">In this section</h2>
 <div class="grid cards">
 <ul>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9m-6-6a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m7 0h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg></span> &nbsp; <strong><a href="10-prerequisites/">Prerequisites</a></strong></p>
 <hr />
-<p>Docker, containerlab (with sudo-less operation — the part people get wrong), <code>openssl</code>, <code>uv</code>, and Quay pull access for the <code>@zebbra</code> images. Includes a two-node probe that proves containerlab works before you commit to a 15-node deploy.</p>
+<p>Docker, containerlab (with sudo-less operation — the part people get wrong), <code>openssl</code> and <code>uv</code>. The default <code>@zebbra</code> images are public, so no Quay login is needed. Includes a two-node probe that proves containerlab works before you commit to a full deploy.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39S16.66.269 11 5.93c-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.55.56 1.37.74 2.12.46A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61m-7.07 7.07c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"/></svg></span> &nbsp; <strong><a href="20-quickstart/">Quickstart</a></strong></p>
@@ -7486,17 +7599,18 @@
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19.07 4.93-1.41 1.41A8.01 8.01 0 0 1 20 12a8 8 0 0 1-8 8 8 8 0 0 1-8-8c0-4.08 3.05-7.44 7-7.93v2.02C8.16 6.57 6 9.03 6 12a6 6 0 0 0 6 6 6 6 0 0 0 6-6c0-1.66-.67-3.16-1.76-4.24l-1.41 1.41C15.55 9.9 16 10.9 16 12a4 4 0 0 1-4 4 4 4 0 0 1-4-4c0-1.86 1.28-3.41 3-3.86v2.14c-.6.35-1 .98-1 1.72a2 2 0 0 0 2 2 2 2 0 0 0 2-2c0-.74-.4-1.38-1-1.72V2h-1A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-2.76-1.12-5.26-2.93-7.07"/></svg></span> &nbsp; <strong><a href="30-first-discovery/">Your first discovery</a></strong></p>
 <hr />
-<p>Trigger the discovery workflow, watch it in the monitor app, and see the 15 devices and their interfaces land in the web client. Then swap the parameter file to exercise autodetection and subnet expansion.</p>
+<p>Trigger the discovery workflow, watch it in the monitor app, and see the devices and their interfaces land in the web client. Then swap the parameter file to exercise autodetection and subnet expansion.</p>
 </li>
 </ul>
 </div>
 <h2 id="what-to-read-next">What to read next</h2>
 <ul>
+<li><strong><a href="../30-scenarios/">Scenarios</a></strong> — running a different network, and adding one of your own.</li>
 <li><strong><a href="../10-concepts/10-architecture/">Architecture</a></strong> — the container/network layout you just started.</li>
 <li><strong><a href="../20-operations/10-make-targets/">Make targets</a></strong> — the complete target list, including the ones the quickstart does not use.</li>
 <li><strong><a href="../20-operations/40-troubleshooting/">Troubleshooting</a></strong> — read this the moment something hangs; nearly every failure here is a known boot-order race with a distinctive error string.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

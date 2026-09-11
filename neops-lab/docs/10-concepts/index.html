@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The mental model — what containers exist, how topology.json drives everything generated, how discovery works, and why in-container paths carry a lab/ prefix.">
+        <meta name="description" content="The mental model — what containers exist, how a scenario's topology.json drives everything generated, how discovery works, and why in-container paths carry a lab/ prefix.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4509,6 +4511,8 @@
       
         
       
+        
+      
     
     
     
@@ -4675,6 +4679,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4713,7 +4815,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4735,14 +4837,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4848,7 +4950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4870,14 +4972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7463,7 +7565,7 @@
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> &nbsp; <strong><a href="20-topology/">Topology as source of truth</a></strong></p>
 <hr />
-<p><code>topology.json</code> holds every device, management IP, vendor, loopback and interface. <code>gen_clab_topology</code> renders the containerlab topology, the per-device configs and three of the four discovery parameter files from it. Nothing else is authored by hand.</p>
+<p><code>scenarios/&lt;scenario&gt;/topology.json</code> holds every device, management IP, vendor, loopback and interface. <code>make generate</code> renders the containerlab topology, the per-device configs and the three generated discovery parameter files from it. Nothing else is authored by hand.</p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19.07 4.93-1.41 1.41A8.01 8.01 0 0 1 20 12a8 8 0 0 1-8 8 8 8 0 0 1-8-8c0-4.08 3.05-7.44 7-7.93v2.02C8.16 6.57 6 9.03 6 12a6 6 0 0 0 6 6 6 6 0 0 0 6-6c0-1.66-.67-3.16-1.76-4.24l-1.41 1.41C15.55 9.9 16 10.9 16 12a4 4 0 0 1-4 4 4 4 0 0 1-4-4c0-1.86 1.28-3.41 3-3.86v2.14c-.6.35-1 .98-1 1.72a2 2 0 0 0 2 2 2 2 0 0 0 2-2c0-.74-.4-1.38-1-1.72V2h-1A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-2.76-1.12-5.26-2.93-7.07"/></svg></span> &nbsp; <strong><a href="30-discovery/">Discovery</a></strong></p>
@@ -7478,12 +7580,12 @@
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m9 3c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4 9 4zm-9-5a3 3 0 0 0-3 3c0 1.31.83 2.42 2 2.83V18h2v-2h2v-2h-2v-2.17c1.17-.41 2-1.52 2-2.83a3 3 0 0 0-3-3"/></svg></span> &nbsp; <strong><a href="50-authorization/">Authorization</a></strong></p>
 <hr />
-<p>The engine runs in <code>enforce</code> mode: the three modes, the automation identity and the three personas, where their grants are declared, how the monitor app is handed a token, and how long one lasts.</p>
+<p>The three <code>NEOPS_AUTHZ_MODE</code> modes, the automation identity and the three personas, where their grants are declared, how the monitor app is handed a token, and how long one lasts.</p>
 </li>
 </ul>
 </div>
 <h2 id="the-one-paragraph-version">The one-paragraph version</h2>
-<p><code>topology.json</code> describes 15 devices. <code>gen_clab_topology</code> turns that into a containerlab topology plus per-device configs plus discovery parameters. containerlab deploys the devices onto the <code>lab-net</code> bridge at fixed management IPs. Docker compose runs the NeOps control plane, with the worker attached to <em>both</em> the default network (to reach the engine) and <code>lab-net</code> (to reach the devices). A one-shot bootstrap container registers the workflow definitions with the engine. Running the discovery workflow dispatches a function block onto the worker, which SSHes to every management IP and writes <code>Device</code> and <code>Interface</code> rows into the CMS.</p>
+<p>A scenario&rsquo;s <code>topology.json</code> describes its devices — 15 for the default <code>wan-and-fabric</code>, 10 for <code>frr-only</code>. <code>make generate</code> turns that into a containerlab topology plus per-device configs plus discovery parameters. containerlab deploys the devices onto the <code>lab-net</code> bridge at fixed management IPs. Docker compose runs the NeOps control plane, with the worker attached to <em>both</em> the default network (to reach the engine) and <code>lab-net</code> (to reach the devices). A one-shot bootstrap container registers the workflow definitions with the engine. Running the discovery workflow dispatches a function block onto the worker, which SSHes to every management IP and writes <code>Device</code> and <code>Interface</code> rows into the CMS.</p>
 <div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 08:29:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T08:29:45+00:00'>2026-08-26 08:29:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 

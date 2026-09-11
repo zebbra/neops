@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4622,6 +4624,8 @@
       
         
       
+        
+      
     
     
     
@@ -4788,6 +4792,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4826,7 +4928,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4848,14 +4950,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4961,7 +5063,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4983,14 +5085,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7639,9 +7741,11 @@
 <p>Running <code>docker compose logs worker</code> in a plain shell will not find the
 service — the base file does not declare it. Either use the make targets,
 or export the variable yourself:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">COMPOSE_FILE</span><span class="o">=</span>docker-compose.yml:docker-compose.worker.yml
-</span></code></pre></div>
+<p>```bash
+export COMPOSE_FILE=docker-compose.yml:docker-compose.worker.yml</p>
 </div>
+<p>export SCENARIO=wan-and-fabric   # compose refuses to interpolate without it
+    ```</p>
 <h2 id="services">Services</h2>
 <table>
 <thead>
@@ -7687,7 +7791,7 @@ or export the variable yourself:</p>
 <td><code>lab_bootstrap</code></td>
 <td><code>neops-lab-bootstrap:latest</code> (local)</td>
 <td>—</td>
-<td>One-shot: POSTs every <code>workflows/*.yaml</code> to the engine, then exits</td>
+<td>One-shot: POSTs every workflow document in the resolved scenario to the engine, then exits</td>
 </tr>
 <tr>
 <td><code>postgres</code></td>
@@ -7715,7 +7819,7 @@ or export the variable yourself:</p>
 </tr>
 </tbody>
 </table>
-<p>The three overridable images (<code>workflow_engine</code>/<code>workflow-engine-client</code>, <code>web_client</code>, <code>worker</code>) each read a <code>NEOPS_*_IMAGE</code> variable and set <code>pull_policy: missing</code> — see <a href="../../20-operations/20-images/">Images</a>.</p>
+<p>The four overridable images (<code>cms</code>, <code>workflow_engine</code>/<code>workflow-engine-client</code>, <code>web_client</code>, <code>worker</code>) each read a <code>NEOPS_*_IMAGE</code> variable and set <code>pull_policy: missing</code> — see <a href="../../20-operations/20-images/">Images</a>.</p>
 <h2 id="networks">Networks</h2>
 <pre class="mermaid"><code>graph LR
   subgraph default["compose default network"]
@@ -7757,6 +7861,7 @@ any existing network overlapping <code>172.30.0.0/23</code>.</p>
 Deploying containerlab first would fail to find the network.</p>
 </div>
 <h2 id="the-devices">The devices</h2>
+<p>Which devices exist is a property of the selected <a href="../../30-scenarios/">scenario</a>. The table below is <code>wan-and-fabric</code>, the default; <code>frr-only</code> is the same list without the <code>spine-*</code> and <code>leaf-*</code> rows.</p>
 <table>
 <thead>
 <tr>
@@ -7822,7 +7927,7 @@ Deploying containerlab first would fail to find the network.</p>
 <p>Those credentials are lab-only: they reach throwaway containers on a local bridge and are published in this documentation on purpose.</p>
 <p>The <code>vendor</code> value doubles as the discovery <strong>platform</strong> short name, which is what selects the SDK connection plugin: <code>frr</code> → <code>FRRNetmikoPlugin</code>, <code>srl</code> → <code>SRLinuxNetmikoPlugin</code>. Both ship in <code>neops-worker-sdk-py</code> under <code>neops_worker_sdk/connection/plugins/</code> and auto-register at worker startup.</p>
 <h2 id="the-wiring">The wiring</h2>
-<p>The devices are cabled to each other with containerlab <code>veth</code> links — a Nokia SR Linux spine-leaf fabric plus an FRR WAN/core/edge domain:</p>
+<p>The devices are cabled to each other with containerlab <code>veth</code> links. In <code>wan-and-fabric</code> that is a Nokia SR Linux spine-leaf fabric plus an FRR WAN/core/edge domain:</p>
 <pre class="mermaid"><code>graph TD
   subgraph fabric["SR Linux fabric"]
     sp1[spine-01] --- lf1[leaf-01]
@@ -7853,40 +7958,65 @@ Deploying containerlab first would fail to find the network.</p>
 <p>The FRR domain and the SR Linux fabric are separate islands in the data
 plane; they meet only on the shared <code>lab-net</code> management network. Nothing
 in the lab routes between them today.</p>
+<p>That separation is what lets <code>frr-only</code> exist as a straight subset: dropping
+the five SR Linux nodes leaves no FRR interface pointing at something that
+is gone. <code>tests/test_scenario_manifests.py</code> asserts that link symmetry for
+every scenario, so a future subset that <em>does</em> cut a cable fails the suite.</p>
 </div>
 <h2 id="what-is-authored-vs-generated">What is authored vs generated</h2>
+<p><strong>Tracked in git.</strong> Per scenario, under <code>scenarios/&lt;name&gt;/</code>:</p>
+<ul>
+<li><code>topology.json</code> and <code>scenario.json</code> — what the scenario is</li>
+<li><code>workflow-execution-parameters/*.json</code> — generated <em>into</em> the repo, and committed</li>
+</ul>
+<p>Shared across scenarios, under <code>scenarios/_base/</code>, each overridable by a scenario file by file:</p>
+<ul>
+<li><code>workflows/</code>, <code>scope/Global/</code>, <code>cms/oidc-config.json</code>, <code>cms/permissions.json</code>, <code>function_blocks/</code></li>
+<li><code>devices/frr/frr.conf</code>, <code>devices/frr/daemons</code>, <code>devices/frr/set-aliases.sh</code></li>
+</ul>
+<p>At the repo root:</p>
+<ul>
+<li><code>devices/frr/Dockerfile</code> and <code>devices/frr/entrypoint.sh</code> — image build inputs, not scenario data</li>
+<li><code>bootstrap/</code>, the compose files, the <code>Makefile</code>, and the host scripts (<code>resolve_scenario</code>, <code>gen_clab_topology</code>, <code>gen_device_configs</code>, <code>gen_kind_manifests</code>, <code>gen_kind_discover_params</code>, <code>run_workflow</code>, <code>wait_ready</code>, <code>wait_devices</code>)</li>
+</ul>
+<p><strong>Generated, git-ignored.</strong> For <code>SCENARIO=wan-and-fabric</code>:</p>
 <table>
 <thead>
 <tr>
-<th>Tracked in git</th>
-<th>Generated (git-ignored)</th>
+<th>Path</th>
+<th>Written by</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>topology.json</code>, <code>gen_clab_topology</code>, <code>gen_device_configs</code></td>
-<td><code>generated/neops-lab.clab.json</code></td>
+<td><code>generated/wan-and-fabric/scenario/</code></td>
+<td><code>resolve_scenario</code> — the <code>_base</code> + scenario overlay, flattened</td>
 </tr>
 <tr>
-<td><code>devices/frr/</code> (Dockerfile, <code>frr.conf</code>, <code>daemons</code>, <code>entrypoint.sh</code>, <code>set-aliases.sh</code>)</td>
-<td><code>generated/frr/&lt;host&gt;.iface</code></td>
+<td><code>generated/wan-and-fabric/clab/neops-lab.clab.json</code></td>
+<td><code>gen_clab_topology</code></td>
 </tr>
 <tr>
-<td><code>workflows/</code>, <code>function_blocks/</code>, <code>bootstrap/</code>, <code>scope/Global/</code>, <code>cms/oidc-config.json</code></td>
-<td><code>generated/srl/&lt;host&gt;.cli</code></td>
+<td><code>generated/wan-and-fabric/clab/frr/&lt;host&gt;.iface</code>, <code>clab/srl/&lt;host&gt;.cli</code></td>
+<td><code>gen_device_configs</code></td>
 </tr>
 <tr>
-<td><code>workflow-execution-parameters/*.json</code></td>
-<td><code>generated/clab-neops-lab/</code> (containerlab runtime, incl. minted TLS keys)</td>
+<td><code>generated/wan-and-fabric/clab/clab-neops-lab/</code></td>
+<td>containerlab runtime, incl. minted TLS keys</td>
 </tr>
 <tr>
-<td>the compose files, the <code>Makefile</code>, the host scripts</td>
+<td><code>generated/wan-and-fabric/kind/lab.yaml</code>, <code>kind/discover-params.json</code></td>
+<td><code>gen_kind_manifests</code>, <code>gen_kind_discover_params</code></td>
+</tr>
+<tr>
 <td><code>cms/jwt/</code>, <code>cms_api_key.env</code></td>
+<td><code>make lab-jwt</code>, <code>make local-env-init</code></td>
 </tr>
 </tbody>
 </table>
-<p>Everything under <code>generated/</code> is rebuilt from <code>topology.json</code> on every <code>make local-lab-up</code>. Never commit it — containerlab mints TLS private keys in there.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 10:34:51'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T10:34:51+00:00'>2026-08-26 10:34:51</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<p>Everything under <code>generated/</code> is rebuilt on every <code>make local-lab-up</code>. Never commit it — containerlab mints TLS private keys in there.</p>
+<p>The one thing generated <em>outside</em> <code>generated/</code> is the committed <code>workflow-execution-parameters/*.json</code>, written back beside the topology that produced it. <code>make test</code> asserts it reproduces byte-for-byte, for every scenario.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

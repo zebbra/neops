@@ -4024,6 +4024,8 @@
       
         
       
+        
+      
     
     
     
@@ -4489,6 +4491,8 @@
       
         
       
+        
+      
     
     
     
@@ -4655,6 +4659,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="docs/20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="docs/30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4693,7 +4795,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4715,14 +4817,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4828,7 +4930,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4850,14 +4952,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7318,6 +7420,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenarios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#devices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7394,6 +7507,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#adding-a-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a scenario
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7429,25 +7553,28 @@
 
 
 <h1 id="neops-lab-simple-lab">neops-lab — Simple Lab</h1>
-<p>A turn-key local, multi-vendor lab: <strong>10 FRRouting routers + 5 Nokia SR Linux
-switches</strong> (15 devices) with <strong>real point-to-point wiring</strong>, provisioned by
-<a href="https://containerlab.dev">containerlab</a>. The control plane — CMS + workflow
-engine + a worker that runs the <code>global_discover_network</code> function block +
-a one-shot bootstrap container — runs on docker-compose; the devices attach to
-the same <code>lab-net</code> bridge (172.30.0.0/24) at fixed management IPs, so the worker
-reaches them at those IPs.</p>
-<p>The control plane runs from <strong>published images</strong> on <code>quay.io/zebbra</code> (CMS,
-workflow engine, web client) — except the <strong>worker</strong>, whose published <code>develop</code>
-tag is currently unusable and must be built locally; see
-<a href="#prerequisites">Prerequisites</a>. This repo owns the lab itself: the topology,
+<p>A turn-key local, multi-vendor lab with <strong>real point-to-point wiring</strong>,
+provisioned by <a href="https://containerlab.dev">containerlab</a>. The control plane — CMS
++ workflow engine + a worker that runs the <code>global_discover_network</code> function
+block + a one-shot bootstrap container — runs on docker-compose; the devices
+attach to the same <code>lab-net</code> bridge (172.30.0.0/24) at fixed management IPs, so
+the worker reaches them at those IPs.</p>
+<p>Which network you get is a <strong>scenario</strong>. The default, <code>wan-and-fabric</code>, is 10
+FRRouting routers + 5 Nokia SR Linux switches (15 devices); <code>frr-only</code> is the
+same FRR half without the SR Linux fabric (10 devices). <code>make scenarios</code> lists
+them — see <a href="#scenarios">Scenarios</a>.</p>
+<p>The control plane runs from <strong>published images</strong> on <code>quay.io/zebbra</code>: the CMS,
+the workflow engine, the web client and the worker. This repo owns the lab
+itself: the scenarios,
 the device configs, the workflow, the bootstrap sequencing and the two small
 helper images.</p>
 <p>End state: run a make target, click Run in the engine UI (or use the matching
-make target), and <strong>15 <code>Device</code> rows</strong> (FRR <code>vendor=FRRouting</code>, Nokia
-<code>vendor=Nokia</code>) appear in the CMS — each with its interfaces recorded. The
-discovery function block records each device <strong>and its interfaces</strong> in one pass:
-it connects to every host via the matching connection plugin, reads facts +
-interfaces, and writes both <code>Device</code> and <code>Interface</code> rows to the CMS.</p>
+make target), and one <code>Device</code> row per device in the scenario (FRR
+<code>vendor=FRRouting</code>, Nokia <code>vendor=Nokia</code>) appears in the CMS — each with its
+interfaces recorded. The discovery function block records each device <strong>and its
+interfaces</strong> in one pass: it connects to every host via the matching connection
+plugin, reads facts + interfaces, and writes both <code>Device</code> and <code>Interface</code> rows
+to the CMS.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Full documentation lives in <a href="./docs/"><code>docs/</code></a> and is built with the shared
 Zebbra MkDocs tooling:</p>
@@ -7495,19 +7622,13 @@ failure:</p>
   stdlib-only and import under the <code>/usr/bin/python3</code> a stock macOS ships.</li>
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
-<li><strong>A locally-built worker image — the published <code>develop</code> tag does not work.</strong>
-  <code>quay.io/zebbra/neops-worker-sdk:develop</code> is built from <code>neops-worker-sdk-py</code>&rsquo;s
-  <code>develop</code>, which carries no <code>neops/fb</code> and no <code>README.md</code> in the image, so the
-  container dies at start with <code>OSError: Readme file does not exist: README.md</code>
-  and would register no function blocks even if it started. The discovery block
-  <code>fb.base.neops.io/global_discover_network:0.1.0</code> and the <code>COPY ./neops</code> that
-  ships it live on the SDK&rsquo;s <code>feature/technopark</code> branch (open PR
-  <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">zebbra/neops-worker-sdk-py#127</a>).
-  Until that merges and CI republishes the tag, build it yourself:</li>
+<li><strong>Nothing to build for the worker.</strong> <code>quay.io/zebbra/neops-worker-sdk:develop</code>
+  ships the base function blocks, <code>fb.base.neops.io/global_discover_network:0.1.0</code>
+  among them, so the default path needs no local image. To try SDK changes before
+  they are released, build the checkout and point the lab at it:</li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>switch<span class="w"> </span>feature/technopark
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
 </span></code></pre></div>
 <p>Check what you got before bringing the lab up — the image must carry the
   block, not just build:</p>
@@ -7529,15 +7650,68 @@ failure:</p>
   in <code>.env</code> pins just the tag on the preview.
   <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work the same way — see
   <code>.env.example</code>.
-- <strong>Host resources</strong>: the 5 SR Linux nodes want ≈1.5–2 GB each; with
-  Elasticsearch and the control plane the lab needs roughly <strong>14–16 GB</strong> for
-  containers. On macOS that is the Docker Desktop <strong>VM</strong> budget (Settings →
+- <strong>Host resources</strong>: for <code>wan-and-fabric</code> the 5 SR Linux nodes want ≈1.5–2 GB
+  each; with Elasticsearch and the control plane that scenario needs roughly
+  <strong>14–16 GB</strong> for containers. <code>SCENARIO=frr-only</code> drops the SR Linux nodes and
+  fits in far less. On macOS that is the Docker Desktop <strong>VM</strong> budget (Settings →
   Resources → Memory; the 8 GB default is too small). On Apple Silicon enable
   <em>Use Rosetta for x86_64/amd64 emulation</em> — the <code>quay.io/zebbra</code> images are
   amd64-only. The first <code>make local-lab-up</code> takes a couple of minutes; on a
   slow host raise the wait budgets
   (<code>make local-lab-up WAIT_READY_TIMEOUT=600 WAIT_DEVICES_TIMEOUT=600</code>).</p>
+<h2 id="scenarios">Scenarios</h2>
+<p>A <strong>scenario</strong> is a directory under <a href="./scenarios/"><code>scenarios/</code></a> holding
+everything that makes one lab different from another: its topology, its
+workflows, its CMS scope configuration, its device configs and its OIDC
+configuration. Anything a scenario does not carry comes from
+<a href="./scenarios/_base/"><code>scenarios/_base/</code></a>, file by file.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>scenarios<span class="w">                        </span><span class="c1"># what is available</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>local-lab-up<span class="w">                     </span><span class="c1"># the default scenario</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>frr-only<span class="w">   </span><span class="c1"># a different one</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Devices</th>
+<th>Flavours</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wan-and-fabric</code> (default)</td>
+<td>15</td>
+<td>clab, kind</td>
+<td>FRR WAN/core/edge/PE + a Nokia SR Linux leaf-spine fabric — see <a href="./scenarios/wan-and-fabric/README.md"><code>scenarios/wan-and-fabric/README.md</code></a></td>
+</tr>
+<tr>
+<td><code>frr-only</code></td>
+<td>10</td>
+<td>clab, kind</td>
+<td>The FRR half alone; carries only a topology, everything else inherited — see <a href="./scenarios/frr-only/README.md"><code>scenarios/frr-only/README.md</code></a></td>
+</tr>
+</tbody>
+</table>
+<p><code>SCENARIO</code> selects it. The <a href="Makefile"><code>Makefile</code></a> holds the <strong>only</strong> default
+and exports it; every host script, both compose files and
+<a href="apply_cms_config"><code>apply_cms_config</code></a> fail when it is unset rather than guess,
+because a scenario applied half from one lab and half from another stays
+invisible until discovery produces a confusing result. Running <code>docker compose</code>
+by hand therefore needs <code>SCENARIO=&lt;name&gt;</code> in front of it (or in <code>.env</code>).</p>
+<p><strong>One scenario runs at a time</strong>: they share <code>lab-net</code>, the <code>172.30.0.0/24</code>
+subnet and the compose project. Switching means <code>make local-lab-down</code> first —
+<code>make local-lab-up</code> refuses while a different scenario is deployed, because
+<code>containerlab destroy</code> only removes the nodes the handed topology names.</p>
+<p><code>make scenario-resolve</code> materialises <code>scenarios/_base/</code> + <code>scenarios/$SCENARIO/</code>
+into <code>generated/$SCENARIO/scenario/</code>, the one flat directory the containers mount
+and the scripts read; it is a prerequisite of every target that consumes a
+scenario. <a href="./docs/30-scenarios/"><code>docs/30-scenarios/</code></a> covers the mechanism, the
+inheritance table and how to add one.</p>
 <h2 id="devices">Devices</h2>
+<p>The default <code>wan-and-fabric</code> scenario; <code>frr-only</code> is the FRR rows alone. Each
+scenario&rsquo;s own device list is its
+<code>scenarios/&lt;name&gt;/topology.json</code>.</p>
 <table>
 <thead>
 <tr>
@@ -7625,59 +7799,92 @@ neighbor/topology-aware workflows later.</p>
 Discovery records each interface into the CMS with its <strong>up/down state and
 description</strong> for both vendors.</p>
 <p>Mechanism — single source of truth → generated artifacts:</p>
+<pre class="mermaid"><code>flowchart LR
+    base["scenarios/_base/"]
+    scen["scenarios/$SCENARIO/"]
+    topo["scenarios/$SCENARIO/&lt;br/&gt;topology.json"]
+    resolve["make scenario-resolve"]
+    resolved["generated/$SCENARIO/scenario/&lt;br/&gt;mounted by the containers"]
+    gen["make generate"]
+    clab["generated/$SCENARIO/clab/"]
+    params["scenarios/$SCENARIO/&lt;br/&gt;workflow-execution-parameters/&lt;br/&gt;(committed)"]
+
+    base --&gt; resolve
+    scen --&gt; resolve
+    resolve --&gt; resolved
+    topo --&gt; gen
+    gen --&gt; clab
+    gen --&gt; params</code></pre>
 <ul>
-<li><code>topology.json</code> is the single source of truth: per device its <code>mgmt_ip</code>,
-  <code>vendor</code>, <code>loopback</code>, and <code>interfaces</code> (each with a <code>to</code> neighbor).</li>
-<li><code>gen_clab_topology</code> (stdlib-only host script) renders from it:</li>
-<li><code>generated/neops-lab.clab.json</code> — the containerlab topology (nodes, real
-    <code>veth</code> links between devices, <code>dummy</code> links for stub ports),</li>
-<li><code>generated/frr/&lt;host&gt;.iface</code> — FRR interface→description list,</li>
-<li><code>generated/srl/&lt;host&gt;.cli</code> — SR Linux <code>set / interface …</code> config,</li>
-<li><code>workflow-execution-parameters/discover-params.json</code> — the 15 discovery targets (one <code>/32</code> per device).</li>
+<li><code>scenarios/&lt;name&gt;/topology.json</code> is the single source of truth for a scenario:
+  per device its <code>mgmt_ip</code>, <code>vendor</code>, <code>loopback</code>, and <code>interfaces</code> (each with a
+  <code>to</code> neighbor). It is the one file a scenario can never inherit from <code>_base</code>.</li>
+<li><a href="gen_clab_topology"><code>gen_clab_topology</code></a> (stdlib-only host script, run via
+  <code>make generate</code>) renders from it:</li>
+<li><code>generated/&lt;scenario&gt;/clab/neops-lab.clab.json</code> — the containerlab topology
+    (nodes, real <code>veth</code> links between devices, <code>dummy</code> links for stub ports),</li>
+<li><code>generated/&lt;scenario&gt;/clab/frr/&lt;host&gt;.iface</code> — FRR interface→description list,</li>
+<li><code>generated/&lt;scenario&gt;/clab/srl/&lt;host&gt;.cli</code> — SR Linux <code>set / interface …</code> config,</li>
+<li><code>scenarios/&lt;scenario&gt;/workflow-execution-parameters/discover-params.json</code> —
+    one <code>/32</code> discovery target per device. Committed, and asserted byte-for-byte
+    by <code>make test</code>.</li>
 <li><strong>FRR</strong>: containerlab runs the custom image <code>neops-lab-frr:latest</code> (<code>kind:
-  linux</code>, adds sshd + <code>frr/frr</code>), built by <code>make build-docker</code>. containerlab
-  creates the <code>swpN</code> veths; a containerlab <code>exec</code> runs
-  <code>devices/frr/set-aliases.sh</code> <strong>after wiring</strong> to set each interface&rsquo;s alias
-  (description).</li>
+  linux</code>, adds sshd + <code>frr/frr</code>), built by <code>make build-docker</code>. The image bakes
+  <strong>no</strong> FRR configuration: <code>frr.conf</code>, <code>daemons</code> and <code>set-aliases.sh</code> are bound
+  from the resolved scenario into <code>/lab/</code>, and
+  <a href="devices/frr/entrypoint.sh"><code>devices/frr/entrypoint.sh</code></a> installs the first
+  two into <code>/etc/frr/</code> before FRR starts — refusing to boot if they are absent.
+  One image therefore serves every scenario, and a scenario that wants <code>bgpd</code>
+  ships a <code>daemons</code> delta. containerlab creates the <code>swpN</code> veths, then a
+  containerlab <code>exec</code> runs <code>/lab/set-aliases.sh</code> <strong>after wiring</strong> to set each
+  interface&rsquo;s alias (description); the Kubernetes flavour mounts the same three
+  files at the same path from a ConfigMap.</li>
 <li><strong>SR Linux</strong>: containerlab runs <code>ghcr.io/nokia/srlinux:26.3</code> (<code>kind:
   nokia_srlinux</code>) and applies the <code>.cli</code> as its <code>startup-config</code> at boot.</li>
 </ul>
-<p>Everything generated lives under <code>generated/</code> (git-ignored, including the
-containerlab runtime and the TLS material containerlab mints there); only
-<code>topology.json</code>, the generator, and the committed discovery parameter files are
-tracked.</p>
+<p>Everything generated lives under <code>generated/&lt;scenario&gt;/</code> (git-ignored, including
+the containerlab runtime <code>generated/&lt;scenario&gt;/clab/clab-neops-lab</code> and the TLS
+material containerlab mints there); only the scenario sources, the generators,
+and the committed discovery parameter files are tracked.</p>
 <h2 id="layout">Layout</h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>topology.json           # single source of truth: mgmt_ip + interfaces per device
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>gen_clab_topology       # renders topology.json -&gt; generated/ + discover-params.json
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>gen_device_configs      # per-device renderers, reused by gen_clab_topology
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>generated/              # git-ignored: clab.json, frr/*.iface, srl/*.cli, clab runtime
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint + set-aliases.sh
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>cms/                    # oidc-config.json + permissions.json + the git-ignored jwt/ keypair (make lab-jwt)
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>monitor/config.js       # runtime config for the monitor app (webclientOrigin), bind-mounted into it
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>scope/Global/           # table columns, drill-down and dashboard applied by apply_cms_config
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>workflows/              # workflow YAMLs registered by the bootstrap container
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>function_blocks/        # lab-local function blocks, auto-discovered by the worker
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>bootstrap/              # one-shot container that POSTs every workflow YAML
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>containerlab            # containerlab launcher (runs ghcr.io/srl-labs/clab via the docker socket)
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>doctor                  # host preflight (docker, RAM, mount round-trip, subnets, images)
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>apply_cms_config        # applies cms/permissions.json + the Global scope in the CMS
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>lab_token               # prints a Neops access token for the engine (NEOPS_ENGINE_TOKEN)
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>wait_devices            # blocks until every lab device (topology.json) accepts SSH
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>workflow-execution-parameters/   # generated discovery inputs
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>tests/                  # unit tests for the two generators
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>scenarios/_base/        # every asset a scenario may override
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  workflows/            #   workflow documents (.yaml/.yml/.json) registered by the bootstrap container
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  scope/Global/         #   table columns, drill-down and dashboard for apply_cms_config
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  devices/frr/          #   frr.conf, daemons, set-aliases.sh — mounted at /lab, not baked
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  function_blocks/      #   lab-local function blocks, auto-discovered by the worker
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  cms/                  #   oidc-config.json (the web client&#39;s OIDC configuration)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>                        #   + permissions.json (roles, users and workflow grants)
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>scenarios/&lt;name&gt;/       # one lab: topology.json + scenario.json + README.md (+ any override)
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  workflow-execution-parameters/   # committed discovery inputs, generated from topology.json
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>resolve_scenario        # materialises _base + &lt;name&gt; -&gt; generated/&lt;name&gt;/scenario
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>gen_clab_topology       # renders the scenario topology -&gt; generated/&lt;name&gt;/clab/ + params
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>gen_device_configs      # per-device renderers + topology loading, reused by the others
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>gen_kind_manifests      # renders the FRR devices -&gt; generated/&lt;name&gt;/kind/lab.yaml
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>gen_kind_discover_params # discovery targets for the pods: one /32 per Service ClusterIP
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>generated/&lt;name&gt;/       # git-ignored: scenario/ (resolved), clab/, kind/, clab runtime
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint; no FRR config
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>cms/jwt/                # git-ignored dev RSA keypair (make lab-jwt)
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>monitor/config.js       # runtime config for the monitor app (webclientOrigin), bind-mounted into it
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>bootstrap/              # one-shot container that POSTs every workflow document
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>containerlab            # containerlab launcher (runs ghcr.io/srl-labs/clab via the docker socket)
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>doctor                  # host preflight (docker, RAM, mount round-trip, subnets, images)
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>apply_cms_config        # applies the scenario&#39;s cms/permissions.json + the Global scope in the CMS
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>lab_token               # prints a Neops access token for the engine (NEOPS_ENGINE_TOKEN)
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>run_workflow            # triggers a workflow execution and waits for a terminal state
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>wait_ready              # blocks until the worker&#39;s function block has an online worker
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>wait_devices            # blocks until every device in the scenario accepts SSH
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>docker-compose.yml               # base stack (CMS, engine, monitor app, web client, postgres, ES, redis)
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>docker-compose.worker.yml        # worker + lab_bootstrap + the lab-net network definition
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>tests/                  # unit tests for the generators and the scenario overlay
 </span></code></pre></div>
 <p>The base stack + worker compose files are combined via docker compose&rsquo;s
 <code>COMPOSE_FILE</code> (target-scoped in the <code>Makefile</code>); containerlab provisions the
 devices onto the <code>lab-net</code> that the worker compose defines.</p>
 <p>The whole repo is bind-mounted <strong>read-only into the worker at <code>/app/lab</code></strong>, which
 is why in-container paths keep a <code>lab/</code> prefix (<code>DIR_FUNCTION_BLOCKS:
-lab/function_blocks,neops/fb</code>, <code>docker compose exec worker python3
-lab/wait_devices</code>). Host-side paths never have one.</p>
+lab/generated/${SCENARIO}/scenario/function_blocks,neops/fb</code>, <code>docker compose
+exec worker python3 lab/wait_devices</code>). Host-side paths never have one.</p>
 <h2 id="discovery-inputs">Discovery inputs</h2>
 <p><code>global_discover_network</code> accepts <code>subnets</code>; a single host is a <code>/32</code>. For
 overlapping ranges the most specific prefix wins (longest prefix match).
@@ -7685,13 +7892,22 @@ Credentials are scoped from most to least specific: the owning subnet&rsquo;s
 credentials, then the global list — where an entry may itself be scoped to a
 platform, in which case it is tried first for hosts of that platform and
 skipped for hosts declared as another one.</p>
+<p>Each scenario carries its own set under
+<code>scenarios/&lt;name&gt;/workflow-execution-parameters/</code>; the first three are generated
+by <code>make generate</code> and must be committed.</p>
 <ul>
-<li><code>discover-params.json</code>: 15 <code>/32</code> subnets with known platforms and platform-scoped credentials.</li>
+<li><code>discover-params.json</code>: one <code>/32</code> per device with known platforms and platform-scoped credentials.</li>
 <li><code>discover-params-autodetect.json</code>: the same <code>/32</code>s without platforms.</li>
 <li><code>discover-params-subnet.json</code>: the management <code>/24</code> with subnet-scoped credentials.</li>
-<li><code>discover-params-mixed.json</code>: the <code>/24</code> plus <code>/32</code> overrides for the SR Linux nodes.</li>
+<li><code>discover-params-mixed.json</code>: the <code>/24</code> plus <code>/32</code> overrides for the SR Linux
+  nodes. Hand-written, so it exists only for <code>wan-and-fabric</code> — there is nothing
+  to mix when every device runs the same NOS.</li>
 </ul>
+<p>Override with <code>DISCOVER_PARAMS</code>, e.g.
+<code>make local-lab-discover DISCOVER_PARAMS=scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-autodetect.json</code>.</p>
 <h2 id="make-targets">Make targets</h2>
+<p>Every target below takes <code>SCENARIO=&lt;name&gt;</code> to run against a different scenario;
+without it they use the <code>Makefile</code>&rsquo;s default, <code>wan-and-fabric</code>.</p>
 <table>
 <thead>
 <tr>
@@ -7701,12 +7917,24 @@ skipped for hosts declared as another one.</p>
 </thead>
 <tbody>
 <tr>
+<td><code>make scenarios</code></td>
+<td>Lists every scenario with its device count, flavours and summary, read from each <code>scenarios/&lt;name&gt;/scenario.json</code>.</td>
+</tr>
+<tr>
+<td><code>make scenario-resolve</code></td>
+<td>Materialises <code>scenarios/_base/</code> + <code>scenarios/$(SCENARIO)/</code> into <code>generated/$(SCENARIO)/scenario/</code> — the flat directory the containers mount and <code>apply_cms_config</code> reads. A prerequisite of every target that consumes a scenario, so it is rarely run by hand.</td>
+</tr>
+<tr>
+<td><code>make generate</code></td>
+<td>Resolves the scenario, then regenerates the containerlab topology, the per-device configs and the committed <code>scenarios/$(SCENARIO)/workflow-execution-parameters/*.json</code>. Commit those — <code>make test</code> asserts they reproduce byte-for-byte.</td>
+</tr>
+<tr>
 <td><code>make clab-suid</code></td>
 <td>Sets the SUID bit on the <code>containerlab</code> binary so the lab targets can deploy without sudo. Run once after installing containerlab and again after every upgrade (an upgrade drops the bit). Idempotent; needs sudo only when the bit is missing. Not chained into <code>local-lab-up</code>, which must never prompt for a password mid-run.</td>
 </tr>
 <tr>
 <td><code>make lab-jwt</code></td>
-<td>Mints the dev RSA keypair the CMS needs (<code>cms/jwt/</code>). Idempotent; chained into <code>local-env-init</code>.</td>
+<td>Mints the dev RSA keypair the CMS needs (<code>cms/jwt/</code>, created by the target). Idempotent; chained into <code>local-env-init</code>.</td>
 </tr>
 <tr>
 <td><code>make local-env-init</code></td>
@@ -7714,15 +7942,15 @@ skipped for hosts declared as another one.</p>
 </tr>
 <tr>
 <td><code>make build-docker</code></td>
-<td>Builds the two local-only images: <code>neops-lab-frr:latest</code> and <code>neops-lab-bootstrap:latest</code>. A prerequisite of <code>local-lab-up</code>.</td>
+<td>Builds the two local-only images: <code>neops-lab-frr:latest</code> (scenario-independent — it bakes no FRR config) and <code>neops-lab-bootstrap:latest</code>. A prerequisite of <code>local-lab-up</code>. <code>build-docker-frr</code> / <code>build-docker-bootstrap</code> build one each; <code>DOCKER_BUILD_FLAGS=--network=host</code> covers a host whose docker bridge has no DNS.</td>
 </tr>
 <tr>
 <td><code>make local-lab-up</code></td>
-<td>Generates the containerlab topology + configs from <code>topology.json</code>, builds the lab images, brings up the base stack + worker + bootstrap (creating <code>lab-net</code>), then <code>containerlab deploy</code>s the 15 devices with real links. Waits for workflow registration, the worker&rsquo;s function blocks, and every device&rsquo;s SSH.</td>
+<td>Resolves the scenario, generates the containerlab topology + configs from its <code>topology.json</code>, builds the lab images, brings up the base stack + worker + bootstrap (creating <code>lab-net</code>), then <code>containerlab deploy --reconfigure</code>s the scenario&rsquo;s devices with real links. Waits for workflow registration, the worker&rsquo;s function blocks, and every device&rsquo;s SSH.</td>
 </tr>
 <tr>
 <td><code>make apply-cms-config</code></td>
-<td>Applies <code>cms/permissions.json</code> (roles, users and their workflow grant profiles) + creates the <code>Global</code> scope so the web client can see all entities. Idempotent. Chained into <code>local-env-init</code>.</td>
+<td>Applies the scenario&rsquo;s <code>cms/permissions.json</code> (roles, users and their workflow grant profiles), grants the <code>neops</code> user the full-permission <code>lab-admin</code> role + creates the <code>Global</code> scope so the web client can see all entities. Idempotent. Chained into <code>local-env-init</code>.</td>
 </tr>
 <tr>
 <td><code>make lab-grant</code></td>
@@ -7730,7 +7958,7 @@ skipped for hosts declared as another one.</p>
 </tr>
 <tr>
 <td><code>make local-lab-discover</code></td>
-<td>POSTs an execution of the discovery workflow; all 15 devices <strong>and their interfaces</strong> appear in the CMS. Override <code>DISCOVER_PARAMS</code> to exercise explicit hosts, autodetection, or subnet expansion. Devices are keyed by IP (re-running skips existing devices); interfaces are always recorded, so run discovery against a <strong>fresh</strong> CMS to avoid duplicate interface rows.</td>
+<td>POSTs an execution of the discovery workflow; every device in the scenario <strong>and its interfaces</strong> appears in the CMS. Override <code>DISCOVER_PARAMS</code> to exercise explicit hosts, autodetection, or subnet expansion. Devices are keyed by IP (re-running skips existing devices); interfaces are always recorded, so run discovery against a <strong>fresh</strong> CMS to avoid duplicate interface rows.</td>
 </tr>
 <tr>
 <td><code>make local-lab-logs</code></td>
@@ -7738,19 +7966,47 @@ skipped for hosts declared as another one.</p>
 </tr>
 <tr>
 <td><code>make local-lab-down</code></td>
-<td><code>containerlab destroy --cleanup</code> (removes devices + runtime dir) then <code>docker compose down</code> (preserves volumes).</td>
+<td><code>containerlab destroy --cleanup</code> (removes the devices and <code>generated/$(SCENARIO)/clab/clab-neops-lab</code>) then <code>docker compose down</code> (preserves volumes).</td>
 </tr>
 <tr>
 <td><code>make local-env-prune</code></td>
 <td><code>docker compose down -v</code> — the true reset, drops the ES + postgres volumes.</td>
 </tr>
 <tr>
-<td><code>make test</code></td>
-<td><code>pytest tests</code> — unit tests for the two generators, incl. that they still reproduce the committed <code>workflow-execution-parameters/*.json</code>.</td>
+<td><code>make kind-lab-up</code></td>
+<td>The Kubernetes flavour: renders the scenario&rsquo;s <strong>FRR</strong> devices into <code>generated/$(SCENARIO)/kind/lab.yaml</code> and runs them as pods in a local KIND cluster, reachable over SSH at <code>&lt;device&gt;.neops-lab.svc.cluster.local</code>. Needs no containerlab, no compose stack and no control plane. <code>make kind-lab-status</code> / <code>make kind-lab-down</code> alongside it — the latter deletes the namespace, never the cluster.</td>
 </tr>
 <tr>
-<td><code>make lint</code> / <code>make format</code> / <code>make typeCheck</code> / <code>make check</code></td>
+<td><code>make kind-lab-cms-config</code></td>
+<td>Points the existing <code>apply_cms_config</code> at a Kubernetes-deployed CMS through <code>CMS_EXEC</code> (reused, not reimplemented): grants the <code>neops</code> user the <code>lab-admin</code> role and seeds the <code>Global</code> scope, without which the web client shows no scope. Idempotent. Getting devices into the CMS stays discovery&rsquo;s job.</td>
+</tr>
+<tr>
+<td><code>make kind-lab-discover</code></td>
+<td>Discovery against the pods, through the same scripts the containerlab flavour uses: publishes the workflow definition with <code>bootstrap/register.py</code>, generates one <code>/32</code> per device from the Service ClusterIPs with <code>./gen_kind_discover_params</code>, waits with <code>./wait_ready</code>, executes with <code>./run_workflow</code>. Needs a worker image that carries the base function blocks, and the engine reachable at <code>KIND_ENGINE_URL</code> — the offline ingress name <code>http://engine.neops.local</code> by default, so run <code>make -C neops-helm config-hosts</code> once.</td>
+</tr>
+<tr>
+<td><code>make lab-env</code></td>
+<td>Copies <code>.env.example</code> to <code>.env</code> if absent, so compose has one. A prerequisite of <code>local-lab-up</code>; never overwrites an existing <code>.env</code>.</td>
+</tr>
+<tr>
+<td><code>make local-env-up</code> / <code>make local-env-down</code></td>
+<td>The control plane alone — CMS, engine, monitor app, web client and their datastores — with no devices and no containerlab.</td>
+</tr>
+<tr>
+<td><code>make test</code></td>
+<td><code>pytest tests</code> — unit tests for the generators and the scenario overlay, incl. that every scenario still reproduces its committed <code>workflow-execution-parameters/*.json</code> byte-for-byte.</td>
+</tr>
+<tr>
+<td><code>make lint</code> / <code>make format</code> / <code>make typeCheck</code></td>
 <td>ruff / pyrefly over the repo, including the extension-less host scripts.</td>
+</tr>
+<tr>
+<td><code>make py39-check</code> / <code>make shell-syntax</code></td>
+<td>The host scripts import under Python 3.9 (the stock macOS interpreter), and the bash entry points parse.</td>
+</tr>
+<tr>
+<td><code>make check</code></td>
+<td>All five gates together: lint, typeCheck, test, py39-check, shell-syntax.</td>
 </tr>
 </tbody>
 </table>
@@ -7763,8 +8019,9 @@ skipped for hosts declared as another one.</p>
 <li>CMS admin: <a href="http://localhost:8001/admin/">http://localhost:8001/admin/</a> (login <code>neops</code> / <code>neops</code>)</li>
 <li>Engine REST: <a href="http://localhost:3030">http://localhost:3030</a></li>
 </ul>
-<p>The engine runs <code>NEOPS_AUTHZ_MODE=enforce</code>, so every call to it carries a token.
-Besides <code>neops</code>, the lab declares three personas in <code>cms/permissions.json</code>
+<p>Every lab caller carries an engine token (<code>./lab_token</code> mints one); how much the
+engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code> service. Besides
+<code>neops</code>, the lab declares three personas in the scenario&rsquo;s <code>cms/permissions.json</code>
 (password = username), which differ only in workflow authority:</p>
 <table>
 <thead>
@@ -7796,18 +8053,31 @@ Besides <code>neops</code>, the lab declares three personas in <code>cms/permiss
 <a href="docs/10-concepts/50-authorization/"><code>docs/10-concepts/50-authorization.md</code></a>.</p>
 <h2 id="adding-a-device">Adding a device</h2>
 <ol>
-<li>Add the device to <code>topology.json</code>: a <code>mgmt_ip</code> (free IP in <code>172.30.0.0/24</code>),
-   <code>vendor</code> (<code>frr</code> or <code>srl</code>), <code>loopback</code> (<code>lo</code> for FRR, <code>null</code> for SR Linux), and
-   its <code>interfaces</code> (each <code>{ "name", "to" }</code>; <code>name</code> is <code>swpN</code> for FRR or
-   <code>ethernet-1/N</code> for SR Linux; <code>to</code> is <code>"&lt;peer-host&gt;:&lt;peer-iface&gt;"</code> for a real
-   link, or a plain label like <code>"server web-01"</code> for a host-facing stub port).</li>
-<li><code>make local-lab-up &amp;&amp; make local-lab-discover</code> — the generator rebuilds the
-   containerlab topology (real link or <code>dummy</code> stub, credentials, and
-   <code>discover-params.json</code>) from <code>topology.json</code> automatically.</li>
+<li>Add the device to <code>scenarios/&lt;name&gt;/topology.json</code>: a <code>mgmt_ip</code> (free IP in
+   <code>172.30.0.0/24</code>), <code>vendor</code> (<code>frr</code> or <code>srl</code>), <code>loopback</code> (<code>lo</code> for FRR, <code>null</code>
+   for SR Linux), and its <code>interfaces</code> (each <code>{ "name", "to" }</code>; <code>name</code> is <code>swpN</code>
+   for FRR or <code>ethernet-1/N</code> for SR Linux; <code>to</code> is <code>"&lt;peer-host&gt;:&lt;peer-iface&gt;"</code>
+   for a real link, or a plain label like <code>"server web-01"</code> for a host-facing
+   stub port). Add the matching interface on the peer — <code>make test</code> asserts
+   device-to-device links are symmetric.</li>
+<li><code>make generate SCENARIO=&lt;name&gt;</code> — rebuilds the containerlab topology (real
+   link or <code>dummy</code> stub) and the discovery parameter files.</li>
+<li><code>make local-lab-up SCENARIO=&lt;name&gt; &amp;&amp; make local-lab-discover SCENARIO=&lt;name&gt;</code>.</li>
 <li><code>make test</code> — the generator tests assert the regenerated parameter files match
    what is committed, so they fail until you commit the regenerated JSON.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 08:29:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T08:29:45+00:00'>2026-08-26 08:29:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<h2 id="adding-a-scenario">Adding a scenario</h2>
+<ol>
+<li><code>mkdir scenarios/&lt;name&gt;</code>, then write <code>topology.json</code>, <code>scenario.json</code> (copy
+   the shape from an existing one) and <code>README.md</code>.</li>
+<li>Override anything from <a href="./scenarios/_base/"><code>scenarios/_base/</code></a> by placing a
+   file at the same relative path; leave out what you want inherited.</li>
+<li><code>make generate SCENARIO=&lt;name&gt;</code>, then commit the generated
+   <code>workflow-execution-parameters/*.json</code>.</li>
+<li><code>make test</code> — the generator and manifest guards run against every scenario, so
+   a new one is covered without writing a new assertion.</li>
+</ol>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

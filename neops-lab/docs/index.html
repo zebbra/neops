@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A turn-key local containerlab environment — 10 FRRouting routers and 5 Nokia SR Linux switches with real point-to-point wiring, plus the full NeOps control plane on docker compose.">
+        <meta name="description" content="A turn-key local containerlab environment — multi-vendor device topologies with real point-to-point wiring, plus the full NeOps control plane on docker compose.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4507,6 +4509,8 @@
       
         
       
+        
+      
     
     
     
@@ -4673,6 +4677,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4711,7 +4813,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4733,14 +4835,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4846,7 +4948,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4868,14 +4970,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7464,9 +7566,10 @@
 
 
 <h1 id="neops-lab">NeOps Lab</h1>
-<p><em>A turn-key <strong>local</strong> multi-vendor lab: 10 FRRouting routers + 5 Nokia SR Linux switches (15 devices) with real point-to-point wiring, provisioned by <a href="https://containerlab.dev">containerlab</a>, plus the full NeOps control plane on docker compose.</em></p>
-<p><code>neops-lab</code> gives you the whole platform on one machine. The control plane — CMS, workflow engine, monitor app, web client, worker — runs as containers; the devices attach to the same <code>lab-net</code> bridge (<code>172.30.0.0/24</code>) at fixed management IPs, so the worker can SSH to them exactly the way it would reach real hardware. Four make targets later, <strong>15 <code>Device</code> rows — each with its interfaces — appear in the web client.</strong></p>
-<p>This repo owns <em>the lab</em>: the topology, the device configs, the workflow, the bootstrap sequencing and two small helper images. Everything else comes from published <code>quay.io/zebbra</code> images.</p>
+<p><em>A turn-key <strong>local</strong> multi-vendor lab: containerised routers and switches with real point-to-point wiring, provisioned by <a href="https://containerlab.dev">containerlab</a>, plus the full NeOps control plane on docker compose.</em></p>
+<p><code>neops-lab</code> gives you the whole platform on one machine. The control plane — CMS, workflow engine, monitor app, web client, worker — runs as containers; the devices attach to the same <code>lab-net</code> bridge (<code>172.30.0.0/24</code>) at fixed management IPs, so the worker can SSH to them exactly the way it would reach real hardware. Four make targets later, <strong>one <code>Device</code> row per device — each with its interfaces — appears in the web client.</strong></p>
+<p>Which network you get is a <strong>scenario</strong>. The default, <code>wan-and-fabric</code>, is 10 FRRouting routers plus a 5-node Nokia SR Linux fabric; <code>frr-only</code> is the same FRR network without the SR Linux nodes, and boots in a fraction of the time. <code>make scenarios</code> lists them, <code>SCENARIO=&lt;name&gt;</code> selects one, and <a href="30-scenarios/">Scenarios</a> explains how to add your own.</p>
+<p>This repo owns <em>the lab</em>: the scenarios, the device configs, the workflow, the bootstrap sequencing and two small helper images. Everything else comes from published <code>quay.io/zebbra</code> images.</p>
 <div class="admonition danger">
 <p class="admonition-title">This is not <code>neops-remote-lab</code></p>
 <p>Two repos in the NeOps workspace have &ldquo;lab&rdquo; in the name and they share
@@ -7474,8 +7577,8 @@
 <ul>
 <li><strong><code>neops-lab</code></strong> (this repo) — a <em>local</em> containerlab dev/demo
   environment you run on your own machine. Docker compose + containerlab,
-  15 containerised devices, the full control plane. Nobody imports it; it
-  defines no API.</li>
+  a scenario&rsquo;s worth of containerised devices, the full control plane.
+  Nobody imports it; it defines no API.</li>
 <li><strong><code>neops-remote-lab</code></strong> — a <em>shared, remote</em> FastAPI service that gives
   automated tests exclusive, FIFO-queued access to real
   <a href="https://netlab.tools/">Netlab</a> topologies. It is a published PyPI
@@ -7492,9 +7595,9 @@ you are in the right place. See
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39S16.66.269 11 5.93c-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.55.56 1.37.74 2.12.46A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61m-7.07 7.07c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"/></svg></span> &nbsp; <strong>First time here</strong></p>
 <hr />
-<p><em>From a clean checkout to 15 discovered devices.</em></p>
+<p><em>From a clean checkout to a discovered network.</em></p>
 <ul>
-<li>What your host needs (containerlab, Docker, Quay pull access)</li>
+<li>What your host needs (containerlab, Docker; the default images pull anonymously)</li>
 <li>Four commands, in order, and what each one waits for</li>
 <li>The URLs the lab publishes and what to click first</li>
 </ul>
@@ -7506,7 +7609,7 @@ you are in the right place. See
 <p><em>The mental model before you change anything.</em></p>
 <ul>
 <li>Which containers exist, on which networks, on which ports</li>
-<li><code>topology.json</code> as the single source of truth, and what is generated from it</li>
+<li>A scenario&rsquo;s <code>topology.json</code> as the single source of truth, and what is generated from it</li>
 <li>How discovery turns a CIDR list into <code>Device</code> + <code>Interface</code> rows</li>
 </ul>
 <p><a href="10-concepts/">Concepts <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
@@ -7517,7 +7620,7 @@ you are in the right place. See
 <p><em>Day-to-day operation.</em></p>
 <ul>
 <li>Every make target, what it does, and when to reach for it</li>
-<li>The two local-only images and the three overridable published ones</li>
+<li>The two local-only images and the four overridable published ones</li>
 <li>Race conditions, boot-order symptoms, and the full-reset recipe</li>
 </ul>
 <p><a href="20-operations/">Operate the lab <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
@@ -7536,6 +7639,7 @@ you are in the right place. See
 </ul>
 </div>
 <h2 id="what-the-lab-looks-like">What the lab looks like</h2>
+<p>The <code>wan-and-fabric</code> scenario, the one you get by default:</p>
 <pre class="mermaid"><code>graph TB
   subgraph host["Your machine"]
     subgraph cp["Control plane — docker compose"]
@@ -7565,7 +7669,7 @@ you are in the right place. See
   cms --- es
   engine --- pg
   frr &lt;-- "real veth links" --&gt; srl</code></pre>
-<p>The devices are <strong>really cabled</strong> to each other — a small SR Linux spine-leaf fabric plus an FRR WAN/core/edge domain. Interfaces on connected ports come up <strong>UP</strong> and LLDP neighbours are real, which is what makes the lab useful for neighbour- and topology-aware work rather than just row-counting.</p>
+<p>The devices are <strong>really cabled</strong> to each other — a small SR Linux spine-leaf fabric plus an FRR WAN/core/edge domain. Interfaces on connected ports come up <strong>UP</strong>, and on the SR Linux fabric LLDP neighbours are real too, which is what makes the lab useful for neighbour- and topology-aware work rather than just row-counting. The FRR nodes carry no LLDP daemon (<code>scenarios/_base/devices/frr/daemons</code> runs zebra and ospfd only), so neighbour discovery there has nothing to read.</p>
 <h2 id="end-state">End state</h2>
 <p>Run <a href="getting-started/20-quickstart/">the quickstart</a> and you get:</p>
 <table>
@@ -7578,7 +7682,7 @@ you are in the right place. See
 <tbody>
 <tr>
 <td><a href="http://localhost:8080/">http://localhost:8080/</a></td>
-<td>Web client — the entity browser where the 15 devices show up</td>
+<td>Web client — the entity browser where the scenario&rsquo;s devices show up</td>
 </tr>
 <tr>
 <td><a href="http://localhost:3031">http://localhost:3031</a></td>
@@ -7609,7 +7713,13 @@ you are in the right place. See
 </div>
 <div class="admonition info">
 <p class="admonition-title">You want to change the network</p>
-<p><a href="10-concepts/20-topology/">Topology as source of truth</a> → <a href="20-operations/30-adding-a-device/">Adding a device</a> → <a href="60-development/10-dev-setup/">Dev setup</a>. Everything flows from <code>topology.json</code>; the generator tests fail until you commit the regenerated JSON.</p>
+<p><a href="10-concepts/20-topology/">Topology as source of truth</a> → <a href="20-operations/30-adding-a-device/">Adding a device</a> → <a href="60-development/10-dev-setup/">Dev setup</a>. Everything flows from the scenario&rsquo;s <code>topology.json</code>; the generator tests fail until you commit the regenerated JSON.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">You want a <em>different</em> network</p>
+<p><a href="30-scenarios/">Scenarios</a>. Group a topology, its workflows and its
+CMS scope configuration into <code>scenarios/&lt;name&gt;/</code>, then
+<code>make local-lab-up SCENARIO=&lt;name&gt;</code>.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">Discovery found nothing / found the wrong thing</p>
@@ -7623,7 +7733,7 @@ you are in the right place. See
 <li><a href="https://docs.neops.io/">NeOps platform docs</a> — the umbrella site for the wider platform.</li>
 <li>Repository <a href="https://github.com/zebbra/neops-lab/blob/develop/README.md"><code>README.md</code></a> and <a href="https://github.com/zebbra/neops-lab/blob/develop/AGENTS.md"><code>AGENTS.md</code></a> — operator contract and agent context.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:28:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:28:05+00:00'>2026-08-20 09:28:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

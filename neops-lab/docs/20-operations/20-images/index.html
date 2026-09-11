@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4509,6 +4511,8 @@
       
         
       
+        
+      
     
     
     
@@ -4811,6 +4815,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4849,7 +4951,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4871,14 +4973,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4984,7 +5086,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -5006,14 +5108,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7669,7 +7771,7 @@
 <tbody>
 <tr>
 <td><code>neops-lab-frr:latest</code></td>
-<td><code>devices/frr/</code></td>
+<td><code>devices/frr/</code> (<code>Dockerfile</code> + <code>entrypoint.sh</code> only)</td>
 <td>containerlab, as the image for every <code>kind: linux</code> node</td>
 </tr>
 <tr>
@@ -7694,8 +7796,8 @@ compose build and <code>make build-docker</code> cannot drift apart.</p>
 <ul>
 <li><code>openssh</code> with <code>PasswordAuthentication yes</code> and <code>PermitRootLogin no</code></li>
 <li>the <code>frr</code> user gets a home directory, a shell, and membership in <code>frrvty</code></li>
-<li><code>frr.conf</code> and <code>daemons</code> are baked in (<code>zebra</code>, <code>ospfd</code> and <code>vtysh</code> enabled; everything else off)</li>
-<li>the entrypoint rewrites the hostname into <code>frr.conf</code>, seeds <code>/etc/machine-id</code>, starts <code>sshd</code>, then hands off to FRR&rsquo;s own <code>docker-start</code></li>
+<li><code>frr.conf</code> and <code>daemons</code> are <strong>not</strong> baked in — they are scenario data, mounted at <code>/lab</code> and installed by the entrypoint</li>
+<li>the entrypoint copies <code>/lab/frr.conf</code> and <code>/lab/daemons</code> into <code>/etc/frr/</code>, rewrites the hostname, fixes ownership, seeds <code>/etc/machine-id</code>, starts <code>sshd</code>, then hands off to FRR&rsquo;s own <code>docker-start</code></li>
 </ul>
 <div class="admonition danger">
 <p class="admonition-title">The FRR image needs <code>NET_ADMIN</code> <strong>and</strong> <code>SYS_ADMIN</code></p>
@@ -7704,9 +7806,19 @@ configured. containerlab grants both capabilities to <code>kind: linux</code> no
 which is why this works under <code>containerlab deploy</code> — if you ever run the
 image by hand with plain <code>docker run</code>, you must add them yourself.</p>
 </div>
-<p>Interface <em>descriptions</em> are not baked into the image: containerlab <code>exec</code>s <code>devices/frr/set-aliases.sh</code> after the links are wired, which sets each interface&rsquo;s Linux alias from the generated <code>.iface</code> file. See <a href="../../10-concepts/20-topology/">Topology as source of truth</a>.</p>
+<div class="admonition danger">
+<p class="admonition-title">No <code>/lab</code> mount, no boot</p>
+<p>The entrypoint exits non-zero with <code>/lab/frr.conf is not mounted</code> rather
+than starting FRR on whatever happens to be in <code>/etc/frr</code>. A silently wrong
+routing config costs far more to debug than a container that refuses to
+start. Both flavours mount it: containerlab binds the three files from
+<code>generated/&lt;scenario&gt;/scenario/devices/frr/</code>, and the Kubernetes flavour
+carries them in its ConfigMap.</p>
+</div>
+<p><strong>One image serves every scenario.</strong> Because nothing is baked, a scenario that needs a different FRR baseline — <code>bgpd</code> instead of <code>ospfd</code>, say — ships a <code>devices/frr/daemons</code> or <code>devices/frr/frr.conf</code> delta in its own directory. There is no second image to build and no second tag to pin. See <a href="../../30-scenarios/">Scenarios</a>.</p>
+<p>Interface <em>descriptions</em> are not baked in either: containerlab <code>exec</code>s <code>/lab/set-aliases.sh</code> after the links are wired, which sets each interface&rsquo;s Linux alias from the generated <code>.iface</code> file. The script comes from <code>scenarios/_base/devices/frr/set-aliases.sh</code>. See <a href="../../10-concepts/20-topology/">Topology as source of truth</a>.</p>
 <h3 id="neops-lab-bootstrap"><code>neops-lab-bootstrap</code></h3>
-<p>A <code>python:3.12-slim</code> image with <code>pyyaml</code> and <code>requests</code>, whose entrypoint is <code>register.py</code>. It runs once per <code>docker compose up</code>, publishes every <code>workflows/*.yaml</code> through the engine&rsquo;s <code>POST /workflow-definition/publish</code>, and exits. Publishing is idempotent: an unchanged document answers <code>200 unchanged</code>, which is the normal outcome of re-running <code>make local-lab-up</code>. Published content is immutable, so <em>editing</em> a workflow without bumping its version answers <code>409</code> and fails the target — bump <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code> instead. Engines older than <a href="https://github.com/zebbra/neops-workflow-engine/commit/068753a0"><code>068753a0</code></a> have no publish route; <code>register.py</code> falls back to the legacy <code>POST /workflow-definition</code> on a 404. <code>docker compose wait lab_bootstrap</code> in <code>local-lab-up</code> blocks on that exit and propagates the code.</p>
+<p>A <code>python:3.12-slim</code> image with <code>pyyaml</code> and <code>requests</code>, whose entrypoint is <code>register.py</code>. It runs once per <code>docker compose up</code>, publishes every workflow document in the resolved scenario (<code>generated/&lt;scenario&gt;/scenario/workflows/</code>, sourced from <code>scenarios/_base/workflows/</code> unless the scenario overrides or adds one) — <code>*.yaml</code>, <code>*.yml</code> and <code>*.json</code> alike — through the engine&rsquo;s <code>POST /workflow-definition/publish</code>, and exits. Publishing is idempotent: an unchanged document answers <code>200 unchanged</code>, which is the normal outcome of re-running <code>make local-lab-up</code>. Published content is immutable, so <em>editing</em> a workflow without bumping its version answers <code>409</code> and fails the target — bump <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code> instead. Engines older than <a href="https://github.com/zebbra/neops-workflow-engine/commit/068753a0"><code>068753a0</code></a> have no publish route; <code>register.py</code> falls back to the legacy <code>POST /workflow-definition</code> on a 404. <code>docker compose wait lab_bootstrap</code> in <code>local-lab-up</code> blocks on that exit and propagates the code.</p>
 <h2 id="pulled-the-neops-control-plane">Pulled — the NeOps control plane</h2>
 <table>
 <thead>
@@ -7734,18 +7846,18 @@ image by hand with plain <code>docker run</code>, you must add them yourself.</p
 </tr>
 <tr>
 <td><code>worker</code></td>
-<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> ⚠️ <strong>unusable — build locally</strong></td>
+<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> — carries the base function blocks</td>
 <td><code>NEOPS_WORKER_SDK_IMAGE</code></td>
 </tr>
 </tbody>
 </table>
-<p>The CMS, the web client and the developer-preview engine are all public, so the default lab pulls with no <code>docker login</code>. The <strong>full licensed engine</strong> (<code>quay.io/zebbra/neops-workflow-engine</code>) is not, and neither is <code>neops-worker-sdk</code> — but that one is built locally anyway.</p>
+<p>The CMS, the web client, the worker and the developer-preview engine are all public, so the default lab pulls with no <code>docker login</code>. The <strong>full licensed engine</strong> (<code>quay.io/zebbra/neops-workflow-engine</code>) is the one exception.</p>
 <p>The make targets pull the published tags with <code>--policy always</code>; the services&rsquo; <code>pull_policy: missing</code> would otherwise skip images already on disk. The default <code>develop</code> is republished on every merge to the engine&rsquo;s <code>develop</code> branch and never expires, so <code>make local-env-up</code> is all it takes to move forward. <code>0.42.2-beta.3</code> remains the oldest engine tag the lab supports (raised body limits + the publish route).</p>
 <div class="admonition warning">
 <p class="admonition-title">Do not pin the preview&rsquo;s <code>latest</code></p>
-<p>The preview&rsquo;s <code>latest</code> is 0.42.1 — below the oldest engine the lab supports — because <code>latest</code> only advances on non-prerelease releases. Prerelease tags carry a <code>quay.expires-after=20d</code> label and vanish (<code>0.42.2-beta.3</code> on <strong>2026-09-07</strong>); <code>develop</code> carries no such label.</p>
+<p>The preview&rsquo;s <code>latest</code> is 0.42.1 — below the oldest engine the lab supports — because <code>latest</code> only advances on non-prerelease releases. Prerelease tags carry a <code>quay.expires-after=20d</code> label and vanish — <code>0.42.2-beta.3</code> did, on 2026-09-07 — so a pinned beta stops resolving without warning; <code>develop</code> carries no such label.</p>
 </div>
-<p>Plus third-party images that need no credentials: <code>postgres:15-alpine</code>, <code>redis:5-alpine</code>, <code>docker.elastic.co/elasticsearch/elasticsearch:8.9.2</code>, <code>busybox</code>, and <code>ghcr.io/nokia/srlinux:26.3</code> for the SR Linux devices.</p>
+<p>Plus third-party images that need no credentials: <code>postgres:15-alpine</code>, <code>redis:7-alpine</code>, <code>docker.elastic.co/elasticsearch/elasticsearch:8.9.2</code>, <code>busybox</code>, and <code>ghcr.io/nokia/srlinux:26.3</code> for the SR Linux devices.</p>
 <h2 id="running-a-locally-built-image">Running a locally-built image</h2>
 <p>Edit <code>.env</code> (docker compose reads it automatically; <code>make local-lab-up</code> creates it from <code>.env.example</code> if missing) or export the variable:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_WORKER_SDK_IMAGE</span><span class="o">=</span>neops-worker-sdk:latest
@@ -7761,27 +7873,24 @@ is a warning; <code>up -d</code> uses the local image (<code>pull_policy: missin
 </div>
 <h3 id="why-you-would">Why you would</h3>
 <ul>
-<li><strong>Worker SDK — not optional today.</strong> The published <code>develop</code> tag is built from
-  <code>neops-worker-sdk-py</code>&rsquo;s <code>develop</code>, where <code>neops/</code> holds only <code>.gitkeep</code> files and
-  the Dockerfile copies neither <code>neops/</code> nor <code>README.md</code>. The container therefore
-  dies at start (<code>OSError: Readme file does not exist: README.md</code>) and carries no
-  function blocks. The lab depends on
-  <code>fb.base.neops.io/global_discover_network:0.1.0</code> shipping <em>inside</em> the worker
-  image — it is not bind-mounted from here — and that block plus the <code>COPY ./neops</code>
-  that ships it live on the SDK&rsquo;s <code>feature/technopark</code> branch (open PR
-  <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">#127</a>). Until it merges
-  and CI republishes the tag, build the image yourself and point
-  <code>NEOPS_WORKER_SDK_IMAGE</code> at it.</li>
+<li><strong>Worker SDK</strong> — to exercise a function block before it is released. The lab
+  depends on <code>fb.base.neops.io/global_discover_network:0.1.0</code> shipping <em>inside</em>
+  the worker image rather than being bind-mounted from here, so a block you are
+  editing reaches the lab only through a rebuilt image:
+  <code>make -C ../neops-worker-sdk-py build-docker</code>, then point
+  <code>NEOPS_WORKER_SDK_IMAGE</code> at <code>neops-worker-sdk:latest</code>.</li>
 <li><strong>Workflow engine</strong> — discovery emits a few hundred <code>Interface</code> rows in one job result, so it needs an engine with the large-payload and reference-resolution fixes. If the published <code>develop</code> tag lags, run a local build.</li>
 <li><strong>Web client</strong> — to preview UI changes against a populated CMS.</li>
 </ul>
 <h2 id="verifying-what-you-are-running">Verifying what you are running</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">COMPOSE_FILE</span><span class="o">=</span>docker-compose.yml:docker-compose.worker.yml
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>images<span class="w">                       </span><span class="c1"># image + tag per service</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb<span class="w"> </span><span class="c1"># base function blocks in the image</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab<span class="w">      </span><span class="c1"># this repo, through the read-only mount</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>wan-and-fabric<span class="w">   </span><span class="c1"># compose refuses to interpolate without it</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>images<span class="w">                       </span><span class="c1"># image + tag per service</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb<span class="w"> </span><span class="c1"># base function blocks in the image</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab<span class="w">      </span><span class="c1"># this repo, through the read-only mount</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/lab/generated/wan-and-fabric/scenario<span class="w">  </span><span class="c1"># the resolved scenario</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 08:12:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T08:12:43+00:00'>2026-08-26 08:12:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The lab runs the engine in enforce mode — what the three modes are, which identities exist, where their grants are declared, and how the monitor app gets a token.">
+        <meta name="description" content="How the lab authorizes engine calls — what the three modes are, which identities exist, where their grants are declared, and how the monitor app gets a token.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4639,6 +4641,8 @@
       
         
       
+        
+      
     
     
     
@@ -4805,6 +4809,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4843,7 +4945,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4865,14 +4967,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4978,7 +5080,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -5000,14 +5102,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7642,7 +7744,7 @@
 
 
 <h1 id="authorization">Authorization</h1>
-<p><em>The lab is the reference deployment for NeOps authorization: the engine enforces, every caller carries a token, and the whole model is declared in one committed file.</em></p>
+<p><em>The lab is the reference deployment for NeOps authorization: every caller carries a token, the whole model is declared in one committed file, and one variable decides how hard the engine gates.</em></p>
 <h2 id="the-three-modes">The three modes</h2>
 <p>The engine reads <code>NEOPS_AUTHZ_MODE</code>, and rejects anything outside these three values at startup:</p>
 <table>
@@ -7667,7 +7769,8 @@
 </tr>
 </tbody>
 </table>
-<p><code>docker-compose.yml</code> sets <code>enforce</code>. A lab that gates nothing would prove nothing about the deployments it stands in for, and the failure modes that matter — a missing grant, an expired token, a CORS origin nobody enumerated — only appear under enforcement.</p>
+<p><code>docker-compose.yml</code> currently sets <code>disabled</code>. Everything <code>enforce</code> needs is wired up regardless — the mounted public key, the enumerated CORS origins, a bearer token on every lab caller — so turning gating on is editing that one value on the <code>workflow_engine</code> service and re-running <code>make local-env-up</code>.</p>
+<p>Leave it on <code>enforce</code> when you want the lab to stand in for a real deployment: the failure modes that matter — a missing grant, an expired token, a CORS origin nobody enumerated — only appear under enforcement.</p>
 <p>Two more variables travel with it on the <code>workflow_engine</code> service:</p>
 <ul>
 <li><code>NEOPS_JWT_PUBLIC_KEY_PATH</code> — the SPKI PEM the engine verifies RS256 signatures against. <code>make lab-jwt</code> mints <code>cms/jwt/{private,public}.pem</code> for the CMS; the public half is mounted into the engine at <code>/etc/neops/jwt/public.pem</code>.</li>
@@ -7716,7 +7819,8 @@
 <p>All four roles carry the same CMS visibility (<code>default_permission</code> 7 and a <code>RoleScope</code> on <code>Global</code>), so the only difference between the personas is their workflow authority. Each profile&rsquo;s contents come from the CMS: <code>apply_cms_config</code> prints the exact flags per element as <code>grant_workflow_permissions</code> applies them.</p>
 <p><code>author</code> and <code>operator</code> are partial profiles, so those two personas meet a <code>403</code> in the monitor app. The monitor answers one at the request that met it: the panel or the affordance reports the permission it wanted, and the rest of the page keeps working. Signing a persona out takes a request with no valid token, so even the narrowest profile reaches a usable app.</p>
 <h2 id="where-the-grants-are-declared">Where the grants are declared</h2>
-<p><code>cms/permissions.json</code>:</p>
+<p><code>scenarios/_base/cms/permissions.json</code>, resolved into the scenario tree like every
+other overridable asset:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;roles&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;lab-admin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
@@ -7784,7 +7888,7 @@ and scopes but no workflow grants — see <a href="#running-branch-images">Runni
 </div>
 <h2 id="how-the-monitor-app-gets-a-token">How the monitor app gets a token</h2>
 <p>The monitor app at <a href="http://localhost:3031">http://localhost:3031</a> holds no session of its own. The web client embeds it in an iframe (<code>FRONTEND_WORKFLOW_MANAGER_URL</code>) and relays its access token over <code>postMessage</code>; the monitor keeps it in memory only.</p>
-<p>The relay&rsquo;s trust anchor is <code>window.__NEOPS_CONFIG__.webclientOrigin</code>, which the lab supplies through <code>monitor/config.js</code>, bind-mounted over <code>rest/monitor-app/static/config.js</code>. Setting <code>WEBCLIENT_ORIGIN</code> on the service has no effect here: that variable is read by an nginx entrypoint, and this service runs the engine image with <code>npm run dev</code>. See <a href="../../60-development/20-invariants/">invariant 16</a>.</p>
+<p>The relay&rsquo;s trust anchor is <code>window.__NEOPS_CONFIG__.webclientOrigin</code>, which the lab supplies through <code>monitor/config.js</code>, bind-mounted over <code>rest/monitor-app/static/config.js</code>. Setting <code>WEBCLIENT_ORIGIN</code> on the service has no effect here: that variable is read by an nginx entrypoint, and this service runs the engine image with <code>npm run dev</code>. See <a href="../../60-development/20-invariants/">invariant 21</a>.</p>
 <p>Opening <code>http://localhost:3031</code> directly gives an unauthenticated monitor, because no web client is there to relay from. Reach it through the web client&rsquo;s workflow-monitor page.</p>
 <h2 id="tokens-expire-and-logins-are-rate-limited">Tokens expire, and logins are rate-limited</h2>
 <p>Access tokens last 15 minutes (<code>NEOPS_JWT_ACCESS_LIFETIME_MINUTES</code>, a CMS default this lab keeps). A token carries the grants its account held at the moment it was issued, and the engine reads them from the token alone, so a grant added or withdrawn afterwards reaches the engine at the next login and no sooner. <code>make local-lab-discover</code> polls to a 900-second ceiling, so a discovery minted at the start and still running at the end outlives its token; <code>run_workflow</code> reports that and stops polling. The execution itself continues — watch it in the monitor.</p>

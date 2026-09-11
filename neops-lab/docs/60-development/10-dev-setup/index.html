@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4507,6 +4509,8 @@
       
         
       
+        
+      
     
     
     
@@ -4673,6 +4677,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4713,7 +4815,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -4735,14 +4837,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4989,7 +5091,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -5011,14 +5113,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7670,7 +7772,7 @@
 </span></code></pre></div>
 <p>That gets <code>pytest</code>, <code>ruff</code> and <code>pyrefly</code>. Nothing else is needed: the repo declares <strong>no runtime dependencies</strong>, because the host scripts are stdlib-only by design.</p>
 <h2 id="the-gates">The gates</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>check<span class="w">     </span><span class="c1"># lint + typeCheck + test</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>check<span class="w">     </span><span class="c1"># lint + typeCheck + test + py39-check + shell-syntax</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -7710,7 +7812,7 @@
 <h2 id="what-ci-runs">What CI runs</h2>
 <p><code>.github/workflows/ci.yml</code>, on pushes to <code>main</code>/<code>develop</code> and on every PR:</p>
 <ol>
-<li><strong><code>lint-test</code></strong> on <code>ubuntu-latest</code> — <code>uv sync --group dev --frozen</code>, then ruff format check, ruff lint, pyrefly, pytest, <code>make py39-check</code>, <code>make shell-syntax</code>, a parse of the bash entry points with a real bash 3.2 (the <code>bash:3.2</code> image — the shell macOS ships), and a check that <code>gen_clab_topology</code> reproduces the committed parameter files. Exactly <code>make check</code> plus the 3.2 parse.</li>
+<li><strong><code>lint-test</code></strong> on <code>ubuntu-latest</code> — <code>uv sync --group dev --frozen</code>, then ruff format check, ruff lint, pyrefly, <code>pytest tests</code>, <code>make py39-check</code>, and a parse of the bash entry points with a real bash 3.2 (the <code>bash:3.2</code> image — the shell macOS ships) in place of <code>make shell-syntax</code>. The parameter-file reproduction is not a separate step: it is one of the pytest assertions.</li>
 <li><strong><code>docker</code></strong> on the self-hosted <code>hetzner</code> runner, gated on <code>lint-test</code> — <code>make build-docker</code>. The images are local-only, so this job exists purely to make a broken Dockerfile fail in CI rather than on a developer&rsquo;s first <code>make local-lab-up</code>.</li>
 </ol>
 <p>There is no job that stands the lab up: 15 device containers and a few GB of SR Linux RAM do not belong in CI.</p>
@@ -7718,15 +7820,17 @@
 <div class="admonition danger">
 <p class="admonition-title">Add a new host script to <strong>both</strong> include lists or it is never checked</p>
 <p>The host scripts are executables with <strong>no <code>.py</code> extension</strong>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>gen_clab_topology  gen_device_configs  run_workflow  wait_ready  wait_devices
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>resolve_scenario  gen_clab_topology  gen_device_configs
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>gen_kind_manifests  gen_kind_discover_params
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>run_workflow  wait_ready  wait_devices
 </span></code></pre></div>
 <p>Ruff and pyrefly both discover files by extension, so each script has to be
 named explicitly in <code>pyproject.toml</code> — in <strong>two</strong> places:</p>
 <div class="language-toml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">[tool.ruff]</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">extend-include</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;gen_clab_topology&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gen_device_configs&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run_workflow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wait_devices&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wait_ready&quot;</span><span class="p">]</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">extend-include</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;gen_clab_topology&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gen_device_configs&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…, </span><span class="s2">&quot;resolve_scenario&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run_workflow&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…]</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">[tool.pyrefly]</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">project-includes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests/**/*.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;function_blocks/**/*.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gen_clab_topology&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…]</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">project-includes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests/**/*.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gen_clab_topology&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…, </span><span class="s2">&quot;resolve_scenario&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…]</span>
 </span></code></pre></div>
 <p>Miss one and the script is <strong>silently</strong> never linted or type-checked. There
 is no warning; the gate just passes.</p>
@@ -7735,9 +7839,10 @@ is no warning; the gate just passes.</p>
 <p>Three callers depend on the bare names:</p>
 <ul>
 <li><code>tests/*</code> load them by path via <code>importlib.machinery.SourceFileLoader</code> — <code>spec_from_file_location</code> returns <code>None</code> for an unrecognised extension, which is why the tests use the explicit-loader form;</li>
-<li><code>gen_clab_topology</code> loads <code>gen_device_configs</code> the same way;</li>
-<li>the <code>Makefile</code> and the docs invoke them as <code>./gen_clab_topology</code>.</li>
+<li><code>gen_clab_topology</code> loads <code>gen_device_configs</code> the same way, which loads <code>resolve_scenario</code> in turn;</li>
+<li>the <code>Makefile</code> invokes them as <code>./gen_clab_topology</code>.</li>
 </ul>
+<p>A third place needs updating too: <code>tools/import_host_scripts.py</code> enumerates them for <code>make py39-check</code>.</p>
 <p>Renaming them to <code>*.py</code> is not an option — it would break every caller.</p>
 <div class="admonition note">
 <p class="admonition-title"><code>apply_cms_config</code>, <code>containerlab</code> and <code>doctor</code> are bash, not Python</p>
@@ -7750,12 +7855,17 @@ list, because <code>extend-include</code> only applies to discovery.</p>
 <h2 id="tests">Tests</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests
 </span></code></pre></div>
-<p>Two modules, both loading the generator scripts by path:</p>
+<p>Eight modules, each loading the script under test through <code>labscripts</code>:</p>
 <ul>
 <li><code>tests/test_gen_device_configs.py</code> — the per-device renderers: FRR <code>.iface</code> lines, the loopback-first rule, SR Linux <code>set /</code> lines, and the <code>ethernet-1/N</code> → <code>e1/N</code> description conversion.</li>
-<li><code>tests/test_gen_clab_topology.py</code> — interface-name mapping, veth-link deduplication, dummy-link generation, and <strong>the byte-for-byte reproduction of the committed <code>workflow-execution-parameters/*.json</code></strong>.</li>
+<li><code>tests/test_gen_clab_topology.py</code> — interface-name mapping, veth-link deduplication, dummy-link generation, the FRR nodes&rsquo; <code>/lab</code> binds, and <strong>the byte-for-byte reproduction of each scenario&rsquo;s committed <code>workflow-execution-parameters/*.json</code></strong>.</li>
+<li><code>tests/test_resolve_scenario.py</code> — the overlay itself: per-file precedence, additions, pruning of a removed override, and the error paths.</li>
+<li><code>tests/test_scenario_manifests.py</code> — every <code>scenario.json</code> is complete and matches its directory, and every scenario&rsquo;s device-to-device links are symmetric.</li>
+<li><code>tests/test_gen_kind_manifests.py</code> and <code>tests/test_gen_kind_discover_params.py</code> — the Kubernetes flavour&rsquo;s Deployments, Services and <code>/32</code> discovery targets, with <code>kubectl</code> stubbed so the suite never touches a cluster.</li>
+<li><code>tests/test_wait_devices.py</code> — which hosts the readiness poll waits on, per scenario. The regression guard for a poller that reads one fixed topology whatever scenario is selected.</li>
+<li><code>tests/test_host_invariants.py</code> — the cross-file constants the compose files and the generators must agree on.</li>
 </ul>
-<p>That last one is the repo&rsquo;s real guard. <code>_dump_discover_params</code> hand-rolls a compact layout <code>json.dumps</code> cannot produce, so the assertion is exact: change <code>topology.json</code>, rerun <code>./gen_clab_topology</code>, and commit the regenerated JSON — or <code>make test</code> fails.</p>
+<p>The byte-for-byte assertion is the repo&rsquo;s real guard. <code>_dump_discover_params</code> hand-rolls a compact layout <code>json.dumps</code> cannot produce, so it is exact: change a scenario&rsquo;s <code>topology.json</code>, run <code>make generate SCENARIO=&lt;name&gt;</code>, and commit the regenerated JSON — or <code>make test</code> fails. It is parametrised over <code>scenarios/*</code>, so adding a scenario extends the guard rather than leaving it covering only the first one.</p>
 <h2 id="working-on-the-docs">Working on the docs</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>doc-serve<span class="w">    </span><span class="c1"># live preview with regeneration on config change</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>doc-build<span class="w">    </span><span class="c1"># what to run before pushing docs changes</span>
@@ -7773,7 +7883,7 @@ deep-merged over the shared <code>mkdocs_base.yml</code> (vendored under
   differently named file.</li>
 </ul>
 </div>
-<p><code>docs/</code> contains symlinks to the repo&rsquo;s source directories (<code>workflows/</code>, <code>devices/</code>, <code>clab/</code>, <code>workflow-execution-parameters/</code>, …) created by the setup script. That is what makes <code>--8&lt;--</code> snippet includes work without referencing paths outside <code>docs/</code>:</p>
+<p><code>docs/</code> contains symlinks to the repo&rsquo;s source directories (<code>scenarios/</code>, <code>devices/</code>, <code>clab/</code>, <code>tests/</code>, …) created by the setup script. That is what makes <code>--8&lt;--</code> snippet includes work without referencing paths outside <code>docs/</code>:</p>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gh"># Lab discovery: SSH into the containerlab devices and register them as Device</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gh"># entities in the CMS.</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>label: simple_lab_discovery
@@ -7833,7 +7943,7 @@ deep-merged over the shared <code>mkdocs_base.yml</code> (vendored under
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>check
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>make<span class="w"> </span>doc-build<span class="w">   </span><span class="c1"># if you touched docs/ or mkdocs_custom.yml</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

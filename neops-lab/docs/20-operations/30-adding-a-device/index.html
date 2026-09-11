@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The four-step loop for extending the lab — edit topology.json, regenerate, redeploy, and commit the regenerated parameter files.">
+        <meta name="description" content="The four-step loop for extending the lab — edit the scenario's topology.json, regenerate, redeploy, and commit the regenerated parameter files.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4509,6 +4511,8 @@
       
         
       
+        
+      
     
     
     
@@ -4686,10 +4690,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-edit-topologyjson" class="md-nav__link">
+  <a href="#1-edit-scenariosscenariotopologyjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Edit topology.json
+        1. Edit scenarios/&lt;scenario&gt;/topology.json
       
     </span>
   </a>
@@ -4730,10 +4734,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-if-you-touched-the-mixed-scenario" class="md-nav__link">
+  <a href="#5-if-you-touched-the-mixed-parameter-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. If you touched the mixed scenario
+        5. If you touched the mixed parameter file
       
     </span>
   </a>
@@ -4745,6 +4749,17 @@
     <span class="md-ellipsis">
       
         Removing a device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-whole-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a whole scenario
       
     </span>
   </a>
@@ -4799,6 +4814,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4837,7 +4950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4859,14 +4972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4972,7 +5085,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4994,14 +5107,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7443,10 +7556,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-edit-topologyjson" class="md-nav__link">
+  <a href="#1-edit-scenariosscenariotopologyjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Edit topology.json
+        1. Edit scenarios/&lt;scenario&gt;/topology.json
       
     </span>
   </a>
@@ -7487,10 +7600,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-if-you-touched-the-mixed-scenario" class="md-nav__link">
+  <a href="#5-if-you-touched-the-mixed-parameter-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. If you touched the mixed scenario
+        5. If you touched the mixed parameter file
       
     </span>
   </a>
@@ -7502,6 +7615,17 @@
     <span class="md-ellipsis">
       
         Removing a device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-whole-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a whole scenario
       
     </span>
   </a>
@@ -7630,8 +7754,9 @@
 
 
 <h1 id="adding-a-device">Adding a device</h1>
-<p><em>Everything about the network comes from <code>topology.json</code>, so adding a device is one edit plus one regeneration. The step people miss is committing the regenerated JSON.</em></p>
-<h2 id="1-edit-topologyjson">1. Edit <code>topology.json</code></h2>
+<p><em>Everything about the network comes from the scenario&rsquo;s <code>topology.json</code>, so adding a device is one edit plus one regeneration. The step people miss is committing the regenerated JSON.</em></p>
+<p>Every command below acts on one scenario. <code>SCENARIO</code> selects it and defaults to <code>wan-and-fabric</code>; append <code>SCENARIO=&lt;name&gt;</code> to work on another. <code>make scenarios</code> lists them.</p>
+<h2 id="1-edit-scenariosscenariotopologyjson">1. Edit <code>scenarios/&lt;scenario&gt;/topology.json</code></h2>
 <p>Add an entry under <code>devices</code>, keyed by hostname:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&quot;leaf-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;mgmt_ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.36&quot;</span><span class="p">,</span>
@@ -7654,7 +7779,7 @@
 <tbody>
 <tr>
 <td><code>mgmt_ip</code></td>
-<td>A free address in <code>172.30.0.0/24</code>. Existing devices use <code>.11</code>–<code>.20</code> (FRR) and <code>.31</code>–<code>.35</code> (SR Linux); <code>.1</code> is the bridge gateway.</td>
+<td>A free address in <code>172.30.0.0/24</code>, unique within the scenario. In <code>wan-and-fabric</code> the existing devices use <code>.11</code>–<code>.20</code> (FRR) and <code>.31</code>–<code>.35</code> (SR Linux); <code>.1</code> is the bridge gateway.</td>
 </tr>
 <tr>
 <td><code>vendor</code></td>
@@ -7686,34 +7811,51 @@ pointing back at <code>leaf-04:e1/1</code>.</p>
 <h2 id="2-regenerate-and-redeploy">2. Regenerate and redeploy</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>local-lab-up
 </span></code></pre></div>
-<p><code>local-lab-up</code> runs <code>./gen_clab_topology</code> for you, so this single command rebuilds the containerlab topology (real link or <code>dummy</code> stub, plus the node&rsquo;s image and credentials) and the three generated parameter files, then redeploys.</p>
+<p><code>local-lab-up</code> resolves the scenario and runs <code>./gen_clab_topology</code> for you, so this single command rebuilds the containerlab topology (real link or <code>dummy</code> stub, plus the node&rsquo;s image and credentials) and the three generated parameter files, then redeploys.</p>
 <p>To regenerate without touching the running lab:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./gen_clab_topology
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>generate<span class="w">                      </span><span class="c1"># the default scenario</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>make<span class="w"> </span>generate<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>frr-only<span class="w">    </span><span class="c1"># another one</span>
 </span></code></pre></div>
 <h2 id="3-discover-it">3. Discover it</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
-<p>The new device is picked up automatically: <code>discover-params.json</code> now contains its <code>/32</code>, and <code>wait_devices</code> reads the mgmt IPs straight from <code>topology.json</code>.</p>
+<p>The new device is picked up automatically: the scenario&rsquo;s <code>discover-params.json</code> now contains its <code>/32</code>, and <code>wait_devices</code> reads the mgmt IPs straight from the scenario&rsquo;s <code>topology.json</code>.</p>
 <h2 id="4-commit-the-regenerated-json">4. Commit the regenerated JSON</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span><span class="nb">test</span>
 </span></code></pre></div>
 <div class="admonition danger">
 <p class="admonition-title">The generator tests fail until you commit the regenerated files</p>
-<p><code>tests/</code> assert that regenerating from <code>topology.json</code> reproduces the
-committed <code>workflow-execution-parameters/*.json</code> <strong>byte-for-byte</strong>. Adding
-a device changes three of those files, so <code>make test</code> fails until you
-stage them:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./gen_clab_topology
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>git<span class="w"> </span>add<span class="w"> </span>workflow-execution-parameters/
+<p><code>tests/</code> assert that regenerating from each scenario&rsquo;s <code>topology.json</code>
+reproduces its committed <code>workflow-execution-parameters/*.json</code>
+<strong>byte-for-byte</strong>, and they are parametrised over every scenario. Adding a
+device changes three of those files, so <code>make test</code> fails until you stage
+them:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>generate<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>wan-and-fabric
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>git<span class="w"> </span>add<span class="w"> </span>scenarios/wan-and-fabric/workflow-execution-parameters/
 </span></code></pre></div>
 <p>This is the intended guard, not an annoyance — it is what keeps the
 committed parameter files honest.</p>
 </div>
-<h2 id="5-if-you-touched-the-mixed-scenario">5. If you touched the mixed scenario</h2>
-<p><code>discover-params-mixed.json</code> has <strong>no generator and no test coverage</strong>. If your new device belongs in that scenario — the <code>/24</code> plus per-host <code>/32</code> credential overrides — edit it by hand. Nothing will remind you.</p>
+<h2 id="5-if-you-touched-the-mixed-parameter-file">5. If you touched the mixed parameter file</h2>
+<p><code>discover-params-mixed.json</code> has <strong>no generator and no test coverage</strong>. If your new device belongs in that targeting variant — the <code>/24</code> plus per-host <code>/32</code> credential overrides — edit it by hand. Nothing will remind you. Only <code>wan-and-fabric</code> carries one; a single-vendor scenario has nothing to mix.</p>
 <h2 id="removing-a-device">Removing a device</h2>
-<p>Delete its entry from <code>topology.json</code> and regenerate. <code>gen_clab_topology</code> prunes stale <code>generated/frr/*.iface</code> and <code>generated/srl/*.cli</code> files for hostnames that no longer exist, so nothing is left behind. Commit the regenerated parameter files as above.</p>
+<p>Delete its entry from the scenario&rsquo;s <code>topology.json</code> and regenerate. <code>gen_clab_topology</code> prunes stale <code>generated/&lt;scenario&gt;/clab/frr/*.iface</code> and <code>generated/&lt;scenario&gt;/clab/srl/*.cli</code> files for hostnames that no longer exist, so nothing is left behind. Commit the regenerated parameter files as above.</p>
+<div class="admonition warning">
+<p class="admonition-title">Cut the cables on both sides</p>
+<p>Removing a device leaves every interface that pointed at it aiming at
+something that is gone, and <code>gen_clab_topology</code> silently renders those as
+<code>dummy</code> links rather than veths. <code>tests/test_scenario_manifests.py</code> checks
+that device-to-device links are symmetric, so <code>make test</code> catches it — but
+fix the peers, do not just satisfy the test.</p>
+</div>
 <p>Devices already discovered into the CMS are <strong>not</strong> removed — discovery only adds. Use <code>make local-env-prune</code> for a clean CMS.</p>
+<h2 id="adding-a-whole-scenario">Adding a whole scenario</h2>
+<p>The same loop, plus two files. Create <code>scenarios/&lt;name&gt;/</code> with a <code>topology.json</code>, a <code>scenario.json</code> manifest (name, title, summary, <code>flavours</code>, <code>demonstrates</code>) and a <code>README.md</code>, then:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>generate<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>&lt;name&gt;
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>make<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>git<span class="w"> </span>add<span class="w"> </span>scenarios/&lt;name&gt;
+</span></code></pre></div>
+<p>Add only what differs from <code>scenarios/_base/</code> — workflows, scope configuration, FRR device config, function blocks and the OIDC config are all inherited file by file. See <a href="../../30-scenarios/">Scenarios</a>.</p>
 <h2 id="adding-a-different-vendor">Adding a different vendor</h2>
 <p>Not supported today without code changes. <code>gen_clab_topology</code> hardcodes the two vendors in three places:</p>
 <ul>
@@ -7722,7 +7864,7 @@ committed parameter files honest.</p>
 <li><code>gen_device_configs</code> — <code>render_frr</code> / <code>render_srl</code>.</li>
 </ul>
 <p>Discovery also needs a matching connection plugin in <code>neops-worker-sdk-py</code> for the new platform. Treat it as a cross-repo change.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

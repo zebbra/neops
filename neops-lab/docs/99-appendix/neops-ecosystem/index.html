@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4507,6 +4509,8 @@
       
         
       
+        
+      
     
     
     
@@ -4673,6 +4677,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4711,7 +4813,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4733,14 +4835,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4848,7 +4950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -4870,14 +4972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7688,7 +7790,7 @@
 </tr>
 <tr>
 <td><strong>Device platform</strong></td>
-<td>containerlab, from <code>topology.json</code></td>
+<td>containerlab, from <code>scenarios/&lt;scenario&gt;/topology.json</code></td>
 <td><a href="https://netlab.tools/">Netlab</a>, from Netlab topology YAML</td>
 </tr>
 <tr>
@@ -7740,7 +7842,7 @@
 <h3 id="the-function-block-identifier">The function-block identifier</h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>fb.base.neops.io/global_discover_network:0.1.0
 </span></code></pre></div>
-<p>Named in <code>workflows/simple-lab-discovery.workflow.yaml</code> and in the <code>Makefile</code>&rsquo;s <code>DISCOVER_FB</code>. Renaming it in <code>neops-worker-sdk-py</code> breaks both, <strong>with no compile-time check</strong>. Symptom: <code>Function block … not found</code>.</p>
+<p>Named in <code>scenarios/_base/workflows/simple-lab-discovery.workflow.yaml</code> and in the <code>Makefile</code>&rsquo;s <code>DISCOVER_FB</code>. Renaming it in <code>neops-worker-sdk-py</code> breaks both, <strong>with no compile-time check</strong>. Symptom: <code>Function block … not found</code>.</p>
 <h3 id="the-workflow-engine-rest-api">The workflow-engine REST API</h3>
 <p>Used by three things in this repo:</p>
 <table>
@@ -7773,7 +7875,7 @@
 <ul>
 <li>a function-block rename in <code>neops-worker-sdk-py</code> → update the workflow YAML and <code>DISCOVER_FB</code> here;</li>
 <li>an engine REST/DTO change in <code>neops-workflow-engine</code> → check <code>register.py</code>, <code>wait_ready</code>, <code>run_workflow</code>;</li>
-<li>a CMS model or permission change in <code>neops-core</code> → check <code>apply_cms_config</code> and the <code>scope/Global/*.json</code> files.</li>
+<li>a CMS model or permission change in <code>neops-core</code> → check <code>apply_cms_config</code> and the <code>scenarios/_base/scope/Global/*.json</code> files.</li>
 </ul>
 <p>Conversely, the lab is a good place to <em>notice</em> such a change early, because it exercises the whole stack end to end against real devices with one command.</p>
 <h2 id="external-references">External references</h2>
@@ -7784,7 +7886,7 @@
 <li><a href="https://netlab.tools/">Netlab</a> — used by <code>neops-remote-lab</code>, <strong>not</strong> by this repo.</li>
 <li><a href="https://docs.neops.io/">NeOps platform docs</a> — the umbrella site.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 10:34:51'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T10:34:51+00:00'>2026-08-26 10:34:51</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

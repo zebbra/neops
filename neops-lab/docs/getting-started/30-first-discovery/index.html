@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Run the discovery workflow, watch it execute, and see 15 devices with their interfaces appear in the CMS — then swap parameter files to change how discovery is targeted.">
+        <meta name="description" content="Run the discovery workflow, watch it execute, and see the devices with their interfaces appear in the CMS — then swap parameter files to change how discovery is targeted.">
       
       
       
@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4611,6 +4613,8 @@
       
         
       
+        
+      
     
     
     
@@ -4777,6 +4781,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4815,7 +4917,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4837,14 +4939,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4950,7 +5052,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4972,14 +5074,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7586,15 +7688,16 @@
 
 
 <h1 id="your-first-discovery">Your first discovery</h1>
-<p><em>One command turns 15 running containers into 15 <code>Device</code> entities with their <code>Interface</code> rows.</em></p>
+<p><em>One command turns the running containers into <code>Device</code> entities with their <code>Interface</code> rows.</em></p>
+<p>This page follows the default <code>wan-and-fabric</code> scenario, so the numbers below are its 15 devices. Another scenario discovers its own, from its own parameter files under <code>scenarios/&lt;name&gt;/workflow-execution-parameters/</code> — see <a href="../../30-scenarios/">Scenarios</a>.</p>
 <h2 id="run-it">Run it</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <p>The target does three things:</p>
 <ol>
 <li><code>./wait_ready fb.base.neops.io/global_discover_network:0.1.0</code> — confirm an online worker is registered for the discovery function block.</li>
-<li><code>docker compose exec -T worker python3 lab/wait_devices</code> — confirm every device in <code>topology.json</code> accepts SSH.</li>
-<li><code>./run_workflow --timeout 900 wf.lab.neops.io/simple_lab_discovery:1.2.0 @workflow-execution-parameters/discover-params.json</code></li>
+<li><code>docker compose exec -T worker python3 lab/wait_devices</code> — confirm every device in the scenario&rsquo;s <code>topology.json</code> accepts SSH.</li>
+<li><code>./run_workflow --timeout 900 wf.lab.neops.io/simple_lab_discovery:1.2.0 @scenarios/wan-and-fabric/workflow-execution-parameters/discover-params.json</code></li>
 </ol>
 <p><code>run_workflow</code> POSTs to <code>/workflow-execution</code>, prints the execution UUID, then polls until the execution reaches a terminal state:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>execution 4f2c…-…-…
@@ -7622,7 +7725,7 @@ adds a second set of interface rows. Run discovery against a <em>fresh</em> CMS
 matter.</p>
 </div>
 <h2 id="targeting-discovery-differently">Targeting discovery differently</h2>
-<p><code>make local-lab-discover</code> takes a <code>DISCOVER_PARAMS</code> override, so the same workflow can be pointed at four different shapes of input:</p>
+<p><code>make local-lab-discover</code> takes a <code>DISCOVER_PARAMS</code> override, so the same workflow can be pointed at four different shapes of input. The first three are generated by <code>make generate</code> for every scenario; the mixed file is hand-written and only exists where mixing platforms has something to express — <code>frr-only</code> has no such file, because every device there runs the same NOS.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Explicit hosts (default)</label><label for="__tabbed_1_2">Autodetect</label><label for="__tabbed_1_3">Subnet expansion</label><label for="__tabbed_1_4">Mixed</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -7630,7 +7733,7 @@ matter.</p>
 platform — so no host is ever tried with the other vendor&rsquo;s login.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
-<div class="language-json highlight"><span class="filename">workflow-execution-parameters/discover-params.json</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<div class="language-json highlight"><span class="filename">scenarios/wan-and-fabric/workflow-execution-parameters/discover-params.json</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;subnets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.11/32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frr&quot;</span><span class="w"> </span><span class="p">},</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.12/32&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frr&quot;</span><span class="w"> </span><span class="p">},</span>
@@ -7659,9 +7762,9 @@ platform — so no host is ever tried with the other vendor&rsquo;s login.</p>
 <p>The same <code>/32</code>s with <code>platform</code> left out, so discovery has to detect it —
 what a real greenfield scan looks like.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>local-lab-discover<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>workflow-execution-parameters/discover-params-autodetect.json
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-autodetect.json
 </span></code></pre></div>
-<div class="language-json highlight"><span class="filename">workflow-execution-parameters/discover-params-autodetect.json</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<div class="language-json highlight"><span class="filename">scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-autodetect.json</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;subnets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.11/32&quot;</span><span class="w"> </span><span class="p">},</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.12/32&quot;</span><span class="w"> </span><span class="p">},</span>
@@ -7690,9 +7793,9 @@ what a real greenfield scan looks like.</p>
 <p>One target for the whole management <code>/24</code>, with subnet-scoped credentials.
 Discovery expands the prefix and probes every address.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>local-lab-discover<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>workflow-execution-parameters/discover-params-subnet.json
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-subnet.json
 </span></code></pre></div>
-<div class="language-json highlight"><span class="filename">workflow-execution-parameters/discover-params-subnet.json</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<div class="language-json highlight"><span class="filename">scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-subnet.json</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;subnets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="p">{</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.0/24&quot;</span><span class="p">,</span>
@@ -7715,9 +7818,9 @@ Discovery expands the prefix and probes every address.</p>
 <p>The <code>/24</code> plus <code>/32</code> overrides for the SR Linux nodes — exercises
 longest-prefix-match credential selection.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>local-lab-discover<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>workflow-execution-parameters/discover-params-mixed.json
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nv">DISCOVER_PARAMS</span><span class="o">=</span>scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-mixed.json
 </span></code></pre></div>
-<div class="language-json highlight"><span class="filename">workflow-execution-parameters/discover-params-mixed.json</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<div class="language-json highlight"><span class="filename">scenarios/wan-and-fabric/workflow-execution-parameters/discover-params-mixed.json</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;subnets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="p">{</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">&quot;cidr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.0/24&quot;</span><span class="p">,</span>
@@ -7742,15 +7845,15 @@ longest-prefix-match credential selection.</p>
 <p>The precedence rules behind these — longest prefix wins, credentials scoped from most to least specific — are explained in <a href="../../10-concepts/30-discovery/">Discovery</a>.</p>
 <div class="admonition note">
 <p class="admonition-title"><code>wait_devices</code> always waits for the <em>known</em> devices</p>
-<p>Even when you point discovery at the <code>/24</code>, the readiness poll uses
-<code>topology.json</code>, not the parameter file. A subnet target also contains
-unused addresses, and waiting on those would always time out.</p>
+<p>Even when you point discovery at the <code>/24</code>, the readiness poll uses the
+scenario&rsquo;s <code>topology.json</code>, not the parameter file. A subnet target also
+contains unused addresses, and waiting on those would always time out.</p>
 </div>
 <h2 id="running-a-workflow-by-hand">Running a workflow by hand</h2>
 <p><code>run_workflow</code> is a general-purpose host script, not discovery-specific:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Parameters from a file (curl-style &quot;@file&quot;)</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./run_workflow<span class="w"> </span>wf.lab.neops.io/simple_lab_discovery:1.2.0<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>@workflow-execution-parameters/discover-params.json
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>@scenarios/wan-and-fabric/workflow-execution-parameters/discover-params.json
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># Inline JSON</span>
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>./run_workflow<span class="w"> </span>wf.lab.neops.io/simple_lab_discovery:1.2.0<span class="w"> </span><span class="s1">&#39;{&quot;subnets&quot;: []}&#39;</span>
@@ -7764,7 +7867,7 @@ unused addresses, and waiting on those would always time out.</p>
 <li><a href="../../10-concepts/30-discovery/">Discovery</a> — the workflow, the function block and the parameter contract.</li>
 <li><a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> — if the run failed, start with the error string.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

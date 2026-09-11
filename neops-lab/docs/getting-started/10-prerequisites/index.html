@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4678,6 +4680,8 @@
       
         
       
+        
+      
     
     
     
@@ -4844,6 +4848,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4882,7 +4984,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4904,14 +5006,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5017,7 +5119,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -5039,14 +5141,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7748,7 +7850,7 @@
 <tr>
 <td><strong><code>python3</code> ≥ 3.9</strong></td>
 <td>The host scripts are stdlib-only and import under a stock macOS <code>/usr/bin/python3</code></td>
-<td><code>gen_clab_topology</code>, <code>run_workflow</code>, <code>wait_ready</code></td>
+<td><code>resolve_scenario</code>, <code>gen_clab_topology</code>, <code>run_workflow</code>, <code>wait_ready</code></td>
 </tr>
 <tr>
 <td><strong><code>uv</code></strong></td>
@@ -7757,18 +7859,13 @@
 </tr>
 <tr>
 <td><strong>Quay pull access</strong></td>
-<td>The CMS, engine, web client and worker images are private</td>
+<td>Not needed for the defaults — the CMS, developer-preview engine, web client and worker images are all public. Only the full licensed engine requires <code>docker login quay.io</code></td>
 <td><code>make local-env-init</code></td>
 </tr>
 <tr>
 <td><strong>RAM</strong></td>
-<td>5 SR Linux nodes (≈1.5–2 GB each) + Elasticsearch + control plane ≈ <strong>14–16 GB</strong> for containers</td>
+<td>Scenario-dependent. <code>wan-and-fabric</code>: 5 SR Linux nodes (≈1.5–2 GB each) + Elasticsearch + control plane ≈ <strong>14–16 GB</strong> for containers. <code>frr-only</code> needs far less — the FRR nodes are tiny</td>
 <td><code>make local-lab-up</code></td>
-</tr>
-<tr>
-<td><strong>A worker image with the discovery block</strong></td>
-<td>Published with <a href="https://github.com/zebbra/neops-worker-sdk-py/pull/127">neops-worker-sdk-py#127</a>; until then build it from a checkout</td>
-<td><a href="../../20-operations/20-images/">Images</a></td>
 </tr>
 </tbody>
 </table>
@@ -7778,7 +7875,7 @@
 <ul>
 <li>The repo is mounted at the <strong>same absolute path</strong> inside the clab container, because containerlab hands the topology&rsquo;s bind paths to the docker daemon as absolute host paths. On Docker Desktop the checkout must therefore live under a shared path (<code>/Users</code>, <code>/Volumes</code>, <code>/private</code>, <code>/tmp</code> by default) and must not contain spaces — <code>make doctor</code> checks the mount round-trips.</li>
 <li>containerlab&rsquo;s convenience entries (<code>/etc/hosts</code>, <code>ssh_config.d</code>) land inside the ephemeral container, on both hosts. Reach devices with <code>docker exec &lt;node&gt;</code> / <code>docker logs &lt;node&gt;</code> — the topology sets <code>prefix: ""</code>, so node names are container names.</li>
-<li>On plain Linux the lab runtime dir (<code>generated/clab-neops-lab/</code>) is written as root; the launcher chowns it back to you after each run.</li>
+<li>On plain Linux the lab runtime dir (<code>generated/&lt;scenario&gt;/clab/clab-neops-lab/</code>) is written as root; the launcher chowns it back to you after each run.</li>
 </ul>
 <p>Verify with the two-node probe — it confirms the whole chain (docker socket, privileged mode, veth wiring) without pulling the NeOps stack:</p>
 <div class="language-yaml highlight"><span class="filename">clab/probe.clab.yml</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Minimal containerlab probe: confirms containerlab can deploy on this host</span>
@@ -7860,9 +7957,8 @@ not public — an anonymous pull is rejected with <code>401</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>login<span class="w"> </span>quay.io
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_WORKFLOW_ENGINE_IMAGE</span><span class="o">=</span>quay.io/zebbra/neops-workflow-engine:develop
 </span></code></pre></div>
-<p><code>quay.io/zebbra/neops-worker-sdk</code> is not public either, but it never enters the
-documented path: its published tag is unusable, so the worker is built from a
-local checkout either way — see <a href="../../20-operations/20-images/">Images</a>.</p>
+<p><code>quay.io/zebbra/neops-worker-sdk</code> is public and pulls anonymously like the
+rest — see <a href="../../20-operations/20-images/">Images</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title"><code>NPM_TOKEN</code> is <strong>not</strong> needed here</p>
 <p>Most NeOps repos require an <code>NPM_TOKEN</code> to install <code>@zebbra/*</code> npm
@@ -7902,7 +7998,7 @@ the default path it needs no registry credentials at all.</p>
 </ul>
 <h2 id="next">Next</h2>
 <p><a href="../20-quickstart/">Quickstart <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 10:51:18'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T10:51:18+00:00'>2026-08-26 10:51:18</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -4039,6 +4039,8 @@
       
         
       
+        
+      
     
     
     
@@ -4314,6 +4316,17 @@
     <span class="md-ellipsis">
       
         Where to look
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#switching-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Switching scenarios
       
     </span>
   </a>
@@ -4633,6 +4646,8 @@
       
         
       
+        
+      
     
     
     
@@ -4799,6 +4814,104 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-operations/50-kubernetes-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../30-scenarios/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scenarios
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
           </ul>
         </nav>
       
@@ -4837,7 +4950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4859,14 +4972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_5" id="__nav_7_2_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_5">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4972,7 +5085,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -4994,14 +5107,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_7_2_6" id="__nav_7_2_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_7_2_7" id="__nav_7_2_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2_6">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7498,6 +7611,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#switching-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Switching scenarios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shutting-down" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7634,10 +7758,17 @@
 <div class="admonition warning">
 <p class="admonition-title">Do not run this casually</p>
 <p><code>make local-lab-up</code> builds two images, pulls the whole NeOps stack and
-deploys 15 device containers. The SR Linux nodes alone want several GB of
-RAM, and the first run takes a couple of minutes. Make sure you have been
-through <a href="../10-prerequisites/">Prerequisites</a> — <code>make doctor</code> checks the
-host first.</p>
+deploys the scenario&rsquo;s device containers — 15 of them by default. The SR
+Linux nodes alone want several GB of RAM, and the first run takes a couple
+of minutes. Make sure you have been through
+<a href="../10-prerequisites/">Prerequisites</a> — <code>make doctor</code> checks the host first.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Which network am I bringing up?</p>
+<p>The default scenario, <code>wan-and-fabric</code>. Every command on this page accepts
+<code>SCENARIO=&lt;name&gt;</code> to run a different one — <code>make scenarios</code> lists them, and
+<a href="../../30-scenarios/">Scenarios</a> explains the mechanism. Only one
+scenario runs at a time; they share <code>lab-net</code> and the compose project.</p>
 </div>
 <h2 id="1-mint-the-cms-keypair">1. Mint the CMS keypair</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>lab-jwt
@@ -7668,17 +7799,18 @@ Granting first means the first <code>neops</code> query caches the grant.</p>
 </span></code></pre></div>
 <p>The long one. It depends on <code>build-docker</code>, then:</p>
 <ol>
-<li><strong><code>./gen_clab_topology</code></strong> — renders <code>generated/neops-lab.clab.json</code>, the per-device FRR/SR&nbsp;Linux configs, and three of the four discovery parameter files from <a href="../../10-concepts/20-topology/"><code>topology.json</code></a>.</li>
+<li><strong><code>./resolve_scenario</code></strong> — materialises <code>scenarios/_base/</code> plus <code>scenarios/$SCENARIO/</code> into <code>generated/$SCENARIO/scenario/</code>, the one flat directory the containers mount and the scripts read. See <a href="../../30-scenarios/">Scenarios</a>.</li>
+<li><strong><code>./gen_clab_topology</code></strong> — renders <code>generated/$SCENARIO/clab/neops-lab.clab.json</code>, the per-device FRR/SR&nbsp;Linux configs, and three of the four discovery parameter files from the scenario&rsquo;s <a href="../../10-concepts/20-topology/"><code>topology.json</code></a>.</li>
 <li><strong><code>docker compose pull --policy always worker</code></strong> — refreshes the worker image (the base-stack pulls never see it).</li>
 <li><strong><code>docker compose up -d</code></strong> with the worker overlay — adds the <code>worker</code> and the one-shot <code>lab_bootstrap</code> containers and creates the <code>lab-net</code> bridge (<code>172.30.0.0/24</code>) that containerlab attaches the devices to.</li>
-<li><strong><code>docker compose wait lab_bootstrap</code></strong> — blocks until the one-shot container that publishes every <code>workflows/*.yaml</code> to the engine has <em>exited</em>, and propagates its exit code.</li>
-<li><strong><code>./containerlab deploy --reconfigure</code></strong> — the 15 devices with real point-to-point links. Deployed early on purpose: SR Linux boots slowly, so it overlaps with the waits below; <code>--reconfigure</code> redeploys an existing lab, so the target is re-runnable.</li>
+<li><strong><code>docker compose wait lab_bootstrap</code></strong> — blocks until the one-shot container that publishes every workflow in the resolved scenario to the engine has <em>exited</em>, and propagates its exit code.</li>
+<li><strong><code>./containerlab deploy --reconfigure</code></strong> — the scenario&rsquo;s devices with real point-to-point links. Deployed early on purpose: SR Linux boots slowly, so it overlaps with the waits below; <code>--reconfigure</code> redeploys an existing lab, so the target is re-runnable — and so switching scenarios <em>replaces</em> the running devices rather than leaving two sets fighting over the subnet.</li>
 <li><strong><code>./wait_ready fb.base.neops.io/global_discover_network:0.1.0</code></strong> — the worker registers its function blocks with the engine <em>asynchronously</em> after its container starts; this polls the engine&rsquo;s per-function-block worker registry until an online worker exists (<code>WAIT_READY_TIMEOUT</code>, default 180 s).</li>
 <li><strong><code>docker compose exec -T worker python3 lab/wait_devices</code></strong> — polls TCP 22 on every device&rsquo;s management IP, <strong>from inside the lab network</strong> (<code>WAIT_DEVICES_TIMEOUT</code>, default 240 s).</li>
 </ol>
-<p>Each of those waits exists because of a real, reproduced failure. See <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> for the symptom each one prevents, and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a> for why step 7 has a <code>lab/</code> prefix that host commands do not.</p>
+<p>Each of those waits exists because of a real, reproduced failure. See <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> for the symptom each one prevents, and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a> for why step 8 has a <code>lab/</code> prefix that host commands do not.</p>
 <p>When it finishes you get a banner:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Lab is up (containerlab: 10 FRR + 5 Nokia SR Linux, real links).
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Lab is up (scenario: wan-and-fabric, real links).
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Web client:   http://localhost:8080/
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Engine UI:    http://localhost:3031
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Engine API:   http://localhost:3030/
@@ -7720,17 +7852,40 @@ Granting first means the first <code>neops</code> query caches the grant.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="switching-scenarios">Switching scenarios</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>local-lab-down
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span>frr-only
+</span></code></pre></div>
+<p><strong>Tear the running scenario down first.</strong> <code>containerlab destroy</code> acts on the
+nodes named in the topology it is handed, not on every container carrying the
+lab&rsquo;s label, so deploying a scenario with fewer devices would strand the rest
+and leave the lab registered. <code>make local-lab-up</code> refuses rather than let that
+happen, and <code>make local-lab-down</code> reads the deployed scenario from
+<code>generated/.deployed-scenario-clab</code>, so it tears down the right one whatever you
+pass on the command line.</p>
+<p>Three more things change that you do not see:</p>
+<ul>
+<li>the <strong>worker is recreated</strong>, because <code>DIR_FUNCTION_BLOCKS</code> points into the new
+  scenario&rsquo;s resolved tree;</li>
+<li><strong><code>lab_bootstrap</code> re-publishes</strong> the new scenario&rsquo;s workflow documents, so a
+  scenario carrying its own workflow gets it registered on the way up;</li>
+<li><strong><code>generated/&lt;old-scenario&gt;/</code> is never pruned</strong>. It is harmless and it is what
+  makes switching back cheap, but it does grow.</li>
+</ul>
+<p>The CMS keeps the rows discovery already wrote — devices from the previous
+scenario stay in the entity browser until you reset the stack with
+<code>make local-env-prune</code>.</p>
 <h2 id="shutting-down">Shutting down</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>local-lab-down<span class="w">     </span><span class="c1"># destroy the devices, stop the stack, KEEP the volumes</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>local-env-prune<span class="w">    </span><span class="c1"># docker compose down -v — the true reset, drops ES + Postgres</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>local-lab-down<span class="w">     </span><span class="c1"># destroy the devices, stop the stack, KEEP the volumes</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>make<span class="w"> </span>local-env-prune<span class="w">    </span><span class="c1"># docker compose down -v — the true reset, drops ES + Postgres</span>
 </span></code></pre></div>
 <p>Full reset from scratch:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <h2 id="next">Next</h2>
 <p><a href="../30-first-discovery/">Your first discovery <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 09:32:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T09:32:41+00:00'>2026-08-20 09:32:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
