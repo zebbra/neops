@@ -58,7 +58,6 @@ nav:
 - Home: index.md
 - Getting Started: getting-started
 - Concepts: concepts
-- Web Client Releases: '!include ./docs/neops-web-client/mkdocs_release_notes.yml'
 - User Guide: coming-soon.md
 - Workflows: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
 - Function Blocks: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
@@ -70,6 +69,7 @@ nav:
 - Modules:
   - Index: modules/index.md
   - Secure Gateway: '!include ./docs/neops-secure-gateway/mkdocs_custom.yml'
+- Web Client Releases: '!include ./docs/neops-web-client/mkdocs_release_notes.yml'
 plugins:
 - search
 - include_dir_to_nav
@@ -78,6 +78,14 @@ plugins:
     - coming-soon.md
     position: bottom
     type: datetime
+- exclude:
+    glob:
+    - '*/superpowers/*'
+    - '*/superpowers/**/*'
+    - '*/AGENTS.md'
+    - '*/CLAUDE.md'
+    - '*/pull_request_template.md'
+    - '*/scenarios/*/README.md'
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 site_url: https://github.com/zebbra/neops/
