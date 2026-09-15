@@ -18,7 +18,11 @@ nav:
   - Modules:
       - Index: modules/index.md
       - Secure Gateway: "!include ./docs/neops-secure-gateway/mkdocs_custom.yml"
-  - "Web Client Releases": "!include ./docs/neops-web-client/mkdocs_release_notes.yml"
+  - Releases:
+      - Web Client: "!include ./docs/neops-web-client/mkdocs_release_notes.yml"
+      - Workflow Engine: "!include ./docs/neops-workflow-engine/mkdocs_release_notes.yml"
+      - Worker SDK: "!include ./docs/neops-worker-sdk-py/mkdocs_release_notes.yml"
+      - Core: "!include ./docs/neops-core/mkdocs_release_notes.yml"
 
 
 # --8<-- [start:theme]

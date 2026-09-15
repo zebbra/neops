@@ -19,3 +19,7 @@
 [submodule "submodules/neops-lab"]
 	path = docs/neops-lab
 	url = https://github.com/zebbra/neops-lab.git
+[submodule "submodules/neops-core"]
+	path = docs/neops-core
+	url = https://github.com/zebbra/neops-core.git
+	branch = develop
