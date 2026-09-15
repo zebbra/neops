@@ -58,7 +58,8 @@ nav:
 - Home: index.md
 - Getting Started: getting-started
 - Concepts: concepts
-- User Guide: coming-soon.md
+- User Guide:
+  - Dashboard cards: '!include ./docs/neops-web-client/mkdocs_dashboard_cards.yml'
 - Workflows: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
 - Function Blocks: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
 - Lab:
