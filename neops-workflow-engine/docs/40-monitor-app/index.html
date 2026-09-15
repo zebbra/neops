@@ -1929,6 +1929,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base path
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-you-can-do" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7853,6 +7892,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base path
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-you-can-do" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8013,13 +8091,72 @@
 <p>The Monitor App is a built-in web interface for interacting with the workflow engine during development. It provides a real-time view of workflow definitions, executions, jobs, and registered workers.</p>
 <div class="admonition note">
 <p class="admonition-title">Integration roadmap</p>
-<p>The Monitor App runs on the <strong>neops Web Client</strong>&rsquo;s session: it is opened from there and
-takes an access token over <code>postMessage</code> for the life of the page. Set <code>WEBCLIENT_ORIGIN</code>
-on the container to the web client&rsquo;s exact origin; with it unset the app relays no tokens
-and reports that it has no session. The app calls the engine from the browser, so its own
+<p>The Monitor App runs on the <strong>Neops Web Client</strong>&rsquo;s session and has no sign-in of its own.
+Set <code>WEBCLIENT_ORIGIN</code> on the container to the web client&rsquo;s exact origin; with it unset the
+app reports that it has no session. The app calls the engine from the browser, so its own
 origin has to be listed in the engine&rsquo;s <code>NEOPS_CORS_ORIGINS</code>. Its functionality will be
 integrated into the web client in a future release. For now, it is the primary UI for
 workflow management and execution monitoring.</p>
+</div>
+<h2 id="deployment">Deployment</h2>
+<p>The container image serves the static build with nginx and reads three environment variables at
+start (<code>rest/monitor-app/docker-entrypoint.d/40-runtime-config.sh</code>). All three are rendered into
+<code>/config.js</code>, which the page loads before the app bundle, so no rebuild is needed to change them.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ENGINE_BASE_URL</code></td>
+<td>Browser-facing base URL of the engine, e.g. <code>https://engine.example.com</code>. Unset: the compile-time default.</td>
+</tr>
+<tr>
+<td><code>WEBCLIENT_ORIGIN</code></td>
+<td>Exact origin of the Neops Web Client the app takes its session from. Unset: no session.</td>
+</tr>
+<tr>
+<td><code>MONITOR_BASE_PATH</code></td>
+<td>Path prefix the app is published under, e.g. <code>/workflows</code>. Unset: the origin root.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="session-modes">Session modes</h3>
+<p>How the app obtains an access token depends on where it is served relative to <code>WEBCLIENT_ORIGIN</code>.
+The two are compared as origins, and the mode is chosen once per page load
+(<code>rest/monitor-app/src/lib/auth/token-provider.ts</code>).</p>
+<ul>
+<li><strong>Another origin (host relay).</strong> The app is opened from the web client, in an iframe or a popup,
+  and asks the host window for a token over <code>postMessage</code>. The host answers with the bare JWT and
+  its expiry, the app asks again ahead of expiry and on a <code>401</code>, and a logout in the web client
+  is relayed as a message. Opened directly, with no host window, the app has no session.</li>
+<li><strong>The web client&rsquo;s own origin (shared session).</strong> Served from the same origin, for instance under
+  <code>https://neops.example.com/workflows</code>, the app reads the web SDK&rsquo;s access token straight from the
+  shared <code>localStorage</code> key <code>token</code> and follows the <code>storage</code> event for that key, so a refresh or a
+  logout in any web client tab reaches it. The refresh token is never read, and the key is never
+  written: the SDK&rsquo;s cross-tab logout listens on it. Without a token the app asks the user to sign
+  in to the web client and picks the session up as soon as that happens.</li>
+</ul>
+<h3 id="base-path">Base path</h3>
+<p>SvelteKit fixes its base path at build time, and the image is built once. <code>MONITOR_BASE_PATH</code>
+therefore works on the served HTML instead: the reverse proxy in front strips the prefix, nginx
+keeps serving from <code>/</code>, and at container start the entrypoint rewrites every <code>.html</code> file of the
+build so the browser requests <code>&lt;prefix&gt;/_app/...</code>, <code>&lt;prefix&gt;/config.js</code> and <code>&lt;prefix&gt;/favicon.svg</code>
+and the SvelteKit runtime <code>base</code> carries the prefix. The rewrite always starts from pristine copies
+taken at image build (<code>/html.template/</code>), so a restart with a different value cannot stack
+prefixes, and the value is validated as one or more <code>/segment</code> parts from <code>[A-Za-z0-9._~-]</code> with
+no trailing slash and no <code>.</code> or <code>..</code> segment.</p>
+<div class="admonition warning">
+<p class="admonition-title">The rewrite is tied to SvelteKit&rsquo;s HTML output</p>
+<p>The entrypoint uses <code>sed</code> with a fixed set of patterns: <code>href="/_app/</code>, <code>import("/_app/</code>,
+<code>href="/favicon.svg"</code>, <code>src="/config.js"</code> and a line that is exactly <code>base: ""</code> inside the
+inline <code>__sveltekit_&lt;hash&gt;</code> script. The client bundle reads <code>base</code> from that global at
+runtime, which is what makes the rewrite reach <code>$app/paths</code> and the router. Nothing in CI
+checks this, so after a SvelteKit or adapter upgrade compare a built <code>build/index.html</code> with
+those patterns and run the image with <code>MONITOR_BASE_PATH=/workflows</code> before releasing.</p>
 </div>
 <h2 id="what-you-can-do">What You Can Do</h2>
 <ul>
@@ -8099,7 +8236,7 @@ dev server with hot-reload.</p>
 </details>
 <hr />
 <p><strong>Next:</strong> <a href="../getting-started/20-your-first-workflow/">Your First Workflow</a> &ndash; deploy and execute a workflow end to end.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 19:25:51'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T19:25:51+00:00'>2026-09-08 19:25:51</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-15 10:30:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-15T10:30:52+00:00'>2026-09-15 10:30:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
