@@ -62,6 +62,15 @@ extra:
       name: Neops
 # --8<-- [end:social]
 
+# The dashboard-card catalog is rendered as part of this central site, so its
+# embedded Card Lab assets must be registered here rather than only in the
+# web-client's standalone MkDocs configuration.
+extra_css:
+  - neops-web-client/docs/assets/card-lab.css
+
+extra_javascript:
+  - neops-web-client/docs/assets/card-lab.js
+
 # --8<-- [start:copyright]
 copyright: Copyright &copy; Zebbra AG
 # --8<-- [end:copyright]

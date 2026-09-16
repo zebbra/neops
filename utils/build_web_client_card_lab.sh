@@ -3,6 +3,8 @@
 set -euo pipefail
 
 client_directory="docs/neops-web-client"
+card_lab_assets_source="${client_directory}/docs/assets"
+card_lab_assets_target="site/neops-web-client/docs/assets"
 
 # MkDocs must run before npm creates node_modules inside docs/, and the Card Lab
 # must be copied after MkDocs removes unsupported files from site/.
@@ -12,6 +14,15 @@ if [ -e "${client_directory}/node_modules" ]; then
 fi
 
 make doc-build
+
+mkdir -p "${card_lab_assets_target}"
+for asset in card-lab.css card-lab.js; do
+  if [ ! -f "${card_lab_assets_source}/${asset}" ]; then
+    echo "Card Lab documentation asset missing at ${card_lab_assets_source}/${asset}" >&2
+    exit 1
+  fi
+  cp "${card_lab_assets_source}/${asset}" "${card_lab_assets_target}/${asset}"
+done
 
 if ! npm ci --prefix "${client_directory}"; then
   echo "npm ci failed. If the error above is a 401 or 403 from npm.pkg.github.com, grant zebbra/neops Actions read access to every required private @zebbra package under Package settings > Manage Actions access." >&2
