@@ -17,9 +17,11 @@ extra:
 extra_css:
 - assets/extra.css
 - neops-web-client/docs/assets/card-lab.css
+- neops-web-client/docs/assets/dashboard-card-reference.css
 extra_javascript:
 - assets/extra.js
 - neops-web-client/docs/assets/card-lab.js
+- neops-web-client/docs/assets/dashboard-card-reference.js
 hooks:
 - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
 - .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py

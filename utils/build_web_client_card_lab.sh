@@ -16,7 +16,7 @@ fi
 make doc-build
 
 mkdir -p "${card_lab_assets_target}"
-for asset in card-lab.css card-lab.js; do
+for asset in card-lab.css card-lab.js dashboard-card-reference.css dashboard-card-reference.js; do
   if [ ! -f "${card_lab_assets_source}/${asset}" ]; then
     echo "Card Lab documentation asset missing at ${card_lab_assets_source}/${asset}" >&2
     exit 1

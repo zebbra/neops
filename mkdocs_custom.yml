@@ -67,9 +67,11 @@ extra:
 # web-client's standalone MkDocs configuration.
 extra_css:
   - neops-web-client/docs/assets/card-lab.css
+  - neops-web-client/docs/assets/dashboard-card-reference.css
 
 extra_javascript:
   - neops-web-client/docs/assets/card-lab.js
+  - neops-web-client/docs/assets/dashboard-card-reference.js
 
 # --8<-- [start:copyright]
 copyright: Copyright &copy; Zebbra AG
