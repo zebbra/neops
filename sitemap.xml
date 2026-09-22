@@ -5,10 +5,6 @@
          <lastmod>2026-09-22</lastmod>
     </url>
     <url>
-         <loc>https://github.com/zebbra/neops/coming-soon/</loc>
-         <lastmod>2026-09-22</lastmod>
-    </url>
-    <url>
          <loc>https://github.com/zebbra/neops/concepts/</loc>
          <lastmod>2026-09-22</lastmod>
     </url>
@@ -1218,6 +1214,82 @@
     </url>
     <url>
          <loc>https://github.com/zebbra/neops/neops-web-client/docs/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/aggregation-pie-chart/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/bar-chart/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/map-dynamic/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/map/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/markdown/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/network-diagram-topology/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/pie-chart/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/predefined-query-selector/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/query-with-predefined-filters/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/query/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/report-execute/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/report-selector/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/static-data-table/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/status-overview/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/status/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/table/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/task-execute/</loc>
+         <lastmod>2026-09-22</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/zebbra/neops/neops-web-client/docs/dashboard-cards/task-selector/</loc>
          <lastmod>2026-09-22</lastmod>
     </url>
     <url>

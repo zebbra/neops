@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkneops_web_client=self.webpackChunkneops_web_client||[]).push([[29285],{29285(l,e,t){t.r(e),t.d(e,{default:()=>s});var s={elem:"svg",attrs:{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 32 32",fill:"currentColor",width:32,height:32},content:[{elem:"path",attrs:{d:"M8 20 16 10 24 20z"}}],name:"caret--up",size:32}}}]);

@@ -1,0 +1,283 @@
+.neops-config-reference {
+  --neops-config-border: var(--md-default-fg-color--lightest);
+  --neops-config-header: color-mix(in srgb, var(--md-code-bg-color) 70%, var(--md-default-bg-color));
+  --neops-config-hover: color-mix(in srgb, var(--md-accent-fg-color) 6%, var(--md-default-bg-color));
+  --neops-config-indent: 0.6rem;
+  container-type: inline-size;
+  margin-block: 0.85rem 2rem;
+}
+
+.neops-config-path-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.45rem;
+  align-items: center;
+  padding: 0 0.15rem 0.55rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+}
+
+.neops-config-path-guide span {
+  min-width: 0;
+}
+
+.neops-config-context {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+}
+
+.neops-config-property-list {
+  overflow: hidden;
+  border: 1px solid var(--neops-config-border);
+  border-radius: 0.2rem;
+}
+
+.neops-config-list-header,
+.neops-config-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(0, 0.8fr)
+    minmax(0, 0.8fr)
+    minmax(0, 2.05fr);
+  min-width: 0;
+}
+
+.neops-config-list-header {
+  border-block-end: 1px solid var(--neops-config-border);
+  background: var(--neops-config-header);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.neops-config-list-header > div,
+.neops-config-row > div {
+  min-width: 0;
+  padding: 0.62rem 0.7rem;
+}
+
+.neops-config-list-header > div + div,
+.neops-config-row > div + div {
+  border-inline-start: 1px solid var(--neops-config-border);
+}
+
+.neops-config-item + .neops-config-item,
+.neops-config-item + .neops-config-group,
+.neops-config-group + .neops-config-item,
+.neops-config-group + .neops-config-group,
+.neops-config-children > :first-child {
+  border-block-start: 1px solid var(--neops-config-border);
+}
+
+.md-typeset .neops-config-group {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.md-typeset .neops-config-group > summary {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(0, 0.8fr)
+    minmax(0, 0.8fr)
+    minmax(0, 2.05fr);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-weight: 400;
+  list-style: none;
+}
+
+.md-typeset .neops-config-group > summary::-webkit-details-marker,
+.md-typeset .neops-config-group > summary::before,
+.md-typeset .neops-config-group > summary::after {
+  display: none;
+}
+
+.neops-config-row {
+  background: var(--md-default-bg-color);
+  transition: background-color 120ms ease;
+}
+
+.neops-config-row:hover {
+  background: var(--neops-config-hover);
+}
+
+.neops-config-name-cell {
+  display: flex;
+  gap: 0.3rem;
+  align-items: flex-start;
+  padding-inline-start: calc(0.7rem + var(--neops-config-depth) * var(--neops-config-indent)) !important;
+}
+
+.neops-config-disclosure,
+.neops-config-disclosure-placeholder {
+  flex: 0 0 0.55rem;
+  width: 0.55rem;
+  height: 1rem;
+}
+
+.neops-config-disclosure::before {
+  display: block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin: 0.28rem 0 0 0.05rem;
+  transform: rotate(-45deg);
+  border: solid currentColor;
+  border-width: 0 1px 1px 0;
+  color: var(--md-default-fg-color--light);
+  content: '';
+  transition: transform 120ms ease;
+}
+
+.neops-config-group[open] > summary .neops-config-disclosure::before {
+  transform: rotate(45deg);
+}
+
+.md-typeset .neops-config-property-name {
+  min-width: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+  background: transparent;
+  box-shadow: none;
+  color: var(--md-default-fg-color);
+  font-size: 0.62rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.neops-config-type-cell,
+.neops-config-required-cell,
+.neops-config-property-description {
+  overflow-wrap: anywhere;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.md-typeset .neops-config-type {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.neops-config-requirement {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.neops-config-requirement--required {
+  color: var(--md-default-fg-color);
+  font-weight: 700;
+}
+
+.neops-config-requirement--conditional {
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+}
+
+.neops-config-property-description {
+  color: var(--md-default-fg-color--light);
+}
+
+.neops-config-property-description code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.neops-config-default {
+  display: block;
+  color: var(--md-default-fg-color);
+}
+
+.neops-config-property-description > p {
+  margin: 0.25rem 0 0;
+}
+
+.neops-config-children {
+  border-inline-start: 0.1rem solid var(--md-default-fg-color--lighter);
+}
+
+@container (max-width: 32rem) {
+  .neops-config-list-header {
+    display: none;
+  }
+
+  .neops-config-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .md-typeset .neops-config-group > summary {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .neops-config-row > div {
+    border-inline-start: 0 !important;
+  }
+
+  .neops-config-name-cell,
+  .neops-config-property-description {
+    grid-column: 1 / -1;
+  }
+
+  .neops-config-name-cell {
+    padding-block-end: 0.25rem !important;
+  }
+
+  .neops-config-type-cell,
+  .neops-config-required-cell {
+    padding-block: 0.25rem !important;
+  }
+
+  .neops-config-type-cell {
+    padding-inline-start: calc(1.8rem + var(--neops-config-depth) * var(--neops-config-indent)) !important;
+  }
+
+  .neops-config-required-cell {
+    padding-inline-end: 0.7rem !important;
+  }
+
+  .neops-config-type-cell::before,
+  .neops-config-required-cell::before,
+  .neops-config-property-description::before {
+    display: block;
+    margin-block-end: 0.1rem;
+    color: var(--md-default-fg-color--lighter);
+    content: attr(data-label);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .neops-config-property-description {
+    padding-block-start: 0.45rem !important;
+    padding-inline-start: calc(1.8rem + var(--neops-config-depth) * var(--neops-config-indent)) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .neops-config-group {
+    scroll-behavior: auto;
+  }
+
+  .neops-config-row,
+  .neops-config-disclosure::before {
+    transition: none;
+  }
+}
