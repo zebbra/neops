@@ -16,8 +16,12 @@ extra:
     name: Neops
 extra_css:
 - assets/extra.css
+- neops-web-client/docs/assets/card-lab.css
+- neops-web-client/docs/assets/dashboard-card-reference.css
 extra_javascript:
 - assets/extra.js
+- neops-web-client/docs/assets/card-lab.js
+- neops-web-client/docs/assets/dashboard-card-reference.js
 hooks:
 - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
 - .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py
@@ -58,7 +62,8 @@ nav:
 - Home: index.md
 - Getting Started: getting-started
 - Concepts: concepts
-- User Guide: coming-soon.md
+- User Guide:
+  - Dashboard cards: '!include ./docs/neops-web-client/mkdocs_dashboard_cards.yml'
 - Workflows: '!include ./docs/neops-workflow-engine/mkdocs_custom.yml'
 - Function Blocks: '!include ./docs/neops-worker-sdk-py/mkdocs_custom.yml'
 - Lab:
