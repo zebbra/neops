@@ -1562,6 +1562,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#row-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#columns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8687,6 +8698,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#row-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#columns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8900,9 +8922,9 @@ Use Static data table when rows are already embedded inside the dashboard contex
 <h2 id="live-example">Live example</h2>
 <p>The Card Lab supplies a deterministic constrained entity-search service to the production table.
 Mutation controls are omitted from this read-only fixture.</p>
-<iframe class="neops-card-lab-frame" src="../../card-lab/5.0.1/index.html?card=table&amp;demo=table-device-inventory&amp;embed=1" title="Interactive Table dashboard card example" loading="lazy" allow="clipboard-write"></iframe>
+<iframe class="neops-card-lab-frame" src="../../card-lab/5.2.0/index.html?card=table&amp;demo=table-device-inventory&amp;embed=1" title="Interactive Table dashboard card example" loading="lazy" allow="clipboard-write"></iframe>
 
-<p class="neops-card-lab-link"><a href="../../card-lab/5.0.1/index.html?card=table&amp;demo=table-device-inventory">Open the Table Card Lab in a new page</a></p>
+<p class="neops-card-lab-link"><a href="../../card-lab/5.2.0/index.html?card=table&amp;demo=table-device-inventory">Open the Table Card Lab in a new page</a></p>
 
 <h2 id="requirements">Requirements</h2>
 <table>
@@ -8936,7 +8958,7 @@ Mutation controls are omitted from this read-only fixture.</p>
 </tbody>
 </table>
 <h2 id="configuration">Configuration</h2>
-<p>This card has no guided editor in SDK <code>5.0.1</code>; configure it in expert JSON.
+<p>This card has no guided editor in SDK <code>5.2.0</code>; configure it in expert JSON.
 The paths below are relative to <code>cardConfig.data</code>.
 Fields marked required come from the saved configuration contract; no implicit value should be assumed when one is omitted.</p>
 <h3 id="table-presentation">Table presentation</h3>
@@ -8958,6 +8980,8 @@ Fields marked required come from the saved configuration contract; no implicit v
 <!-- config-field: stickyHeader -->
 <!-- config-field: toolbarDisabled -->
 <!-- config-field: allowToHidePagination -->
+<!-- config-field: rowModalDisabled -->
+<!-- config-field: emptyMessage -->
 
 <table>
 <thead>
@@ -9075,10 +9099,69 @@ Fields marked required come from the saved configuration contract; no implicit v
 <td><code>allowToHidePagination</code></td>
 <td>Boolean</td>
 <td>No</td>
-<td>Runtime migration fallback <code>false</code>. Allows pagination controls to hide when all rows fit.</td>
+<td>Runtime migration fallback <code>false</code>. Allows pagination controls to hide when all rows fit. Saved configurations written before card version 2 carried this as <code>hidePagination</code>; the card&rsquo;s <code>1</code> to <code>2</code> migration renames it on load.</td>
+</tr>
+<tr>
+<td><code>rowModalDisabled</code></td>
+<td>Boolean</td>
+<td>No</td>
+<td><code>false</code>. Setting true removes the built-in &ldquo;Show in dialog&rdquo; row action; the actions column disappears entirely when no context-menu entry is configured either.</td>
+</tr>
+<tr>
+<td><code>emptyMessage</code></td>
+<td>String</td>
+<td>No</td>
+<td><code>No elements found.</code>. Replaces the message shown when the query returns no rows.</td>
 </tr>
 </tbody>
 </table>
+<h3 id="row-interaction">Row interaction</h3>
+<p>A click on a row body runs the configured drilldown.
+Clicks that land on interactive cell content, and clicks while a cell is in edit mode, are ignored.
+This is independent of the &ldquo;Show in dialog&rdquo; row action, which <code>rowModalDisabled</code> controls.</p>
+<!-- config-field: rowDrilldown -->
+<!-- config-field: rowDrilldown.type -->
+<!-- config-field: rowDrilldown.urlPath -->
+<!-- config-field: rowDrilldown.params -->
+
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default and visible effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rowDrilldown</code></td>
+<td>Object</td>
+<td>No</td>
+<td>Omitted behaves as <code>{ "type": "entity-detail" }</code> because the Table card always has an <code>entityType</code>.</td>
+</tr>
+<tr>
+<td><code>rowDrilldown.type</code></td>
+<td>String enum</td>
+<td>Yes</td>
+<td>No default. <code>entity-detail</code> opens the row&rsquo;s entity detail page, <code>dashboard</code> opens another dashboard, <code>none</code> makes rows inert.</td>
+</tr>
+<tr>
+<td><code>rowDrilldown.urlPath</code></td>
+<td>String</td>
+<td>For <code>dashboard</code></td>
+<td>No default. Dashboard path, resolved relative to the current dashboard.</td>
+</tr>
+<tr>
+<td><code>rowDrilldown.params</code></td>
+<td>Object of JMESPath expressions</td>
+<td>No</td>
+<td>No extra query parameters. Each value is evaluated against the clicked row and merged into <code>urlPath</code>&rsquo;s query string. Only non-empty strings, numbers, and booleans are emitted; objects, arrays, empty strings, and <code>null</code> results are dropped.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>entity-detail</code> drilldown needs the host application to provide the SDK&rsquo;s entity page routes.
+The Neops web client does; a host that does not gets one console warning and inert rows.</p>
 <h3 id="columns">Columns</h3>
 <!-- config-field: columns -->
 <!-- config-field: columns[].header -->
@@ -9519,7 +9602,7 @@ Task-backed menu and edit actions can mutate managed systems, so use least-privi
 For a read-only table, omit edit and task actions and set <code>selectable</code> to false.</p>
 <h2 id="related-cards">Related cards</h2>
 <p>See <a href="../static-data-table/">Static data table</a> for an array already present in dashboard context.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-16 12:42:59'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-16T12:42:59+00:00'>2026-09-16 12:42:59</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 10:46:42'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T10:46:42+00:00'>2026-09-22 10:46:42</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-16 12:42:59'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-16T12:42:59+00:00'>2026-09-16 12:42:59</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 15:58:25'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T15:58:25+00:00'>2026-09-22 15:58:25</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -21,7 +21,7 @@
     
     
       
-        <title>NgxNeopsSdkArtifacts - Neops Docs</title>
+        <title>Neops SDK artifacts - Neops Docs</title>
       
     
     
@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ngxneopssdkartifacts" class="md-skip">
+        <a href="#neops-sdk-artifacts" class="md-skip">
           Skip to content
         </a>
       
@@ -129,7 +129,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              NgxNeopsSdkArtifacts
+              Neops SDK artifacts
             
           </span>
         </div>
@@ -8413,6 +8413,36 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modal-close-policy-lint-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modal close policy lint rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-forms-edits-in-modals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON Forms edits in modals
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -8445,9 +8475,54 @@
   
 
 
-<h1 id="ngxneopssdkartifacts">NgxNeopsSdkArtifacts</h1>
-<p>This library contains global styles.scss and font-overrides to reused in neops projects</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2022-08-31 11:33:41'><span class='material-icons' data-icon='doc_created'></span><time datetime='2022-08-31T11:33:41+00:00'>2022-08-31 11:33:41</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2022-09-01 10:44:40'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2022-09-01T10:44:40+00:00'>2022-09-01 10:44:40</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h1 id="neops-sdk-artifacts">Neops SDK artifacts</h1>
+<p>Shared styles, fonts, build configuration, and lint rules for Neops frontends.</p>
+<h2 id="modal-close-policy-lint-rule">Modal close policy lint rule</h2>
+<p>The modal rule and configuration ship with <code>@zebbra/ngx-neops-sdk-artifacts</code>.
+They use the consuming project&rsquo;s ESLint and Angular template parser, with no separate scan script.</p>
+<p>For projects using the Angular ESLint builder and <code>.eslintrc</code>, extend the shared configuration alongside your existing Angular template configuration:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;extends&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="s2">&quot;plugin:@angular-eslint/template/process-inline-templates&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="s2">&quot;@zebbra/ngx-neops-sdk-artifacts/config/eslint/modal-close-policy.cjs&quot;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">&quot;overrides&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;*.html&quot;</span><span class="p">],</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;extends&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;plugin:@angular-eslint/template/recommended&quot;</span><span class="p">]</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Add the rule directory to each relevant <code>angular.json</code> lint target:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;builder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@angular-eslint/builder:lint&quot;</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&quot;rulesdir&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;node_modules/@zebbra/ngx-neops-sdk-artifacts/config/eslint/rules&quot;</span><span class="p">],</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;lintFilePatterns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;src/**/*.ts&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;src/**/*.html&quot;</span><span class="p">]</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>For the ESLint CLI, pass <code>--rulesdir node_modules/@zebbra/ngx-neops-sdk-artifacts/config/eslint/rules</code>.
+This configuration targets the ESLint 8 <code>.eslintrc</code> setup used by the SDK.</p>
+<p>Modal components extend <code>NeopsBaseModal</code> or <code>BaseDataModal</code> from <code>@zebbra/ngx-neops-app-services</code>, import <code>NeopsModalCloseDirective</code>, and use:</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">cds-modal</span> <span class="na">neopsModalClose</span> <span class="err">[</span><span class="na">open</span><span class="err">]=&quot;</span><span class="na">open</span><span class="err">&quot;</span> <span class="err">(</span><span class="na">neopsCloseRequest</span><span class="err">)=&quot;</span><span class="na">requestClose</span><span class="err">()&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  <span class="p">&lt;</span><span class="nt">cds-modal-header</span><span class="p">&gt;</span>Title<span class="p">&lt;/</span><span class="nt">cds-modal-header</span><span class="p">&gt;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">&lt;/</span><span class="nt">cds-modal</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>The rule requires the directive and close-request binding, rejects the old Carbon aliases and direct Carbon dismissal bindings, and rejects calls to <code>closeModal()</code>, <code>dismissModal()</code>, or <code>confirmAndCloseModal()</code> within a close request.
+Save buttons can still call the save route directly.
+A read-only inline modal can bind its own dismissal handler.
+The rule does not analyze TypeScript method bodies; custom handlers must preserve the close policy themselves.</p>
+<h2 id="json-forms-edits-in-modals">JSON Forms edits in modals</h2>
+<p>The shared JSON Forms parser reports renderer edits to the modal&rsquo;s native change listener, including selections made in portaled Carbon menus.
+Initial data, schema defaults, and external data refreshes do not count as edits.
+For a custom component that embeds <code>jsonforms</code> directly, import <code>createJsonFormsEditMiddleware</code> from <code>@zebbra/ngx-jsonforms-carbon</code> and bind its result to the form&rsquo;s <code>[middleware]</code> input:</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">readonly</span><span class="w"> </span><span class="nx">editMiddleware</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createJsonFormsEditMiddleware</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">markDirty</span><span class="p">())</span>
+</span></code></pre></div>
+<p>Use this inside a component extending <code>NeopsBaseModal</code>.
+Keep <code>(dataChange)</code> for handling the form&rsquo;s data; JSON Forms also emits that output during initialization, so it is not a user-edit signal.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2022-08-31 11:33:41'><span class='material-icons' data-icon='doc_created'></span><time datetime='2022-08-31T11:33:41+00:00'>2022-08-31 11:33:41</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-10 14:43:44'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-10T14:43:44+00:00'>2026-09-10 14:43:44</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Tim Zurbuchen' data-tippy-content data-tippy-raw='<a href="https://github.com/Haigos" target="_blank">Tim Zurbuchen</a>'><span class='avatar-text'></span><img class='avatar' data-src='https://github.com/Haigos.png' data-email='tim.zurbuchen@zebbra.ch' /></div></div></div></div></div>
 
 
 
