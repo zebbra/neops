@@ -213,7 +213,7 @@
   border-inline-start: 0.1rem solid var(--md-default-fg-color--lighter);
 }
 
-@container (max-width: 32rem) {
+@container (max-width: 44rem) {
   .neops-config-list-header {
     display: none;
   }
