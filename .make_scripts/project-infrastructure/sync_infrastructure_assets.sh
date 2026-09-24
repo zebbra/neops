@@ -59,16 +59,15 @@ else
   echo "✅ Created CODEOWNERS file"
 fi
 
-if [ -d .github/workflows ]; then
-  echo "✅ Workflows folder already exists"
-  rm -f .github/workflows/enforce-pr-label.yml
-  \cp $tmp_download_folder/**/assets/enforce-pr-label.yml .github/workflows/
-  echo "✅ Updated Workflows folder"
+# A public repository cannot use an action from the private zebbra/actions repository
+if [ "$(gh repo view --json visibility --jq .visibility)" = "PUBLIC" ]; then
+  enforce_pr_label_workflow=enforce-pr-label-public.yml
 else
-  mkdir .github/workflows
-  \cp $tmp_download_folder/**/assets/enforce-pr-label.yml .github/workflows/
-  echo "✅ Created Workflows folder"
+  enforce_pr_label_workflow=enforce-pr-label.yml
 fi
+mkdir -p .github/workflows
+\cp $tmp_download_folder/**/assets/$enforce_pr_label_workflow .github/workflows/enforce-pr-label.yml
+echo "✅ Updated .github/workflows/enforce-pr-label.yml ($enforce_pr_label_workflow)"
 
 MAKEFILE=./Makefile || true
 
