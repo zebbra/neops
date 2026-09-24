@@ -1,0 +1,4 @@
+interface:
+  display_name: "Neops Web Client Releases"
+  short_description: "Create visual, user-focused web client release stories"
+  default_prompt: "Use $neops-release-docs to create a rich, visual, task-oriented entry for the newest Neops web client release, preview it, then publish it after I explicitly approve."
