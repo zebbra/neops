@@ -1,3 +1,5 @@
+include .make_scripts/project-infrastructure/project-infrastructure-makefile
+# This includes make: sync-infrastructure-assets, github_autodelete_merged_branches, github_set_branch_protections and github_set_default_branch
 include .make_scripts/mkdocs-documentation/mkdocs-documentation-makefile.mk
 
 # To call with another branch, use make update-submodules BRANCH=feature/documentation

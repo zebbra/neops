@@ -1,0 +1,18 @@
+name: Enforce PR Label
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+
+concurrency:
+  group: enforce-label
+  cancel-in-progress: true
+
+jobs:
+  enforce-label:
+    permissions:
+      pull-requests: read
+      issues: read
+    runs-on: hetzner
+    steps:
+      - uses: zebbra/actions/enforce-pr-label@enforce-pr-label/latest
