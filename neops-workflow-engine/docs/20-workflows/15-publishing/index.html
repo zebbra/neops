@@ -9499,11 +9499,11 @@ declare the higher version yourself; nothing here catches that for you.</p>
 </table>
 <p>A text pattern (<code>pattern</code> in JSON Schema) is the asymmetric case: <strong>adding</strong> one is minor (a new constraint on what callers may send), <strong>removing</strong> one is advisory (strictly more is accepted), and one that merely <strong>changed</strong> is advisory too &ndash; the checker can&rsquo;t prove whether a different regex accepts less, so it never raises the floor on its own.</p>
 <div class="admonition info">
-<p class="admonition-title">The input schema protects the client contract, not engine execution</p>
-<p><code>parameterSchema</code> findings are about the execute form and API callers. The engine validates
-each step&rsquo;s parameters against that <em>step&rsquo;s</em> function block schema and never re-checks the
-workflow&rsquo;s own <code>parameterSchema</code> at run time &ndash; so a schema change is a promise you&rsquo;re keeping
-to callers, not a change the engine itself enforces.</p>
+<p class="admonition-title">What the input schema governs</p>
+<p><code>parameterSchema</code> findings are about the execute form and API callers &ndash; the bag a caller
+submits. The engine checks that bag against <code>parameterSchema</code> when a run is submitted, and
+checks each step&rsquo;s parameters against that <em>step&rsquo;s</em> function block schema. A schema change
+therefore takes effect for callers of the new version the moment it is published.</p>
 </div>
 <p>Every finding, including advisory ones, is returned in <code>findings</code> on every response that has them &ndash; successes, conflicts, and rejections alike &ndash; so you can see exactly what the engine compared.</p>
 <h2 id="acceptbump"><code>acceptBump</code></h2>
@@ -9560,7 +9560,7 @@ to callers, not a change the engine itself enforces.</p>
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-05 20:35:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-05T20:35:08+00:00'>2026-08-05 20:35:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 12:12:47'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T12:12:47+00:00'>2026-09-22 12:12:47</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -2269,6 +2269,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Workflow Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-engine-checks-at-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine checks at execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-travel-in-clear-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters travel in clear text
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8823,6 +8851,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Workflow Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-engine-checks-at-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine checks at execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-travel-in-clear-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters travel in clear text
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -9074,6 +9130,10 @@
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/show_version:1.0.0&quot;</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
 </span></code></pre></div>
+<h3 id="what-the-engine-checks-at-execution">What the engine checks at execution</h3>
+<p>Submitted <code>parameters</code> are checked against the workflow&rsquo;s <code>parameterSchema</code> once the workflow version resolves and before the execution row exists, so a bag the schema refuses answers <code>400 InvalidParameters</code> and consumes no execution quota. The validated bag is what gets stored: values are coerced to the declared type (<code>"7"</code> for an <code>integer</code> property is stored as <code>7</code>, and a top-level property declared <code>array</code> accepts a JSON array written as one string, <code>"[1,2]"</code> becoming <code>[1,2]</code>), and declared <code>default</code>s are materialised, so every step reading <code>{{ parameters.&lt;name&gt; }}</code> sees the same value the schema promises. Properties the schema does not declare are carried through as sent, unless the schema sets <code>additionalProperties: false</code>, and a workflow declaring no <code>parameterSchema</code> accepts any bag. A <code>parameterSchema</code> the validator cannot compile is logged and the bag is stored as sent.</p>
+<h3 id="parameters-travel-in-clear-text">Parameters travel in clear text</h3>
+<p>Workflow parameters are not secrets, by contract. They are stored in clear text on the execution row, are returned by the execution API to every holder of <code>workflow-execution:read</code>, and appear in the engine&rsquo;s debug log. A declared <code>default</code> is materialised into the stored bag like any other value, so a <code>password</code> property with a default carries that default into the row. Credentials belong in the function block&rsquo;s own secret handling.</p>
 <h2 id="interpolation-sources">Interpolation Sources</h2>
 <p>Every <code>{{ expression }}</code> is evaluated as a JMESPath query against the execution context. The context contains:</p>
 <table>
@@ -9231,7 +9291,7 @@ worker byte-for-byte.</p>
 <li><a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a> &ndash; JMESPath in conditions and assertions</li>
 <li><a href="../../99-appendix/schema/#parametrizedfunctionblock">Schema Reference</a> &ndash; Full schema for step parameters</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-06 20:01:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-06T20:01:08+00:00'>2026-08-06 20:01:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 12:16:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T12:16:34+00:00'>2026-09-22 12:16:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
