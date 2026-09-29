@@ -8724,7 +8724,7 @@
 <h4 id="prerequisites">Prerequisites</h4>
 <ul>
 <li>Install httpyac: <code>npm install -g httpyac</code></li>
-<li>Ensure your API server is running and reachable at the baseUrl specified in httpyac.env.json (default examples use <code>http://localhost:3000</code>).</li>
+<li>Ensure your API server is running and reachable at the baseUrl specified in httpyac.env.json (default examples use <code>http://localhost:3030</code>).</li>
 </ul>
 <h4 id="environments">Environments</h4>
 <p>We support both JetBrains HTTP Client and httpyac env files:
@@ -8733,14 +8733,11 @@
 <p>Select environment via CLI <code>--env dev</code> or <code>@use env=dev</code> in request files.</p>
 <h4 id="collection-structure">Collection Structure</h4>
 <ul>
-<li>Workflows: <code>./workflows</code> — list and manage workflows</li>
 <li>Blackboard: <code>./blackboard</code> — read/write blackboard entries</li>
 <li>Function Block: <code>./functionBlock</code> — list and execute function blocks</li>
 <li>Workers: <code>./workers</code> — register workers, ping them, and manage associations</li>
 <li>Workflow Execution: <code>./workflow-execution</code> — execute workflows</li>
 <li>Health: <code>./health</code> — service health checks</li>
-<li>Default: <code>./default</code> — misc or root endpoints</li>
-<li>Schema: <code>./schema</code> — OpenAPI/Swagger schema endpoints</li>
 <li>Version: <code>./version</code> — service version info</li>
 <li>Workflow Definitions: <code>./workflow-definition</code> — manage workflow definitions</li>
 </ul>
@@ -8753,7 +8750,7 @@
 <p>Tip: In JetBrains IDEs or VSCode (with httpyac extension), open a .http file and click the inline Run icon.</p>
 <h4 id="example-commands">Example commands</h4>
 <p>List all workflow definitions:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>httpyac<span class="w"> </span>workflow-definition/list-workflow-definitions.http<span class="w"> </span>--env<span class="w"> </span>dev
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>httpyac<span class="w"> </span>workflow-definition/get-list-workflow-definitions.http<span class="w"> </span>--env<span class="w"> </span>dev
 </span></code></pre></div>
 <h4 id="notes">Notes</h4>
 <ul>
@@ -8763,10 +8760,10 @@
 </ul>
 <h4 id="schemas-to-consider">Schemas to consider</h4>
 <ul>
-<li>Swagger/OpenAPI: <code>./swagger-spec.http</code> &ndash; fetch Swagger/OpenAPI schema</li>
-<li>Workflow JSON Schema: <code>./schema/RootWorkflow.schema.json</code> &ndash; JSON schema for workflow definitions</li>
+<li>Swagger/OpenAPI: <code>{{baseUrl}}/api</code> &ndash; Swagger UI of the running engine</li>
+<li>Workflow JSON Schema: <code>../schema/RootWorkflow.schema.json</code> &ndash; JSON schema for workflow definitions</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-11-14 08:29:25'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-11-14T08:29:25+00:00'>2025-11-14 08:29:25</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2025-12-02 08:43:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2025-12-02T08:43:34+00:00'>2025-12-02 08:43:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-11-14 08:29:25'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-11-14T08:29:25+00:00'>2025-11-14 08:29:25</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-29 12:42:13'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-29T12:42:13+00:00'>2026-09-29 12:42:13</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
