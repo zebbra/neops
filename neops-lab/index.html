@@ -9204,8 +9204,8 @@ without it they use the <code>Makefile</code>&rsquo;s default, <code>wan-and-fab
 </tr>
 </tbody>
 </table>
-<p>Full reset from scratch:
-<code>make local-lab-down local-env-prune &amp;&amp; make local-env-init &amp;&amp; make local-lab-up &amp;&amp; make local-lab-discover</code>.</p>
+<p>Full reset from scratch, ending in a discovery run: <code>make full-e2e-test</code> (<code>local-lab-down</code>,
+<code>local-env-prune</code>, <code>local-env-init</code>, <code>local-lab-up</code>, <code>local-lab-discover</code>, in that order).</p>
 <h2 id="urls">URLs</h2>
 <ul>
 <li>Web client: <a href="http://localhost:8080/">http://localhost:8080/</a></li>
@@ -9271,7 +9271,7 @@ engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code
 <li><code>make test</code> — the generator and manifest guards run against every scenario, so
    a new one is covered without writing a new assertion.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-30 10:57:49'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-30T10:57:49+00:00'>2026-09-30 10:57:49</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
