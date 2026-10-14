@@ -8764,7 +8764,7 @@ no callbacks to the backend.</p>
 <tr>
 <td><code>auth_provider</code></td>
 <td>string</td>
-<td>Auth origin: <code>"django"</code>, <code>"oidc:google"</code>, etc.</td>
+<td>Auth origin: <code>"django"</code>, <code>"oidc:&lt;provider&gt;"</code>, <code>"oidc"</code></td>
 </tr>
 <tr>
 <td><code>authz_enforced</code></td>
@@ -8803,6 +8803,7 @@ no callbacks to the backend.</p>
 </tr>
 </tbody>
 </table>
+<p><code>auth_provider</code> values: <code>"django"</code> for a username/password login (any auth plugin), <code>"oidc:&lt;provider&gt;"</code> for an allauth code exchange, <code>"oidc"</code> for the refresh of an allauth SSO session.</p>
 <p>The JWT header contains:</p>
 <ul>
 <li><code>alg</code>: <code>"RS256"</code> (RSA + SHA-256)</li>
@@ -8934,7 +8935,7 @@ on unknown <code>kid</code> (handles key rotation transparently).</p>
   the client should use their refresh token to get a new access token from
   the backend.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-26 12:14:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-26T12:14:32+00:00'>2026-08-26 12:14:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-29 10:58:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-29T10:58:59+00:00'>2026-09-29 10:58:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
