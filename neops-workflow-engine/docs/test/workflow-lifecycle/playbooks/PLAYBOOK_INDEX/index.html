@@ -8214,84 +8214,15 @@
   
   
   
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../../../../../neops-web-sdk/docs/releases/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web SDK
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web SDK
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../../../../../neops-web-sdk/docs/releases/v5.2.1/" class="md-nav__link">
+      <a href="../../../../../../!include ./docs/neops-web-sdk/mkdocs_release_notes.yml" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    v5.2.1
+    Web SDK
   
 
     
@@ -8300,14 +8231,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -8727,6 +8650,13 @@
 <td>10</td>
 </tr>
 <tr>
+<td><code>optional-nullable-parameters-ship-as-set</code></td>
+<td>SAFETY</td>
+<td>An optional nullable FB parameter (anyOf [X, null], default null) reaches the worker as the step set it: falsy values such as 0, false and &ldquo;&rdquo; are not rewritten to null, and an omitted one arrives as its default null rather than a type-coerced value</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
 <td><code>assertion-halts-on-violation</code></td>
 <td>SAFETY</td>
 <td>JMES assertion evaluating to false halts execution safely</td>
@@ -8751,8 +8681,8 @@
 <td><code>job-count-exact</code></td>
 <td>SAFETY</td>
 <td>No spurious or missing jobs created</td>
-<td>4</td>
 <td>5</td>
+<td>6</td>
 </tr>
 <tr>
 <td><code>no-rollback-for-pure-failure</code></td>
@@ -8772,8 +8702,8 @@
 <td><code>rollback-jobs-reverse-order</code></td>
 <td>SAFETY</td>
 <td>Rollback jobs are created wave by wave in descending execution-wave order (parallel within a wave), derived from explicit wave numbers, not timestamps</td>
-<td>2</td>
-<td>2</td>
+<td>3</td>
+<td>3</td>
 </tr>
 <tr>
 <td><code>rollback-halts-on-rollback-failure</code></td>
@@ -8804,11 +8734,18 @@
 <td>7</td>
 </tr>
 <tr>
+<td><code>rollback-dedupes-retried-steps</code></td>
+<td>SAFETY</td>
+<td>A step&rsquo;s auto-retry chain (replaces-linked attempts sharing stepLabel and entity) is rolled back exactly once, based on the latest attempt — retry chains never multiply rollback jobs, so a worker never reverts the same side effect twice</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>95</td>
-<td>100</td>
+<td>97</td>
+<td>102</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -9010,8 +8947,8 @@
 <td><code>reversible-failure-rolls-back-to-failed-safe</code></td>
 <td>LIVENESS</td>
 <td>A failed execution whose non-pure function blocks are all reversible rolls back every executed job and terminates FAILED_SAFE</td>
-<td>2</td>
-<td>2</td>
+<td>3</td>
+<td>3</td>
 </tr>
 <tr>
 <td><code>never-polled-job-fails-workflow</code></td>
@@ -9211,6 +9148,12 @@
 <td><code>RollbackParallelWave</code></td>
 <td>Failure on one of two devices rolls back wave-by-wave: both step_two rollback jobs in parallel, then both step_one rollback jobs, terminating FAILED_SAFE_ACK</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>rollback-jobs-reverse-order</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>multi-entity-parallel-execution</code></td>
+</tr>
+<tr>
+<td><code>tests/rollback-retried-step-dedup.ts</code></td>
+<td><code>RollbackRetriedStepDedup</code></td>
+<td>A step whose auto-retry chain failed four times is rolled back exactly once (one rollback job per step group, not per attempt), terminating FAILED_SAFE_ACK</td>
+<td><code>rollback-dedupes-retried-steps</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>rollback-jobs-reverse-order</code>, <code>job-count-exact</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-reversible-failure.ts</code></td>
@@ -9451,6 +9394,12 @@
 <td><code>VersionResolvingNoVersionProvidedFail</code></td>
 <td>FB reference without version rejected with BAD_REQUEST</td>
 <td><code>reject-missing-fb-version</code></td>
+</tr>
+<tr>
+<td><code>workflow-validation-and-resolving/optional-nullable-parameters/tests/optional-nullable-parameters-ship-as-set.ts</code></td>
+<td><code>OptionalNullableParametersShipAsSet</code></td>
+<td>Optional nullable parameters of a Pydantic function block reach the worker exactly as the step set them: 0, false and &ldquo;&rdquo; kept, an omitted one null</td>
+<td><code>optional-nullable-parameters-ship-as-set</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/raw-parameters/tests/parameters-jinja-token-halts-loudly.ts</code></td>
@@ -9724,7 +9673,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-23 08:26:02'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-23T08:26:02+00:00'>2026-09-23 08:26:02</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:29:31'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:29:31+00:00'>2026-10-15 13:29:31</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

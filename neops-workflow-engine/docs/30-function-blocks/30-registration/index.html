@@ -8353,84 +8353,15 @@
   
   
   
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../../../neops-web-sdk/docs/releases/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web SDK
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web SDK
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../../../neops-web-sdk/docs/releases/v5.2.1/" class="md-nav__link">
+      <a href="../../../../!include ./docs/neops-web-sdk/mkdocs_release_notes.yml" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    v5.2.1
+    Web SDK
   
 
     
@@ -8439,14 +8370,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -8967,6 +8890,7 @@
 </tr>
 </tbody>
 </table>
+<p>The engine validates step parameters against <code>parameterJsonSchema</code> and the worker&rsquo;s result data against <code>resultDataJsonSchema</code> before either travels on. Which JSON Schema draft applies, how defaults are filled, when values are converted and how unions such as <code>X | None</code> behave is in <a href="../../20-workflows/30-parameters/#schema-validation-and-type-conversion">Schema Validation and Type Conversion</a>.</p>
 <h2 id="schema-compatibility-rules">Schema Compatibility Rules</h2>
 <p>When registering a new version of an existing function block, the engine enforces compatibility:</p>
 <p><strong>Parameter schema (input) &ndash; backward compatible:</strong>
@@ -8986,7 +8910,7 @@
 <h2 id="deregistration">Deregistration</h2>
 <p>When a worker gracefully shuts down (<code>POST /workers/:uuid/unregister</code>), its function block registrations are preserved but unlinked from the worker. The function block definitions remain available for workflow resolution &ndash; only the worker&rsquo;s ability to execute them is removed.</p>
 <p>When a function block is deprecated, existing workflows can still reference it, but new workflows should use the latest version.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:22:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:22:24+00:00'>2026-10-15 13:22:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

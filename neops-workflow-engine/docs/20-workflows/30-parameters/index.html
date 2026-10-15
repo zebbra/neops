@@ -2417,6 +2417,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#schema-validation-and-type-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Validation and Type Conversion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#raw-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8465,84 +8476,15 @@
   
   
   
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../../../neops-web-sdk/docs/releases/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web SDK
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web SDK
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../../../neops-web-sdk/docs/releases/v5.2.1/" class="md-nav__link">
+      <a href="../../../../!include ./docs/neops-web-sdk/mkdocs_release_notes.yml" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    v5.2.1
+    Web SDK
   
 
     
@@ -8551,14 +8493,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -8999,6 +8933,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#schema-validation-and-type-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Validation and Type Conversion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#raw-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9131,7 +9076,7 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
 </span></code></pre></div>
 <h3 id="what-the-engine-checks-at-execution">What the engine checks at execution</h3>
-<p>Submitted <code>parameters</code> are checked against the workflow&rsquo;s <code>parameterSchema</code> once the workflow version resolves and before the execution row exists, so a bag the schema refuses answers <code>400 InvalidParameters</code> and consumes no execution quota. The validated bag is what gets stored: values are coerced to the declared type (<code>"7"</code> for an <code>integer</code> property is stored as <code>7</code>, and a top-level property declared <code>array</code> accepts a JSON array written as one string, <code>"[1,2]"</code> becoming <code>[1,2]</code>), and declared <code>default</code>s are materialised, so every step reading <code>{{ parameters.&lt;name&gt; }}</code> sees the same value the schema promises. Properties the schema does not declare are carried through as sent, unless the schema sets <code>additionalProperties: false</code>, and a workflow declaring no <code>parameterSchema</code> accepts any bag. A <code>parameterSchema</code> the validator cannot compile is logged and the bag is stored as sent.</p>
+<p>Submitted <code>parameters</code> are checked against the workflow&rsquo;s <code>parameterSchema</code> once the workflow version resolves and before the execution row exists, so a bag the schema refuses answers <code>400 InvalidParameters</code> and consumes no execution quota. The validated bag is what gets stored, under the rules of <a href="#schema-validation-and-type-conversion">Schema Validation and Type Conversion</a>: a bag that does not validate as sent has its values converted to the declared type (<code>"7"</code> for an <code>integer</code> property is stored as <code>7</code>), and declared <code>default</code>s are materialised, so every step reading <code>{{ parameters.&lt;name&gt; }}</code> sees the same value the schema promises. Properties the schema does not declare are carried through as sent, unless the schema sets <code>additionalProperties: false</code>, and a workflow declaring no <code>parameterSchema</code> accepts any bag. A <code>parameterSchema</code> the validator cannot compile is logged and the bag is stored as sent.</p>
 <h3 id="parameters-travel-in-clear-text">Parameters travel in clear text</h3>
 <p>Workflow parameters are not secrets, by contract. They are stored in clear text on the execution row, are returned by the execution API to every holder of <code>workflow-execution:read</code>, and appear in the engine&rsquo;s debug log. A declared <code>default</code> is materialised into the stored bag like any other value, so a <code>password</code> property with a default carries that default into the row. Credentials belong in the function block&rsquo;s own secret handling.</p>
 <h2 id="interpolation-sources">Interpolation Sources</h2>
@@ -9264,6 +9209,18 @@
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">jmes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">length(context.interfaces[?state</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&#39;DOWN&#39;])</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">`0`</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
 <p>Common functions: <code>length()</code>, <code>contains()</code>, <code>starts_with()</code>, <code>type()</code>, <code>keys()</code>, <code>values()</code>, <code>sort()</code>, <code>join()</code>. See the <a href="https://jmespath.org/specification.html#built-in-functions">JMESPath specification</a> for the full list.</p>
+<h2 id="schema-validation-and-type-conversion">Schema Validation and Type Conversion</h2>
+<p>Interpolated step <code>parameters</code>, a workflow&rsquo;s execution <code>parameters</code> and a worker&rsquo;s result <code>data</code> are all validated against their JSON Schema (<code>parameterJsonSchema</code>, <code>parameterSchema</code>, <code>resultDataJsonSchema</code>) with the same rules. They hold for any schema producer, not only the Python SDK. A schema is validated as JSON Schema 2020-12, or as draft-07 when its <code>$schema</code> names draft-07 or it uses the draft-07 tuple form <code>items: [a, b]</code>.</p>
+<ul>
+<li><strong>Defaults are filled by the engine.</strong> An omitted property with a <code>default</code> arrives with that default, so an omitted <code>input: str | None = None</code> reaches the worker as <code>null</code>. A <code>default</code> inside an <code>anyOf</code>/<code>oneOf</code> branch is not filled.</li>
+<li><strong>A null the schema does not allow is refused</strong>, never converted to <code>""</code>, <code>0</code> or <code>false</code> (see <a href="#null-semantics">Null Semantics</a>).</li>
+<li><strong>A document that validates as it is, ships as it is.</strong> <code>""</code>, <code>0</code> and <code>false</code> stay what they are in a nullable field, and an explicit <code>null</code> stays <code>null</code> wherever the schema allows it.</li>
+<li><strong>Conversion is the fallback, for the whole document.</strong> Only when the document does not validate as sent are its values converted to their declared types, e.g. <code>"7"</code> from an embedded token to <code>7</code> for an <code>integer</code>. A top-level property declared <code>array</code> also accepts a JSON array written as one string, <code>"[1,2]"</code> becoming <code>[1,2]</code>.</li>
+<li><strong>The converted document must validate without conversion</strong>, or it is refused: a failing step, or <code>400 InvalidParameters</code> for execution parameters.</li>
+<li><strong>In scalar unions a valid value keeps its type, whatever the branch order.</strong> An <code>anyOf</code>/<code>oneOf</code> of scalar types (<code>string</code>, <code>number</code> or <code>integer</code>, <code>boolean</code>, <code>null</code>) is validated as one <code>type: [...]</code> with <code>null</code> last when either its branches are bare <code>{type: X}</code>, or it has one type besides <code>null</code> whose branch carries only that type&rsquo;s own keywords, an <code>enum</code> or a <code>const</code> &ndash; or is a <code>$ref</code> to such a definition under <code>$defs</code>/<code>definitions</code>. That covers Pydantic&rsquo;s <code>X | None</code>, <code>Literal[...] | None</code>, <code>Enum | None</code> and <code>int | str | None</code>. A value that needs converting is tried against the types in branch order, with <code>null</code> last: <code>""</code> sent for an <code>int | None</code> arrives as <code>null</code>, <code>0</code> sent for a <code>str | None</code> as <code>"0"</code>. This does not apply when the parent node sets one of the same keywords, or when the union mixes <code>number</code> with <code>integer</code>.</li>
+<li><strong>Other unions are validated as written.</strong> In a document that needs conversion, AJV <a href="https://ajv.js.org/coercion.html">converts inside every union branch it tries</a>, so a value in such a union can be rewritten (<code>0</code>, <code>false</code>, <code>""</code> ↔ <code>null</code>) if the result still validates, e.g. in a union that mixes an object or array branch with a scalar one, or that has several scalar types with constraints (<code>int(ge=0) | str | None</code>).</li>
+<li><strong>Result data is replaced by the validated copy</strong>, so downstream steps read, and the job stores, the converted data with its defaults filled.</li>
+</ul>
 <h2 id="raw-parameters">Raw Parameters</h2>
 <p>Use <code>rawParameters</code> when you need literal strings that contain <code>{{ }}</code> (e.g., Jinja templates):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">parameters</span><span class="p">:</span>
@@ -9291,7 +9248,7 @@ worker byte-for-byte.</p>
 <li><a href="../40-conditions-and-assertions/">Conditions &amp; Assertions</a> &ndash; JMESPath in conditions and assertions</li>
 <li><a href="../../99-appendix/schema/#parametrizedfunctionblock">Schema Reference</a> &ndash; Full schema for step parameters</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 12:16:34'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T12:16:34+00:00'>2026-09-22 12:16:34</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:22:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:22:24+00:00'>2026-10-15 13:22:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

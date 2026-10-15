@@ -8364,84 +8364,15 @@
   
   
   
-    
-    
-      
-        
-          
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../../../../neops-web-sdk/docs/releases/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web SDK
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web SDK
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../../../neops-web-sdk/docs/releases/v5.2.1/" class="md-nav__link">
+      <a href="../../../../!include ./docs/neops-web-sdk/mkdocs_release_notes.yml" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    v5.2.1
+    Web SDK
   
 
     
@@ -8450,14 +8381,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -8968,6 +8891,15 @@
 <li><strong><code>functionBlockIds</code></strong> &ndash; List of function block IDs the worker can execute</li>
 </ul>
 <p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
+<details class="info">
+<summary>Jobs the engine closes without a worker</summary>
+<p>The engine can close a <code>PENDING</code> job before any worker claims it, in two ways: a workflow
+failure cancels its still-pending jobs, and the job cleanup fails a job no worker polled within
+<code>BLACKBOARD_PENDING_JOB_TIMEOUT</code>. Either way the job gets a result while no worker holds it, which
+sets its <code>canceled</code> flag. Such a job provably never ran and is never claimable again. The claim
+query skips it, and the partial index backing that query, <code>job_pending_claim_index</code>, drops it
+through its predicate <code>worker_uuid IS NULL AND NOT canceled</code>.</p>
+</details>
 <pre class="mermaid"><code>sequenceDiagram
     participant W as Worker
     participant BB as Blackboard
@@ -9013,7 +8945,7 @@ sufficient.</p>
 <li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
 <li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:35:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:35:10+00:00'>2026-10-15 13:35:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
