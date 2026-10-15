@@ -31,14 +31,9 @@ fi
 
 npm run --prefix "${client_directory}" build:card-lab
 
-card_lab_version="$(node -p "require('./${client_directory}/package.json').dependencies?.['@zebbra/ngx-neops-app-components'] ?? ''")"
-card_lab_semver='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?([+][0-9A-Za-z.-]+)?$'
-if [[ ! "${card_lab_version}" =~ ${card_lab_semver} ]]; then
-  echo "expected an exact @zebbra/ngx-neops-app-components version in ${client_directory}/package.json, got '${card_lab_version}'" >&2
-  exit 1
-fi
-
-card_lab_target="site/neops-web-client/docs/card-lab/${card_lab_version}"
+# web-client ships exactly one Card Lab, built from the same commit as its pages, which link
+# card-lab/index.html; there is no version segment to agree on.
+card_lab_target="site/neops-web-client/docs/card-lab"
 card_docs_target="site/neops-web-client/docs/dashboard-cards"
 
 mkdir -p "${card_lab_target}"
@@ -73,8 +68,7 @@ if [ ! -d "${card_docs_target}" ]; then
   exit 1
 fi
 
-linked_versions="$(grep -RhoE 'card-lab/[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?([+][0-9A-Za-z.-]+)?/' "${card_docs_target}" | sed -E 's#card-lab/([^/]+)/#\1#' | sort -u || true)"
-if [ "${linked_versions}" != "${card_lab_version}" ]; then
-  echo "dashboard-card links must reference Card Lab ${card_lab_version}; found '${linked_versions:-none}'" >&2
+if versioned_links="$(grep -RhoE 'card-lab/[^"?]+' "${card_docs_target}" | grep -v '^card-lab/index\.html$' | sort -u)" && [ -n "${versioned_links}" ]; then
+  echo "dashboard-card links must reference card-lab/index.html; found '${versioned_links}'" >&2
   exit 1
 fi
