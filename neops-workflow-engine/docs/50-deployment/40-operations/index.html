@@ -9095,10 +9095,21 @@ workflow plan against them. Find it in the logs by its error line:</p>
 refusal recorded as its <code>retryNote</code> — it never spins hot and never wedges the engine, and it
 <strong>resumes on its own</strong> once the lock is gone. The lock is created without an expiry, so
 nothing sweeps it up by itself.</p>
-<p>There is <strong>no engine API to release it yet</strong> — this is a deliberate first cut, with the
-operator-facing unlock/acknowledge flow still to come. Today it means deleting the CMS
-<code>CompositeLock</code> whose <code>reference</code> equals the execution UUID, after the network state has been
-verified or corrected.</p>
+<p>Release the lock through the <strong>remediation API</strong>: <code>GET /workflow-execution/&lt;id&gt;/remediation</code>
+lists every executed non-pure step; roll the reversible ones back
+(<code>POST .../remediation/rollback</code>) and attest the rest fixed by hand
+(<code>POST .../remediation/resolve</code>, with a note; the authenticated principal and the note form the
+audit trail). Add
+<code>"continueRollback": true</code> to a resolve to have the engine roll back the waves below the
+attested entry on its own; <code>rollback {"all": true}</code> and <code>continueRollback</code> put the execution
+back into <code>ROLLBACK</code>, which ends <code>FAILED_SAFE</code>, or returns to <code>FAILED_UNSAFE_ACK</code> when a
+rollback attempt fails or an entry only a human can compensate blocks it. The moment every
+entry is compensated the execution becomes <code>FAILED_SAFE</code> (its reason records <code>remediated: …</code>,
+or <code>remediation: resolved by &lt;user&gt;</code> for an empty ledger), and the engine releases the locks
+and acknowledges it as <code>FAILED_SAFE_ACK</code>. See
+<a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come-off">Execution Lifecycle → Remediation</a>.
+Deleting the CMS <code>CompositeLock</code> (<code>reference</code> = execution UUID) by hand still works as a
+break-glass measure, but bypasses the audit trail.</p>
 </div>
 <h3 id="engine-restart-recovery">Engine restart recovery</h3>
 <p>On restart, the engine:</p>
@@ -9133,7 +9144,7 @@ time out through the stuck job cleanup mechanism.</p>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-13 16:19:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-13T16:19:15+00:00'>2026-08-13 16:19:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

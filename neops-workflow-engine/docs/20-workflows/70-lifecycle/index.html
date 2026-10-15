@@ -2462,6 +2462,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#remediation-the-way-the-locks-come-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation: the way the locks come off
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remediation: the way the locks come off">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reason-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reason notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#acknowledged-states-the-real-terminal-states" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8843,6 +8871,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#remediation-the-way-the-locks-come-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation: the way the locks come off
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remediation: the way the locks come off">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reason-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reason notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#acknowledged-states-the-real-terminal-states" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9009,7 +9065,8 @@
 to the matching <strong><code>_ACK</code></strong> state once the engine has finished with it — that is
 where an execution comes to rest. A <code>FAILED_SAFE</code> means nothing irreversible happened;
 <code>FAILED_UNSAFE</code> means manual review is needed — and it is the one path that <strong>keeps its
-entity locks</strong> instead of releasing them.</p>
+entity locks</strong> instead of releasing them, until human-driven remediation turns it into
+<code>FAILED_SAFE</code>.</p>
 </details>
 <h2 id="state-machine">State Machine</h2>
 <pre class="mermaid"><code>stateDiagram-v2
@@ -9059,11 +9116,13 @@ entity locks</strong> instead of releasing them.</p>
     ERROR --&gt; FAILED_UNSAFE: irreversible FB executed
 
     ROLLBACK --&gt; FAILED_SAFE: rollback succeeded
-    ROLLBACK --&gt; FAILED_UNSAFE: rollback failed
+    ROLLBACK --&gt; FAILED_UNSAFE: rollback failed / blocked by a human-only entry
 
     COMPLETED --&gt; COMPLETED_ACK: DB updates applied, locks released
     FAILED_SAFE --&gt; FAILED_SAFE_ACK: locks released
     FAILED_UNSAFE --&gt; FAILED_UNSAFE_ACK: locks RETAINED
+    FAILED_UNSAFE_ACK --&gt; ROLLBACK: remediation rollback all / continueRollback
+    FAILED_UNSAFE_ACK --&gt; FAILED_SAFE: remediated (ledger complete)
 
     COMPLETED_ACK --&gt; [*]
     FAILED_SAFE_ACK --&gt; [*]
@@ -9121,10 +9180,13 @@ entity locks</strong> instead of releasing them.</p>
     deterministic traversal that created the original jobs. Jobs within a wave roll back
     in parallel; the next (lower) wave starts only once the whole wave succeeded.
     - All rollback jobs succeed → <code>FAILED_SAFE</code>
-    - Any rollback job fails → the phase halts → <code>FAILED_UNSAFE</code></p>
+    - Any rollback job fails → the phase halts → <code>FAILED_UNSAFE</code>
+    - Re-entered by remediation: resolved entries are skipped; an open irreversible entry
+      that stops the walk → <code>FAILED_UNSAFE</code>, with the blocking entries named in the reason</p>
 <p><strong>FAILED_SAFE</strong>
 :   The execution failed with no remaining side effects: either nothing non-pure executed,
-    or everything that did was successfully rolled back. Safe to retry or discard.</p>
+    everything that did was successfully rolled back, or a human remediated an unsafe
+    failure. Safe to retry or discard.</p>
 <p><strong>FAILED_UNSAFE</strong>
 :   The execution failed with potential side effects. Manual review required, and the
     execution&rsquo;s <strong>entity locks are deliberately kept</strong> (see below).</p>
@@ -9147,21 +9209,136 @@ stay held, the execution&rsquo;s <code>cmsResourcesLocked</code> flag stays <cod
   once the lock is released, the workflow <strong>resumes on its own</strong> with no re-submission. The
   CMS refusal is recorded on the execution as its <code>retryNote</code>.</li>
 <li>The <code>CompositeLock</code> in the CMS is created <strong>without an expiry</strong>, so nothing sweeps it up. It is
-  released only when a human releases it out-of-band.</li>
-<li>There is no engine-side unlock/acknowledge API yet. Releasing the lock today means deleting the
-  CMS <code>CompositeLock</code> whose <code>reference</code> is the execution UUID.</li>
+  released only through human-driven <strong>remediation</strong> (see below), or by deleting the CMS
+  <code>CompositeLock</code> (<code>reference</code> = execution UUID) out-of-band as a break-glass measure.</li>
 </ul>
-<p><strong>FAILED_UNSAFE_ACK is still terminal.</strong> <code>_ACK</code> means <em>the engine is done with this execution</em>, not
-<em>the execution was cleaned up</em>. Keeping it terminal is what stops the engine from reprocessing the
-execution every epoch and keeps it out of the active-execution and license counts.</p>
+<p><strong>FAILED_UNSAFE_ACK is still terminal.</strong> <code>_ACK</code> means <em>the engine initiates nothing further on its
+own</em>, not <em>the execution was cleaned up</em>. Keeping it terminal is what stops the engine from
+reprocessing the execution every epoch and keeps it out of the active-execution and license counts.
+Only remediation, which a human drives, moves it on.</p>
+<h3 id="remediation-the-way-the-locks-come-off">Remediation: the way the locks come off</h3>
+<p>The remediation API walks the execution&rsquo;s <strong>compensation ledger</strong> — the executed non-pure steps,
+each of which must end <strong>rolled back</strong> (a worker ran the function block&rsquo;s <code>rollback()</code>) or
+<strong>resolved</strong> (a human attested the fix with a mandatory note; the engine records the request&rsquo;s
+authenticated principal as <code>resolvedBy</code> / <code>resolvedByUsername</code>). The moment every
+entry is compensated, the execution transitions to <code>FAILED_SAFE</code>:</p>
+<ul>
+<li>from <code>ROLLBACK</code> when a rollback phase re-entered by <code>rollback {"all": true}</code> or
+  <code>continueRollback</code> completes the ledger;</li>
+<li>from <code>FAILED_UNSAFE_ACK</code> when a resolve, or the success of a single-entry rollback, completes it.</li>
+</ul>
+<p>From there the ordinary failed-safe path takes over: the engine releases the retained CMS
+locks and acknowledges the execution as <code>FAILED_SAFE_ACK</code>; blocked workflows resume on their own.
+The reason records how the ledger was compensated (see <a href="#reason-notes">Reason notes</a>).
+A CMS outage during that release is retried like any other failed-safe unlock, and an engine
+restart in between resumes it, because <code>FAILED_SAFE</code> is not an <code>_ACK</code> state. A remediated execution
+releases its locks without applying any CMS updates the run had aggregated; the operator reconciles
+the CMS by hand where an attestation implies it.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># The ledger: every executed non-pure step and its compensation state</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Roll back entries (each must be reversible and wave-gated), or walk all waves</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/rollback<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jobs&quot;: [&quot;&lt;entry-job-uuid&gt;&quot;]}&#39;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/rollback<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;all&quot;: true}&#39;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Attest entries fixed by hand; completing the ledger moves the execution to FAILED_SAFE in-request</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/resolve<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;all&quot;: true, &quot;note&quot;: &quot;network state restored and verified&quot;}&#39;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Remediate and continue rollback: attest the blocker, and let the engine reverse the waves below it</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/resolve<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jobs&quot;: [&quot;&lt;entry-job-uuid&gt;&quot;], &quot;note&quot;: &quot;flash restored by hand&quot;, &quot;continueRollback&quot;: true}&#39;</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Wave order is enforced for automation</strong>: an entry may be rolled back only when every entry in
+  a strictly <em>higher</em> execution wave is already compensated — resolving the irreversible step of a
+  high wave is what licenses automation to reverse the waves beneath it. Resolving itself has no
+  wave gate. <code>rollback {"all": true}</code> puts the execution back into <code>ROLLBACK</code>: the automatic
+  rollback phase walks the remaining waves descending, skipping resolved entries, and ends
+  <code>FAILED_SAFE</code> once the ledger is complete or <code>FAILED_UNSAFE</code> — back to <code>FAILED_UNSAFE_ACK</code>,
+  where remediation continues — when a rollback fails or an entry only a human can compensate
+  blocks the walk (the reason names it). The request itself answers <code>409</code> when nothing is left to
+  roll back, when a wave is still in flight, or when the walk is blocked from the start.</li>
+<li>Rolling back single entries (<code>{"jobs": [...]}</code>) keeps the execution in <code>FAILED_UNSAFE_ACK</code>.</li>
+<li>A failed rollback attempt leaves the entry <strong>retryable</strong> — request the rollback again, or
+  resolve the entry by hand instead.</li>
+<li><strong>Remediate and continue rollback</strong> (<code>"continueRollback": true</code> on resolve) attests the entry
+  and, in the same request, puts the execution back into <code>ROLLBACK</code> when the attestation unblocked
+  a wave, so the engine carries on wave by wave without a second call. If the current wave still
+  has a single-entry rollback in flight, the phase waits for it and continues on its success. If
+  another entry only a human can compensate still blocks the walk, the attestation is recorded
+  and the execution stays in <code>FAILED_UNSAFE_ACK</code>; <code>createdRollbackJobs</code> and the ledger&rsquo;s <code>status</code>
+  say which of these happened.</li>
+<li>An execution whose ledger is empty (it failed unsafely before any non-pure step reached a
+  worker) is vacuously complete: <code>resolve {"all": true}</code> on it is the operator act that moves it
+  to <code>FAILED_SAFE</code>. Its reason then records <code>remediation: resolved by &lt;user&gt;</code> instead of
+  <code>remediated: …</code>.</li>
+<li>The ledger stays readable during and after remediation: <code>GET .../remediation</code> answers for
+  <code>FAILED_UNSAFE_ACK</code>, <code>ROLLBACK</code>, <code>FAILED_SAFE</code> and <code>FAILED_SAFE_ACK</code> executions, so the
+  compensated entries and their attestations remain the audit trail. The mutating routes answer
+  <code>409</code> for anything but <code>FAILED_UNSAFE_ACK</code> — during <code>ROLLBACK</code>, because a rollback is in
+  progress.</li>
+</ul>
+<h4 id="reason-notes">Reason notes</h4>
+<p>Remediation and the rollback phase append notes to the execution&rsquo;s <code>reason</code>, separated by <code>|</code>.
+An engine note already present is not appended again, so repeated phase passes and restart
+replays converge on the same reason. An operator act (<code>remediation: …</code>) is appended every time,
+so a request re-issued after a failed wave leaves a second trace. A reason longer than its
+10 000-character column loses its middle (<code>…[truncated]…</code>): the original failure cause at the
+head and the latest notes at the tail are kept.</p>
+<table>
+<thead>
+<tr>
+<th>Note</th>
+<th>Appended when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Rollback failed at step &lt;label&gt;: &lt;message&gt;</code></td>
+<td>A rollback attempt failed — in the <code>ROLLBACK</code> phase (automatic or re-entered by remediation) or as a single-entry remediation rollback in <code>FAILED_UNSAFE_ACK</code></td>
+</tr>
+<tr>
+<td><code>Rollback at step &lt;label&gt; never reached a worker: &lt;message&gt;</code></td>
+<td>The pending-job cleanup failed a rollback attempt no worker ever polled. The attempt never ran, so its entry stays <code>OPEN</code>; in the <code>ROLLBACK</code> phase it still halts the walk</td>
+</tr>
+<tr>
+<td><code>Rollback blocked pending human resolution of: &lt;entries&gt;</code></td>
+<td>The <code>ROLLBACK</code> phase has no rollbackable wave left while the ledger is incomplete</td>
+</tr>
+<tr>
+<td><code>remediation: rollback-all requested by &lt;user&gt;</code></td>
+<td><code>rollback {"all": true}</code> re-enters <code>ROLLBACK</code></td>
+</tr>
+<tr>
+<td><code>remediation: rollback continued by &lt;user&gt;</code></td>
+<td>A resolve with <code>continueRollback</code> re-enters <code>ROLLBACK</code></td>
+</tr>
+<tr>
+<td><code>remediation: resolved by &lt;user&gt;</code></td>
+<td>A resolve completes an empty ledger</td>
+</tr>
+<tr>
+<td><code>remediated: &lt;n&gt; rolled back, &lt;m&gt; resolved by &lt;users&gt;</code></td>
+<td>The execution turns <code>FAILED_SAFE</code> after a human took part: an entry was resolved, or needed more than one rollback attempt. <code>by &lt;users&gt;</code> lists the resolving principals&rsquo; usernames and is omitted when there are none</td>
+</tr>
+</tbody>
+</table>
+<p><code>&lt;user&gt;</code> is the acting principal&rsquo;s username, or <code>an anonymous principal</code> when the credential
+carries none.</p>
 <h3 id="acknowledged-states-the-real-terminal-states">Acknowledged States (the real terminal states)</h3>
 <p><code>COMPLETED</code>, <code>FAILED_SAFE</code> and <code>FAILED_UNSAFE</code> are <em>outcome</em> states: reaching one means the engine
 still has work to do (apply DB updates, release locks — or, for <code>FAILED_UNSAFE</code>, deliberately not).
 Each is followed by its acknowledged counterpart, and those three are the states an execution
 actually rests in:</p>
 <p><strong>COMPLETED_ACK</strong> / <strong>FAILED_SAFE_ACK</strong> / <strong>FAILED_UNSAFE_ACK</strong>
-:   The engine is finished and the execution is final. Nothing transitions out of these.
-    Note that <code>FAILED_UNSAFE_ACK</code> still holds its entity locks.</p>
+:   The engine is finished and initiates nothing further. <code>COMPLETED_ACK</code> and <code>FAILED_SAFE_ACK</code>
+    are final. <code>FAILED_UNSAFE_ACK</code> still holds its entity locks, and remediation is the one way
+    out of it (to <code>FAILED_SAFE</code>, or back into <code>ROLLBACK</code>).</p>
 <div class="admonition tip">
 <p class="admonition-title">Poll for the <code>_ACK</code> state, not the outcome state</p>
 <p>When you wait for an execution to finish, treat <code>completed_ack</code>, <code>failed_safe_ack</code> and
@@ -9170,14 +9347,14 @@ is still releasing locks and writing entity updates.</p>
 </div>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="via-api">Via API</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># List active executions</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Get a specific execution</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/id/&lt;execution-id&gt;
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># List executions by state</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/state/RUNNING
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># List active executions</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Get a specific execution</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/id/&lt;execution-id&gt;
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># List executions by state</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/state/RUNNING
 </span></code></pre></div>
 <h3 id="via-monitor-app">Via Monitor App</h3>
 <p>The Monitor App&rsquo;s Executions view shows all executions with their current state, progress (jobs completed/total), and drill-down to individual job results.</p>
@@ -9210,19 +9387,19 @@ is still releasing locks and writing entity updates.</p>
 <tr>
 <td>Stuck in <code>LOCKING</code>, CMS healthy</td>
 <td>An entity is still locked by an earlier <code>FAILED_UNSAFE_ACK</code> execution, which keeps its locks by design (see the <code>retryNote</code>)</td>
-<td>Review that execution, correct the network state, then release its CMS lock (<code>reference</code> = its execution UUID) — the waiting workflow resumes on its own</td>
+<td>Remediate that execution (<code>GET /workflow-execution/&lt;id&gt;/remediation</code>, then roll back / resolve its entries) — completing its ledger releases the lock and the waiting workflow resumes on its own</td>
 </tr>
 </tbody>
 </table>
 <p>Executions can be aborted:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;execution-id&gt;
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;execution-id&gt;
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Limited implementation</p>
 <p>The abort endpoint exists but has limited functionality. It may not cleanly stop
 in-flight jobs or release locks in all scenarios. Use with caution in production.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-13 16:19:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-13T16:19:15+00:00'>2026-08-13 16:19:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

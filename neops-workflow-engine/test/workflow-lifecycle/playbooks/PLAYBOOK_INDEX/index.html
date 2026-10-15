@@ -8709,8 +8709,8 @@
 <td><code>rollback-halts-on-rollback-failure</code></td>
 <td>SAFETY</td>
 <td>A failed rollback job halts the rollback phase immediately and the workflow fails unsafely</td>
-<td>1</td>
-<td>1</td>
+<td>2</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>invalid-interpolation-halts-safely</code></td>
@@ -8730,13 +8730,34 @@
 <td><code>unsafe-failure-retains-locks</code></td>
 <td>SAFETY</td>
 <td>An execution reaching FAILED_UNSAFE_ACK keeps every CMS entity lock it acquired, so no later workflow can build on a network state that can no longer be derived; every other terminal state releases them</td>
-<td>7</td>
-<td>7</td>
+<td>9</td>
+<td>9</td>
 </tr>
 <tr>
 <td><code>rollback-dedupes-retried-steps</code></td>
 <td>SAFETY</td>
 <td>A step&rsquo;s auto-retry chain (replaces-linked attempts sharing stepLabel and entity) is rolled back exactly once, based on the latest attempt — retry chains never multiply rollback jobs, so a worker never reverts the same side effect twice</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>remediation-attestation-records-principal</code></td>
+<td>SAFETY</td>
+<td>Resolving a ledger entry records the acting principal (from the request credential, never the body) and the note on that entry</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>incomplete-remediation-retains-locks</code></td>
+<td>SAFETY</td>
+<td>While any ledger entry of an unsafe execution is uncompensated, the execution keeps every CMS lock it acquired, however many other entries were rolled back or resolved</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>canceled-rollback-leaves-entry-open</code></td>
+<td>SAFETY</td>
+<td>A rollback job no worker ever polled is canceled, not failed on the device: its ledger entry stays OPEN rather than ROLLBACK_FAILED</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -8912,8 +8933,8 @@
 <td><code>multi-entity-parallel-execution</code></td>
 <td>LIVENESS</td>
 <td>Jobs for multiple entities created per step</td>
-<td>4</td>
-<td>4</td>
+<td>5</td>
+<td>5</td>
 </tr>
 <tr>
 <td><code>multi-fb-workflow-completes</code></td>
@@ -8954,6 +8975,41 @@
 <td><code>never-polled-job-fails-workflow</code></td>
 <td>LIVENESS</td>
 <td>A workflow whose jobs no worker ever polls is failed by the pending-job cleanup after BLACKBOARD_PENDING_JOB_TIMEOUT and reaches a terminal state instead of holding its epoch open forever</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>never-polled-rollback-fails-workflow</code></td>
+<td>LIVENESS</td>
+<td>A rollback wave no worker ever polls is failed by the pending-job cleanup, and the workflow reaches FAILED_UNSAFE_ACK instead of waiting in ROLLBACK forever</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>remediation-completes-to-failed-safe</code></td>
+<td>LIVENESS</td>
+<td>Once every ledger entry of an unsafe execution is compensated (rolled back or resolved) — by the last rollback SUCCESS or by the attestation that completes the ledger — the execution turns FAILED_SAFE with <code>remediated:</code> in its reason, and the failed-safe handler releases its retained CMS locks and acknowledges it to FAILED_SAFE_ACK</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>remediation-failed-rollback-retryable</code></td>
+<td>LIVENESS</td>
+<td>A failed operator rollback leaves its entry ROLLBACK_FAILED with the locks retained, and the same entry can be rolled back again</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>remediation-rollback-all-reenters-rollback</code></td>
+<td>LIVENESS</td>
+<td>rollback { all } re-enters the ROLLBACK phase: the request creates the highest uncompensated wave and the engine creates each next wave once one completes (entities of a wave in parallel), skipping resolved entries; a failed attempt ends the phase back in FAILED_UNSAFE_ACK, and a re-issued rollback { all } retries it</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>remediation-continue-rollback-reenters-rollback</code></td>
+<td>LIVENESS</td>
+<td>Resolving the entry that blocks the rollback with continueRollback re-enters the ROLLBACK phase in the same request, also after a failed rollback returned the execution to FAILED_UNSAFE_ACK</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -9130,6 +9186,42 @@
 <td><code>PureFailureNoRollback</code></td>
 <td>Failure of a pure-only execution terminates FAILED_SAFE_ACK without rollback jobs (after 3 automatic retries)</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-after-failed-automatic-rollback.ts</code></td>
+<td><code>RemediationAfterFailedAutomaticRollback</code></td>
+<td>After the automatic rollback failed on the device, an operator attests the hand-fixed step and has automation revert the one below it, unlocking the device</td>
+<td><code>rollback-halts-on-rollback-failure</code>, <code>remediation-attestation-records-principal</code>, <code>remediation-completes-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-after-worker-died-during-rollback.ts</code></td>
+<td><code>RemediationAfterWorkerDiedDuringRollback</code></td>
+<td>The worker dies during the automatic rollback; the run fails unsafely with every step still open, and a later rollback { all } reverts both steps and unlocks the device</td>
+<td><code>never-polled-rollback-fails-workflow</code>, <code>canceled-rollback-leaves-entry-open</code>, <code>unsafe-failure-retains-locks</code>, <code>remediation-rollback-all-reenters-rollback</code>, <code>remediation-completes-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-continue-rollback-walk.ts</code></td>
+<td><code>RemediationContinueRollbackWalk</code></td>
+<td>An operator attests each step only a human can fix with continueRollback, and the engine walks the remaining rollbacks on its own until the device unlocks</td>
+<td><code>remediation-continue-rollback-reenters-rollback</code>, <code>remediation-attestation-records-principal</code>, <code>remediation-completes-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-job-by-job-retry.ts</code></td>
+<td><code>RemediationJobByJobRetry</code></td>
+<td>An operator remediates an unsafe run entry by entry — attesting the hand-fixed flash, retrying a configure_b revert that failed on the device — and the engine unlocks the device once every step is accounted for</td>
+<td><code>unsafe-failure-retains-locks</code>, <code>remediation-attestation-records-principal</code>, <code>remediation-failed-rollback-retryable</code>, <code>remediation-completes-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-partial-irreversible-open.ts</code></td>
+<td><code>RemediationPartialIrreversibleOpen</code></td>
+<td>An operator attests the hand-reverted configuration steps while the failed flash is still under investigation; the device stays locked</td>
+<td><code>remediation-attestation-records-principal</code>, <code>incomplete-remediation-retains-locks</code></td>
+</tr>
+<tr>
+<td><code>tests/remediation-rollback-all-walk.ts</code></td>
+<td><code>RemediationRollbackAllWalk</code></td>
+<td>An operator attests the hand-restored flashes and lets rollback { all } revert the rest of a two-device run wave by wave, re-issuing it after a failed wave ended the rollback</td>
+<td><code>remediation-rollback-all-reenters-rollback</code>, <code>multi-entity-parallel-execution</code>, <code>remediation-failed-rollback-retryable</code>, <code>remediation-completes-to-failed-safe</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-blocked-irreversible.ts</code></td>
@@ -9673,7 +9765,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:29:31'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:29:31+00:00'>2026-10-15 13:29:31</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:47:23'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:47:23+00:00'>2026-10-15 13:47:23</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

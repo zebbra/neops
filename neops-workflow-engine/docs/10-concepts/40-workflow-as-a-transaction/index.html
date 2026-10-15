@@ -8941,6 +8941,7 @@
     RUNNING --&gt; FAILED_UNSAFE
     COMPLETED --&gt; [*]
     FAILED_SAFE --&gt; [*]
+    FAILED_UNSAFE --&gt; FAILED_SAFE: remediated
     FAILED_UNSAFE --&gt; [*]
 
     class NEW goodState
@@ -8952,7 +8953,7 @@
     class FAILED_UNSAFE badState</code></pre>
 <div class="admonition note">
 <p class="admonition-title">Simplified</p>
-<p>This view collapses the acquire/lock phases and omits the acknowledged terminal states.
+<p>This view collapses the acquire/lock and rollback phases and omits the acknowledged terminal states.
 See <a href="../../20-workflows/70-lifecycle/">Execution Lifecycle</a> for the full state machine.</p>
 </div>
 <h3 id="failed_safe">FAILED_SAFE</h3>
@@ -8961,6 +8962,7 @@ See <a href="../../20-workflows/70-lifecycle/">Execution Lifecycle</a> for the f
 <li>The workflow failed before any steps executed</li>
 <li>All executed steps were <strong>pure</strong> (read-only) &ndash; no side effects at all</li>
 <li>The workflow was successfully rolled back</li>
+<li>A human remediated an unsafe failure: every executed non-pure step was rolled back or attested fixed by hand</li>
 </ul>
 <p>You can safely discard or re-run this workflow without worrying about leftover state.</p>
 <h3 id="failed_unsafe">FAILED_UNSAFE</h3>
@@ -8975,8 +8977,9 @@ See <a href="../../20-workflows/70-lifecycle/">Execution Lifecycle</a> for the f
 <p class="admonition-title">An unsafe failure keeps its entity locks</p>
 <p>This is the one failure path that does <strong>not</strong> release the entities it locked. The engine can
 no longer derive what state those devices are in, so it refuses to let the next workflow plan
-against them: the locks stay held until a human has reviewed the execution and released them
-out-of-band. See <a href="../../20-workflows/70-lifecycle/#locks-are-not-released-on-an-unsafe-failure">Execution Lifecycle</a>.</p>
+against them: the locks stay held until remediation has rolled back or attested every executed
+non-pure step. The execution then turns <code>FAILED_SAFE</code> and the engine releases the locks itself.
+See <a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come-off">Execution Lifecycle</a>.</p>
 </div>
 <h3 id="the-decision-tree">The Decision Tree</h3>
 <pre class="mermaid"><code>graph TD
@@ -9020,9 +9023,9 @@ given entity at a time.</p>
 <ul>
 <li><code>FAILED_SAFE</code> workflows can be safely ignored or re-triggered; their entity locks are released, so subsequent workflows are not blocked</li>
 <li><code>FAILED_UNSAFE</code> workflows need investigation &ndash; check the execution details in the Monitor App to see which steps ran on which devices</li>
-<li>An unsafe failure <strong>blocks subsequent workflows on the same entities</strong> until its locks are released by hand. That is deliberate: the alternative is a workflow planning against a network state nobody has verified. Blocked workflows wait on capped backoff and resume automatically once the lock is released</li>
+<li>An unsafe failure <strong>blocks subsequent workflows on the same entities</strong> until it is remediated. That is deliberate: the alternative is a workflow planning against a network state nobody has verified. The remediation API walks the executed steps one by one — roll back what the function blocks can reverse, attest by hand what they cannot — and the engine releases the locks the moment everything is compensated. Blocked workflows wait on capped backoff and resume automatically once the lock is released (<a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come-off">details</a>)</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-13 16:19:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-13T16:19:15+00:00'>2026-08-13 16:19:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

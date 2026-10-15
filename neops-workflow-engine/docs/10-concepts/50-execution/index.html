@@ -8942,10 +8942,12 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
     ERROR --&gt; FAILED_SAFE: pure execution
     ERROR --&gt; FAILED_UNSAFE: side effects occurred
     ROLLBACK --&gt; FAILED_SAFE: rollback succeeded
-    ROLLBACK --&gt; FAILED_UNSAFE: rollback failed
+    ROLLBACK --&gt; FAILED_UNSAFE: rollback failed / blocked by a human-only entry
     COMPLETED --&gt; COMPLETED_ACK: updates applied, locks released
     FAILED_SAFE --&gt; FAILED_SAFE_ACK: locks released
     FAILED_UNSAFE --&gt; FAILED_UNSAFE_ACK: locks RETAINED
+    FAILED_UNSAFE_ACK --&gt; ROLLBACK: remediation rollback all / continueRollback
+    FAILED_UNSAFE_ACK --&gt; FAILED_SAFE: resolve completes the ledger
     COMPLETED_ACK --&gt; [*]
     FAILED_SAFE_ACK --&gt; [*]
     FAILED_UNSAFE_ACK --&gt; [*]</code></pre>
@@ -9023,7 +9025,7 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
 </tr>
 <tr>
 <td><code>FAILED_UNSAFE_ACK</code></td>
-<td><strong>Terminal</strong>, but the entity locks are <strong>deliberately kept</strong> — the state can no longer be derived, so the entities stay locked for human review (<a href="../../20-workflows/70-lifecycle/#locks-are-not-released-on-an-unsafe-failure">why</a>)</td>
+<td><strong>Terminal</strong>, but the entity locks are <strong>deliberately kept</strong> — the state can no longer be derived, so the entities stay locked for human review (<a href="../../20-workflows/70-lifecycle/#locks-are-not-released-on-an-unsafe-failure">why</a>). Remediation moves it to <code>FAILED_SAFE</code>, which releases them (<a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come-off">how</a>)</td>
 </tr>
 </tbody>
 </table>
@@ -9036,7 +9038,7 @@ failure occurs. On failure, the engine classifies it as <code>FAILED_SAFE</code>
 <p>When a step fails, the engine follows this sequence:</p>
 <ol>
 <li><strong>Classify failure</strong> &ndash; If no non-pure step actually executed, nothing needs reverting and the workflow ends <code>FAILED_SAFE</code>. Otherwise the engine checks whether every executed non-pure function block is registered <code>reversible</code></li>
-<li><strong>Roll back if possible</strong> &ndash; All reversible: rollback jobs run wave by wave in reverse execution order; all succeed → <code>FAILED_SAFE</code>, any rollback failure → <code>FAILED_UNSAFE</code>. Any executed function block irreversible: no rollback is attempted → <code>FAILED_UNSAFE</code></li>
+<li><strong>Roll back if possible</strong> &ndash; All reversible: rollback jobs run wave by wave in reverse execution order; all succeed → <code>FAILED_SAFE</code>, any rollback failure → <code>FAILED_UNSAFE</code>. Any executed function block irreversible: no rollback is attempted → <code>FAILED_UNSAFE</code>. An unsafe failure keeps its locks until an operator remediates it by rolling back or attesting every executed non-pure step</li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Implementation status</p>
@@ -9054,7 +9056,7 @@ workflow. Workers that stop sending heartbeats are first marked as unreachable (
 and then offline (6 min). Once a worker is offline, its in-flight jobs are auto-failed
 by the stuck job cleanup service.</p>
 </details>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-13 16:19:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-13T16:19:15+00:00'>2026-08-13 16:19:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -3134,6 +3134,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remediation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaring-a-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declaring a remediation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-derived-never-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is derived, never declared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dead-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dead worker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#state-transitions-test-observable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8853,6 +8903,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remediation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remediation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaring-a-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declaring a remediation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-derived-never-declared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is derived, never declared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dead-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dead worker
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#state-transitions-test-observable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9175,6 +9275,8 @@
 <li><strong>Playbook</strong> &ndash; A TypeScript object declaring the complete test scenario, including property verifications with reasoning.</li>
 <li><strong>setupPlaybookSuite()</strong> &ndash; Registers app init/teardown hooks and returns a context for running playbooks.</li>
 <li><strong>PlaybookExecutor</strong> &ndash; Runs the playbook step by step, simulating the worker side.</li>
+<li><strong>DeclaredRemediation</strong> &ndash; Plays the remediation a playbook declares against the execution resting in <code>FAILED_UNSAFE_ACK</code> (see <a href="#remediation">Remediation</a>).</li>
+<li><strong>RemediationDriver</strong> &ndash; Helper API over a resting execution: the remediation routes, a worker for the jobs they create, CMS lock state, engine restarts, further executions. Used by <code>DeclaredRemediation</code> and by the remediation mechanics spec.</li>
 <li><strong>E2eInteractor</strong> &ndash; Provides HTTP helper methods for API interaction.</li>
 <li><strong>properties.ts</strong> &ndash; Single source of truth for all system properties (<code>SafetyProperty</code> | <code>LivenessProperty</code>).</li>
 <li><strong>successJob()</strong> &ndash; Helper to reduce job expectation boilerplate.</li>
@@ -9189,13 +9291,16 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nx">executeWorkflowDto?</span><span class="o">:</span><span class="w"> </span><span class="kt">InstanceType</span><span class="o">&lt;</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">ExecuteWorkflowDto</span><span class="o">&gt;</span><span class="w">  </span><span class="c1">// Omit = registration-only test</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="nx">expectedWorkflowExecutionStateAfterSubmit?</span><span class="o">:</span><span class="w"> </span><span class="kt">WorkflowExecutionStatus</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nx">expectedAcquireJobs?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookJobAndResponse</span><span class="p">[]</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nx">expectedExecuteJobs?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookJobAndResponse</span><span class="p">[]</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="nx">expectedRollbackJobs?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookJobAndResponse</span><span class="p">[]</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="nx">expectedTerminalState?</span><span class="o">:</span><span class="w"> </span><span class="kt">WorkflowExecutionStatusTerminalStates</span><span class="w">  </span><span class="c1">// COMPLETED_ACK | FAILED_SAFE_ACK | FAILED_UNSAFE_ACK</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="nx">expectedTerminalReasonContains?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Pin the failure to its cause, not just the status</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">  </span><span class="nx">cmsDbAfterExecution?</span><span class="o">:</span><span class="w"> </span><span class="kt">CmsDB</span><span class="w">            </span><span class="c1">// Verify CMS state after execution via isSubset()</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="nx">expectedStateOverrides?</span><span class="o">:</span><span class="w"> </span><span class="kt">ExpectedStateOverrides</span><span class="w">  </span><span class="c1">// Override expected HTTP status for workflow registration (e.g., BAD_REQUEST for validation failures)</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="p">}</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nx">expectedExecuteJobs?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookExecuteJobAndResponse</span><span class="p">[]</span><span class="w">  </span><span class="c1">// Each may declare how its ledger entry is remediated</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="nx">executeJobsAreNeverPolled?</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="w">       </span><span class="c1">// Fail the execute jobs via the never-polled cleanup instead of polling</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="nx">expectedRollbackJobs?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookJobAndResponse</span><span class="p">[]</span><span class="w">  </span><span class="c1">// Wave by wave, in descending execution-wave order</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="nx">rollbackJobsAreNeverPolled?</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="w">      </span><span class="c1">// The worker died: fail the automatic rollback wave via the cleanup</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">  </span><span class="nx">expectedTerminalState?</span><span class="o">:</span><span class="w"> </span><span class="kt">WorkflowExecutionStatusTerminalStates</span><span class="w">  </span><span class="c1">// COMPLETED_ACK | FAILED_SAFE_ACK | FAILED_UNSAFE_ACK</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="nx">expectedTerminalReasonContains?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Pin the failure to its cause, not just the status</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">  </span><span class="nx">cmsDbAfterExecution?</span><span class="o">:</span><span class="w"> </span><span class="kt">CmsDB</span><span class="w">            </span><span class="c1">// Verify CMS state after execution via isSubset()</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">  </span><span class="nx">remediation?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookRemediation</span><span class="w">      </span><span class="c1">// { via: &#39;jobByJob&#39; | &#39;rollbackAll&#39; | &#39;continueRollback&#39; }</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">  </span><span class="nx">expectedStateOverrides?</span><span class="o">:</span><span class="w"> </span><span class="kt">ExpectedStateOverrides</span><span class="w">  </span><span class="c1">// Override expected HTTP status for workflow registration (e.g., BAD_REQUEST for validation failures)</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="execution-flow">Execution Flow</h2>
 <p>The <code>PlaybookExecutor</code> runs the playbook in this order:</p>
@@ -9208,11 +9313,67 @@
 <li><strong>Register worker</strong> &ndash; Create a test worker named <code>playbook-test-worker</code></li>
 <li><strong>Acquire phase</strong> &ndash; Poll for ACQUIRE jobs immediately, match via <code>isSubset()</code>, post expected responses</li>
 <li><strong>Execute phase</strong> &ndash; Wait for EXECUTE jobs (polling until available), post responses, loop while RUNNING</li>
-<li><strong>Rollback phase</strong> &ndash; If workflow enters FAILED_UNSAFE, poll and respond to rollback jobs. Can result in either FAILED_UNSAFE_ACK or FAILED_SAFE_ACK</li>
-<li><strong>Assert terminal state</strong> &ndash; Verify the execution ended in the expected state</li>
+<li><strong>Rollback phase</strong> &ndash; While the workflow is in ROLLBACK, poll one rollback wave per iteration and answer it from <code>expectedRollbackJobs</code>. Waves must arrive in the declared order; jobs within a wave may arrive in any order. Ends in FAILED_SAFE_ACK or FAILED_UNSAFE_ACK</li>
+<li><strong>Assert terminal state</strong> &ndash; Verify the execution ended in the expected state and reason, and its CMS lock retention: FAILED_UNSAFE_ACK keeps every lock it ever acquired, every other terminal state holds none</li>
 <li><strong>Assert CMS state</strong> &ndash; If <code>cmsDbAfterExecution</code> is set, verify via <code>isSubset()</code>. On mismatch, the <code>intersection()</code> helper shows the overlap for debugging</li>
+<li><strong>Remediation</strong> &ndash; If <code>remediation</code> is set, remediate the resting <code>FAILED_UNSAFE_ACK</code> execution as declared (see <a href="#remediation">Remediation</a>)</li>
 </ol>
-<p>Steps 2-11 live in <code>runAssumingPublished(app)</code>, which <code>execute()</code> delegates to after step 1. That split is deliberate: the <code>Playbook</code> shape has room for exactly one registration, so a test whose point is a publish <em>sequence</em> &ndash; &ldquo;publish v1, a later publish is rejected as <code>422 BelowFloor</code>, then a loose-pin execution must still resolve v1&rdquo; &ndash; cannot be a plain playbook. Such tests (see <code>publish-resolution.e2e-spec.ts</code>) drive their publishes directly via supertest, then call <code>runAssumingPublished</code> to reuse the same acquire/execute/rollback machinery instead of duplicating it.</p>
+<p>Steps 2-12 live in <code>runAssumingPublished(app)</code>, which <code>execute()</code> delegates to after step 1. That split is deliberate: the <code>Playbook</code> shape has room for exactly one registration, so a test whose point is a publish <em>sequence</em> &ndash; &ldquo;publish v1, a later publish is rejected as <code>422 BelowFloor</code>, then a loose-pin execution must still resolve v1&rdquo; &ndash; cannot be a plain playbook. Such tests (see <code>publish-resolution.e2e-spec.ts</code>) drive their publishes directly via supertest, then call <code>runAssumingPublished</code> to reuse the same acquire/execute/rollback machinery instead of duplicating it.</p>
+<h2 id="remediation">Remediation</h2>
+<p>Playbooks test real-world cases declaratively. A playbook that ends in <code>FAILED_UNSAFE_ACK</code> can go on to declare how a human remediates it: the walk over the compensation ledger (<code>GET/POST /workflow-execution/:id/remediation[/rollback|/resolve]</code>) that ends, once every entry is compensated, with the execution turning <code>FAILED_SAFE</code>. The ordinary failed-safe handler then releases the retained CMS locks and acknowledges it to <code>FAILED_SAFE_ACK</code>.</p>
+<p><strong>Playbooks versus mechanics.</strong> A playbook models what an operator does and must not script the machinery. Gate refusals, API contract corners, duplicate results and engine restarts are mechanisms. Each is pinned by its own test in <code>test/workflow-lifecycle/remediation-mechanics.e2e-spec.ts</code>, which reaches <code>FAILED_UNSAFE_ACK</code> through the executor (<code>suite.runToRest(playbook)</code> returns a <code>RemediationDriver</code>) and then drives the mechanism directly.</p>
+<h3 id="declaring-a-remediation">Declaring a remediation</h3>
+<p>A ledger entry <em>is</em> an executed non-pure job, so its remediation is declared on the job&rsquo;s expectation in <code>expectedExecuteJobs</code>. No selectors are needed: the driver finds the entry by the expectation&rsquo;s <code>stepLabel</code> and <code>entityId</code>.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">...</span><span class="nx">flashFailsUnsafely</span><span class="p">([</span><span class="mf">1</span><span class="p">],</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nx">flash</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">note</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;device reflashed manually&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nx">configure_b</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">rollback</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">rollbackFails</span><span class="p">(</span><span class="s1">&#39;session dropped&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">ROLLBACK_SUCCEEDS</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nx">configure_a</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">rollback</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">ROLLBACK_SUCCEEDS</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">}),</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nx">remediation</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">via</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;jobByJob&#39;</span><span class="w"> </span><span class="p">},</span>
+</span></code></pre></div>
+<p>An entry takes one of these forms:</p>
+<ul>
+<li><strong><code>{ rollback: [...] }</code></strong> lists the worker&rsquo;s answer to each rollback attempt the operator requests, in order. Every attempt but the last must fail.</li>
+<li><strong><code>{ resolve: { note } }</code></strong> is a human attestation that the step was fixed by hand.</li>
+<li><strong><code>{ rollback: [...], resolve: { note } }</code></strong> attests the step after declared attempts that all failed.</li>
+<li><strong>No field</strong> means the entry keeps the state the terminal left it in. That is OPEN, unless the automatic rollback attempted it.</li>
+</ul>
+<p>The playbook&rsquo;s <code>remediation.via</code> names the operator&rsquo;s working mode:</p>
+<table>
+<thead>
+<tr>
+<th><code>via</code></th>
+<th>What the operator does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jobByJob</code></td>
+<td>Works through the ledger in descending wave order, attestations before rollbacks within a wave. Each entry gets a resolve, or one <code>rollback { jobs: [entry] }</code> per declared attempt</td>
+</tr>
+<tr>
+<td><code>rollbackAll</code></td>
+<td>Sends every due attestation, then <code>rollback { all }</code>, which re-enters the <code>ROLLBACK</code> phase with the first wave. Each wave the engine creates is answered in turn. When a failed attempt ends the phase back in <code>FAILED_UNSAFE_ACK</code>, the operator re-issues the request, for as long as the highest uncompensated wave is reversible and declared</td>
+</tr>
+<tr>
+<td><code>continueRollback</code></td>
+<td>Like <code>rollbackAll</code>, but the last due attestation carries <code>continueRollback</code> and re-enters the <code>ROLLBACK</code> phase itself. <code>rollback { all }</code> is used only when no attestation is left to do it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-derived-never-declared">What is derived, never declared</h3>
+<p>The end state follows from the declarations, and a playbook must not restate it:</p>
+<ul>
+<li><strong>Entry states.</strong> The driver predicts each entry&rsquo;s state as it goes: RESOLVED after a resolve, ROLLED_BACK or ROLLBACK_FAILED after an answered attempt. It asserts the touched entries after every request and every answered attempt. A RESOLVED entry must also name the acting principal (<code>resolvedByUsername === TEST_PRINCIPAL.username</code>) and the declared note. ROLLBACK_IN_PROGRESS is never asserted.</li>
+<li><strong>Starting state.</strong> Before remediation starts, an entry whose rollback job the main phase answered is ROLLED_BACK or ROLLBACK_FAILED. Every other entry is OPEN, including one whose rollback job no worker polled.</li>
+<li><strong>Waves.</strong> A request must create exactly the rollback jobs its mode implies. Every job in flight must sit in the highest uncompensated wave. The worker is handed exactly those jobs, and a surplus job fails the playbook.</li>
+<li><strong>Phase.</strong> While rollback attempts are in flight, the execution is in <code>ROLLBACK</code> if a <code>rollback { all }</code> or <code>continueRollback</code> request created them, and in <code>FAILED_UNSAFE_ACK</code> for a job-by-job rollback. When the <code>ROLLBACK</code> phase stops short of a complete ledger, because an attempt failed or only a human can compensate the next wave, the execution must rest in <code>FAILED_UNSAFE_ACK</code> before the operator acts again. Remediation requests sent during <code>ROLLBACK</code> are refused.</li>
+<li><strong>End state.</strong> The ledger is complete exactly when every entry ends compensated. A complete ledger means the execution has been remediated: it reaches <code>FAILED_SAFE_ACK</code> with <code>remediated:</code> in its reason, <code>cmsResourcesLocked</code> false and no CMS lock held. An incomplete ledger leaves it resting in <code>FAILED_UNSAFE_ACK</code>, with <code>cmsResourcesLocked</code> true and every lock it ever acquired. The driver waits for the status with a bounded ledger poll, never with an unbounded <code>awaitIdle</code>.</li>
+</ul>
+<p>A declaration the ledger cannot honour fails the playbook with a clear message. Examples are a rollback declared for an irreversible entry, a rollback the wave gate refuses, and a job the engine created for an entry with no declared attempt left.</p>
+<h3 id="the-dead-worker">The dead worker</h3>
+<p><code>rollbackJobsAreNeverPolled</code> mirrors <code>executeJobsAreNeverPolled</code> for the automatic rollback phase. The first rollback wave is never polled, and one job-cleanup cycle fails it. The run ends <code>FAILED_UNSAFE_ACK</code> with a reason containing <code>Rollback at step … never reached a worker</code>, and every entry stays OPEN, so the entries can then be remediated as usual.</p>
+<p>The shared fixture <code>test/workflow-lifecycle/playbooks/shared/remediation-workflow.ts</code> provides the workflow and main phases the remediation playbooks use. The workflow has three steps: <code>configure_a</code> and <code>configure_b</code> are reversible, <code>flash</code> is irreversible. The playbooks live in <code>tests/remediation-*.ts</code> and are wired in <code>test/workflow-lifecycle/unsafe-failure-remediation.e2e-spec.ts</code>.</p>
 <h2 id="state-transitions-test-observable">State Transitions (Test-Observable)</h2>
 <p>The executor observes this subset of the full state machine. States collapsed into <code>[engine-internal]</code> are traversed automatically by the engine and not visible to playbook tests:</p>
 <pre class="mermaid"><code>stateDiagram-v2
@@ -9225,11 +9386,15 @@
 
     RUNNING --&gt; COMPLETED_ACK
     RUNNING --&gt; FAILED_SAFE_ACK
-    RUNNING --&gt; FAILED_UNSAFE
+    RUNNING --&gt; FAILED_UNSAFE_ACK: irreversible FB executed
+    RUNNING --&gt; rollback: all executed non-pure FBs reversible
 
-    FAILED_UNSAFE --&gt; rollback
     rollback --&gt; FAILED_UNSAFE_ACK
     rollback --&gt; FAILED_SAFE_ACK
+
+    FAILED_UNSAFE_ACK --&gt; FAILED_UNSAFE_ACK: partial remediation (locks retained)
+    FAILED_UNSAFE_ACK --&gt; rollback: rollback all / continueRollback
+    FAILED_UNSAFE_ACK --&gt; FAILED_SAFE_ACK: ledger complete (FAILED_SAFE, locks released)
 
     COMPLETED_ACK --&gt; [*]
     FAILED_SAFE_ACK --&gt; [*]
@@ -9254,10 +9419,11 @@
     root --&gt; pe["playbook-executor.ts&lt;br/&gt;Shared execution engine"]
     root --&gt; props["properties.ts&lt;br/&gt;SystemProperty registry (P.*)"]
     root --&gt; idx["PLAYBOOK_INDEX.md&lt;br/&gt;Auto-generated (npm run playbook:index)"]
-    root --&gt; shared["shared/&lt;br/&gt;Shared FB definitions (e.g. BasePythonEval)"]
+    root --&gt; shared["shared/&lt;br/&gt;Shared FB definitions and fixtures&lt;br/&gt;(e.g. BasePythonEval, remediation workflow)"]
     root --&gt; base["base/&lt;br/&gt;E2eInteractor base class"]
     root --&gt; cms["cms/&lt;br/&gt;CMS database factories"]
-    root --&gt; utils["utils/&lt;br/&gt;Job builders, assertion helpers, suite runner"]
+    root --&gt; utils["utils/&lt;br/&gt;Job builders, job matching, assertion helpers, suite runner"]
+    root --&gt; remediation["remediation/&lt;br/&gt;DeclaredRemediation, its plan derivation, RemediationDriver"]
     root --&gt; tests["tests/&lt;br/&gt;Core workflow lifecycle scenarios"]
     root --&gt; exec["workflow-execution-*/&lt;br/&gt;Execution feature tests&lt;br/&gt;(JMES, db-updates, embedded workflows)"]
     root --&gt; valid["workflow-validation-*/&lt;br/&gt;Validation and version resolution tests"]
@@ -9371,7 +9537,7 @@
 <li><a href="../20-testing/">Testing</a> &ndash; Unit tests, E2E setup, debugging</li>
 <li><a href="../30-adding-handlers/">Adding Handlers</a> &ndash; When your new handler needs E2E coverage</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 11:34:53'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-10T11:34:53+00:00'>2026-08-10 11:34:53</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
