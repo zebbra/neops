@@ -59,17 +59,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -2486,6 +2486,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure codes
+      
+    </span>
+  </a>
   
 </li>
         
@@ -8899,6 +8910,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#failure-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#acknowledged-states-the-real-terminal-states" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9330,6 +9352,109 @@ head and the latest notes at the tail are kept.</p>
 </table>
 <p><code>&lt;user&gt;</code> is the acting principal&rsquo;s username, or <code>an anonymous principal</code> when the credential
 carries none.</p>
+<h3 id="failure-codes">Failure codes</h3>
+<p>A failed run carries the free-text <code>reason</code>, which describes what went wrong and may be reworded,
+and a stable <code>reasonCode</code> a client can group, filter and phrase on. The code names the first
+failure, the cause that started it; it is null for a run that did not fail. Codes are only added,
+never renamed.</p>
+<table>
+<thead>
+<tr>
+<th><code>reasonCode</code></th>
+<th>The run failed because</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>invalid_workflow</code></td>
+<td>the definition cannot run: duplicate step labels, no steps, an unknown step, no resolvable <code>runOn</code>, or a workflow reference step, which the engine does not run yet</td>
+</tr>
+<tr>
+<td><code>unresolved_reference</code></td>
+<td>the definition names a function block or workflow that is not registered</td>
+</tr>
+<tr>
+<td><code>invalid_parameters</code></td>
+<td>a step&rsquo;s parameters break its function block&rsquo;s parameter schema</td>
+</tr>
+<tr>
+<td><code>interpolation_failed</code></td>
+<td>a <code>{{ }}</code> token could not be evaluated</td>
+</tr>
+<tr>
+<td><code>lock_refused</code></td>
+<td>the CMS refused or could not complete the lock on the run&rsquo;s entities, or the lock was never requested because the run&rsquo;s starter maps to no CMS user</td>
+</tr>
+<tr>
+<td><code>acquire_failed</code></td>
+<td>resource discovery failed</td>
+</tr>
+<tr>
+<td><code>step_failed</code></td>
+<td>a worker reported a step&rsquo;s job as failed</td>
+</tr>
+<tr>
+<td><code>invalid_result</code></td>
+<td>a step&rsquo;s result breaks its function block&rsquo;s result schema, or its dbUpdates write outside the step&rsquo;s entities or collide with another step&rsquo;s</td>
+</tr>
+<tr>
+<td><code>assertion_failed</code></td>
+<td>a step&rsquo;s assertion evaluated to false</td>
+</tr>
+<tr>
+<td><code>job_timed_out</code></td>
+<td>no worker claimed a job before the deadline, or a claimed job went silent</td>
+</tr>
+<tr>
+<td><code>worker_lost</code></td>
+<td>the worker holding a job was deleted or went offline</td>
+</tr>
+<tr>
+<td><code>unlock_failed</code></td>
+<td>the CMS write-back or the release of the run&rsquo;s locks failed</td>
+</tr>
+<tr>
+<td><code>aborted</code></td>
+<td>a person aborted the run (reserved: abort does not stop runs yet)</td>
+</tr>
+<tr>
+<td><code>engine_error</code></td>
+<td>an unexpected fault in the engine or its infrastructure</td>
+</tr>
+</tbody>
+</table>
+<p>A run that ended <code>FAILED_UNSAFE</code> also names why it could not be made safe, in <code>unsafeCause</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>unsafeCause</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rollback_failed</code></td>
+<td>a rollback job failed</td>
+</tr>
+<tr>
+<td><code>rollback_blocked</code></td>
+<td>an irreversible function block had executed, so no rollback was attempted</td>
+</tr>
+<tr>
+<td><code>unlock_failed</code></td>
+<td>the CMS write-back or lock release failed</td>
+</tr>
+<tr>
+<td><code>engine_fault</code></td>
+<td>the engine failed while executing and cannot tell what the run had done</td>
+</tr>
+</tbody>
+</table>
+<p>Every path into <code>FAILED_UNSAFE</code> names one, and a later unsafe end replaces it with its own: a
+remediated run whose unlock the CMS then denies ends with <code>unlock_failed</code>, while <code>reasonCode</code> still
+names the first failure. It is null for every run that did not end unsafe. A run remediated to
+<code>FAILED_SAFE</code> keeps both codes: <code>FAILED_SAFE</code> or <code>FAILED_SAFE_ACK</code> with an <code>unsafeCause</code> is a run a
+person made safe.</p>
 <h3 id="acknowledged-states-the-real-terminal-states">Acknowledged States (the real terminal states)</h3>
 <p><code>COMPLETED</code>, <code>FAILED_SAFE</code> and <code>FAILED_UNSAFE</code> are <em>outcome</em> states: reaching one means the engine
 still has work to do (apply DB updates, release locks — or, for <code>FAILED_UNSAFE</code>, deliberately not).
@@ -9399,7 +9524,7 @@ is still releasing locks and writing entity updates.</p>
 <p>The abort endpoint exists but has limited functionality. It may not cleanly stop
 in-flight jobs or release locks in all scenarios. Use with caution in production.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-16 05:47:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-16T05:47:05+00:00'>2026-10-16 05:47:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/shift-away.css">
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/shift-away.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/material.css">
     
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../../../assets/document_dates/core/core.css">
     
@@ -8734,6 +8734,13 @@
 <td>9</td>
 </tr>
 <tr>
+<td><code>failure-serves-stable-reason-code</code></td>
+<td>SAFETY</td>
+<td>A run that fails serves a stable reasonCode beside its free-text reason, set where the engine decides the failure, so a client can group and phrase failures without matching engine wording</td>
+<td>19</td>
+<td>19</td>
+</tr>
+<tr>
 <td><code>rollback-dedupes-retried-steps</code></td>
 <td>SAFETY</td>
 <td>A step&rsquo;s auto-retry chain (replaces-linked attempts sharing stepLabel and entity) is rolled back exactly once, based on the latest attempt — retry chains never multiply rollback jobs, so a worker never reverts the same side effect twice</td>
@@ -9125,7 +9132,7 @@
 <td><code>tests/assertion-halts-on-violation.ts</code></td>
 <td><code>AssertionHaltsOnViolation</code></td>
 <td>Single-step workflow with JMES assertion that evaluates to false halts safely before any execute jobs run</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>assertion-halts-on-violation</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>assertion-halts-on-violation</code></td>
 </tr>
 <tr>
 <td><code>tests/completed-step-survives-condition-flip.ts</code></td>
@@ -9137,7 +9144,7 @@
 <td><code>tests/context-acquire-invalid-filter-halts-safely.ts</code></td>
 <td><code>ContextAcquireInvalidFilterHaltsSafely</code></td>
 <td>A step-level context acquire whose per-entity JMES filter is malformed fails the workflow safely instead of matching all entities</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
 </tr>
 <tr>
 <td><code>tests/device-step-with-context-interface-acquisition.ts</code></td>
@@ -9161,7 +9168,7 @@
 <td><code>tests/embedded-null-halts-safely.ts</code></td>
 <td><code>EmbeddedNullHaltsSafely</code></td>
 <td>A step whose string parameter embeds a null-resolving JMES token inside a larger string halts the workflow safely instead of shipping the corrupted text &ldquo;host=null&rdquo;</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
 </tr>
 <tr>
 <td><code>tests/fb-level-acquisition.ts</code></td>
@@ -9179,13 +9186,13 @@
 <td><code>tests/never-polled-job-cleanup.ts</code></td>
 <td><code>NeverPolledJobCleanup</code></td>
 <td>A pending execute job no worker ever polls is failed by the cleanup after the pending deadline and the workflow terminates FAILED_SAFE_ACK</td>
-<td><code>never-polled-job-fails-workflow</code>, <code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code>, <code>no-db-mutation-on-failure</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>never-polled-job-fails-workflow</code>, <code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code>, <code>no-db-mutation-on-failure</code></td>
 </tr>
 <tr>
 <td><code>tests/pure-failure-no-rollback.ts</code></td>
 <td><code>PureFailureNoRollback</code></td>
 <td>Failure of a pure-only execution terminates FAILED_SAFE_ACK without rollback jobs (after 3 automatic retries)</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code></td>
 </tr>
 <tr>
 <td><code>tests/remediation-after-failed-automatic-rollback.ts</code></td>
@@ -9227,19 +9234,19 @@
 <td><code>tests/rollback-blocked-irreversible.ts</code></td>
 <td><code>RollbackBlockedIrreversible</code></td>
 <td>Failure after an executed irreversible non-pure step creates no rollback jobs and terminates FAILED_UNSAFE_ACK</td>
-<td><code>unsafe-failure-retains-locks</code>, <code>lifecycle-reaches-terminal-state</code>, <code>rollback-only-when-non-pure-all-reversible</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>unsafe-failure-retains-locks</code>, <code>lifecycle-reaches-terminal-state</code>, <code>rollback-only-when-non-pure-all-reversible</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-job-fails.ts</code></td>
 <td><code>RollbackJobFails</code></td>
 <td>A failed rollback job halts the rollback phase immediately and the workflow terminates FAILED_UNSAFE_ACK</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>unsafe-failure-retains-locks</code>, <code>rollback-halts-on-rollback-failure</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>unsafe-failure-retains-locks</code>, <code>rollback-halts-on-rollback-failure</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-parallel-wave.ts</code></td>
 <td><code>RollbackParallelWave</code></td>
 <td>Failure on one of two devices rolls back wave-by-wave: both step_two rollback jobs in parallel, then both step_one rollback jobs, terminating FAILED_SAFE_ACK</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>rollback-jobs-reverse-order</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>multi-entity-parallel-execution</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>rollback-jobs-reverse-order</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>multi-entity-parallel-execution</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-retried-step-dedup.ts</code></td>
@@ -9251,7 +9258,7 @@
 <td><code>tests/rollback-reversible-failure.ts</code></td>
 <td><code>RollbackReversibleFailure</code></td>
 <td>Failure after two non-pure reversible steps rolls back both executed jobs in reverse order and terminates FAILED_SAFE_ACK</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>rollback-jobs-reverse-order</code>, <code>no-db-mutation-on-failure</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>rollback-jobs-reverse-order</code>, <code>no-db-mutation-on-failure</code></td>
 </tr>
 <tr>
 <td><code>tests/simple-workflow-2.ts</code></td>
@@ -9347,7 +9354,7 @@
 <td><code>workflow-execution-jmes-resolving/tests/invalid-jmes-expression-halts-safely.ts</code></td>
 <td><code>InvalidJmesExpressionHaltsSafely</code></td>
 <td>A step whose parameter contains a malformed JMES expression halts the workflow safely instead of shipping the !!token!! error marker</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>invalid-interpolation-halts-safely</code></td>
 </tr>
 <tr>
 <td><code>workflow-execution-jmes-resolving/tests/parameter-schema-default-reaches-step.ts</code></td>
@@ -9407,7 +9414,7 @@
 <td><code>workflow-execution-jmes-resolving/tests/unresolved-step-reference-halts-safely.ts</code></td>
 <td><code>UnresolvedStepReferenceHaltsSafely</code></td>
 <td>A step whose parameter interpolates an unresolvable JMES reference halts the workflow safely instead of shipping a coerced empty value</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/format-resolving-simple-fail-1.ts</code></td>
@@ -9443,7 +9450,7 @@
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/function-block-schema-validation-simple-fail.ts</code></td>
 <td><code>FunctionBlockSchemaValidationSimpleFail</code></td>
 <td>Incomplete parameter mapping (missing required field) fails schema validation</td>
-<td><code>reject-incomplete-parameter-mapping</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>reject-incomplete-parameter-mapping</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/function-block-schema-validation-simple-not-all-required-fail.ts</code></td>
@@ -9479,7 +9486,7 @@
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/version-resolving-no-matching-version-fail.ts</code></td>
 <td><code>VersionResolvingNoMatchingVersionFail</code></td>
 <td>Requests 2.X.X but only 1.X registered, fails safely</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-unresolvable-fb-version</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-unresolvable-fb-version</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/function-block-resolving/tests/version-resolving-no-version-provided-fail.ts</code></td>
@@ -9497,7 +9504,7 @@
 <td><code>workflow-validation-and-resolving/raw-parameters/tests/parameters-jinja-token-halts-loudly.ts</code></td>
 <td><code>ParametersJinjaTokenHaltsLoudly</code></td>
 <td>A worker-side Jinja2 {{ }} token placed in parameters (not rawParameters) resolves to an embedded null and halts the workflow safely instead of shipping a clobbered template — documenting why such templates must use rawParameters.</td>
-<td><code>invalid-interpolation-halts-safely</code>, <code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>invalid-interpolation-halts-safely</code>, <code>raw-parameters-ship-verbatim</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/raw-parameters/tests/raw-parameters-override-interpolated.ts</code></td>
@@ -9671,13 +9678,13 @@
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-then-runtime-rejects-constraint.ts</code></td>
 <td><code>ValidationDefersThenRuntimeRejectsConstraint</code></td>
 <td>Pre-flight defers count (step-result reference); producer returns count: -5 against a [1, 10] constraint. Runtime parameter validation rejects with the constraint violation before consumer EXECUTE dispatches.</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code>, <code>unsafe-failure-retains-locks</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code>, <code>unsafe-failure-retains-locks</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-defers-then-runtime-rejects-wrong-type.ts</code></td>
 <td><code>ValidationDefersThenRuntimeRejectsWrongType</code></td>
 <td>Pre-flight defers items (step-result reference); producer returns items: &ldquo;oops&rdquo; (string instead of array). Runtime parameter validation rejects the consumer step with a &ldquo;must be array&rdquo; error before EXECUTE is dispatched.</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code>, <code>unsafe-failure-retains-locks</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code>, <code>unsafe-failure-retains-locks</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-handles-producer-failure-before-consumer.ts</code></td>
@@ -9707,7 +9714,7 @@
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-parameter-wrong-type.ts</code></td>
 <td><code>ValidationRejectsParameterWrongType</code></td>
 <td>Single-step consumer references parameters.bad which is provided as a non-numeric string. The first identifier is &ldquo;parameters&rdquo; — resolvable at validation time — so the field is NOT deferred and AJV correctly rejects the type mismatch.</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-enum-violation.ts</code></td>
@@ -9725,7 +9732,7 @@
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-pattern-violation.ts</code></td>
 <td><code>ValidationRejectsStaticPatternViolation</code></td>
 <td>Single-step consumer with static command: &ldquo;ping host&rdquo; that violates the schema pattern ^show .+. Not deferred — pre-flight must reject.</td>
-<td><code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reject-wrong-parameter-type</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/step-parameter-schema-validation/tests/validation-rejects-static-range-violation.ts</code></td>
@@ -9737,7 +9744,7 @@
 <td><code>workflow-validation-and-resolving/workflow-definition-validation/tests/empty-steps-validation-fail.ts</code></td>
 <td><code>EmptyStepsValidationFail</code></td>
 <td>Zero-step workflow definition rejected with BAD_REQUEST at submission</td>
-<td><code>reject-empty-steps</code></td>
+<td><code>failure-serves-stable-reason-code</code>, <code>reject-empty-steps</code></td>
 </tr>
 <tr>
 <td><code>workflow-validation-and-resolving/workflow-definition-validation/tests/workflow-check-allowed-labels.ts</code></td>
@@ -9765,7 +9772,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:47:23'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:47:23+00:00'>2026-10-15 13:47:23</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-16 05:47:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-16T05:47:16+00:00'>2026-10-16 05:47:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -59,17 +59,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -3206,10 +3206,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#narrow-the-function-block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Narrow the function block list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#execute-a-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Execute a workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-for-an-unknown-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors for an unknown id
       
     </span>
   </a>
@@ -8738,10 +8760,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#narrow-the-function-block-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Narrow the function block list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#execute-a-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
         Execute a workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-for-an-unknown-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors for an unknown id
       
     </span>
   </a>
@@ -8961,6 +9005,8 @@ original content at hand). Restoring returns <code>400</code> if the definition 
 if it does not exist, and <code>403</code> if it would exceed the workflow-definition license cap &ndash;
 soft-deleting the last live version of a <code>(package, name)</code> frees a licensed slot, so restoring
 re-claims one.</p>
+<h3 id="narrow-the-function-block-list">Narrow the function block list</h3>
+<p><code>GET /function-blocks/registrations/list</code> takes <code>package</code> and <code>name</code>, two optional exact-match filters that combine with each other and with <code>findDeleted</code>. <code>name</code> matches every version of that function block. A repeated parameter answers <code>400</code>.</p>
 <h3 id="execute-a-workflow">Execute a workflow</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
@@ -8992,6 +9038,8 @@ re-claims one.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="errors-for-an-unknown-id">Errors for an unknown id</h3>
+<p>Every route that names one object (a run, a workflow definition, a function block, a worker) answers <code>404</code> with the standard error body when it does not exist, and <code>400</code> when the id is not a UUID where a UUID is required. None answers <code>200</code> with an empty body.</p>
 <h3 id="health-check">Health check</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># {&quot;status&quot;: &quot;ok&quot;}</span>
@@ -9003,8 +9051,10 @@ re-claims one.</p>
 <h3 id="check-the-license-and-its-quotas">Check the license and its quotas</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>http://localhost:3030/license/
 </span></code></pre></div>
-<p>Returns the active flavor, its limits (each a number or <code>"unlimited"</code>), the live usage count per
-quota, and the counting rule behind each one. The quotas are <code>workflowDefinitions</code>,
+<p>Returns the identity of the license (<code>flavor</code>, <code>displayName</code>, <code>productionUse</code>), and every cap in <code>quotas</code>: for
+each its <code>name</code>, a <code>label</code> a person can read, the <code>limit</code> (a number or <code>"unlimited"</code>), the live <code>usage</code>, what is
+<code>remaining</code>, the <code>countingRule</code>, what frees it (<code>hint</code>) and the status a refused request answers with. The
+<code>limits</code>, <code>usage</code> and <code>countingRules</code> maps carry the same numbers keyed by name. The quotas are <code>workflowDefinitions</code>,
 <code>lifetimeExecutions</code>, <code>executionsPer24h</code>, <code>concurrentExecutions</code>, <code>workers</code> and <code>functionBlocks</code>.
 A write that would exceed a quota is refused with the <code>LicenseLimitExceeded</code> error code and the
 <code>X-Neops-License-Error: limit-exceeded</code> header &ndash; for workflow definitions the cap counts distinct
@@ -9014,7 +9064,7 @@ live <code>(package, name)</code> tuples, so a new version of an existing workfl
 <p>For the full list of endpoints, request/response schemas, and interactive testing,
 open the <strong><a href="http://localhost:3030/api">Swagger UI</a></strong> (requires a running engine with <code>NODE_ENV=development</code>).</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-13 17:41:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-13T17:41:32+00:00'>2026-10-13 17:41:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

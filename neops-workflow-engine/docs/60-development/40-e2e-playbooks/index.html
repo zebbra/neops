@@ -59,17 +59,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9239,6 +9239,7 @@
 <li>For ordering assertions: <code>successJob(job, undefined, { requiresCompletedSteps: ['prior_step'] })</code> fails the playbook if this job is polled before every selected expectation was fully matched. An entry is either a step label or a partial job matcher in the <code>job</code> shape (e.g. <code>{ stepLabel: 'prior_step', context: { device: { id: 1 } } }</code>) matched as a subset against expectations. Entries selecting no expectations are vacuously satisfied (e.g. condition-skipped branches)</li>
 <li>To assert an <em>exactly</em> empty parameter object: <code>successJob(job, undefined, { exactParameters: true })</code>. The default matcher is a subset match, under which <code>parameters: {}</code> matches anything</li>
 <li>To pin a failure to its specific cause rather than any route to the terminal status, set <code>expectedTerminalReasonContains</code> on the playbook — the terminal execution&rsquo;s <code>reason</code> must contain that substring</li>
+<li>Every failing playbook sets <code>expectedTerminalReasonCode</code>, the <em>kind</em> of failure — the terminal execution&rsquo;s stable <code>reasonCode</code> (<code>ReasonCode</code>) must equal it, and a playbook that leaves it unset asserts the run carries none. The code names the first failure, so a run that ended unsafe because a rollback was blocked still carries the code of the step that failed</li>
 <li>All three <code>cmsDbBeforeExecution</code> arrays (<code>devices</code>, <code>deviceGroups</code>, <code>interfaces</code>) are required</li>
 <li>To test validation failures that reject at submission, use <code>expectedStateOverrides</code>:</li>
 </ul>
@@ -9297,10 +9298,11 @@
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="nx">rollbackJobsAreNeverPolled?</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="w">      </span><span class="c1">// The worker died: fail the automatic rollback wave via the cleanup</span>
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">  </span><span class="nx">expectedTerminalState?</span><span class="o">:</span><span class="w"> </span><span class="kt">WorkflowExecutionStatusTerminalStates</span><span class="w">  </span><span class="c1">// COMPLETED_ACK | FAILED_SAFE_ACK | FAILED_UNSAFE_ACK</span>
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="nx">expectedTerminalReasonContains?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Pin the failure to its cause, not just the status</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">  </span><span class="nx">cmsDbAfterExecution?</span><span class="o">:</span><span class="w"> </span><span class="kt">CmsDB</span><span class="w">            </span><span class="c1">// Verify CMS state after execution via isSubset()</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">  </span><span class="nx">remediation?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookRemediation</span><span class="w">      </span><span class="c1">// { via: &#39;jobByJob&#39; | &#39;rollbackAll&#39; | &#39;continueRollback&#39; }</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">  </span><span class="nx">expectedStateOverrides?</span><span class="o">:</span><span class="w"> </span><span class="kt">ExpectedStateOverrides</span><span class="w">  </span><span class="c1">// Override expected HTTP status for workflow registration (e.g., BAD_REQUEST for validation failures)</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="p">}</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">  </span><span class="nx">expectedTerminalReasonCode?</span><span class="o">:</span><span class="w"> </span><span class="kt">ReasonCode</span><span class="w"> </span><span class="c1">// Pin the kind of failure (the stable code beside the reason)</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">  </span><span class="nx">cmsDbAfterExecution?</span><span class="o">:</span><span class="w"> </span><span class="kt">CmsDB</span><span class="w">            </span><span class="c1">// Verify CMS state after execution via isSubset()</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">  </span><span class="nx">remediation?</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaybookRemediation</span><span class="w">      </span><span class="c1">// { via: &#39;jobByJob&#39; | &#39;rollbackAll&#39; | &#39;continueRollback&#39; }</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">  </span><span class="nx">expectedStateOverrides?</span><span class="o">:</span><span class="w"> </span><span class="kt">ExpectedStateOverrides</span><span class="w">  </span><span class="c1">// Override expected HTTP status for workflow registration (e.g., BAD_REQUEST for validation failures)</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="execution-flow">Execution Flow</h2>
 <p>The <code>PlaybookExecutor</code> runs the playbook in this order:</p>
@@ -9537,7 +9539,7 @@
 <li><a href="../20-testing/">Testing</a> &ndash; Unit tests, E2E setup, debugging</li>
 <li><a href="../30-adding-handlers/">Adding Handlers</a> &ndash; When your new handler needs E2E coverage</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-16 05:47:05'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-16T05:47:05+00:00'>2026-10-16 05:47:05</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
