@@ -52,13 +52,13 @@ Function blocks are written in Python with the worker SDK and tested against rea
 
     [:octicons-arrow-right-24: Read more](neops-worker-sdk-py/docs/)
 
--   :material-numeric-6-box:{ .lg .middle } __Remote Lab__
+-   :material-numeric-6-box:{ .lg .middle } __Lab__
 
     ---
 
-    Run pytest suites against shared Netlab topologies via a FIFO session queue.
+    Run the full stack against a local containerlab network, or run pytest suites against shared Netlab topologies via a FIFO session queue.
 
-    [:octicons-arrow-right-24: Read more](neops-remote-lab/docs/)
+    [:octicons-arrow-right-24: Read more](lab/index.md)
 
 -   :material-numeric-7-box:{ .lg .middle } __Installation & Deployment__
 
