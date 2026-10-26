@@ -7,9 +7,6 @@
 [submodule "submodules/neops-worker-sdk-py"]
 	path = docs/neops-worker-sdk-py
 	url = https://github.com/zebbra/neops-worker-sdk-py.git
-[submodule "submodules/neops-web-sdk"]
-	path = docs/neops-web-sdk
-	url = https://github.com/zebbra/neops-web-sdk.git
 [submodule "submodules/neops-web-client"]
 	path = docs/neops-web-client
 	url = https://github.com/zebbra/neops-web-client.git
