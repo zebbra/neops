@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://github.com/zebbra/neops/neops-lab/">
+        <link rel="canonical" href="https://docs.neops.io/neops-lab/">
       
       
       
@@ -7846,8 +7846,6 @@
       
         
       
-        
-      
     
     
     
@@ -8214,15 +8212,38 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../!include ./docs/neops-web-sdk/mkdocs_release_notes.yml" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../neops-workflow-engine/docs/releases/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    Web SDK
+    Workflow Engine
   
 
     
@@ -8230,7 +8251,26 @@
   
   
 
-      </a>
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflow Engine
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -8266,76 +8306,6 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../neops-workflow-engine/docs/releases/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Workflow Engine
-  
-
-    
-  </span>
-  
-  
-
-            </a>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Workflow Engine
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_4" >
-        
-          
-          <div class="md-nav__link md-nav__container">
             <a href="../neops-worker-sdk-py/docs/releases/" class="md-nav__link ">
               
   
@@ -8355,8 +8325,8 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -8404,7 +8374,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_4" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -8426,14 +8396,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_10_5" id="__nav_10_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_10_4" id="__nav_10_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -8661,7 +8631,7 @@
 
 
   
-    <a href="https://github.com/zebbra/neops/edit/main/docs/neops-lab/README.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/zebbra/neops-lab/edit/develop/README.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -8739,21 +8709,28 @@ failure:</p>
   stdlib-only and import under the <code>/usr/bin/python3</code> a stock macOS ships.</li>
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
-<li><strong>Nothing to build for the worker.</strong> <code>quay.io/zebbra/neops-worker-sdk:develop</code>
-  ships the base function blocks, <code>fb.base.neops.io/global_discover_network:0.1.0</code>
-  among them, so the default path needs no local image. To try SDK changes before
-  they are released, build the checkout and point the lab at it:</li>
+<li><strong>A worker image that carries <code>fb.base.neops.io/global_discover_network:0.1.0</code>.</strong>
+  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does not: only prerelease
+  <code>0.2.0-beta.*</code> builds of the SDK&rsquo;s function-block branch do, and
+  <code>.env.example</code> pins one. Prerelease tags expire 20 days after they are
+  pushed, so when the pin stops pulling, move it to the newest <code>0.2.0-beta.*</code>
+  and run the <code>discover_network.py</code> check below against it. Until
+  <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a> is in the engine&rsquo;s <code>develop</code> image,
+  that worker still cannot discover — see
+  <a href="docs/20-operations/40-troubleshooting/">Troubleshooting</a>.
+  To try SDK changes before they are released, build the checkout and point the
+  lab at it:</li>
 </ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">      </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
 </span></code></pre></div>
 <p>Check what you got before bringing the lab up — the image must carry the
   block, not just build:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global/discover_network.py&#39;</span>
 </span></code></pre></div>
-<p>Without this the worker container exits, <code>local-lab-up</code> burns its full
-  <code>wait_ready</code> budget and gives up with <code>timeout: no online worker for
-  fb.base.neops.io/global_discover_network:0.1.0</code>.
+<p>Without the block the worker runs but never announces it, so <code>local-lab-up</code>
+  burns its full <code>wait_ready</code> budget and gives up with <code>timeout: no online
+  worker for fb.base.neops.io/global_discover_network:0.1.0</code>.
 - <strong>A workflow-engine image with the publish route and the large-payload +
   reference-resolution fixes.</strong> Discovery emits a few hundred <code>Interface</code> rows in
   one job result, and <code>bootstrap/register.py</code> writes definitions through
@@ -9099,7 +9076,7 @@ without it they use the <code>Makefile</code>&rsquo;s default, <code>wan-and-fab
 </tr>
 <tr>
 <td><code>make kind-lab-discover</code></td>
-<td>Discovery against the pods, through the same scripts the containerlab flavour uses: publishes the workflow definition with <code>bootstrap/register.py</code>, generates one <code>/32</code> per device from the Service ClusterIPs with <code>./gen_kind_discover_params</code>, waits with <code>./wait_ready</code>, executes with <code>./run_workflow</code>. Needs a worker image that carries the base function blocks, and the engine reachable at <code>KIND_ENGINE_URL</code> — the offline ingress name <code>http://engine.neops.local</code> by default, so run <code>make -C neops-helm config-hosts</code> once.</td>
+<td>Discovery against the pods, through the same scripts the containerlab flavour uses: publishes the workflow definition with <code>bootstrap/register.py</code>, generates one <code>/32</code> per device from the Service ClusterIPs with <code>./gen_kind_discover_params</code>, waits with <code>./wait_ready</code>, executes with <code>./run_workflow</code>. Needs a worker image that carries <code>global_discover_network</code>, and the engine reachable at <code>KIND_ENGINE_URL</code> — the offline ingress name <code>http://engine.neops.local</code> by default, so run <code>make -C neops-helm config-hosts</code> once.</td>
 </tr>
 <tr>
 <td><code>make lab-env</code></td>
@@ -9194,7 +9171,7 @@ engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code
 <li><code>make test</code> — the generator and manifest guards run against every scenario, so
    a new one is covered without writing a new assertion.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-30 10:57:49'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-30T10:57:49+00:00'>2026-09-30 10:57:49</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 16:33:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T16:33:52+00:00'>2026-10-21 16:33:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

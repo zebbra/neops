@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkneops_web_client=self.webpackChunkneops_web_client||[]).push([[15419],{15419(n,e,t){t.r(e),t.d(e,{default:()=>h});var h={elem:"svg",attrs:{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 32 32",fill:"currentColor",width:32,height:32},content:[{elem:"path",attrs:{d:"M24,7v18h-3v-6h-10v6h-3V7h3v9h10V7h3Z"}}],name:"heading",size:32}}}]);
