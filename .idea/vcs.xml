@@ -6,7 +6,6 @@
     <mapping directory="$PROJECT_DIR$/docs/neops-remote-lab" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/docs/neops-secure-gateway" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/docs/neops-web-client" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/docs/neops-web-sdk" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/docs/neops-worker-sdk-py" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/docs/neops-workflow-engine" vcs="Git" />
   </component>
