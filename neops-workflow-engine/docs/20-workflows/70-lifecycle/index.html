@@ -9474,7 +9474,7 @@ is still releasing locks and writing entity updates.</p>
 <tr>
 <td>Stuck in <code>SCHEDULED</code></td>
 <td>Entities locked by another execution</td>
-<td>Wait or abort the blocking execution</td>
+<td>Wait for the blocking execution to finish (aborting is not implemented)</td>
 </tr>
 <tr>
 <td>Stuck in <code>RUNNING</code></td>
@@ -9493,15 +9493,14 @@ is still releasing locks and writing entity updates.</p>
 </tr>
 </tbody>
 </table>
-<p>Executions can be aborted:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;execution-id&gt;
-</span></code></pre></div>
 <div class="admonition warning">
-<p class="admonition-title">Limited implementation</p>
-<p>The abort endpoint exists but has limited functionality. It may not cleanly stop
-in-flight jobs or release locks in all scenarios. Use with caution in production.</p>
+<p class="admonition-title">Aborting is not implemented</p>
+<p><code>DELETE /workflow-execution/&lt;execution-id&gt;</code> authorizes the caller (the abort grant or the
+principal who started the run) and then answers <code>501 Not Implemented</code>. It stops nothing
+and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
+<code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-16 06:04:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-16T06:04:54+00:00'>2026-10-16 06:04:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 13:30:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T13:30:07+00:00'>2026-10-26 13:30:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -8495,6 +8495,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#expandfromseedentity-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        expandFromSeedEntity Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8532,6 +8543,8 @@
 <h1 id="untitled-boolean-in-root-workflow-schema">Untitled boolean in Root Workflow Schema</h1>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireByExpansion/properties/expandFromSeedEntity
 </span></code></pre></div>
+<p>Always true: an expansion expands from the step&rsquo;s seed entities. The CMS
+refuses <code>false</code>, so it is refused at publish time instead of after locking.</p>
 <table>
 <thead>
 <tr>
@@ -8560,7 +8573,11 @@
 </table>
 <h2 id="expandfromseedentity-type">expandFromSeedEntity Type</h2>
 <p><code>boolean</code></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-09-10 14:19:36'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-09-10T14:19:36+00:00'>2025-09-10 14:19:36</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2025-09-10 14:19:36'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2025-09-10T14:19:36+00:00'>2025-09-10 14:19:36</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h2 id="expandfromseedentity-constraints">expandFromSeedEntity Constraints</h2>
+<p><strong>constant</strong>: the value of this property must be equal to:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kc">true</span>
+</span></code></pre></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-09-10 14:19:36'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-09-10T14:19:36+00:00'>2025-09-10 14:19:36</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 15:33:46'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T15:33:46+00:00'>2026-10-26 15:33:46</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

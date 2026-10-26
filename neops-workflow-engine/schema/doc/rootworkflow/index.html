@@ -10514,6 +10514,8 @@ embedded workflow, or reference to another workflow. At least one step is requir
 </tbody>
 </table>
 <h3 id="expandfromseedentity">expandFromSeedEntity</h3>
+<p>Always true: an expansion expands from the step&rsquo;s seed entities. The CMS
+refuses <code>false</code>, so it is refused at publish time instead of after locking.</p>
 <p><code>expandFromSeedEntity</code></p>
 <ul>
 <li>
@@ -10531,6 +10533,10 @@ embedded workflow, or reference to another workflow. At least one step is requir
 </ul>
 <h4 id="expandfromseedentity-type">expandFromSeedEntity Type</h4>
 <p><code>boolean</code></p>
+<h4 id="expandfromseedentity-constraints">expandFromSeedEntity Constraints</h4>
+<p><strong>constant</strong>: the value of this property must be equal to:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kc">true</span>
+</span></code></pre></div>
 <h3 id="type_3">type</h3>
 <p><code>type</code></p>
 <ul>
@@ -10551,11 +10557,11 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code></p>
 <h4 id="type-constraints_3">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="s2">&quot;expansion&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="s2">&quot;expansion&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-entityacquirecontext">Definitions group EntityAcquireContext</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireContext&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireContext&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -10731,11 +10737,11 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code></p>
 <h4 id="type-constraints_4">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="s2">&quot;context&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="s2">&quot;context&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-entityacquirereference">Definitions group EntityAcquireReference</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireReference&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireReference&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -10894,7 +10900,7 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code></p>
 <h4 id="label-constraints_1">label Constraints</h4>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h3 id="type_5">type</h3>
@@ -10917,11 +10923,11 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code></p>
 <h4 id="type-constraints_5">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="s2">&quot;reference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="s2">&quot;reference&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-entityacquiretype">Definitions group EntityAcquireType</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireType&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityAcquireType&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -10945,7 +10951,7 @@ embedded workflow, or reference to another workflow. At least one step is requir
 </table>
 <h2 id="definitions-group-entitytype">Definitions group EntityType</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityType&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/EntityType&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -10969,7 +10975,7 @@ embedded workflow, or reference to another workflow. At least one step is requir
 </table>
 <h2 id="definitions-group-jmescondition">Definitions group JmesCondition</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/JmesCondition&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/JmesCondition&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -11062,11 +11068,11 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code></p>
 <h4 id="type-constraints_6">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="s2">&quot;jmes&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="s2">&quot;jmes&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-parametrizedfunctionblock">Definitions group ParametrizedFunctionBlock</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/ParametrizedFunctionBlock&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/ParametrizedFunctionBlock&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -11258,10 +11264,10 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>boolean</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-continue-on-error/">Continue On Error</a>)</p>
 <h4 id="continueonerror-default-value_1">continueOnError Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h4 id="continueonerror-examples_1">continueOnError Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h3 id="delay_1">delay</h3>
 <p>Delay in seconds before executing this step. Useful for rate limiting or scheduling steps to run after a certain time.</p>
@@ -11286,7 +11292,7 @@ If any condition evaluates to false, the step will fail.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>600</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>0</code></p>
 <h4 id="delay-examples_1">delay Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="mi">60</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="mi">60</span>
 </span></code></pre></div>
 <h3 id="description_8">description</h3>
 <p>Human-readable description for this step</p>
@@ -11310,7 +11316,7 @@ If any condition evaluates to false, the step will fail.</p>
 <h4 id="description-constraints_2">description Constraints</h4>
 <p><strong>maximum length</strong>: the maximum number of characters for this string is: <code>1000</code></p>
 <h4 id="description-examples_2">description Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
 </span></code></pre></div>
 <h3 id="functionblock">functionBlock</h3>
 <p>Fully qualified function block identifier in format &ldquo;package/name:version&rdquo;. Must match the pattern.</p>
@@ -11333,7 +11339,7 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-function-block-semver-identifier/">Function Block SemVer Identifier</a>)</p>
 <h4 id="functionblock-constraints">functionBlock Constraints</h4>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%5B%5E%2F%3A%5D%2B)%5C%2F(%5B%5E%2F%3A%5D%2B)%3A%5Cd%2B(%5C.%5Cd%2B)%3F(%5C.%5Cd%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h3 id="label_2">label</h3>
@@ -11357,13 +11363,13 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-label/">Label</a>)</p>
 <h4 id="label-constraints_2">label Constraints</h4>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h4 id="label-examples_1">label Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="s2">&quot;ping&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="s2">&quot;ping&quot;</span>
 </span></code></pre></div>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="s2">&quot;ping_new&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="s2">&quot;ping_new&quot;</span>
 </span></code></pre></div>
 <h3 id="parameters_2">parameters</h3>
 <p>Key-value pairs of parameters to pass to the step during execution.
@@ -11388,7 +11394,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-step-parameters/">Step Parameters</a>)</p>
 <h4 id="parameters-default-value_1">parameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="rawparameters_1">rawParameters</h3>
 <p>Key-value pairs of raw parameters to pass to the step during execution.
@@ -11413,7 +11419,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated/">Raw Step Parameters (not interpolated)</a>)</p>
 <h4 id="rawparameters-default-value_1">rawParameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="repeatconfig_1">repeatConfig</h3>
 <p>Optional settings for repeating the step execution multiple times. Null if not repeating.</p>
@@ -11543,14 +11549,14 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-type/">Type</a>)</p>
 <h4 id="type-constraints_7">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="s2">&quot;functionBlock&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="s2">&quot;functionBlock&quot;</span>
 </span></code></pre></div>
 <h4 id="type-examples_1">type Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="s2">&quot;functionBlock&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="s2">&quot;functionBlock&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-repeatconfiguration">Definitions group RepeatConfiguration</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/RepeatConfiguration&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/RepeatConfiguration&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -11628,7 +11634,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>600</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>0</code></p>
 <h4 id="delay-examples_2">delay Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="mi">100</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="mi">100</span>
 </span></code></pre></div>
 <h3 id="repeats">repeats</h3>
 <p>Fixed number of times to repeat the operation</p>
@@ -11653,11 +11659,11 @@ Parameters are specific to each step type and implementation.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>100</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>1</code></p>
 <h4 id="repeats-examples">repeats Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="mi">5</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="mi">5</span>
 </span></code></pre></div>
 <h2 id="definitions-group-retryconfiguration">Definitions group RetryConfiguration</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/RetryConfiguration&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/RetryConfiguration&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -11735,7 +11741,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>600</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>0</code></p>
 <h4 id="delay-examples_3">delay Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="mi">100</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="mi">100</span>
 </span></code></pre></div>
 <h3 id="maxretries">maxRetries</h3>
 <p>Maximum number of retry attempts (1-100)</p>
@@ -11760,11 +11766,11 @@ Parameters are specific to each step type and implementation.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>100</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>1</code></p>
 <h4 id="maxretries-examples">maxRetries Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="mi">3</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="mi">3</span>
 </span></code></pre></div>
 <h2 id="definitions-group-timezone">Definitions group Timezone</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/Timezone&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/Timezone&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -11788,7 +11794,7 @@ Parameters are specific to each step type and implementation.</p>
 </table>
 <h2 id="definitions-group-workflowasstep">Definitions group WorkflowAsStep</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowAsStep&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowAsStep&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -12013,10 +12019,10 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>boolean</code> (<a href="../rootworkflow-definitions-workflow-properties-continue-on-error/">Continue On Error</a>)</p>
 <h4 id="continueonerror-default-value_2">continueOnError Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h4 id="continueonerror-examples_2">continueOnError Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h3 id="delay_4">delay</h3>
 <p>Delay in seconds before executing this step. Useful for rate limiting or scheduling steps to run after a certain time.</p>
@@ -12041,7 +12047,7 @@ If any condition evaluates to false, the step will fail.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>600</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>0</code></p>
 <h4 id="delay-examples_4">delay Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="mi">60</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="mi">60</span>
 </span></code></pre></div>
 <h3 id="description_9">description</h3>
 <p>Human-readable description for this step</p>
@@ -12065,7 +12071,7 @@ If any condition evaluates to false, the step will fail.</p>
 <h4 id="description-constraints_3">description Constraints</h4>
 <p><strong>maximum length</strong>: the maximum number of characters for this string is: <code>1000</code></p>
 <h4 id="description-examples_3">description Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
 </span></code></pre></div>
 <h3 id="label_3">label</h3>
 <p>Unique label for a step. Set explicitly to access the result object on a subsequent step.</p>
@@ -12088,13 +12094,13 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-properties-label/">Label</a>)</p>
 <h4 id="label-constraints_3">label Constraints</h4>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h4 id="label-examples_2">label Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a><span class="s2">&quot;ping&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="s2">&quot;ping&quot;</span>
 </span></code></pre></div>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="s2">&quot;ping_new&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-80-1"><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="s2">&quot;ping_new&quot;</span>
 </span></code></pre></div>
 <h3 id="name_1">name</h3>
 <p>Human-readable name for this workflow.</p>
@@ -12119,7 +12125,7 @@ If any condition evaluates to false, the step will fail.</p>
 <p><strong>maximum length</strong>: the maximum number of characters for this string is: <code>100</code></p>
 <p><strong>minimum length</strong>: the minimum number of characters for this string is: <code>1</code></p>
 <h4 id="name-examples_1">name Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-80-1"><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a><span class="s2">&quot;ping_workflow&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-81-1"><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a><span class="s2">&quot;ping_workflow&quot;</span>
 </span></code></pre></div>
 <h3 id="parameters_3">parameters</h3>
 <p>Key-value pairs of parameters to pass to the step during execution.
@@ -12144,7 +12150,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-properties-step-parameters/">Step Parameters</a>)</p>
 <h4 id="parameters-default-value_2">parameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-81-1"><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-82-1"><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="rawparameters_2">rawParameters</h3>
 <p>Key-value pairs of raw parameters to pass to the step during execution.
@@ -12169,7 +12175,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-properties-raw-step-parameters-not-interpolated/">Raw Step Parameters (not interpolated)</a>)</p>
 <h4 id="rawparameters-default-value_2">rawParameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-82-1"><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-83-1"><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="repeatconfig_2">repeatConfig</h3>
 <p>Optional settings for repeating the step execution multiple times. Null if not repeating.</p>
@@ -12321,14 +12327,14 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-properties-type/">Type</a>)</p>
 <h4 id="type-constraints_8">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-83-1"><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="s2">&quot;workflow&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-84-1"><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a><span class="s2">&quot;workflow&quot;</span>
 </span></code></pre></div>
 <h4 id="type-examples_2">type Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-84-1"><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a><span class="s2">&quot;workflow&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-85-1"><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="s2">&quot;workflow&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-workflowconfig">Definitions group WorkflowConfig</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-85-1"><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowConfig&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-86-1"><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowConfig&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -12371,7 +12377,7 @@ embedded workflow, or reference to another workflow. At least one step is requir
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-execution-strategy/">Workflow Execution Strategy</a>)</p>
 <h2 id="definitions-group-workflowexecutionstrategy">Definitions group WorkflowExecutionStrategy</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-86-1"><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowExecutionStrategy&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-87-1"><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowExecutionStrategy&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -12417,7 +12423,7 @@ as they do not depend on each other.</p>
 <p><code>boolean</code> (<a href="../rootworkflow-definitions-workflow-execution-strategy-properties-execute-in-job-sequences-in-parallel-when-possible/">Execute in job sequences in parallel when possible</a>)</p>
 <h2 id="definitions-group-workflowreference">Definitions group WorkflowReference</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-87-1"><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowReference&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-88-1"><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowReference&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -12616,10 +12622,10 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>boolean</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-continue-on-error/">Continue On Error</a>)</p>
 <h4 id="continueonerror-default-value_3">continueOnError Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-88-1"><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-89-1"><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h4 id="continueonerror-examples_3">continueOnError Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-89-1"><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a><span class="kc">false</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-90-1"><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a><span class="kc">false</span>
 </span></code></pre></div>
 <h3 id="delay_5">delay</h3>
 <p>Delay in seconds before executing this step. Useful for rate limiting or scheduling steps to run after a certain time.</p>
@@ -12644,7 +12650,7 @@ If any condition evaluates to false, the step will fail.</p>
 <p><strong>maximum</strong>: the value of this number must smaller than or equal to: <code>600</code></p>
 <p><strong>minimum</strong>: the value of this number must greater than or equal to: <code>0</code></p>
 <h4 id="delay-examples_5">delay Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-90-1"><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a><span class="mi">60</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-91-1"><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a><span class="mi">60</span>
 </span></code></pre></div>
 <h3 id="description_10">description</h3>
 <p>Human-readable description for this step</p>
@@ -12668,7 +12674,7 @@ If any condition evaluates to false, the step will fail.</p>
 <h4 id="description-constraints_4">description Constraints</h4>
 <p><strong>maximum length</strong>: the maximum number of characters for this string is: <code>1000</code></p>
 <h4 id="description-examples_4">description Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-91-1"><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-92-1"><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a><span class="s2">&quot;Check Interface Status&quot;</span>
 </span></code></pre></div>
 <h3 id="label_4">label</h3>
 <p>Unique label for a step. Set explicitly to access the result object on a subsequent step.</p>
@@ -12691,13 +12697,13 @@ If any condition evaluates to false, the step will fail.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-label/">Label</a>)</p>
 <h4 id="label-constraints_4">label Constraints</h4>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-92-1"><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-93-1"><a id="__codelineno-93-1" name="__codelineno-93-1" href="#__codelineno-93-1"></a>^(?!parameters$)(?!context$)(?!steps$)[A-Za-z_]\w*$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%3F!parameters%24)(%3F!context%24)(%3F!steps%24)%5BA-Za-z_%5D%5Cw*%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h4 id="label-examples_3">label Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-93-1"><a id="__codelineno-93-1" name="__codelineno-93-1" href="#__codelineno-93-1"></a><span class="s2">&quot;ping&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-94-1"><a id="__codelineno-94-1" name="__codelineno-94-1" href="#__codelineno-94-1"></a><span class="s2">&quot;ping&quot;</span>
 </span></code></pre></div>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-94-1"><a id="__codelineno-94-1" name="__codelineno-94-1" href="#__codelineno-94-1"></a><span class="s2">&quot;ping_new&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-95-1"><a id="__codelineno-95-1" name="__codelineno-95-1" href="#__codelineno-95-1"></a><span class="s2">&quot;ping_new&quot;</span>
 </span></code></pre></div>
 <h3 id="parameters_4">parameters</h3>
 <p>Key-value pairs of parameters to pass to the step during execution.
@@ -12722,7 +12728,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-step-parameters/">Step Parameters</a>)</p>
 <h4 id="parameters-default-value_3">parameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-95-1"><a id="__codelineno-95-1" name="__codelineno-95-1" href="#__codelineno-95-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-96-1"><a id="__codelineno-96-1" name="__codelineno-96-1" href="#__codelineno-96-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="rawparameters_3">rawParameters</h3>
 <p>Key-value pairs of raw parameters to pass to the step during execution.
@@ -12747,7 +12753,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated/">Raw Step Parameters (not interpolated)</a>)</p>
 <h4 id="rawparameters-default-value_3">rawParameters Default Value</h4>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-96-1"><a id="__codelineno-96-1" name="__codelineno-96-1" href="#__codelineno-96-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-97-1"><a id="__codelineno-97-1" name="__codelineno-97-1" href="#__codelineno-97-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h3 id="repeatconfig_3">repeatConfig</h3>
 <p>Optional settings for repeating the step execution multiple times. Null if not repeating.</p>
@@ -12896,9 +12902,9 @@ Parameters are specific to each step type and implementation.</p>
 </tbody>
 </table>
 <h4 id="strategy-examples">strategy Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-97-1"><a id="__codelineno-97-1" name="__codelineno-97-1" href="#__codelineno-97-1"></a><span class="s2">&quot;dispatch&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-98-1"><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a><span class="s2">&quot;dispatch&quot;</span>
 </span></code></pre></div>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-98-1"><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a><span class="s2">&quot;embed&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-99-1"><a id="__codelineno-99-1" name="__codelineno-99-1" href="#__codelineno-99-1"></a><span class="s2">&quot;embed&quot;</span>
 </span></code></pre></div>
 <h3 id="type_9">type</h3>
 <p>The type discriminator for this workflow step</p>
@@ -12921,10 +12927,10 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-step-type/">Step Type</a>)</p>
 <h4 id="type-constraints_9">type Constraints</h4>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-99-1"><a id="__codelineno-99-1" name="__codelineno-99-1" href="#__codelineno-99-1"></a><span class="s2">&quot;workflowReference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-100-1"><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a><span class="s2">&quot;workflowReference&quot;</span>
 </span></code></pre></div>
 <h4 id="type-examples_3">type Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-100-1"><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a><span class="s2">&quot;workflowReference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-101-1"><a id="__codelineno-101-1" name="__codelineno-101-1" href="#__codelineno-101-1"></a><span class="s2">&quot;workflowReference&quot;</span>
 </span></code></pre></div>
 <h3 id="workflow">workflow</h3>
 <p>A SemVer identifier of the workflow being referenced</p>
@@ -12948,15 +12954,15 @@ Parameters are specific to each step type and implementation.</p>
 <h4 id="workflow-constraints">workflow Constraints</h4>
 <p><strong>minimum length</strong>: the minimum number of characters for this string is: <code>1</code></p>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-101-1"><a id="__codelineno-101-1" name="__codelineno-101-1" href="#__codelineno-101-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-102-1"><a id="__codelineno-102-1" name="__codelineno-102-1" href="#__codelineno-102-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%5B%5E%2F%3A%5D%2B)%5C%2F(%5B%5E%2F%3A%5D%2B)%3A%5Cd%2B(%5C.%5Cd%2B)%3F(%5C.%5Cd%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h4 id="workflow-examples">workflow Examples</h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-102-1"><a id="__codelineno-102-1" name="__codelineno-102-1" href="#__codelineno-102-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-103-1"><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
 </span></code></pre></div>
 <h2 id="definitions-group-workflowstep">Definitions group WorkflowStep</h2>
 <p>Reference this group by using</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-103-1"><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowStep&quot;</span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-104-1"><a id="__codelineno-104-1" name="__codelineno-104-1" href="#__codelineno-104-1"></a><span class="p">{</span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="s2">&quot;docs.neops.io/schema/RootWorkflow#/definitions/WorkflowStep&quot;</span><span class="p">}</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -13020,7 +13026,7 @@ Parameters are specific to each step type and implementation.</p>
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-22 08:43:13'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-22T08:43:13+00:00'>2026-10-22 08:43:13</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 15:33:46'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T15:33:46+00:00'>2026-10-26 15:33:46</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

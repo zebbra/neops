@@ -8579,17 +8579,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#frontend-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Frontend image
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#testing-frontends-in-a-real-browser" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8924,13 +8913,10 @@ data-loss boundary (see &ldquo;Rollback semantics&rdquo; below).</p>
   authenticate them. <code>mutate_post_flip.py</code> creates exactly this case so the
   scenario verifies the boundary.</li>
 </ul>
-<h2 id="frontend-image">Frontend image</h2>
-<p>The <code>neops-web-sdk-oidc</code> image is built externally from the matching
-<code>web-sdk</code> OIDC branch. It is not exercised by this DB-level scenario,
-but compose files reference it for completeness.</p>
 <h2 id="testing-frontends-in-a-real-browser">Testing frontends in a real browser</h2>
 <p>The backend only redirects to operator-configured callback origins, so serve
-the frontend under test on <strong><a href="http://localhost:4242">http://localhost:4242</a></strong> (the default origin) or
+<code>neops-web-client</code> (OIDC login since 4.0.0; <code>npm start -- --port 4242</code>) on
+<strong><a href="http://localhost:4242">http://localhost:4242</a></strong> (the default origin) or
 <strong><a href="http://localhost:5252">http://localhost:5252</a></strong> (the second configured origin), pointed at
 <code>http://localhost:8003/graphql</code>.</p>
 <p><code>KC_HOSTNAME</code> is deliberately the in-network <code>http://keycloak:8080</code>: the
@@ -9001,7 +8987,7 @@ window has passed:</p>
 <code>neops_auth_allauth</code> module including the bridge migration and its unit
 tests, <code>docs/oidc-authentication.md</code>, and <code>docs/runbooks/oidc-migration.md</code>
 — customers may migrate long after we delete this harness.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-05-04 13:50:36'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-05-04T13:50:36+00:00'>2026-05-04 13:50:36</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-22 10:05:48'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-07-22T10:05:48+00:00'>2026-07-22 10:05:48</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-05-04 13:50:36'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-05-04T13:50:36+00:00'>2026-05-04 13:50:36</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 16:27:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T16:27:10+00:00'>2026-10-26 16:27:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

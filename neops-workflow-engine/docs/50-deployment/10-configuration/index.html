@@ -9332,6 +9332,10 @@ packed with the cap set to one has been observed). Leave it unset unless you nee
 throttle sustained load; do not rely on it as a hard &ldquo;at most N locked at once&rdquo;
 guarantee.</p>
 </div>
+<p><code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code> (default <code>300000</code>, 5 minutes; <code>0</code> disables) sets how
+often the engine probes the CMS while executions are parked after repeated unlock failures;
+once the CMS answers, the parked executions resume and release their locks without a
+restart.</p>
 <p>Completed epochs are pruned in batches on the <code>EPOCH_CLEANUP_INTERVAL_MS</code> schedule.
 The latest epoch is never deleted, and neither is any epoch a non-terminal workflow
 execution is still parked in — so pruning can never disturb work in flight, however
@@ -9349,7 +9353,7 @@ aggressive the retention setting.</p>
 <tr>
 <td><code>BLACKBOARD_JOB_CHECK_INTERVAL</code></td>
 <td><code>60000</code> (1 min)</td>
-<td>How often the engine runs its job cleanup cycle (offline workers, stuck jobs, never-polled jobs)</td>
+<td>How often the engine runs its job cleanup cycle (offline workers, stuck jobs, never-polled jobs). For one <code>WORKER_OFFLINE_THRESHOLD_MS</code> after start, the offline and stuck checks are skipped so workers can reconnect first</td>
 </tr>
 <tr>
 <td><code>BLACKBOARD_STUCK_JOB_TIMEOUT</code></td>
@@ -9379,7 +9383,7 @@ aggressive the retention setting.</p>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nv">NEOPS_CMS_URL</span><span class="o">=</span>http://neops-cms.internal:8000/graphql
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="nv">NEOPS_CMS_TOKEN</span><span class="o">=</span>&lt;cms-auth-token&gt;
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-16 07:54:18'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-16T07:54:18+00:00'>2026-10-16 07:54:18</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 13:30:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T13:30:10+00:00'>2026-10-26 13:30:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
