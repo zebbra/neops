@@ -5280,6 +5280,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fail_if_not_discovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fail_if_not_discovered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#the-four-parameter-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8739,6 +8750,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fail_if_not_discovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fail_if_not_discovered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#the-four-parameter-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8896,7 +8918,7 @@
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple_lab_discovery</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wf.lab.neops.io</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">majorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nt">minorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nt">minorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nt">patchVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">seedEntity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workflow</span>
@@ -8935,16 +8957,21 @@
 </span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">          </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">string</span><span class="w"> </span><span class="p p-Indicator">}</span>
 </span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">username</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">password</span><span class="p p-Indicator">]</span>
 </span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discover</span>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/global_discover_network:0.1.0&quot;</span>
-</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
-</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">      </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.subnets</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">      </span><span class="nt">credentials</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.credentials</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">    </span><span class="nt">fail_if_not_discovered</span><span class="p">:</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Fail</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">host</span><span class="nv"> </span><span class="s">given</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">/32</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">/128</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">discovered.&quot;</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discover</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/global_discover_network:0.1.0&quot;</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">      </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.subnets</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">      </span><span class="nt">credentials</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.credentials</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">      </span><span class="nt">fail_if_not_discovered</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.fail_if_not_discovered</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
-<p>Its identifier is <code>wf.lab.neops.io/simple_lab_discovery:1.2.0</code> — package <code>wf.lab.neops.io</code>, name <code>simple_lab_discovery</code>, and the version assembled from <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code>. That string is what <code>make local-lab-discover</code> passes to <code>run_workflow</code>, so bumping a version field in the YAML means bumping it in the <code>Makefile</code> too.</p>
+<p>Its identifier is <code>wf.lab.neops.io/simple_lab_discovery:1.3.0</code> — package <code>wf.lab.neops.io</code>, name <code>simple_lab_discovery</code>, and the version assembled from <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code>. That string is what <code>make local-lab-discover</code> passes to <code>run_workflow</code>, so bumping a version field in the YAML means bumping it in the <code>Makefile</code> too.</p>
 <p><code>seedEntity: global</code> and <code>runOn: global</code> mean the step is not scoped to an entity — it runs once, globally, which is why <code>run_workflow</code> is called with no <code>--ids</code>.</p>
 <h3 id="how-registration-works">How registration works</h3>
 <p><code>bootstrap/register.py</code> waits for <code>GET /health</code> on the engine (60s budget, then tries anyway), then publishes each <code>*.yaml</code>, <code>*.yml</code> and <code>*.json</code> it finds in <code>/workflows</code> — the selected scenario&rsquo;s resolved <code>workflows/</code> directory, bind-mounted there — through <code>POST /workflow-definition/publish</code> as <code>{"workflow": &lt;parsed document&gt;}</code>. JSON is a subset of YAML, so one parser reads both and the engine is handed the same structure either way; anything else in that directory (a README, say) is skipped rather than posted. It is <strong>idempotent</strong>: <code>201</code> means the version was written, <code>200</code> means this version already held exactly this document. Published content is <strong>immutable</strong>, so a <code>409</code> is a real failure — it means the version exists with <em>different</em> content, and the fix is to bump <code>majorVersion</code>/<code>minorVersion</code>/<code>patchVersion</code> in the document rather than edit in place. A <code>422</code> means the engine computed a higher version floor than the document declares. Either exits non-zero, and <code>docker compose wait lab_bootstrap</code> propagates that so <code>make local-lab-up</code> fails rather than continuing into a broken discovery. Against an engine from before the publish route the script falls back to the legacy <code>POST /workflow-definition</code> on a <code>404</code>.</p>
@@ -8972,7 +8999,7 @@ with <strong>no compile-time check anywhere</strong>.</p>
 </ul>
 <p><code>scenarios/_base/function_blocks/</code> currently holds only an empty <code>__init__.py</code>: it is the <strong>extension point</strong> for lab-local blocks (package <code>fb.lab.neops.io</code>), wired up and discovered but not yet used. Drop a block in there — or in a single scenario&rsquo;s own <code>function_blocks/</code>, which overrides the base file by file — and the worker picks it up on restart. No image rebuild, because the directory is mounted; but <code>make scenario-resolve</code> has to run first, since the worker reads the <em>resolved</em> copy rather than the source. See <a href="../../30-scenarios/">Scenarios</a>.</p>
 <h2 id="parameters">Parameters</h2>
-<p>The workflow&rsquo;s <code>parameterSchema</code> declares two top-level arrays.</p>
+<p>The workflow&rsquo;s <code>parameterSchema</code> declares two top-level arrays and one flag.</p>
 <h3 id="subnets"><code>subnets</code></h3>
 <p>CIDRs to expand; a single host is a <code>/32</code>. Each entry may carry:</p>
 <p><code>cidr</code>
@@ -8989,6 +9016,9 @@ with <strong>no compile-time check anywhere</strong>.</p>
 <li>an unscoped entry is tried for anything.</li>
 </ul>
 <p>So credential resolution is: <strong>subnet credentials → global credentials</strong>, and within a list, <strong>platform-matched → unscoped</strong>.</p>
+<h3 id="fail_if_not_discovered"><code>fail_if_not_discovered</code></h3>
+<p>Optional, default <code>false</code>. When <code>true</code>, the run fails if any host given as its own <code>/32</code> (or <code>/128</code>) yields no device; hosts reached only through a wider prefix never fail it. With the default, undiscovered hosts are reported in the result&rsquo;s <code>failed_hosts</code>/<code>skipped_hosts</code> and the run still succeeds.</p>
+<p>The flag needs a worker image that includes <a href="https://github.com/zebbra/neops-worker-sdk-py/commit/2b21f99">neops-worker-sdk-py <code>2b21f99</code></a>, which no released tag carries yet; an older worker ignores it, logging only a warning. On an engine older than <code>v0.43.0-beta.5</code> an omitted flag resolves to <code>null</code> and the step fails, so pin the engine at <code>v0.43.0-beta.5</code> or later.</p>
 <h3 id="the-four-parameter-files">The four parameter files</h3>
 <p>They live in <code>scenarios/&lt;scenario&gt;/workflow-execution-parameters/</code>; the counts below are for <code>wan-and-fabric</code>.</p>
 <table>
@@ -9038,7 +9068,7 @@ with <strong>no compile-time check anywhere</strong>.</p>
 <li><a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> — the three race conditions between registration, worker readiness and device boot.</li>
 <li><a href="../../99-appendix/neops-ecosystem/">NeOps ecosystem</a> — the contracts this repo depends on and cannot verify locally.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 17:43:27'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T17:43:27+00:00'>2026-10-26 17:43:27</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

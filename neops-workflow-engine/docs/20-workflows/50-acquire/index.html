@@ -9081,8 +9081,11 @@ error.</p>
 <h3 id="what-an-expansion-selects">What an expansion selects</h3>
 <p>The CMS resolves and locks the expansion when the run is locked; the engine then scopes
 the locked entities per step from the relations the CMS returned. The seed is the step&rsquo;s
-<code>runOn</code>; for the root it is <code>runOn</code> when declared, else <code>seedEntity</code>. The result depends
-on order in these ways, which the CMS and the engine share:</p>
+<code>runOn</code>; for the root it is <code>runOn</code> when declared, else <code>seedEntity</code>, and a step that
+declares neither is <code>global</code>. An expansion goes from a <code>device</code>, <code>group</code> or <code>interface</code>
+seed to one of the other two; publishing refuses one whose seed is <code>global</code> or the same
+type as its target, which the CMS could not lock. The result depends on order in these
+ways, which the CMS and the engine share:</p>
 <ul>
 <li>within one step, an expansion never targets its own seed type, so expansions do not grow
   their own seed set;</li>
@@ -9116,7 +9119,7 @@ specified statically in the workflow definition.</p>
 <li><a href="../../10-concepts/40-workflow-as-a-transaction/#entity-locking">Entity Locking</a> &ndash; How acquired entities are locked for transactional safety</li>
 <li><a href="/neops-worker-sdk-py/docs/function-blocks/10-anatomy/#lifecycle-methods">Implementing <code>acquire()</code> (Worker SDK)</a> &ndash; How to implement the <code>acquire()</code> method in Python function blocks</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 15:33:47'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T15:33:47+00:00'>2026-10-26 15:33:47</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 17:30:44'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T17:30:44+00:00'>2026-10-26 17:30:44</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
