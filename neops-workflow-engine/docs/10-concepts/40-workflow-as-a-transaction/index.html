@@ -8960,11 +8960,12 @@ See <a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come
     RB --&gt;|Succeeded| Safe2["FAILED_SAFE"]
     RB --&gt;|Failed| Unsafe1["FAILED_UNSAFE"]
     AllRev --&gt;|No| Unsafe2["FAILED_UNSAFE"]</code></pre>
-<div class="admonition warning">
-<p class="admonition-title">Auto-retry not yet implemented</p>
-<p>Automatic retries for idempotent steps are still on the roadmap: the engine tracks
-<code>isIdempotentExecution</code> but does not yet use it for retry decisions. Today a failed
-execution goes straight to the rollback decision shown above.</p>
+<div class="admonition note">
+<p class="admonition-title">Retries come first</p>
+<p>A failed job of a pure or idempotent function block is retried up to three times
+before its step fails, unless the worker marked the failure <code>retryable: false</code>. Only
+a step that failed for good leads to the rollback decision shown above. See
+<a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Automatic Retries</a>.</p>
 </div>
 <h2 id="entity-locking">Entity Locking</h2>
 <p>Before execution, the engine acquires exclusive locks on all entities in the workflow&rsquo;s scope:</p>
@@ -8986,7 +8987,7 @@ given entity at a time.</p>
 <ul>
 <li>Mark read-only function blocks as <code>isPure: true</code> &ndash; this gives the engine maximum flexibility for failure classification</li>
 <li>Implement <code>rollback()</code> and register function blocks as <code>reversible: true</code> wherever possible &ndash; rollback is all-or-nothing, so a single irreversible step in the executed set forces <code>FAILED_UNSAFE</code>, while an all-reversible set is rolled back automatically to <code>FAILED_SAFE</code></li>
-<li>Mark config-push function blocks as <code>isIdempotent: true</code> if re-running them is safe (declarative config, not append-based) &ndash; this will enable automatic retries when that feature is implemented</li>
+<li>Mark config-push function blocks as <code>isIdempotent: true</code> if re-running them is safe (declarative config, not append-based) &ndash; a failed job of an idempotent function block is retried automatically</li>
 <li>Order steps so pure (read-only) steps execute first &ndash; if the workflow fails during the pure phase, it is automatically <code>FAILED_SAFE</code></li>
 </ul>
 <p><strong>For operators:</strong></p>
@@ -8995,7 +8996,7 @@ given entity at a time.</p>
 <li><code>FAILED_UNSAFE</code> workflows need investigation &ndash; check the execution details in the Monitor App to see which steps ran on which devices</li>
 <li>An unsafe failure <strong>blocks subsequent workflows on the same entities</strong> until it is remediated. That is deliberate: the alternative is a workflow planning against a network state nobody has verified. The remediation API walks the executed steps one by one — roll back what the function blocks can reverse, attest by hand what they cannot — and the engine releases the locks the moment everything is compensated. Blocked workflows wait on capped backoff and resume automatically once the lock is released (<a href="../../20-workflows/70-lifecycle/#remediation-the-way-the-locks-come-off">details</a>)</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 13:53:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T13:53:09+00:00'>2026-10-15 13:53:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

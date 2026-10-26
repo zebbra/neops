@@ -2980,6 +2980,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#database-unavailable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database unavailable
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8862,6 +8873,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#database-unavailable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database unavailable
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -9009,7 +9031,7 @@
 </span></code></pre></div>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="active-executions">Active Executions</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># All active (non-terminal) executions</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Executions not yet acknowledged, plus those that finished in the last 5 minutes</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Filter by state</span>
@@ -9090,6 +9112,15 @@ break-glass measure, but bypasses the audit trail.</p>
 </ol>
 <p>In-flight jobs (POLLED by workers) are handled by the stuck job cleanup. If the worker is still running, it may push results after the engine restarts. For one <code>WORKER_OFFLINE_THRESHOLD_MS</code> after start the cleanup judges no worker offline and no job stuck, so workers that outlived an engine outage get to ping before their jobs are failed.</p>
 <p>An execution whose CMS unlock failed twelve times in a row is parked until the CMS answers again: the engine probes the CMS every <code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code> (5 minutes by default) and resumes parked executions, which then release their locks. A restart resumes them too, but is not required.</p>
+<h3 id="database-unavailable">Database unavailable</h3>
+<p>While the engine cannot reach PostgreSQL, every API route, the worker poll and heartbeat included, answers <code>503 Service Unavailable</code> with <code>Retry-After: 5</code>. That covers:</p>
+<ul>
+<li>a connection that cannot be opened: the host does not resolve (<code>ENOTFOUND</code>, <code>EAI_AGAIN</code>), cannot be routed to (<code>EHOSTUNREACH</code>, <code>ENETUNREACH</code>), refuses (<code>ECONNREFUSED</code>, on one address or on every address of a dual-stack host) or times out (<code>ETIMEDOUT</code>)</li>
+<li>a connection lost mid-request (<code>ECONNRESET</code>, pg&rsquo;s &ldquo;Connection terminated unexpectedly&rdquo; or &ldquo;Client has encountered a connection error and is not queryable&rdquo;, SQLSTATE class <code>08</code>)</li>
+<li>Postgres starting up or shutting down (<code>57P01</code>, <code>57P02</code>, <code>57P03</code>)</li>
+<li>the connection pool giving up waiting for a free connection (knex&rsquo;s acquire timeout)</li>
+</ul>
+<p>Any other database error, such as a constraint violation or a query timeout, still answers <code>500</code>. During an outage the engine logs one <code>Database unavailable, answering 503</code> warning every 30 seconds, with the number of 503s it answered in between.</p>
 <h2 id="aborting-executions">Aborting Executions</h2>
 <p>Aborting is not implemented. <code>DELETE /workflow-execution/&lt;execution-id&gt;</code> keeps its
 authorization contract and then answers <code>501 Not Implemented</code>, writing nothing. Stuck
@@ -9110,7 +9141,7 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 13:30:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T13:30:10+00:00'>2026-10-26 13:30:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 18:41:27'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T18:41:27+00:00'>2026-10-26 18:41:27</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

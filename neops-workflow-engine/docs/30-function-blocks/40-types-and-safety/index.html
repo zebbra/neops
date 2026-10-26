@@ -2677,10 +2677,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#automatic-retry-planned" class="md-nav__link">
+  <a href="#automatic-retry" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Automatic Retry (Planned)
+        Automatic Retry
       
     </span>
   </a>
@@ -8691,10 +8691,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#automatic-retry-planned" class="md-nav__link">
+  <a href="#automatic-retry" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Automatic Retry (Planned)
+        Automatic Retry
       
     </span>
   </a>
@@ -8838,7 +8838,7 @@
 <p>The engine uses this to classify failures: if a workflow only ran pure steps before failing, the failure is <code>FAILED_SAFE</code>.</p>
 <h3 id="idempotent">Idempotent</h3>
 <p>An idempotent function block can be safely executed multiple times with the same input. The result is the same whether it runs once or ten times. This is a weaker guarantee than pure (the function block does have side effects), but the side effects are predictable and repeatable.</p>
-<p>The engine tracks idempotency (<code>isIdempotentExecution</code>) throughout a workflow execution but does not yet use it for automatic retry decisions. This is planned for a future release.</p>
+<p>A failed job of a pure or idempotent function block is retried automatically, see <a href="#automatic-retry">Automatic Retry</a>. The run-level <code>isIdempotentExecution</code> is tracked throughout a workflow execution but does not yet drive the failure classification.</p>
 <h2 id="transaction-classification">Transaction Classification</h2>
 <p>The engine tracks the safety properties of all executed steps throughout a workflow execution:</p>
 <pre class="mermaid"><code>graph LR
@@ -8890,20 +8890,8 @@ If a function block claims to be pure but actually modifies data, the engine wil
 incorrectly classify failures as <code>FAILED_SAFE</code>. Accurate declarations are essential
 for the transaction model to work correctly.</p>
 </div>
-<h2 id="automatic-retry-planned">Automatic Retry (Planned)</h2>
-<div class="admonition warning">
-<p class="admonition-title">Not Yet Implemented</p>
-<p>Automatic retry based on purity/idempotency flags is not yet implemented. The engine
-tracks these properties but does not use them for retry decisions. Both automatic retries
-and the step-level <code>retryConfig</code> are planned for a future release.</p>
-</div>
-<p>When implemented, automatic retries will work as follows:</p>
-<ol>
-<li>A job fails</li>
-<li>The engine checks if the function block is <code>isPure</code> or <code>isIdempotent</code></li>
-<li>If so and the retry limit has not been reached, a new job is created automatically</li>
-</ol>
-<p>This will handle transient failures (SSH timeouts, temporary network partitions) without requiring explicit <code>retryConfig</code> on every step.</p>
+<h2 id="automatic-retry">Automatic Retry</h2>
+<p>A failed job of a function block registered as <code>isPure</code> or <code>isIdempotent</code> is retried up to three times; a worker can opt a deterministic failure out with <code>retryable: false</code>. Details in <a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Retry &amp; Rollback</a>. The step-level <code>retryConfig</code> is not consumed yet.</p>
 <h2 id="best-practices-for-workflow-authors">Best Practices for Workflow Authors</h2>
 <p><strong>Know your function blocks:</strong>
 :   Check the <code>isPure</code> and <code>isIdempotent</code> flags of the function blocks you use. This tells you what the engine will do if something goes wrong.</p>
@@ -8919,7 +8907,7 @@ and the step-level <code>retryConfig</code> are planned for a future release.</p
 <li><a href="/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/">Pure and Idempotent (Worker SDK)</a> &ndash; How to declare and reason about <code>is_pure</code> / <code>is_idempotent</code> in Python</li>
 <li><a href="../../10-concepts/40-workflow-as-a-transaction/">Workflow as a Transaction</a> &ndash; How purity and idempotency drive the engine&rsquo;s transaction model</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
