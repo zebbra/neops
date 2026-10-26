@@ -26,6 +26,7 @@ hooks:
 - .make_scripts/mkdocs-documentation/hooks/inline_nav_include.py
 - .make_scripts/mkdocs-documentation/hooks/fix_symlinks.py
 - .make_scripts/mkdocs-documentation/hooks/submodule_authors.py
+- hooks/edit_links.py
 markdown_extensions:
 - pymdownx.highlight:
     anchor_linenums: true
@@ -98,7 +99,7 @@ plugins:
     - '*/scenarios/*/README.md'
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
-site_url: https://github.com/zebbra/neops/
+site_url: https://docs.neops.io/
 theme:
   custom_dir: docs/override
   favicon: assets/favicon.png

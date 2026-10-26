@@ -1,6 +1,6 @@
 import os
 
-DOCS_DIR = "/home/leandro/projects/neops/docs"
+DOCS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 
 def scan_file(filepath):
     issues = []

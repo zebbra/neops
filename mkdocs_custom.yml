@@ -1,5 +1,5 @@
 site_name: Neops Docs
-site_url: https://github.com/zebbra/neops/
+site_url: https://docs.neops.io/
 
 nav:
   #  - Legacy Documentation: legacy
@@ -53,6 +53,11 @@ theme:
 repo_url: https://github.com/zebbra/neops
 edit_uri: edit/main/docs
 # --8<-- [end:repo]
+
+# Submodule pages would otherwise link "edit" to a gitlink in this repository.
+# `hooks` concatenates with the template's list, so this appends one entry.
+hooks:
+  - hooks/edit_links.py
 
 # --8<-- [start:social]
 extra:
