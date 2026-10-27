@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -8919,6 +8919,7 @@ devices.</p>
 <li>The decorated method becomes an <strong>awaitable</strong> — call it with <code>await</code>.</li>
 <li><strong>Execution starts immediately</strong> when you call the method (not when you <code>await</code>). This is different from coroutines, which are lazy. It means in <code>run_parallel(self.fetch(a), self.fetch(b))</code>, both threads are already running before <code>run_parallel</code> itself is called.</li>
 <li>The underlying function runs in a separate thread, so blocking is safe.</li>
+<li>The thread runs in a copy of the caller&rsquo;s context variables (<code>contextvars</code>), as with <code>asyncio.to_thread</code>. Log fields bound with loguru&rsquo;s <code>logger.contextualize()</code>, and any other state a library keeps in context variables (OpenTelemetry&rsquo;s current span and Sentry&rsquo;s scopes, for example), carry into the thread. The copy is shallow: <code>ContextVar.set()</code> inside the thread does not leak back to the caller, but mutating a dict or list held in a <code>ContextVar</code> changes the same object the caller sees.</li>
 <li>Type hints are preserved; the return type becomes <code>Awaitable[R]</code>.</li>
 <li>Under the hood, <code>@run_in_thread</code> calls <code>loop.run_in_executor(None, fn)</code>, which uses the default thread pool executor (limited to <code>min(32, os.cpu_count() + 4)</code> threads).</li>
 </ul>
@@ -9002,11 +9003,12 @@ Within a function block&rsquo;s <code>run()</code> method, this is always the ca
 <p>The SDK includes a <code>BlockingDetector</code> that monitors your function block&rsquo;s execution thread from the main event loop. When a blocking operation exceeds the configured threshold, it captures a stack trace and logs a warning pointing to the exact location.</p>
 <p>Example output:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>WARNING | Blocking operation detected in config_backup (exceeded 0.5s threshold)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Blocking at:
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  File &quot;my_function_block.py&quot;, line 42, in _fetch_config
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    return conn.send_command(&quot;show running-config&quot;)
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Tip: Use @run_in_thread decorator to wrap blocking operations
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>It blocks this job&#39;s own event loop, so the job&#39;s other coroutines (run_parallel, scheduled tasks) wait for it; the worker&#39;s heartbeat and job polling are not affected.
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Blocking at:
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  File &quot;my_function_block.py&quot;, line 42, in _fetch_config
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    return conn.send_command(&quot;show running-config&quot;)
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Tip: Use @run_in_thread decorator to wrap blocking operations
 </span></code></pre></div>
 <h3 id="configuration">Configuration</h3>
 <p>The threshold is controlled by the <code>BLOCKING_DETECTION_THRESHOLD</code> environment variable:</p>
@@ -9092,7 +9094,7 @@ example, collecting data from 50 devices simultaneously within one group-level f
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 18:15:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T18:15:15+00:00'>2026-10-26 18:15:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

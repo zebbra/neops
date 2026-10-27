@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -4641,6 +4641,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#container-healthcheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container healthcheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#log-based-monitoring" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8769,6 +8780,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#container-healthcheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container healthcheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#log-based-monitoring" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8983,6 +9005,66 @@ more concurrent work, add more worker instances.</p>
 job after a shutdown request. If the workflow engine stops receiving heartbeats for its
 offline threshold (6 minutes by default), it marks the worker offline and fails the
 in-flight job as worker-offline; it never re-queues a claimed job.</p>
+<h3 id="container-healthcheck">Container healthcheck</h3>
+<p>The worker removes <code>HEALTH_FILE</code> (default <code>/tmp/neops-worker-alive</code>) when it starts, so
+a restarted container cannot report healthy from the previous process&rsquo;s file. Once it
+polls, it touches the file at the start of every poll cycle, after every job, and on
+every heartbeat tick. <code>neops_worker_health</code> exits 0 when that file is younger than
+<code>--max-age</code> seconds (default: 3 × <code>HEARTBEAT_INTERVAL</code>) and 1 otherwise;
+<code>python -m neops_worker_sdk.cli.health</code> is the same check.</p>
+<p>The image declares this check as its <code>HEALTHCHECK</code>, so Docker and Docker Compose report
+the worker&rsquo;s health without any extra configuration:</p>
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>10s<span class="w"> </span>--start-period<span class="o">=</span>300s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>CMD<span class="w"> </span><span class="o">[</span><span class="s2">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="o">]</span>
+</span></code></pre></div>
+<p>To change the timings in Compose, override it (<code>uv run --no-sync neops_worker_health</code>
+runs the same check):</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">worker</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300s</span><span class="w">  </span><span class="c1"># &gt;= 2 x STARTUP_RETRY_TIMEOUT: registration can retry for 240 s</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span></code></pre></div>
+<p>The Helm chart (<code>chart/neops-worker</code>) runs the same command as a <code>startupProbe</code> (30 × 10 s,
+the same 300 s budget as <code>start_period</code>) and a <code>livenessProbe</code>. Both are on by default and
+are configured in <code>values.yaml</code>; set <code>livenessProbe.enabled: false</code> (or
+<code>startupProbe.enabled: false</code>) to drop one. There is no readiness probe, since the worker
+serves no traffic.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">livenessProbe</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">exec</span><span class="p">:</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span></code></pre></div>
+<p>The probes need a writable, non-empty <code>HEALTH_FILE</code>. With <code>readOnlyRootFilesystem: true</code>,
+mount an <code>emptyDir</code> at <code>/tmp</code> (or point <code>HEALTH_FILE</code> at a writable volume). An empty
+<code>HEALTH_FILE</code> disables the file, and the probes then fail on every check.</p>
+<p>Before it polls, the worker registers itself and then its function blocks, each retried
+for up to <code>STARTUP_RETRY_TIMEOUT</code> seconds (120 by default) while the engine is
+unreachable. Keep <code>start_period</code> at or above twice that, or a worker waiting out an engine
+restart is reported unhealthy before it ever polls.</p>
+<p>The heartbeat tick refreshes the file whether or not the engine answers, so an engine
+outage does not make a busy worker look dead: a job that is still running, or a result
+the worker keeps re-sending for up to <code>RESULT_PUSH_TIMEOUT</code>, is not lost to a restart.
+It does so only for <code>HEALTH_STALL_TIMEOUT</code> seconds (default 720) after the poll loop last
+advanced. A job that hangs therefore turns the worker unhealthy once that time has passed
+plus <code>--max-age</code>. The file shows that the worker process is advancing; it does not check
+that the engine is reachable.</p>
+<div class="admonition note">
+<p class="admonition-title">Who acts on <code>unhealthy</code></p>
+<p>Plain Docker Compose only reports the health status; it never restarts an unhealthy
+container (<code>restart:</code> reacts to the process exiting). Restarting on <code>unhealthy</code> needs
+an orchestrator that does it: Kubernetes (as a liveness probe), Docker Swarm, or a
+helper such as autoheal.</p>
+<p>A worker the engine has expired (its heartbeat gets a <code>404</code>) exits with code 1 and
+does not re-register on its own, so keep <code>restart: unless-stopped</code> (or <code>on-failure</code>)
+as well: that restart is what brings it back.</p>
+</div>
 <h3 id="log-based-monitoring">Log-based monitoring</h3>
 <p>The worker logs structured events at key lifecycle points:</p>
 <table>
@@ -9094,7 +9176,7 @@ for alerting.</p>
 <li><strong>Least privilege</strong>: Each worker only needs access to the devices its
   function blocks manage. Use separate workers for different network zones.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 15:22:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T15:22:19+00:00'>2026-10-15 15:22:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 23:19:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T23:19:43+00:00'>2026-10-26 23:19:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

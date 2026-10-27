@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -8929,6 +8929,15 @@
 <li><strong>Single match</strong> &ndash; if exactly one candidate remains, return it.</li>
 <li><strong>Multiple matches</strong> &ndash; if <code>fallback_to_default=True</code>, try defaults. Otherwise raise <code>AmbiguousPluginError</code>.</li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Models and software versions</p>
+<p>Resolution selects on <code>platform</code>, <code>connection_type</code>, <code>connection_library</code> and
+the required capabilities only. A device&rsquo;s model or software version never
+takes part, so there is no way to register one plugin per model or version.
+Handle such differences inside the plugin, which reads them from
+<code>self.device.model</code> and <code>self.device.software_release</code>
+&ndash; see <a href="../50-writing-plugins/">Writing Plugins</a>.</p>
+</div>
 <hr />
 <h2 id="default-plugins">Default Plugins</h2>
 <p>Plugins register as defaults via the decorator:</p>
