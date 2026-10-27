@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -2432,6 +2432,17 @@
     <span class="md-ellipsis">
       
         Raw Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editor-validation-get-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editor Validation (GET /schema)
       
     </span>
   </a>
@@ -8924,6 +8935,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#editor-validation-get-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editor Validation (GET /schema)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -9190,6 +9212,7 @@
 <li><strong>In scalar unions a valid value keeps its type, whatever the branch order.</strong> An <code>anyOf</code>/<code>oneOf</code> of scalar types (<code>string</code>, <code>number</code> or <code>integer</code>, <code>boolean</code>, <code>null</code>) is validated as one <code>type: [...]</code> with <code>null</code> last when either its branches are bare <code>{type: X}</code>, or it has one type besides <code>null</code> whose branch carries only that type&rsquo;s own keywords, an <code>enum</code> or a <code>const</code> &ndash; or is a <code>$ref</code> to such a definition under <code>$defs</code>/<code>definitions</code>. That covers Pydantic&rsquo;s <code>X | None</code>, <code>Literal[...] | None</code>, <code>Enum | None</code> and <code>int | str | None</code>. A value that needs converting is tried against the types in branch order, with <code>null</code> last: <code>""</code> sent for an <code>int | None</code> arrives as <code>null</code>, <code>0</code> sent for a <code>str | None</code> as <code>"0"</code>. This does not apply when the parent node sets one of the same keywords, or when the union mixes <code>number</code> with <code>integer</code>.</li>
 <li><strong>Other unions are validated as written.</strong> In a document that needs conversion, AJV <a href="https://ajv.js.org/coercion.html">converts inside every union branch it tries</a>, so a value in such a union can be rewritten (<code>0</code>, <code>false</code>, <code>""</code> ↔ <code>null</code>) if the result still validates, e.g. in a union that mixes an object or array branch with a scalar one, or that has several scalar types with constraints (<code>int(ge=0) | str | None</code>).</li>
 <li><strong>Result data is replaced by the validated copy</strong>, so downstream steps read, and the job stores, the converted data with its defaults filled.</li>
+<li><strong>A <code>pattern</code> that can backtrack catastrophically is refused.</strong> Patterns run on the engine&rsquo;s event loop, so a quantified group that itself contains a quantifier (<code>^(a+)+$</code>, <code>(\d+){2,}</code>, <code>(a+|b)*</code>) could let one ~35-character value block every request for minutes. Such a <code>pattern</code> or <code>patternProperties</code> key, or one longer than 1000 characters, makes the schema invalid: function-block registration and workflow publish answer <code>400</code> naming its JSON Pointer, and a schema stored before this check is no longer run: a function-block schema fails its step, and a workflow <code>parameterSchema</code> is treated as one that does not compile (see <a href="#what-the-engine-checks-at-execution">What the engine checks at execution</a>). The check is the monitor&rsquo;s heuristic: it can refuse a safe pattern such as <code>^(\w+\.)+$</code> &ndash; rewrite it without the nested quantifier, e.g. <code>^[\w.]+$</code>.</li>
 </ul>
 <h2 id="raw-parameters">Raw Parameters</h2>
 <p>Use <code>rawParameters</code> when you need literal strings that contain <code>{{ }}</code> (e.g., Jinja templates):</p>
@@ -9211,6 +9234,17 @@ in the template string, and <strong>halts the workflow</strong> (see
 template. Fields in <code>rawParameters</code> bypass interpolation entirely and reach the
 worker byte-for-byte.</p>
 </div>
+<h2 id="editor-validation-get-schema">Editor Validation (<code>GET /schema</code>)</h2>
+<p><code>GET /schema</code> serves the workflow schema with every registered function block&rsquo;s parameter schema embedded, for editors and the Monitor App. It is an authoring aid: the engine validates interpolated parameters against the function block&rsquo;s own schema at execution, and that check is the authority.</p>
+<ul>
+<li><strong>Every typed parameter also accepts a whole-string token.</strong> A <code>{{ ... }}</code> string matches the <code>JMESExpression</code> definition wherever the function block expects a number, boolean, object, array, enum or constrained string, because the runtime resolves the token to a value of any type first.</li>
+<li><strong><code>JMESExpression</code> approximates the runtime&rsquo;s token scanner.</strong> The pattern admits one level of nested braces (<code>{{ {id: id} }}</code>) and does not track string literals. The runtime scanner (<code>src/utils/jmespath/jmes-tokens.ts</code>) nests braces to any depth and ignores braces inside <code>'...'</code> and <code>`...`</code> literals. JSON Schema patterns cannot count nesting, so <code>/schema</code> refuses some tokens the runtime resolves: <code>{{ {a: {b: c}}.a.b }}</code> and <code>{{ length(join('}', vals)) }}</code> on a non-string parameter are two examples. Such a token runs as written. Only the editor reports it. The reverse also happens: a string literal that never closes, as in <code>{{ name == 'x }}</code>, matches the pattern, while the runtime finds no token in it and passes the string on as it is.</li>
+<li><strong><code>rawParameters</code> are checked against the same schema, without the token alternative.</strong> The engine overlays them onto <code>parameters</code> and validates the merged values without interpolating them, so a <code>{{ ... }}</code> string is only accepted where the function block expects a string. A required parameter may sit in either bag. An undeclared key is refused in both bags, unless the function block&rsquo;s schema allows extra keys.</li>
+<li><strong>Conditional requirements are left to the engine.</strong> A function block may require a parameter only under a condition, in a root-level <code>if</code>/<code>then</code>/<code>else</code>, <code>oneOf</code> or <code>anyOf</code>. Such a parameter may also sit in either bag, and <code>/schema</code> checks the bags one at a time, so it cannot evaluate the condition across them. It drops those branches instead: a parameter a branch declares is accepted with that branch&rsquo;s type, and a branch&rsquo;s <code>required</code> is not checked. A step that misses a conditionally required parameter therefore passes the editor and fails at execution. The <code>required</code> of the root and of an unconditional <code>allOf</code> entry is still checked.</li>
+<li><strong>An unregistered function block is flagged, not refused.</strong> A <code>functionBlock</code> that matches no registered id, in its full, <code>major.minor</code> or <code>major</code> form, carries a <code>deprecationMessage</code>, which VS Code shows as a warning. The step&rsquo;s parameters are then not checked. Publishing still accepts the workflow, since a worker may register the block later.</li>
+<li><strong>Tuples are checked.</strong> The served document is draft-07, so a function block&rsquo;s <code>prefixItems: [a, b]</code> is served as <code>items: [a, b]</code>, and an <code>items: X</code> beside it as <code>additionalItems: X</code>.</li>
+<li><strong>Predicates are left as written.</strong> A leaf under <code>if</code> or <code>not</code> gets no token alternative. <code>if</code> never fails a document on its own, and inside <code>not</code> the alternative would refuse the token instead of accepting it.</li>
+</ul>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>

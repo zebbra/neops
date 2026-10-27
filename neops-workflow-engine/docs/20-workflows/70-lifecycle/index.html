@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9253,6 +9253,13 @@ the CMS by hand where an attestation implies it.</p>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;jobs&quot;: [&quot;&lt;entry-job-uuid&gt;&quot;], &quot;note&quot;: &quot;flash restored by hand&quot;, &quot;continueRollback&quot;: true}&#39;</span>
 </span></code></pre></div>
 <ul>
+<li><strong>Two grants, one per act.</strong> Requesting a rollback needs <code>workflow-execution-rollback:write</code>;
+  resolving needs <code>workflow-execution-resolve:write</code>. Neither implies the other: a rollback asks
+  the engine to reverse a step on the devices, while a resolve releases the retained locks on a
+  human&rsquo;s word about entities whose state the engine cannot derive. A resolve with
+  <code>"continueRollback": true</code> also restarts the rollback, so it needs <strong>both</strong> grants; without the
+  rollback grant it answers <code>403</code> naming <code>workflow-execution-rollback:write</code>, and nothing is
+  recorded. Reading the ledger needs <code>workflow-execution:read</code>.</li>
 <li><strong>Wave order is enforced for automation</strong>: an entry may be rolled back only when every entry in
   a strictly <em>higher</em> execution wave is already compensated — resolving the irreversible step of a
   high wave is what licenses automation to reverse the waves beneath it. Resolving itself has no
@@ -9500,7 +9507,7 @@ principal who started the run) and then answers <code>501 Not Implemented</code>
 and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
 <code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 18:16:02'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T18:16:02+00:00'>2026-10-26 18:16:02</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 08:39:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T08:39:09+00:00'>2026-10-27 08:39:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

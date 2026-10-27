@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -8722,7 +8722,8 @@ migrate Job runs migrations and the optional superuser only:</p>
 </span></code></pre></div>
 <p><code>operator</code> is the narrowest profile that covers the engine: it carries
 <code>workflow-execution:write</code> plus the reads the engine makes. Use <code>admin</code> only if
-the same account also deletes definitions or triggers rollbacks.</p>
+the same account also deletes definitions, triggers rollbacks or attests
+remediation by hand.</p>
 <p>Without <code>--yes</code> the command prints the diff it would apply and refuses. The
 printed target is what gets stored, implicit widening included, so the dry run is
 a faithful preview.</p>
@@ -8792,7 +8793,7 @@ the missing claim.</p>
 </tr>
 <tr>
 <td><code>admin</code></td>
-<td><code>author</code> + <code>operator</code> + <code>workflow-delete:write</code>, <code>workflow-execution-rollback:write</code>, <code>worker:write</code></td>
+<td><code>author</code> + <code>operator</code> + <code>workflow-delete:write</code>, <code>workflow-execution-rollback:write</code>, <code>workflow-execution-resolve:write</code>, <code>worker:write</code></td>
 </tr>
 </tbody>
 </table>
@@ -8809,7 +8810,7 @@ naming <code>workflow-execution:write</code>.</p>
 restart, and a refused lock leaves no partial state to clean up.</p>
 <p>Rolling back means redeploying the previous CMS tag. The grant is harmless on the
 old release, so it can stay.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 14:27:46'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T14:27:46+00:00'>2026-09-08 14:27:46</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 14:27:46'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T14:27:46+00:00'>2026-09-08 14:27:46</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 14:27:46'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T14:27:46+00:00'>2026-09-08 14:27:46</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 07:48:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T07:48:35+00:00'>2026-10-27 07:48:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

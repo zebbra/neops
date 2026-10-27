@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9031,10 +9031,10 @@
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;cms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;reachable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;checkedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-10-26T09:00:00.000Z&quot;</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><code>healthy</code> is the liveness answer and is always <code>true</code> while the process serves requests. The other two fields are diagnostics, so a probe that reads only <code>healthy</code> is never failed by a CMS outage. The charts point liveness and readiness at <code>GET /</code>, which has no CMS dependency either.</p>
+<p><code>healthy</code> is the liveness answer and is always <code>true</code> while the process serves requests. The other two fields are diagnostics: <code>GET /health/</code> answers <code>200</code> whatever they say, so a CMS or key outage never fails a probe. The engine&rsquo;s Helm chart (<code>chart/neops-workflow-engine/values.yaml</code>) points both its liveness and readiness probes at <code>/health</code> (an <code>httpGet</code>, which checks only the status code), so the probes cannot restart or unready a pod over a CMS outage.</p>
 <ul>
 <li><code>authz</code> tells a wrong or unreachable verification key apart from a CMS outage without reading logs. <code>mode</code> is <code>NEOPS_AUTHZ_MODE</code>. <code>keySource</code> is <code>pem</code> (a pinned <code>NEOPS_JWT_PUBLIC_KEY[_PATH]</code>), <code>jwks</code> (<code>NEOPS_JWKS_URL</code>) or <code>null</code> (mode <code>disabled</code>). <code>keyReachable</code> is, for a JWKS, whether the key set was obtainable the last time the engine fetched it: at boot, or verifying a token. While it is <code>false</code>, every gated route answers <code>503 KEY_UNAVAILABLE</code>. It is <code>null</code> before the first fetch, and always <code>null</code> for a PEM, which has no runtime dependency. The JWKS URL is never included.</li>
-<li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered a <code>{ __typename }</code> query, any status below 500 counting as an answer. The probe runs at boot and, at most every 30 seconds, in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished.</li>
+<li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered a <code>{ __typename }</code> query, sent with the engine&rsquo;s <code>NEOPS_CMS_TOKEN</code>, as a GraphQL server: a status below 500 with a JSON body carrying <code>data</code> or <code>errors</code>. A GraphQL error answer, such as a rejected token, still counts as reachable. A 5xx, a timeout, a refused connection, or a body that is not a GraphQL answer counts as unreachable; a plain <code>404</code> or a proxy&rsquo;s HTML page means <code>NEOPS_CMS_URL</code> does not point at the CMS GraphQL endpoint. The probe runs at boot and then at most every 30 seconds, in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished. Because the chart&rsquo;s probes poll <code>/health</code> every few seconds, each pod keeps probing the CMS about every 30 seconds for as long as it runs.</li>
 </ul>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="active-executions">Active Executions</h3>
@@ -9096,11 +9096,11 @@ refusal recorded as its <code>retryNote</code> — it never spins hot and never 
 nothing sweeps it up by itself.</p>
 <p>Release the lock through the <strong>remediation API</strong>: <code>GET /workflow-execution/&lt;id&gt;/remediation</code>
 lists every executed non-pure step; roll the reversible ones back
-(<code>POST .../remediation/rollback</code>) and attest the rest fixed by hand
-(<code>POST .../remediation/resolve</code>, with a note; the authenticated principal and the note form the
-audit trail). Add
+(<code>POST .../remediation/rollback</code>, grant <code>workflow-execution-rollback:write</code>) and attest the rest
+fixed by hand (<code>POST .../remediation/resolve</code>, grant <code>workflow-execution-resolve:write</code>, with a
+note; the authenticated principal and the note form the audit trail). Add
 <code>"continueRollback": true</code> to a resolve to have the engine roll back the waves below the
-attested entry on its own; <code>rollback {"all": true}</code> and <code>continueRollback</code> put the execution
+attested entry on its own (that request needs both grants); <code>rollback {"all": true}</code> and <code>continueRollback</code> put the execution
 back into <code>ROLLBACK</code>, which ends <code>FAILED_SAFE</code>, or returns to <code>FAILED_UNSAFE_ACK</code> when a
 rollback attempt fails or an entry only a human can compensate blocks it. The moment every
 entry is compensated the execution becomes <code>FAILED_SAFE</code> (its reason records <code>remediated: …</code>,
@@ -9148,7 +9148,7 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 00:24:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T00:24:00+00:00'>2026-10-27 00:24:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 08:40:25'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T08:40:25+00:00'>2026-10-27 08:40:25</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

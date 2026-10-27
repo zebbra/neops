@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -2337,6 +2337,17 @@
     <span class="md-ellipsis">
       
         What it checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step parameters
       
     </span>
   </a>
@@ -8906,6 +8917,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#step-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -9399,6 +9421,57 @@ checks each step&rsquo;s parameters against that <em>step&rsquo;s</em> function 
 therefore takes effect for callers of the new version the moment it is published.</p>
 </div>
 <p>Every finding, including advisory ones, is returned in <code>findings</code> on every response that has them &ndash; successes, conflicts, and rejections alike &ndash; so you can see exactly what the engine compared.</p>
+<h3 id="step-parameters">Step parameters</h3>
+<p>Publishing also checks every function-block step, embedded workflows included, against the function block a run
+would resolve it to (an exact pin, or the highest registered match of <code>1.2</code> / <code>1</code>). What it finds is reported as
+<strong>advisory</strong> findings on the step (<code>target: { kind: "step", label }</code>): they raise no floor and refuse nothing, so a
+dry run still says <code>wouldStatus: "published"</code>. Each one tells you now what a run would otherwise tell you later.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th><code>path</code></th>
+<th>Reported when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FUNCTION_BLOCK_NOT_REGISTERED</code></td>
+<td><code>/steps/&lt;label&gt;/functionBlock</code></td>
+<td>No registered function block matches the step&rsquo;s reference. A run fails with <code>UNRESOLVED_REFERENCE</code> unless a worker registers one first. The step&rsquo;s parameters cannot be checked.</td>
+</tr>
+<tr>
+<td><code>STEP_PARAMETERS_UNKNOWN</code></td>
+<td><code>/steps/&lt;label&gt;/parameters/&lt;name&gt;</code> or <code>/steps/&lt;label&gt;/rawParameters/&lt;name&gt;</code></td>
+<td>The step sets a parameter name the function block&rsquo;s schema does not declare (rule below). One finding per name.</td>
+</tr>
+<tr>
+<td><code>STEP_PARAMETERS_INVALID</code></td>
+<td><code>/steps/&lt;label&gt;/parameters</code></td>
+<td>The step&rsquo;s parameters do not satisfy the schema. A run would be refused with <code>INVALID_PARAMETERS</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When a name counts as undeclared.</strong> The check reads the schema&rsquo;s root and every branch that applies to the same
+object (<code>allOf</code>, <code>anyOf</code>, <code>oneOf</code>, <code>if</code>/<code>then</code>/<code>else</code>, <code>dependentSchemas</code>, schema-valued <code>dependencies</code>). A name is
+declared when one of them lists it under <code>properties</code> or matches it with a <code>patternProperties</code> pattern. No name is
+reported when the object is open: <code>additionalProperties</code> or <code>unevaluatedProperties</code> set to <code>true</code> or to a schema,
+a <code>$ref</code> the check cannot see through, or a schema that constrains no names at all (a bare <code>{ "type": "object" }</code>).
+Otherwise every undeclared name is reported. If the schema closes the object (<code>additionalProperties: false</code>), a run
+would refuse the name. If <code>additionalProperties</code> is just unset, JSON Schema accepts the name, but a function block
+built on the worker SDK ignores parameters its model does not declare, so the value is most likely never used. An undeclared
+name is reported once: it is left out of the value checked for <code>STEP_PARAMETERS_INVALID</code>.</p>
+<p>The value check never reports what a run might accept:</p>
+<ul>
+<li>A parameter whose value holds a <code>{{ … }}</code> token anywhere (whole or embedded, whatever it references) is unknown
+  until the run interpolates it, so that top-level parameter is left out, from the value and from the schema&rsquo;s
+  <code>required</code>. The parameters beside it are still checked, and so is its name.</li>
+<li><code>rawParameters</code> are not interpolated and override <code>parameters</code> key by key, so they are checked as the literal
+  values the worker receives.</li>
+</ul>
+<p>These findings come after the version findings, on a dry run, on a successful publish (<code>201</code>, or <code>200 unchanged</code>)
+and in the <code>findings</code> of a refused one (<code>409</code> and <code>422</code>). A <code>400</code> body carries no findings at all, version findings
+included.</p>
 <h2 id="acceptbump"><code>acceptBump</code></h2>
 <p><strong><code>"acceptBump": "patch"</code> or <code>"acceptBump": "minor"</code></strong> publishes below the floor on purpose. It has to name the bump the declared version actually expresses &ndash; sending <code>"acceptBump": "patch"</code> for a version that is a minor bump is refused with <code>400 AcceptBumpMismatch</code>, telling you the value it expected. <code>major</code> is never an accepted value: a major is never something you accept <em>below</em> a floor, it <em>is</em> the floor, so declare it as an explicit major version instead.</p>
 <p>Every <code>422 BelowFloor</code> (and the matching <code>AcceptBumpMismatch</code>) carries <code>retryWith</code>, the exact fields that, merged into the same body, would make the request succeed &ndash; never derive that override yourself from the floor and the declared version; let the server hand it to you. A backport whose floor came out at <code>major</code> additionally carries <code>alternativeVersion</code>, the next free number on the line you were patching, so accepting the floor&rsquo;s suggestion is not the only way to keep the line alive.</p>
@@ -9453,7 +9526,7 @@ therefore takes effect for callers of the new version the moment it is published
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-22 12:12:47'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-22T12:12:47+00:00'>2026-09-22 12:12:47</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 08:46:38'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T08:46:38+00:00'>2026-10-27 08:46:38</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

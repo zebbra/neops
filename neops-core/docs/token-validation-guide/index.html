@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/core/core.css">
     
@@ -8665,6 +8665,11 @@ no callbacks to the backend.</p>
 <td>Whether the issuing deployment enforces authorization</td>
 </tr>
 <tr>
+<td><code>principal_type</code></td>
+<td>string</td>
+<td>Who the token stands for: <code>"user"</code>, <code>"agent"</code>, <code>"service"</code></td>
+</tr>
+<tr>
 <td><code>iss</code></td>
 <td>string</td>
 <td>Issuer: <code>"neops"</code></td>
@@ -8697,6 +8702,7 @@ no callbacks to the backend.</p>
 </tbody>
 </table>
 <p><code>auth_provider</code> values: <code>"django"</code> for a username/password login (any auth plugin), <code>"oidc:&lt;provider&gt;"</code> for an allauth code exchange, <code>"oidc"</code> for the refresh of an allauth SSO session.</p>
+<p><code>principal_type</code> is <code>"user"</code> on every token the CMS issues today: login, refresh and OIDC code exchange all act for a person. <code>"agent"</code> and <code>"service"</code> are reserved for non-user principals. A token issued by a CMS release without the claim carries no <code>principal_type</code>.</p>
 <p>The JWT header contains:</p>
 <ul>
 <li><code>alg</code>: <code>"RS256"</code> (RSA + SHA-256)</li>
@@ -8828,7 +8834,7 @@ on unknown <code>kid</code> (handles key rotation transparently).</p>
   the client should use their refresh token to get a new access token from
   the backend.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-29 10:58:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-29T10:58:59+00:00'>2026-09-29 10:58:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 23:50:36'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T23:50:36+00:00'>2026-10-26 23:50:36</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/core/core.css">
     
@@ -8777,7 +8777,12 @@
 <tr>
 <td><code>NEOPS_PUBLIC_URL</code></td>
 <td><code>""</code></td>
-<td>Browser-facing origin for provider <code>loginUrl</code>s. Required when GraphQL traffic reaches the backend through a Host-rewriting hop (e.g. neops-gql-gtw).</td>
+<td>Browser-facing origin for provider <code>loginUrl</code>s. Required when GraphQL traffic reaches the backend through a Host-rewriting hop (e.g. neops-gql-gtw). Its host is also <code>ALLOWED_HOSTS</code> when <code>DJANGO_ALLOWED_HOSTS</code> is unset.</td>
+</tr>
+<tr>
+<td><code>DJANGO_ALLOWED_HOSTS</code></td>
+<td>unset</td>
+<td>Explicit comma-separated <code>ALLOWED_HOSTS</code>; wins over the host derived from <code>NEOPS_PUBLIC_URL</code>. Outside <code>DEBUG</code>, with neither set, the server refuses to start.</td>
 </tr>
 <tr>
 <td><code>NEOPS_REFRESH_TOKEN_REUSE_GRACE_SECONDS</code></td>
@@ -9014,7 +9019,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 01:04:50'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T01:04:50+00:00'>2026-02-26 01:04:50</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-23 08:26:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-23T08:26:41+00:00'>2026-10-23 08:26:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 01:04:50'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T01:04:50+00:00'>2026-02-26 01:04:50</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 07:38:36'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T07:38:36+00:00'>2026-10-27 07:38:36</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 
