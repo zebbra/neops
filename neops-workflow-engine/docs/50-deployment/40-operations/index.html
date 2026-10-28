@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -2860,6 +2860,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Health Checks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-the-cms-is-too-old" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the CMS is too old
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8754,6 +8771,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Health Checks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-the-cms-is-too-old" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the CMS is too old
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -9016,25 +9050,33 @@
 
 <h1 id="operations">Operations</h1>
 <h2 id="health-checks">Health Checks</h2>
-<p>The engine exposes a health endpoint at <code>GET /health/</code>. Use it for:</p>
+<p>The engine exposes two health endpoints:</p>
 <ul>
-<li>Container health checks (Docker, Kubernetes)</li>
-<li>Load balancer probes</li>
-<li>Monitoring systems</li>
+<li><code>GET /health</code> answers 503 only when neops-core is reachable but too old for the engine; an unreachable CMS or key set leaves it 200. Use it for readiness probes, load balancers, compose <code>depends_on</code> health gates and monitoring.</li>
+<li><code>GET /health/live</code> answers 200 whenever the process serves HTTP and reads no dependency. Use it for liveness probes, so a too-old core takes the engine out of service without restarting it.</li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>http://localhost:3030/health
 </span></code></pre></div>
 <p>A response:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;healthy&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;authz&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enforce&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;keySource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jwks&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;keyReachable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;cms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;reachable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;checkedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-10-26T09:00:00.000Z&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;cms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;reachable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;compatible&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;checkedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-10-26T09:00:00.000Z&quot;</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><code>healthy</code> is the liveness answer and is always <code>true</code> while the process serves requests. The other two fields are diagnostics: <code>GET /health/</code> answers <code>200</code> whatever they say, so a CMS or key outage never fails a probe. The engine&rsquo;s Helm chart (<code>chart/neops-workflow-engine/values.yaml</code>) points both its liveness and readiness probes at <code>/health</code> (an <code>httpGet</code>, which checks only the status code), so the probes cannot restart or unready a pod over a CMS outage.</p>
+<p><code>healthy</code> is <code>true</code> while the process serves requests, with one exception: a CMS that is reachable but too old for this engine (<code>cms.compatible</code> is <code>false</code>). Then <code>GET /health</code> answers <code>503</code> with <code>healthy: false</code>, because every run that locks devices would fail against that CMS. Everything else is a diagnostic: an unreachable CMS or key set leaves <code>healthy</code> <code>true</code> and the status <code>200</code>, so an outage never fails a probe. The engine&rsquo;s Helm chart (<code>chart/neops-workflow-engine/values.yaml</code>) points its readiness probe at <code>/health</code> and its liveness probe at <code>/health/live</code>, so a CMS outage neither restarts nor unreadies the pod, and an incompatible CMS unreadies it without restarting it: a restart cannot fix the CMS.</p>
+<p><code>GET /health/live</code> is the liveness endpoint. It answers <code>200</code> with <code>{"live": true}</code> whenever the process serves HTTP, and it reads no dependency: neither the CMS nor the key set. Point a probe that restarts the engine on failure at it, never at <code>/health</code>. Like <code>/health</code>, it needs no credential.</p>
 <ul>
 <li><code>authz</code> tells a wrong or unreachable verification key apart from a CMS outage without reading logs. <code>mode</code> is <code>NEOPS_AUTHZ_MODE</code>. <code>keySource</code> is <code>pem</code> (a pinned <code>NEOPS_JWT_PUBLIC_KEY[_PATH]</code>), <code>jwks</code> (<code>NEOPS_JWKS_URL</code>) or <code>null</code> (mode <code>disabled</code>). <code>keyReachable</code> is, for a JWKS, whether the key set was obtainable the last time the engine fetched it: at boot, or verifying a token. While it is <code>false</code>, every gated route answers <code>503 KEY_UNAVAILABLE</code>. It is <code>null</code> before the first fetch, and always <code>null</code> for a PEM, which has no runtime dependency. The JWKS URL is never included.</li>
-<li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered a <code>{ __typename }</code> query, sent with the engine&rsquo;s <code>NEOPS_CMS_TOKEN</code>, as a GraphQL server: a status below 500 with a JSON body carrying <code>data</code> or <code>errors</code>. A GraphQL error answer, such as a rejected token, still counts as reachable. A 5xx, a timeout, a refused connection, or a body that is not a GraphQL answer counts as unreachable; a plain <code>404</code> or a proxy&rsquo;s HTML page means <code>NEOPS_CMS_URL</code> does not point at the CMS GraphQL endpoint. The probe runs at boot and then at most every 30 seconds, in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished. Because the chart&rsquo;s probes poll <code>/health</code> every few seconds, each pod keeps probing the CMS about every 30 seconds for as long as it runs.</li>
+<li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered the engine&rsquo;s probe, sent with the engine&rsquo;s <code>NEOPS_CMS_TOKEN</code>, as a GraphQL server: a status below 500 with a JSON body carrying <code>data</code> or <code>errors</code>. A GraphQL error answer, such as a rejected token, still counts as reachable. A 5xx, a timeout, a refused connection, or a body that is not a GraphQL answer counts as unreachable; a plain <code>404</code> or a proxy&rsquo;s HTML page means <code>NEOPS_CMS_URL</code> does not point at the CMS GraphQL endpoint. The probe runs at boot, repeats every 30 seconds until it knows whether the CMS is compatible (see <code>cms.compatible</code>), and then runs at most every 30 seconds in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished. Because the chart&rsquo;s readiness probe polls <code>/health</code> every few seconds, each pod keeps probing the CMS about every 30 seconds for as long as it runs.</li>
+<li><code>cms.compatible</code> is whether the CMS schema serves every field the engine&rsquo;s CMS queries select. The probe introspects those types (<code>__type(name: …) { fields { name } }</code>); the list of required fields and the minimum neops-core release live in one place, <code>src/engine/core-engine/cms-client/cms-requirements.ts</code>. It is <code>null</code> when the probe could not tell: the CMS was unreachable, or answered with a GraphQL error, such as a rejected <code>NEOPS_CMS_TOKEN</code> (the CMS introspects types only for an authenticated caller). Until it is known, the boot probe repeats every 30 seconds. When it is <code>false</code>, <code>cms.incompatibleReason</code> names the missing fields and the minimum release, for example <code>the CMS lacks LockErrorType.code; this engine needs neops-core &gt;= 2.2.1-beta.4</code>, and the engine logs the same reason as an error, with the CMS URL, when it detects it. Without that check, an older CMS rejects the lock mutation and every run that locks devices ends <code>FAILED_SAFE_ACK</code> with <code>Cannot query field 'code' on type 'LockErrorType'</code>, while runs on <code>global</code> still succeed. The check reads the schema at <code>NEOPS_CMS_URL</code>: a proxy in front of the CMS that hides fields, or a CMS with introspection disabled, makes it report <code>false</code> or <code>null</code> respectively.</li>
+</ul>
+<h3 id="when-the-cms-is-too-old">When the CMS is too old</h3>
+<ul>
+<li><strong>Symptom.</strong> Compose reports the engine service as unhealthy. In Kubernetes the pod is running but not ready, and <code>helm --wait</code> times out. The Monitor App says the engine runs but neops-core is too old for it, with the reason, wherever it reaches the engine; behind a Kubernetes Service the unready pod receives no traffic, so there it reports the engine as not answering.</li>
+<li><strong>Reason.</strong> <code>cms.incompatibleReason</code> in <code>curl http://localhost:3030/health</code>, or the error line starting <code>Upgrade neops-core:</code> in the engine log.</li>
+<li><strong>Action.</strong> Upgrade neops-core to at least the release named there.</li>
+<li><strong>Recovery.</strong> Within about 30 seconds of the upgrade, without restarting the engine: the platform&rsquo;s health checks keep the probe running and the next one finds the fields.</li>
 </ul>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="active-executions">Active Executions</h3>
@@ -9148,7 +9190,7 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 08:40:25'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T08:40:25+00:00'>2026-10-27 08:40:25</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 13:10:45'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T13:10:45+00:00'>2026-10-28 13:10:45</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

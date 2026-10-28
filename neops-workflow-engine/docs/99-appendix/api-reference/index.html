@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9097,7 +9097,7 @@
 </tr>
 <tr>
 <td>Health &amp; Version</td>
-<td><code>/health</code>, <code>/version</code></td>
+<td><code>/health</code>, <code>/health/live</code>, <code>/version</code></td>
 <td>Probes, version info, and SDK compatibility</td>
 </tr>
 <tr>
@@ -9131,8 +9131,8 @@ the full contract &ndash; the options, every response status, and the version fl
 payload mapping if you still have a client on the old shapes.</p>
 </div>
 <h3 id="delete-and-restore-a-workflow-definition">Delete and restore a workflow definition</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A1.0.0
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A1.0.0/restore
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A2.0.0
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-definition/wf.example.neops.io%2Fhello_world%3A2.0.0/restore
 </span></code></pre></div>
 <p><code>DELETE</code> soft-deletes: the version stops resolving and disappears from listings, but its
 number stays taken and its content is kept. <code>GET .../{id}?findDeleted=true</code> still serves it, with <code>deletedAt</code> set. <code>POST .../{id}/restore</code> clears the tombstone again
@@ -9146,14 +9146,14 @@ re-claims one.</p>
 <h3 id="narrow-the-function-block-list">Narrow the function block list</h3>
 <p><code>GET /function-blocks/registrations/list</code> takes <code>package</code> and <code>name</code>, two optional exact-match filters that combine with each other and with <code>findDeleted</code>. <code>name</code> matches every version of that function block. A repeated parameter answers <code>400</code>.</p>
 <h3 id="compare-two-versions-of-a-workflow">Compare two versions of a workflow</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span><span class="s1">&#39;http://localhost:3030/workflow-definition/compare?from=wf.example.neops.io/hello_world:1.0.0&amp;to=wf.example.neops.io/hello_world:1.1.0&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span><span class="s1">&#39;http://localhost:3030/workflow-definition/compare?from=wf.example.neops.io/hello_world:1.0.0&amp;to=wf.example.neops.io/hello_world:2.0.0&#39;</span>
 </span></code></pre></div>
 <p>Returns both versions (<code>id</code>, <code>version</code>, <code>createdAt</code>, <code>createdByUsername</code>, <code>deletedAt</code>), the <code>findings</code> between them in words with the step or input each is about, and the <code>floor</code>: the least version bump those changes force, or <code>null</code> when none does. It is the differ <code>publish</code> uses, so the verdict matches what publishing the newer version over the older would say. A soft-deleted version can be compared. Two versions of different workflows answer <code>400</code>, a missing version <code>404</code>.</p>
 <h3 id="execute-a-workflow">Execute a workflow</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s1">    &quot;workflow&quot;: &quot;wf.example.neops.io/hello_world:1.0.0&quot;,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s1">    &quot;workflow&quot;: &quot;wf.example.neops.io/hello_world:2.0.0&quot;,</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s1">    &quot;executeOnParameters&quot;: { &quot;ids&quot;: [1, 2, 3] },</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s1">    &quot;parameters&quot;: {}</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s1">  }&#39;</span>
@@ -9272,7 +9272,7 @@ started (<code>triggerType</code>). <code>GET /workflow-definition/&lt;id&gt;</c
 <p>Every route that names one object (a run, a workflow definition, a function block, a worker) answers <code>404</code> with the standard error body when it does not exist, and <code>400</code> when the id is not a UUID where a UUID is required. None answers <code>200</code> with an empty body.</p>
 <h3 id="health-check">Health check</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># {&quot;healthy&quot;: true, &quot;authz&quot;: {&quot;mode&quot;: &quot;enforce&quot;, &quot;keySource&quot;: &quot;pem&quot;, &quot;keyReachable&quot;: null}, &quot;cms&quot;: {&quot;reachable&quot;: true, &quot;checkedAt&quot;: &quot;...&quot;}}</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># {&quot;healthy&quot;: true, &quot;authz&quot;: {&quot;mode&quot;: &quot;enforce&quot;, &quot;keySource&quot;: &quot;pem&quot;, &quot;keyReachable&quot;: null}, &quot;cms&quot;: {&quot;reachable&quot;: true, &quot;compatible&quot;: true, &quot;checkedAt&quot;: &quot;...&quot;}}</span>
 </span></code></pre></div>
 <p>See <a href="../../50-deployment/40-operations/#health-checks">Operations</a> for what each field means.</p>
 <h3 id="get-the-workflow-schema">Get the workflow schema</h3>
@@ -9298,7 +9298,7 @@ at once. A ping that would bring an offline worker back over the cap is refused 
 <p>For the full list of endpoints, request/response schemas, and interactive testing,
 open the <strong><a href="http://localhost:3030/api">Swagger UI</a></strong> (requires a running engine with <code>NODE_ENV=development</code>).</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 07:43:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T07:43:16+00:00'>2026-10-27 07:43:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:21:47'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:21:47+00:00'>2026-10-28 12:21:47</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

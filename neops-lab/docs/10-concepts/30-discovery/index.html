@@ -63,15 +63,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9018,7 +9018,7 @@ with <strong>no compile-time check anywhere</strong>.</p>
 <p>So credential resolution is: <strong>subnet credentials → global credentials</strong>, and within a list, <strong>platform-matched → unscoped</strong>.</p>
 <h3 id="fail_if_not_discovered"><code>fail_if_not_discovered</code></h3>
 <p>Optional, default <code>false</code>. When <code>true</code>, the run fails if any host given as its own <code>/32</code> (or <code>/128</code>) yields no device; hosts reached only through a wider prefix never fail it. With the default, undiscovered hosts are reported in the result&rsquo;s <code>failed_hosts</code>/<code>skipped_hosts</code> and the run still succeeds.</p>
-<p>The flag needs a worker image that includes <a href="https://github.com/zebbra/neops-worker-sdk-py/commit/2b21f99">neops-worker-sdk-py <code>2b21f99</code></a>, which no released tag carries yet; an older worker ignores it, logging only a warning. On an engine older than <code>v0.43.0-beta.5</code> an omitted flag resolves to <code>null</code> and the step fails, so pin the engine at <code>v0.43.0-beta.5</code> or later.</p>
+<p>The flag needs a worker image that includes <a href="https://github.com/zebbra/neops-worker-sdk-py/commit/2b21f99">neops-worker-sdk-py <code>2b21f99</code></a>, first released in <code>v0.2.0-beta.8</code>; an older worker ignores it, logging only a warning. On an engine older than <code>v0.43.0-beta.5</code> an omitted flag resolves to <code>null</code> and the step fails; the lab needs <code>v0.43.0-beta.6</code> or later anyway (see <a href="../../20-operations/40-troubleshooting/">Troubleshooting</a>).</p>
 <h3 id="the-four-parameter-files">The four parameter files</h3>
 <p>They live in <code>scenarios/&lt;scenario&gt;/workflow-execution-parameters/</code>; the counts below are for <code>wan-and-fabric</code>.</p>
 <table>
@@ -9068,7 +9068,7 @@ with <strong>no compile-time check anywhere</strong>.</p>
 <li><a href="../../20-operations/40-troubleshooting/">Troubleshooting</a> — the three race conditions between registration, worker readiness and device boot.</li>
 <li><a href="../../99-appendix/neops-ecosystem/">NeOps ecosystem</a> — the contracts this repo depends on and cannot verify locally.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 17:43:27'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T17:43:27+00:00'>2026-10-26 17:43:27</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:31:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:31:09+00:00'>2026-10-28 12:31:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

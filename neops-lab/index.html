@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../assets/document_dates/core/core.css">
     
@@ -8710,13 +8710,13 @@ failure:</p>
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
 <li><strong>A worker image that carries <code>fb.base.neops.io/global_discover_network:0.1.0</code>.</strong>
-  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does not: only prerelease
-  <code>0.2.0-beta.*</code> builds of the SDK&rsquo;s function-block branch do, and
-  <code>.env.example</code> pins one. Prerelease tags expire 20 days after they are
-  pushed, so when the pin stops pulling, move it to the newest <code>0.2.0-beta.*</code>
-  and run the <code>discover_network.py</code> check below against it. Until
-  <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a> is in the engine&rsquo;s <code>develop</code> image,
-  that worker still cannot discover — see
+  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does, and <code>.env.example</code> pins a
+  prerelease <code>0.2.0-beta.*</code> to hold the lab on a fixed release. Prerelease
+  tags expire 20 days after they are pushed, so when the pin stops pulling,
+  move it to the newest <code>0.2.0-beta.*</code> and run the <code>discover_network.py</code> check
+  below against it. An engine older than <code>v0.43.0-beta.6</code> lacks
+  <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a>, and
+  that worker cannot discover against it — see
   <a href="docs/20-operations/40-troubleshooting/">Troubleshooting</a>.
   To try SDK changes before they are released, build the checkout and point the
   lab at it:</li>
@@ -9171,7 +9171,7 @@ engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code
 <li><code>make test</code> — the generator and manifest guards run against every scenario, so
    a new one is covered without writing a new assertion.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 16:33:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T16:33:52+00:00'>2026-10-21 16:33:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:28:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:28:16+00:00'>2026-10-28 12:28:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

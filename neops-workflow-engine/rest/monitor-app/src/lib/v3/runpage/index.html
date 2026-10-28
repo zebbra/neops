@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/core/core.css">
     
@@ -8611,7 +8611,7 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 </tr>
 <tr>
 <td><code>order</code></td>
-<td><code>run-page.body-order</code> (T2): <code>devices-first</code> (recommended, <code>BODY_ORDER</code>) or <code>steps-first</code></td>
+<td><code>run-page.body-order</code>: <code>devices-first</code> (recommended, <code>BODY_ORDER</code>) or <code>steps-first</code></td>
 </tr>
 <tr>
 <td><code>shape</code></td>
@@ -8651,7 +8651,7 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 </tr>
 <tr>
 <td><code>onaction(id)</code></td>
-<td>header actions: <code>run-again</code> (open the run dialog prefilled), <code>copy-link</code>, <code>copy-id</code>, later <code>abort</code></td>
+<td>header actions: <code>run-again</code> (open the run dialog prefilled), <code>copy-link</code>, later <code>abort</code> (the run id&rsquo;s one copy is the title&rsquo;s)</td>
 </tr>
 </tbody>
 </table>
@@ -8681,7 +8681,8 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
   v1.4.2&rdquo;, plain text); the facts line&rsquo;s first fact, &ldquo;Workflow push_vlans v1.4.2&rdquo;, is the one link to that version&rsquo;s page; the title is ink. A
   reason that names a run the page holds links it (<code>runIds</code>).</li>
 <li>Devices (run context and jobs): <code>DeviceList</code> over <code>deviceRows</code> — what happened to each device (<code>DeviceOutcome</code>: Failed,
-  Running, …, Stopped, Not reached only when no step ran, Rolled back, Succeeded), problems first, natural name order,
+  Stopped right after it, Running, …, Not reached only when no step ran, No job record when the engine keeps none, Rolled
+  back, Succeeded; each a word and its own glyph, the Devices ⓘ their legend), problems first, natural name order,
   the step where it happened, <code>deviceMessage</code> (the worker&rsquo;s words, &ldquo;Last step succeeded · did not reach show_vlans&rdquo; for a stopped device, a
   skip, attempts, a rollback the state does not say), <code>deviceDuration</code>; skips every device shares said once
   (<code>uniformSkips</code>); the switcher and the search from <code>DEVICE_SEARCH_FROM</code>; a virtual window from <code>VIRTUALISE_FROM</code>
@@ -8692,8 +8693,15 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
   longest text. An expanded device folds runs of quiet steps (<code>foldStepLines</code>).</li>
 <li>Virtual list: the one window (<code>core/list/virtual</code>, <code>table/virtual.svelte</code>) renders the window plus the focused row pinned in its place (the kit DataTable&rsquo;s
   <code>gapAfter</code> and <code>rowIndex</code>), so the rendered count stays bounded at any length.</li>
+<li>The outcome callout (<code>outcomeNote</code>, <code>RunOutcome</code>): headline, a lede that says what the failure left (devices may be
+  changed, or nothing left changed), then Engine said, Locks, Waiting and Next. Next follows the state: FAILED_UNSAFE
+  waits for the engine&rsquo;s acknowledgement (remediation answers 409 before FAILED_UNSAFE_ACK); FAILED_UNSAFE_ACK names
+  remediation through the engine (&ldquo;you&rdquo; with both the rollback and the resolve grant, both grants named otherwise; an
+  unlock that failed is resolved, so the resolve grant alone decides) and links the docs; the monitor
+  offers no remediation itself yet (decision of 2026-10-21). Run again lives in the header only. Red (callout and
+  masthead edge) only where a person must act; a safe failure is untinted.</li>
 <li>Reading (visual system, P2): states are tinted pills in their status families (<code>outcomePill</code>, never solid: the fill
-  belongs to the run&rsquo;s own status); devices, durations, keys, expressions and entities are typed values (<code>Value</code>); the
+  belongs to the run&rsquo;s own status), a state no family names a grey tint with its own mark; devices, durations, keys, expressions and entities are typed values (<code>Value</code>); the
   facts line reads label · value with the submission time absolute and how long ago after it, a trigger as its pill and
   the whole run id to copy (<code>typedFacts</code>); the note says its parts apart, Reason / What it means / What to do, only when
   there are two or more (<code>noteParts</code>, <code>RunNote</code>), its engine tokens typed (<code>engineText</code>); parameters and targets are
@@ -8722,7 +8730,7 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <code>cds-content-switcher</code> and <code>cds-search</code>. Custom and owned by the port: the row-level roving focus (as every v3 list),
 the cut-text reveal (<code>Truncate</code>), and the virtual window (the shared <code>VirtualWindow</code> gives the slice and the held space, <code>follow</code> the scroll for a keyboard
 move).</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 11:24:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T11:24:56+00:00'>2026-10-21 11:24:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 23:02:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T23:02:01+00:00'>2026-10-27 23:02:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

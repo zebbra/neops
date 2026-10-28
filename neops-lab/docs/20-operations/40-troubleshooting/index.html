@@ -63,15 +63,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9081,7 +9081,7 @@
 <p><strong>The image does not carry the block.</strong> <code>neops/fb</code> ships <em>inside</em> the <code>neops-worker-sdk</code> image; it is not mounted from this repo. Check what you are running:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>worker<span class="w"> </span>ls<span class="w"> </span>/app/neops/fb/base/global/discover_network.py
 </span></code></pre></div>
-<p>⚠️ The published <code>quay.io/zebbra/neops-worker-sdk:develop</code> tag <strong>does not carry it</strong> — see the next entry.</p>
+<p>⚠️ An old prerelease tag or an old local build may not carry it — see the next entry.</p>
 </li>
 </ol>
 <p>See <a href="../../10-concepts/30-discovery/">Discovery</a> and <a href="../../10-concepts/40-container-paths/">The <code>/app/lab</code> mount</a>.</p>
@@ -9091,13 +9091,13 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>timeout: no online worker for fb.base.neops.io/global_discover_network:0.1.0 within 180s
 </span></code></pre></div>
 <p><strong>Cause:</strong> the worker image you pinned does not carry
-<code>global_discover_network</code> — the published <code>develop</code> tag is one such image. The
+<code>global_discover_network</code>, e.g. an old prerelease tag or an old local build. The
 block ships <em>inside</em> the image rather than being bind-mounted from here, so the
 worker starts, registers the blocks it has, and never announces this one;
 <code>wait_ready</code> waits for it until the budget runs out.</p>
-<p><strong>Fix:</strong> check what the image actually holds, and fall back to a prerelease
-<code>0.2.0-beta.*</code> tag (the published <code>develop</code> lacks the block) or a fresh build of
-an SDK checkout that has it:</p>
+<p><strong>Fix:</strong> check what the image actually holds, and fall back to the published
+<code>develop</code> tag, a current prerelease <code>0.2.0-beta.*</code> tag, or a fresh build of an
+SDK checkout that has it:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$NEOPS_WORKER_SDK_IMAGE</span><span class="s2">&quot;</span><span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global/discover_network.py&#39;</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>make<span class="w"> </span>-C<span class="w"> </span>../neops-worker-sdk-py<span class="w"> </span>build-docker<span class="w">          </span><span class="c1"># -&gt; neops-worker-sdk:latest</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;NEOPS_WORKER_SDK_IMAGE=neops-worker-sdk:latest&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
@@ -9107,22 +9107,22 @@ an SDK checkout that has it:</p>
 check against it before <code>make local-lab-up</code>.</p>
 <hr />
 <h2 id="worker-exits-2-min-after-start-discovery-hangs-after-wait_ready">Worker exits ~2 min after start; discovery hangs after <code>wait_ready</code></h2>
-<p><strong>Known issue until <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a> is in the engine&rsquo;s
-published <code>develop</code> image.</strong></p>
+<p><strong>Affects engines older than <code>v0.43.0-beta.6</code></strong>, which lack
+<a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a>. The default <code>develop</code> image has it.</p>
 <p><strong>Where:</strong> <code>make local-lab-up</code> succeeds and <code>wait_ready</code> reports an online
 worker, but <code>make local-lab-discover</code> sits in <code>running</code> and never finishes. The
 worker log shows <code>Registration failed: (500)</code> for one function block (e.g.
 <code>network_device_apply_configuration</code>), retries for about two minutes, then the
 container exits with code 1. The engine log shows <code>value too long for type
 character varying(255)</code>.</p>
-<p><strong>Cause:</strong> the engine stores a function block&rsquo;s description and help text in
-<code>varchar(255)</code> columns, and the <code>0.2.0-beta.*</code> worker ships a block whose help
+<p><strong>Cause:</strong> an engine older than <code>v0.43.0-beta.6</code> stores a function block&rsquo;s
+description and help text in <code>varchar(255)</code> columns, and the <code>0.2.0-beta.*</code> worker ships a block whose help
 text is longer. That insert fails, the worker gives up and exits. The discovery
 block registers before the failing one, so <code>wait_ready</code> passes — and the engine
 keeps listing the dead worker as online.</p>
-<p><strong>Fix:</strong> once #402 is merged and the engine&rsquo;s <code>develop</code> image is republished,
-re-pull the engine and restart the stack. The worker pin does <strong>not</strong> need to
-move.</p>
+<p><strong>Fix:</strong> run an engine at <code>v0.43.0-beta.6</code> or later: drop an older
+<code>NEOPS_ENGINE_TAG</code>, re-pull the engine and restart the stack. The worker pin
+does <strong>not</strong> need to move.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>local-env-up<span class="w">          </span><span class="c1"># pulls with --policy always</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>local-lab-up
 </span></code></pre></div>
@@ -9240,7 +9240,7 @@ a silent <em>duplicate</em> scope rather than updating the seeded one.</p>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>./containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 16:33:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T16:33:52+00:00'>2026-10-21 16:33:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:31:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:31:09+00:00'>2026-10-28 12:31:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

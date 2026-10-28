@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../../../../assets/document_dates/core/core.css">
     
@@ -8596,13 +8596,8 @@ the states and decisions, and the shell permissions.</p>
 </tr>
 <tr>
 <td><code>/workflows/:id</code></td>
-<td><code>workflows/WorkflowPage</code> (<code>workflow-page.form</code> A)</td>
+<td><code>workflows/WorkflowPage</code></td>
 <td><code>workflow-page.ts</code>, <code>versions.ts</code>, <code>change-list.ts</code>, <code>line-diff.ts</code>, <code>document-yaml.ts</code></td>
-</tr>
-<tr>
-<td>(alternative B)</td>
-<td><code>workflows/WorkflowReadMode</code></td>
-<td><code>readMode</code>, <code>readModePrimary</code>, <code>readModeMenu</code> in <code>workflow-page.ts</code></td>
 </tr>
 <tr>
 <td><code>/function-blocks</code></td>
@@ -8612,12 +8607,12 @@ the states and decisions, and the shell permissions.</p>
 <tr>
 <td><code>/function-blocks/:id</code></td>
 <td><code>fb/FunctionBlockPage</code></td>
-<td><code>function-blocks.ts</code> (<code>fbFacts</code>, <code>fbParameters</code>, <code>usedBy</code>, <code>servedByRows</code>, <code>unservedNote</code>), <code>markdown.ts</code></td>
+<td><code>function-blocks.ts</code> (<code>fbParameters</code>, <code>usedBy</code>, <code>servedByRows</code>, <code>unservedNote</code>), <code>markdown.ts</code></td>
 </tr>
 <tr>
 <td><code>/workers</code></td>
 <td><code>workers/WorkersList</code></td>
-<td><code>workers.ts</code> (<code>WORKERS_QUERY</code>, <code>WORKER_ROWS</code>, <code>workerHealth</code>, <code>workersMenu</code>)</td>
+<td><code>workers.ts</code> (<code>WORKERS_QUERY</code>, <code>WORKER_ROWS</code>, <code>workersMenu</code>)</td>
 </tr>
 <tr>
 <td><code>/workers/:uuid</code></td>
@@ -8628,24 +8623,27 @@ the states and decisions, and the shell permissions.</p>
 </table>
 <p>Copy: <code>core/catalog/copy.ts</code> (<code>WORKFLOWS</code>, <code>PAGE</code>, <code>VERSIONS</code>, <code>CHANGES</code>, <code>FB</code>, <code>WORKERS</code>).</p>
 <h2 id="page-views-take-one-state">Page views take one state</h2>
-<p><code>WorkflowPage</code>, <code>WorkflowReadMode</code>, <code>FunctionBlockPage</code> and <code>WorkerPage</code> take <code>view: WorkflowPageView</code>:
+<p><code>WorkflowPage</code>, <code>FunctionBlockPage</code> and <code>WorkerPage</code> take <code>view: WorkflowPageView</code>:
 <code>{ kind: 'loading', id }</code>, <code>{ kind: 'found', stale }</code>, <code>{ kind: 'not-found', id }</code>, <code>{ kind: 'outage', id }</code>,
 <code>{ kind: 'hidden' }</code> — the states module&rsquo;s <code>objectState</code> mapped to what the page draws. <code>level</code> is 1 on a page and 2
 where an embedding host owns the h1. <code>now</code> is the data&rsquo;s time, never a ticking clock.</p>
 <h2 id="lists-and-pages-what-core-decides">Lists and pages: what core decides</h2>
 <ul>
-<li><code>workflowColumns(model)</code>: the Workflows list&rsquo;s columns for a role (Last run only with run read, Run only for a role
-  that may run). <code>lastRunCell(row, now)</code>: the Last run cell&rsquo;s link, label and tip; the run&rsquo;s version is named when it
-  is not the row&rsquo;s (the cell is the newest run of any version).</li>
-<li><code>pageFacts</code> (workflow page): the seed as &ldquo;Seed: device&rdquo; when nothing else is acquired; on an older version
-  &ldquo;Compare&rdquo; after &ldquo;Latest is v2.0.0&rdquo;, linking <code>compareLatestHref(definition, latest)</code> (<code>compare=1.4.2..2.0.0</code>).</li>
+<li><code>workflowScaleColumns(model)</code>: the Workflows list&rsquo;s columns for a role (Last run only with run read, Run only for a
+  role that may run).</li>
+<li><code>pageFacts</code> (workflow page): on an older version &ldquo;Compare&rdquo; after &ldquo;Latest is v2.0.0&rdquo;, linking
+  <code>compareLatestHref(definition, latest)</code> (<code>compare=1.4.2..2.0.0</code>). The seed is no fact there: <code>pageLocks(doc)</code> hands
+  the Steps band the builder&rsquo;s Plan line locks (<code>planParts</code>), which <code>impactLine</code> leads with (&ldquo;Locks each picked
+  device · …&rdquo;), unless Targets shows them in its own Plan line.</li>
+<li><code>inputReaders(doc, rows, versionId)</code>: the Inputs Read by, and <code>requiredUnread</code> for a required input nothing reads.</li>
 <li><code>fact-cards.ts</code> (the three object pages): the facts card under the header, label over typed value
-  (<code>fbCardFacts</code>, <code>workerCardFacts</code>, <code>workflowCardFacts</code>); the header&rsquo;s facts line keeps the version&rsquo;s state only
-  (<code>fbFacts</code>, <code>WORKFLOW_HEADER_FACTS</code>).</li>
+  (<code>fbCardFacts</code>, <code>workerCardFacts</code>, <code>workflowCardFacts</code>).</li>
+<li><code>third-line.ts</code> <code>ThirdLineModel</code> (the object pages, <code>object/third-line.svelte.ts</code>): one L3 per page; each second column
+  registers the span it needs and the page&rsquo;s third columns start on L2 + n × 4rem.</li>
 <li><code>unservedNote(block, servers, waiting, model)</code> (function block page): when no online worker serves the version, the
   landing health line&rsquo;s sentence and the jobs that wait for it as a link into Jobs filtered to that version
   (<code>FunctionBlockPage</code> takes <code>pendingJobs</code>, the paged jobs route&rsquo;s total).</li>
-<li><code>otherOnline(group, worker, workers)</code> / <code>otherOnlineText</code> (worker page): how many other online workers serve a block
+<li><code>otherOnline(group, worker, workers)</code> (worker page): how many other online workers serve a block
   this worker serves, &ldquo;None&rdquo; when some version has none (<code>WorkerPage</code> takes every registration as <code>workers</code>).
   <code>jobColumns(jobs)</code>: Step&rsquo;s track and Type; Status is always one column, the Jobs list&rsquo;s <code>jobStatusShown</code>.</li>
 </ul>
@@ -8663,7 +8661,8 @@ where an embedding host owns the h1. <code>now</code> is the data&rsquo;s time, 
   run&rsquo;s <code>findings</code> to the same <code>ChangeList</code>. A step group carries <code>blocks</code> (its function block, both versions when
   it changed, each with its page&rsquo;s href when the reference is exact). The optional fourth argument
   <code>{ stepHref(label, side) }</code> links each step on its version&rsquo;s page (<code>Comparison</code> passes <code>stepHref</code>); without it
-  (the publish review&rsquo;s draft) the step name is plain text.</li>
+  (the publish review&rsquo;s draft) the step name is plain text. <code>{ noFinding: true }</code> (the comparison) also lists the
+  edits no finding covers in their groups&rsquo; <code>noFinding</code>, counted in <code>noFinding</code>, apart from the summary.</li>
 <li><code>lineDiff(before, after, { same })</code>: <code>same</code> counts two lines as unchanged; <code>Comparison</code> passes <code>sameVersionKey</code>,
   so the version keys the heading names are never counted.</li>
 </ul>
@@ -8671,7 +8670,7 @@ where an embedding host owns the h1. <code>now</code> is the data&rsquo;s time, 
 <p>The list views map onto the shared <code>cds-table</code> grammar. The pages are route components over the object
 header and sections; the tables inside are <code>cds-table</code> (sm). Custom: <code>ChangeList</code>, <code>LineDiff</code>, <code>HelpText</code> (renders
 core <code>helpBlocks</code> tokens, never engine HTML), the served-block grid on the worker page.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:51'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:51+00:00'>2026-10-17 12:06:51</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:51'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-17T12:06:51+00:00'>2026-10-17 12:06:51</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:51'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:51+00:00'>2026-10-17 12:06:51</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 22:37:52'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T22:37:52+00:00'>2026-10-27 22:37:52</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

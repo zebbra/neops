@@ -63,15 +63,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -9088,13 +9088,13 @@ against the pods.</p>
 <tbody>
 <tr>
 <td><code>quay.io/zebbra/neops-worker-sdk:develop</code>, the default</td>
-<td>base blocks, <strong>without</strong> <code>global_discover_network</code></td>
-<td>The worker runs but never announces the block; <code>wait_ready</code> times out with <em>no online worker</em></td>
+<td>base blocks, including <code>global_discover_network</code></td>
+<td>Works on engine <code>v0.43.0-beta.6</code> or later</td>
 </tr>
 <tr>
 <td><code>quay.io/zebbra/neops-worker-sdk:0.2.0-beta.*</code> (prerelease, expires after 20 days)</td>
 <td>base blocks, including <code>global_discover_network</code></td>
-<td>Works once <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a> is in develop</td>
+<td>Works on engine <code>v0.43.0-beta.6</code> or later, which carries <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a></td>
 </tr>
 <tr>
 <td>the <code>neops-worker-sdk-py</code> checkout, <code>make build-docker</code></td>
@@ -9194,7 +9194,7 @@ counts rather than assuming, on either flavour.</p>
 <li><strong>Deploying the control plane.</strong> Nothing here installs a CMS, engine, worker or web client; <code>make local-env-*</code> and <code>make local-lab-up</code> still do that for the compose flavour. <code>kind-lab-cms-config</code> and <code>kind-lab-discover</code> <em>use</em> a control plane someone else deployed — they configure and drive it, and they never install, upgrade or delete it.</li>
 <li><strong>Real links.</strong> The <code>swpN</code> ports are dummy interfaces with the right names and descriptions, not point-to-point wiring. Discovery sees a realistic device; packets do not cross between devices.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:44'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:44+00:00'>2026-09-08 11:32:44</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 17:40:30'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T17:40:30+00:00'>2026-10-26 17:40:30</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:44'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:44+00:00'>2026-09-08 11:32:44</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:33:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:33:09+00:00'>2026-10-28 12:33:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

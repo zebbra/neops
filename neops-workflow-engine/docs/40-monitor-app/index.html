@@ -61,15 +61,15 @@
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/backdrop.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/core/core.css">
     
@@ -2740,6 +2740,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow page
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparing-two-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing two versions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8794,6 +8822,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#workflow-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow page
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparing-two-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparing two versions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#builder" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9102,7 +9158,18 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <li><strong>Steps.</strong> The steps of the workflow definition the run used. A deleted version still shows.</li>
 <li><strong>Devices.</strong> Once the engine serves the run&rsquo;s jobs, each device with its state, the step where it ended, the worker&rsquo;s message and the duration. Problems come first. A step opens to show its <strong>Result data</strong>, which the page reads from the blackboard when you open it. <code>#job=&lt;job id&gt;</code> in the URL opens that job&rsquo;s device and step.</li>
 </ul>
-<p><strong>Run again</strong> opens the run dialog filled with the run&rsquo;s workflow, targets and parameters. It is the primary action on a finished run. On a <code>FAILED_UNSAFE_ACK</code> run it is a quiet action while the engine holds the locks. On a run in flight it sits in the overflow menu. Copy link and Copy run id are in the same menu. Abort is hidden while the engine cannot stop a run.</p>
+<p><strong>Run again</strong> opens the run dialog filled with the run&rsquo;s workflow, targets and parameters. It is the primary action on a finished run. On a <code>FAILED_UNSAFE_ACK</code> run it is a quiet action while the engine holds the locks. On a run in flight it sits in the overflow menu. Copy link is in the same menu; the run id in the title copies the id. Abort is hidden while the engine cannot stop a run.</p>
+<h2 id="workflow-page">Workflow page</h2>
+<p>The Workflows list shows each published workflow. Open one to reach its version page (<code>/workflows/&lt;package&gt;/&lt;name&gt;:&lt;version&gt;</code>), which shows one published version:</p>
+<ul>
+<li><strong>Header:</strong> the name and the version. The version opens a menu of every version, the shown one checked. Beside it are the package, when the version was published and its last run. An older version names the latest and offers <strong>Compare with latest</strong>; a deleted version says so, and <strong>Restore</strong> brings it back for a role that may write workflows.</li>
+<li><strong>Inputs:</strong> each input with its type and what reads it: the steps, the Targets, or the workflow itself (its own condition, assert or parameters). A required input that nothing reads says <em>No step · still required</em>: every run must send it, and nothing uses it.</li>
+<li><strong>Steps:</strong> every step with its function block, its effect (<em>Pure</em>, <em>Idempotent</em>, or no tag for a block that is neither) and its type. The line beside the title says what a run locks and what the steps do to devices, for example <em>Locks each picked device · 2 steps change devices · a failure once backup_before has started keeps the locks</em>. A step that can&rsquo;t be rolled back says so on its row; the ⓘ explains the effects and the <code>FAILED_UNSAFE</code> end. A workflow that acquires more than its seed shows a <strong>Targets</strong> section, whose plan line says what a run locks.</li>
+<li><strong>Versions:</strong> every version with when it was published and its last run. <strong>Compare</strong> sets a version beside the shown one; <strong>Compare two…</strong> picks any two.</li>
+</ul>
+<p><strong>Run…</strong> opens the run dialog on the shown version; on an older version the dialog names the latest version and offers to use it instead. <strong>Edit</strong> opens the version in the builder; publishing there creates a new version, since a published version never changes (see <a href="../20-workflows/15-publishing/">Publishing and versioning</a>). A role that may not run sees <strong>Run…</strong> disabled with its reason, and <strong>Open in builder</strong> in place of <strong>Edit</strong>.</p>
+<h3 id="comparing-two-versions">Comparing two versions</h3>
+<p>A comparison opens as the first section under the header and lives in the address (<code>?compare=1.0.0..2.0.0</code>), so a link to it opens it. Its verdict says what the changes ask of the version number and what the newer version is, for example <em>Major change · v2.0.0 is a major version, as the changes ask</em>; a version below the floor the changes ask carries a warning glyph. The change list groups the engine&rsquo;s findings by workflow, inputs and step, each with its level (Major, Minor, Patch or Note). An edit the engine reports no finding for, such as an input&rsquo;s description, is listed with <em>No finding</em> in place of a level and counted apart from the findings. <strong>Show YAML diff</strong> shows the two documents line by line.</p>
 <h2 id="builder">Builder</h2>
 <p>The builder authors a workflow as a draft and publishes it as a new version. <code>/workflow-builder?id=&lt;package&gt;/&lt;name&gt;:&lt;version&gt;</code> opens a published version for editing. The create flow starts from a blank workflow, a starter (Reachability check, Config backup, Hello world) or a copy of an existing workflow.</p>
 <p>The builder edits workflow inputs, targets and steps as a form. The YAML view shows the same document as YAML or JSON text. One undo history spans form and text. The YAML view takes the text of a whole workflow in either format. Without the <code>workflow:write</code> grant the builder opens read-only.</p>
@@ -9126,7 +9193,7 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <h2 id="framed-and-standalone">Framed and standalone</h2>
 <p>The app runs in one of two shapes.</p>
 <ul>
-<li><strong>Framed.</strong> The app runs inside the Neops Web Client, in an iframe under the client&rsquo;s <code>/monitor</code> route. A page is also framed when its URL carries <code>?embed=1</code>. The frame draws no header, brand or identity, because the host supplies them. It draws the section list as a side rail, or as a bar under the host&rsquo;s header. The rail folds into the bar when the frame is narrow. The theme is the host&rsquo;s. The host&rsquo;s address bar and tab title follow the app&rsquo;s current page, and the host asks before it leaves a page where leaving loses work.</li>
+<li><strong>Framed.</strong> The app runs inside the Neops Web Client, in an iframe under the client&rsquo;s <code>/monitor</code> route. A page is also framed when its URL carries <code>?embed=1</code>. The frame draws no header, brand or identity, because the host supplies them. It draws the section list as a side rail, or as a bar under the host&rsquo;s header. The rail folds into the bar when the frame is narrow. A host that draws the frame edge to edge declares <code>full-bleed</code>, and the app keeps its full page gutter; inside any other host, which pads the frame, the app keeps a narrow gutter. The theme is the host&rsquo;s. The host&rsquo;s address bar and tab title follow the app&rsquo;s current page, and the host asks before it leaves a page where leaving loses work.</li>
 <li><strong>Standalone.</strong> The app opens directly in its own tab, with its own header, Help menu, notification bell and theme. <code>?embed=0</code> forces this shape.</li>
 </ul>
 <p>Both shapes show the same pages. The web client and the app talk over <code>postMessage</code>, and the messages are the host contract. Their names begin with <code>neops:</code>:</p>
@@ -9209,7 +9276,7 @@ as a Vite dev server with hot-reload.</p>
 </details>
 <hr />
 <p><strong>Next:</strong> <a href="../getting-started/20-your-first-workflow/">Your First Workflow</a> &ndash; deploy and execute a workflow end to end.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 11:24:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T11:24:56+00:00'>2026-10-21 11:24:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 23:56:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T23:56:28+00:00'>2026-10-21 23:56:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
