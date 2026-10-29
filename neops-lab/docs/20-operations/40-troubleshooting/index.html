@@ -5636,6 +5636,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#search-is-empty-after-the-cms-image-changed-its-index-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search is empty after the CMS image changed its index layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#nothing-works-and-you-want-to-start-over" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8918,6 +8929,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#search-is-empty-after-the-cms-image-changed-its-index-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search is empty after the CMS image changed its index layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#nothing-works-and-you-want-to-start-over" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9235,9 +9257,27 @@ a silent <em>duplicate</em> scope rather than updating the seeded one.</p>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <hr />
+<h2 id="search-is-empty-after-the-cms-image-changed-its-index-layout">Search is empty after the CMS image changed its index layout</h2>
+<p><strong>Symptom:</strong> device or interface search returns nothing, or <code>groups.*</code> searches and acquires fail,
+after pulling a newer CMS image onto an existing <code>elasticsearch</code> volume.</p>
+<p><strong>Cause:</strong> a newer neops-core keeps devices and interfaces in one <code>network</code> index and joins
+groups and clients through ES|QL lookup indices (which is why the lab runs Elasticsearch 8.19).
+<code>elastic_index --create</code> at CMS start creates the new indices empty and leaves the old ones alone,
+so nothing is in them until the rows are written again. The old <code>devices</code> and <code>interfaces</code> indices
+stay on the volume, unused, until it is pruned.</p>
+<p><strong>Fix:</strong> with no workflow executing (its searches and acquires fail while the indices are
+rebuilt), refill every index from the database:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>cms<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>elastic_index<span class="w"> </span>--rebuild<span class="w"> </span>--force
+</span></code></pre></div>
+<p>or start from empty volumes with <code>make local-env-prune</code> (below), which also drops the old indices.</p>
+<p><strong>The reverse case:</strong> the first start of 8.19 upgrades the volume in place, and 8.9 cannot read
+it afterwards. Checking out an older revision of this repo, which pins 8.9.2, makes
+<code>elasticsearch</code> exit with status 1 on that volume. The index is derived data: run
+<code>make local-env-prune</code> and bring the lab up again.</p>
+<hr />
 <h2 id="nothing-works-and-you-want-to-start-over">Nothing works and you want to start over</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
 <p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>./containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
 <div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:31:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:31:09+00:00'>2026-10-28 12:31:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>

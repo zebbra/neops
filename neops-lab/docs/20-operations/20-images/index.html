@@ -8944,7 +8944,7 @@ carries them in its ConfigMap.</p>
 <p class="admonition-title">Do not pin the preview&rsquo;s <code>latest</code></p>
 <p>The preview&rsquo;s <code>latest</code> is 0.42.1 — below the oldest engine the lab supports — because <code>latest</code> only advances on non-prerelease releases. Prerelease tags carry a <code>quay.expires-after=20d</code> label and vanish — <code>0.42.2-beta.3</code> did, on 2026-09-07 — so a pinned beta stops resolving without warning; <code>develop</code> carries no such label.</p>
 </div>
-<p>Plus third-party images that need no credentials: <code>postgres:15-alpine</code>, <code>redis:7-alpine</code>, <code>docker.elastic.co/elasticsearch/elasticsearch:8.9.2</code>, <code>busybox</code>, and <code>ghcr.io/nokia/srlinux:26.3</code> for the SR Linux devices.</p>
+<p>Plus third-party images that need no credentials: <code>postgres:15-alpine</code>, <code>redis:7-alpine</code>, <code>docker.elastic.co/elasticsearch/elasticsearch:8.19.23</code>, <code>busybox</code>, and <code>ghcr.io/nokia/srlinux:26.3</code> for the SR Linux devices.</p>
 <h2 id="running-a-locally-built-image">Running a locally-built image</h2>
 <p>Edit <code>.env</code> (docker compose reads it automatically; <code>make local-lab-up</code> creates it from <code>.env.example</code> if missing) or export the variable:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_WORKER_SDK_IMAGE</span><span class="o">=</span>neops-worker-sdk:latest

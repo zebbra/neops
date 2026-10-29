@@ -381,6 +381,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://docs.neops.io/neops-core/backend/elasticsearch-esql-lookup-pr-documentation/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://docs.neops.io/neops-core/backend/compile/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -573,6 +577,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://docs.neops.io/neops-core/backend/neops_modules/opencore/neops_core/neops/core/documents/ELASTICSEARCH/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://docs.neops.io/neops-core/backend/tests_noplugin/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -601,7 +609,15 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://docs.neops.io/neops-core/docs/architecture/search-sync/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://docs.neops.io/neops-core/docs/backend/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.neops.io/neops-core/docs/backend/elasticsearch-esql-lookup-pr-documentation/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
@@ -797,6 +813,10 @@
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
+         <loc>https://docs.neops.io/neops-core/docs/backend/neops_modules/opencore/neops_core/neops/core/documents/ELASTICSEARCH/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
          <loc>https://docs.neops.io/neops-core/docs/backend/tests_noplugin/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
@@ -838,6 +858,10 @@
     </url>
     <url>
          <loc>https://docs.neops.io/neops-core/docs/releases/</loc>
+         <lastmod>2026-10-29</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.neops.io/neops-core/docs/releases/unreleased/</loc>
          <lastmod>2026-10-29</lastmod>
     </url>
     <url>
