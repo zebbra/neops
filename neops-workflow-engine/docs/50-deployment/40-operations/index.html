@@ -9129,7 +9129,7 @@
 engine can no longer derive what state those entities are in, so it refuses to let another
 workflow plan against them. Find it in the logs by its error line:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Workflow failed unsafely — CMS resource locks RETAINED
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    workflowId=&lt;uuid&gt; lockReference=&lt;uuid&gt; lockedDevices=[...] lockedDeviceGroups=[...]
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    workflow_execution_id=&lt;uuid&gt; lockReference=&lt;uuid&gt; lockedDevices=[...] lockedDeviceGroups=[...]
 </span></code></pre></div>
 <p>Until someone releases that lock, any later workflow needing one of those entities waits in
 <code>LOCKING</code>, retrying on a capped exponential backoff (at most every 5 minutes) with the CMS

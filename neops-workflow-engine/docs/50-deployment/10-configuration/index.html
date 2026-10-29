@@ -2780,6 +2780,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log store
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#http" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8746,6 +8757,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log store
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#http" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9015,14 +9037,14 @@
 <td>Enable verbose validation errors. <strong>Also switches deferred retry delays from seconds to milliseconds</strong> &ndash; intended for tests, never for production</td>
 </tr>
 <tr>
-<td><code>LOG_LEVEL</code></td>
+<td><code>NEOPS_LOG_LEVEL</code></td>
 <td><code>info</code></td>
-<td><code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>. Defaults to <code>debug</code> when <code>DEBUG=true</code></td>
+<td><code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>. Defaults to <code>debug</code> when <code>DEBUG=true</code>. Replaces <code>LOG_LEVEL</code></td>
 </tr>
 <tr>
-<td><code>LOG_FORMAT</code></td>
+<td><code>NEOPS_LOG_FORMAT</code></td>
 <td><code>pretty</code></td>
-<td><code>json</code> (production) or <code>pretty</code> (development). Auto-selects <code>json</code> in production</td>
+<td><code>json</code> (production) or <code>pretty</code> (development); <code>text</code> is read as <code>pretty</code>. Auto-selects <code>json</code> in production. Replaces <code>LOG_FORMAT</code></td>
 </tr>
 <tr>
 <td><code>PORT</code></td>
@@ -9031,6 +9053,100 @@
 </tr>
 </tbody>
 </table>
+<h2 id="log-store">Log store</h2>
+<p>The engine writes its own log lines to a log store (VictoriaLogs or Loki) next to stdout. Lines go
+through an in-memory queue to the store; while the store is unreachable or refuses the engine&rsquo;s
+settings, and when the queue overflows, they wait in the <code>log_outbox</code> table of the engine&rsquo;s own
+database and are replayed once the store accepts a probe. Request and response body dumps and the
+job result dump stay on stdout only.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NEOPS_LOG_BACKEND</code></td>
+<td><em>(unset)</em></td>
+<td><code>victorialogs</code> or <code>loki</code>. Unset: stdout only, nothing queued or stored, logs are not queryable. <code>db</code> is core&rsquo;s value; the engine treats it as unset and says so at boot. Any other value aborts startup</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_URL</code></td>
+<td><em>(unset)</em></td>
+<td>Base URL of the store, e.g. <code>http://victorialogs:9428</code> or <code>http://loki:3100</code>. Required with a backend; startup is refused without it</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_USERNAME</code> / <code>NEOPS_LOG_PASSWORD</code></td>
+<td><em>(unset)</em></td>
+<td>Basic auth for the store</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_TENANT</code></td>
+<td><em>(unset)</em></td>
+<td>Loki: a tenant id without whitespace, sent as <code>X-Scope-OrgID</code>. VictoriaLogs: <code>&lt;uint32&gt;[:&lt;uint32&gt;]</code>, sent as <code>AccountID</code> and <code>ProjectID</code> (<code>0</code> when no project is given). A malformed value aborts startup</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_ENV</code></td>
+<td><em>(unset)</em></td>
+<td>Deployment label written as <code>env</code> on every record</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_QUEUE_MAX_RECORDS</code></td>
+<td><code>10000</code></td>
+<td>In-memory queue; when full, its oldest lines move to the outbox</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_BATCH_MAX_RECORDS</code></td>
+<td><code>500</code></td>
+<td>Records per push; a full batch is pushed before the next tick</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_BATCH_MAX_BYTES</code></td>
+<td><code>2097152</code></td>
+<td>JSON-encoded bytes per push</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_FLUSH_INTERVAL_MS</code></td>
+<td><code>200</code></td>
+<td>Flusher period</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_OUTBOX_MAX_ROWS</code></td>
+<td><code>500000</code></td>
+<td>Outbox row cap; beyond it the oldest rows are deleted</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_OUTBOX_MAX_BYTES</code></td>
+<td><code>1073741824</code></td>
+<td>Outbox byte cap (1 GiB); beyond it the oldest rows are deleted</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_OUTBOX_MAX_ATTEMPTS</code></td>
+<td><code>10</code></td>
+<td>Replay failures after which a row is deleted; only failures in a tick where the store accepted another push count</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_SETTLE_MS</code></td>
+<td><code>3000</code></td>
+<td>Live-read horizon of the log read routes; values below <code>1000</code> are raised to <code>1000</code></td>
+</tr>
+</tbody>
+</table>
+<p>A <code>401</code>, <code>403</code>, <code>404</code> or <code>405</code> from the store (a wrong URL, wrong credentials, or an
+auth-enabled Loki without <code>NEOPS_LOG_TENANT</code>) logs one error and keeps every line in the outbox,
+probing every 30 s. A network error, a timeout, a <code>5xx</code> or a <code>429</code> keeps the lines in the outbox
+and probes every 5 s (or after <code>Retry-After</code>). A store that refuses a line itself (<code>400</code>, <code>413</code>,
+<code>422</code>) loses that line only. Postgres <code>jsonb</code> cannot hold a NUL character or an unpaired UTF-16
+surrogate, so a line that waits in the outbox has each replaced by U+FFFD; a line pushed straight
+from the queue keeps them.</p>
+<div class="admonition warning">
+<p class="admonition-title">The outbox is a second copy of every line during an outage</p>
+<p>While the store is away the engine&rsquo;s Postgres holds up to <code>NEOPS_LOG_OUTBOX_MAX_BYTES</code> of
+log rows, and a backup taken then carries them. The table is empty in steady state.</p>
+</div>
 <h2 id="http">HTTP</h2>
 <table>
 <thead>
@@ -9048,12 +9164,14 @@
 </tr>
 </tbody>
 </table>
-<p>Most routes accept a request body of up to <strong>100 kB</strong>. Two routes take bulk payloads from workers
-and are raised to <strong>50 MB</strong>:</p>
+<p>Most routes accept a request body of up to <strong>100 kB</strong>. One route takes bulk payloads from workers
+and is raised to <strong>50 MB</strong>:</p>
 <ul>
 <li><code>POST /blackboard/job/result</code> &ndash; job results, which can carry bulk entity updates</li>
-<li><code>POST /blackboard/job/log</code> &ndash; job execution logs</li>
 </ul>
+<p>The two log push routes, <code>POST /blackboard/job/logs</code> and <code>POST /workers/:uuid/logs</code>, accept
+<strong>1 MiB</strong>. That limit is part of their contract (<code>x-neops-limits.bytesPerRequest</code> in
+<code>schema/LogRecord.schema.json</code>, which workers chunk by), so <code>MAX_REQUEST_BODY_SIZE</code> does not change it.</p>
 <table>
 <thead>
 <tr>
@@ -9066,15 +9184,15 @@ and are raised to <strong>50 MB</strong>:</p>
 <tr>
 <td><code>MAX_REQUEST_BODY_SIZE</code></td>
 <td><em>(unset)</em></td>
-<td>Replaces the 50 MB limit on the two routes above, e.g. <code>100mb</code> or a plain byte count. Leave unset to keep the built-in limit</td>
+<td>Replaces the 50 MB limit of <code>POST /blackboard/job/result</code>, e.g. <code>100mb</code> or a plain byte count. Leave unset to keep the built-in limit</td>
 </tr>
 </tbody>
 </table>
 <p>Set this when workers push results larger than 50 MB and get <code>413 Payload Too Large</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">It does not change the 100 kB default</p>
-<p><code>MAX_REQUEST_BODY_SIZE</code> only adjusts the routes that are already raised. Every other route,
-including workflow publishing, keeps the 100 kB limit and is unaffected by this variable.</p>
+<p><code>MAX_REQUEST_BODY_SIZE</code> only adjusts the result route. Every other route, including workflow
+publishing and the log push routes, keeps its limit and is unaffected by this variable.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">A malformed value aborts startup</p>
@@ -9421,8 +9539,8 @@ aggressive the retention setting.</p>
 <h2 id="example-env">Example .env</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Production configuration</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">NODE_ENV</span><span class="o">=</span>production
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">LOG_LEVEL</span><span class="o">=</span>info
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">LOG_FORMAT</span><span class="o">=</span>json
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">NEOPS_LOG_LEVEL</span><span class="o">=</span>info
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">NEOPS_LOG_FORMAT</span><span class="o">=</span>json
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Database</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nv">POSTGRES_HOST</span><span class="o">=</span>postgres.internal

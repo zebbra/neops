@@ -4573,6 +4573,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#testing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8684,6 +8695,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#testing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8943,6 +8965,67 @@ via <code>python-dotenv</code>.</p>
 </tbody>
 </table>
 <hr />
+<h2 id="logging">Logging</h2>
+<p>Every line goes to stdout and, unless pushing is off, to the workflow engine, which stores it in
+its log store and serves it in the run view. Pushing is best-effort: it never delays a job by more
+than one push interval and never fails one. Lines of a running job are pushed with the job&rsquo;s lease
+(<code>POST /blackboard/job/logs</code>); every other line goes to <code>POST /workers/&lt;uuid&gt;/logs</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NEOPS_LOG_LEVEL</code></td>
+<td><code>str</code></td>
+<td><code>debug</code></td>
+<td>Lowest level written to stdout: <code>error</code>, <code>warn</code>, <code>info</code> or <code>debug</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_FORMAT</code></td>
+<td><code>str</code></td>
+<td><code>json</code> when stdout is not a terminal, else <code>text</code></td>
+<td>Stdout format. JSON lines carry the run, step, job and worker keys at the top and every other context key under <code>fields</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_PUSH_LEVEL</code></td>
+<td><code>str</code></td>
+<td><code>info</code></td>
+<td>Lowest level pushed to the engine; <code>off</code> disables pushing</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_PUSH_INTERVAL_MS</code></td>
+<td><code>int</code></td>
+<td><code>1000</code></td>
+<td>Milliseconds between two pushes; a value below <code>1000</code> is raised to <code>1000</code> with a warning. A job&rsquo;s lines are also pushed right before its result, and what is left at shutdown gets 5 s</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_PUSH_BUFFER_MAX_RECORDS</code></td>
+<td><code>int</code></td>
+<td><code>10000</code></td>
+<td>Lines held while the engine is unreachable; beyond it the oldest are dropped, and the next push says how many. A value below <code>5000</code> refuses startup</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_REDACT_EXTRA_KEYS</code></td>
+<td><code>str</code></td>
+<td><em>(unset)</em></td>
+<td>Comma-separated key parts masked on top of <code>password</code>, <code>secret</code>, <code>token</code>, <code>passphrase</code> and <code>api_key</code>, e.g. <code>community,pin</code>. Replaces <code>LOG_REDACT_EXTRA_KEYS</code>, which is no longer read</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOG_VERBOSE_RESULTS</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Log the parameters and result data of every job; by default only a failed job&rsquo;s are logged</td>
+</tr>
+</tbody>
+</table>
+<p>A variable set to the empty string counts as unset.</p>
+<hr />
 <h2 id="testing">Testing</h2>
 <table>
 <thead>
@@ -9008,10 +9091,14 @@ for how entity data flows into function blocks.</p>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="nv">BLOCKING_DETECTION_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.5
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nv">HEALTH_FILE</span><span class="o">=</span>/tmp/neops-worker-alive
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># CMS</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nv">URL_GRAPHQL</span><span class="o">=</span>http://localhost:8000/graphql
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># Logging (optional)</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nv">NEOPS_LOG_FORMAT</span><span class="o">=</span>json
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="nv">NEOPS_LOG_PUSH_LEVEL</span><span class="o">=</span>info
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1"># CMS</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="nv">URL_GRAPHQL</span><span class="o">=</span>http://localhost:8000/graphql
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 18:02:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T18:02:39+00:00'>2026-10-26 18:02:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 13:11:14'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T13:11:14+00:00'>2026-10-28 13:11:14</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

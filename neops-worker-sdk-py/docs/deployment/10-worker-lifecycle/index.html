@@ -4611,6 +4611,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#upgrading-past-re-versioned-base-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading Past Re-Versioned Base Blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8784,6 +8795,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#upgrading-past-re-versioned-base-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading Past Re-Versioned Base Blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8967,12 +8989,12 @@ in order.</p>
 <tr>
 <td><code>EXECUTE</code></td>
 <td><code>execute_function_block()</code> → <code>run()</code></td>
-<td>Main function block logic (wrapped with error boundaries)</td>
+<td>Main function block logic (wrapped with error boundaries). The result carries <code>sideEffects</code> only when it is <code>False</code>, and the rollback data the block saved, also after an exception. A pure block whose result claims side effects is failed instead, with <code>retryable=False</code>. A failure before <code>run()</code> was entered gets <code>side_effects=False</code> and <code>retryable=False</code></td>
 </tr>
 <tr>
 <td><code>ROLLBACK</code></td>
 <td><code>rollback_function_block()</code> → <code>rollback()</code></td>
-<td>Undo this step&rsquo;s changes when a later step failed; the job mirrors the forward job&rsquo;s parameters and context (default returns failure — override in every block registered <code>reversible=True</code>)</td>
+<td>Undo this step&rsquo;s changes when the run failed; the job mirrors the forward job&rsquo;s parameters and context and carries <code>forwardResult</code>, which the worker parses into the block&rsquo;s <code>ForwardResult</code> (data and rollback data by alias). A missing or unparseable <code>forwardResult</code> fails the job with <code>retryable=False</code> without calling <code>rollback()</code>. The default <code>rollback()</code> returns failure — override it in every block registered <code>reversible=True</code></td>
 </tr>
 </tbody>
 </table>
@@ -9012,7 +9034,21 @@ workflow engine marks it as expired.</p>
 <p>The worker does not attempt to re-register automatically. Use your
 orchestrator&rsquo;s restart policy (Docker <code>restart: unless-stopped</code>, Kubernetes
 <code>restartPolicy: Always</code>) to bring it back.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 15:22:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T15:22:19+00:00'>2026-10-15 15:22:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<hr />
+<h2 id="upgrading-past-re-versioned-base-blocks">Upgrading Past Re-Versioned Base Blocks</h2>
+<p>A worker serves exactly the block versions its SDK registers, and the engine resolves a workflow step to the exact version it pins. The release that adds <code>side_effects</code> and rollback data moves seven base blocks from <code>0.1.0</code> to <code>0.1.1</code>:</p>
+<ul>
+<li><code>fb.base.neops.io/device_update_device</code>, <code>group_update_group</code>, <code>global_add_devices</code> and <code>global_add_groups</code> are now registered pure, because declared <code>db_updates</code> are not side effects.</li>
+<li><code>fb.base.neops.io/network_device_apply_configuration</code>, <code>network_device_parse_command_output</code> and <code>network_device_reload</code> now report <code>side_effects=False</code> when they refuse before touching the device.</li>
+</ul>
+<p><strong>Symptom.</strong> A stored workflow definition that still pins one of these at <code>0.1.0</code> keeps starting, and it takes its CMS locks. But once no worker registers <code>0.1.0</code>, its job stays pending. The engine fails it after <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code>, 60 minutes by default.</p>
+<p><strong>Fix, before you replace the workers.</strong> Pick one:</p>
+<ul>
+<li>Republish each affected definition with the pin moved to <code>0.1.1</code>. Bump the workflow&rsquo;s own version as well: published content is immutable.</li>
+<li>Keep one worker on the previous SDK image until the runs pinned to <code>0.1.0</code> have drained.</li>
+</ul>
+<p><strong>Order.</strong> Upgrade the workflow engine first, then the workers; an older worker keeps working against the newer engine. To roll back, do it the other way round: workers first, then the engine.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

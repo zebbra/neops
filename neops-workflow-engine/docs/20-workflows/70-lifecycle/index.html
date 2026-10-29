@@ -9194,7 +9194,7 @@ Releasing the locks would let the next workflow plan against that unknown state.
 stay held, the execution&rsquo;s <code>cmsResourcesLocked</code> flag stays <code>true</code>, and the handler logs at
 <strong>error</strong> level that it is retaining them:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Workflow failed unsafely — CMS resource locks RETAINED
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    workflowId=&lt;uuid&gt; lockReference=&lt;uuid&gt; lockedDevices=[...] ...
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    workflow_execution_id=&lt;uuid&gt; lockReference=&lt;uuid&gt; lockedDevices=[...] ...
 </span></code></pre></div>
 <p>Consequences an operator needs to know:</p>
 <ul>

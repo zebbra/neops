@@ -4846,6 +4846,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#w" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8816,6 +8827,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#w" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8979,13 +9001,14 @@ Workflow Engine docs.
 <hr />
 <h2 id="f">F</h2>
 <p><strong>FAILED_SAFE</strong>
-:   A job failure state assigned when all executed function blocks in the
-    workflow were pure or idempotent. Indicates the workflow is safe to retry
-    because no irreversible side effects occurred. See <a href="../../function-blocks/40-pure-and-idempotent/">Pure and Idempotent</a>.</p>
+:   A workflow failure state: no side effects remain. Either no non-pure step
+    ran that may have changed something (every attempt of the others said
+    <code>side_effects=False</code>), or everything that may have was rolled back.
+    The workflow is safe to retry. See <a href="../../function-blocks/40-pure-and-idempotent/">Pure and Idempotent</a>.</p>
 <p><strong>FAILED_UNSAFE</strong>
-:   A job failure state assigned when at least one non-pure, non-idempotent
-    function block executed before the failure. The workflow cannot be
-    automatically retried. See <a href="../../function-blocks/40-pure-and-idempotent/">Pure and Idempotent</a>.</p>
+:   A workflow failure state: side effects may remain, because an irreversible
+    non-pure step may have changed something or a rollback failed. The entity
+    locks are kept until an operator remediates the run. See <a href="../../function-blocks/40-pure-and-idempotent/">Pure and Idempotent</a>.</p>
 <p><strong>Facts</strong>
 :   Arbitrary JSON data associated with a device. Function blocks write facts
     (e.g., <code>device.facts["version"] = {...}</code>) and the SDK persists them to
@@ -9027,16 +9050,19 @@ execution lifecycle, retry logic, and the Blackboard API.
 :   The algorithm that selects a connection plugin based on platform,
     connection type, library, and required capabilities.</p>
 <p><strong>Pure</strong>
-:   A function block with no side effects — it only reads data. A failed
-    pure block always results in FAILED_SAFE, allowing the workflow to be
-    retried.</p>
+:   A function block with no side effects: it changes nothing on devices or
+    in external systems. Changes it declares to the CMS through the
+    <code>WorkflowContext</code> (<code>db_updates</code>) do not count, because the engine applies
+    them itself. A pure step is never rolled back, and its failure is retried.
+    See <a href="../../function-blocks/40-pure-and-idempotent/#pure-function-blocks">Pure and Idempotent</a>.</p>
 <p><strong>Proxy</strong> → see <strong>Connection proxy</strong></p>
 <hr />
 <h2 id="r">R</h2>
 <p><strong>Registration</strong>
 :   The metadata associated with a function block: name, package, version,
-    description, run_on entity type, purity/idempotency flags, and
-    parameter/result JSON schemas. Sent to the workflow engine at startup.</p>
+    description, run_on entity type, purity/idempotency/reversibility flags,
+    and parameter/result/rollback-data JSON schemas. Sent to the workflow
+    engine at startup.</p>
 <p><strong>Remote lab</strong>
 :   A FastAPI service that provisions Netlab/Containerlab topologies on
     demand for integration testing against real virtual devices. The SDK
@@ -9049,6 +9075,32 @@ execution lifecycle, retry logic, and the Blackboard API.
 <p><strong>Result</strong>
 :   Typed output of a function block, defined as a Pydantic model extending
     <code>FunctionBlockResultData</code>. Uses <code>extra="forbid"</code> for strict validation.</p>
+<p><strong>Retryable</strong>
+:   The <code>retryable</code> field of a result, <code>True</code> by default. A failure with
+    <code>retryable=False</code> is not retried, whatever the block&rsquo;s flags; use it for a
+    failure that would come out the same on every attempt.</p>
+<p><strong>Reversible</strong>
+:   A function block registered <code>reversible=True</code>: the engine may undo it by
+    dispatching a <code>ROLLBACK</code> job that calls its <code>rollback()</code>. See
+    <a href="../../function-blocks/60-advanced-patterns/#rollback">Rollback</a>.</p>
+<p><strong>Rollback</strong>
+:   Undoing the steps of a failed run that may have changed something, wave by
+    wave in reverse order, through each block&rsquo;s <code>rollback()</code>. It happens only
+    when every such step is reversible. <code>rollback()</code> receives the forward
+    result of the step, including its rollback data.</p>
+<p><strong>Rollback data</strong>
+:   A snapshot a reversible block saves with <code>save_rollback_data()</code> in <code>run()</code>,
+    before it changes anything, as an instance of its <code>FunctionBlockRollbackData</code>
+    subclass. The engine stores it with the job result and hands it to the
+    block&rsquo;s <code>rollback()</code>. See <a href="../../function-blocks/60-advanced-patterns/#rollback-data">Rollback data</a>.</p>
+<hr />
+<h2 id="s">S</h2>
+<p><strong>Side effects</strong>
+:   Changes a function block makes outside the CMS declarations it returns:
+    on a device, or in an external system. A result says <code>side_effects=False</code>
+    when that attempt made none; the engine then leaves the step out of the
+    rollback once every attempt of it said so. <code>None</code>, the default, means side
+    effects are assumed. See <a href="../../function-blocks/40-pure-and-idempotent/#side-effects-of-one-attempt">Side effects of one attempt</a>.</p>
 <hr />
 <h2 id="w">W</h2>
 <p><strong>Worker</strong>
@@ -9061,7 +9113,7 @@ execution lifecycle, retry logic, and the Blackboard API.
 :   The data context passed to a function block&rsquo;s <code>run()</code> method. Contains
     devices, interfaces, groups, and the entity the block runs on. Changes
     made to entities are automatically tracked and persisted.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 15:22:17'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T15:22:17+00:00'>2026-10-15 15:22:17</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -3851,6 +3851,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Rollback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rollback-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-block-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The block decides
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8688,6 +8716,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Rollback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rollback-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-block-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The block decides
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8909,20 +8965,56 @@ schema, so a field you widen or skip here is neither lost nor permanently relaxe
 but a value you read here may still differ from the one <code>run()</code> receives.</p>
 </div>
 <h2 id="rollback">Rollback</h2>
-<p>The <code>FunctionBlock</code> base class defines a <code>rollback()</code> method that the workflow engine calls, through a <code>ROLLBACK</code> job, when a <strong>later</strong> step in the workflow fails and this block was registered <code>reversible=True</code>. The job carries the same parameters and entity context the forward job had; this step itself may have succeeded.</p>
+<p>The <code>FunctionBlock</code> base class defines a <code>rollback()</code> method that the workflow engine calls, through a <code>ROLLBACK</code> job, when the workflow fails and this block was registered <code>reversible=True</code>. The job carries the same parameters and entity context the forward job had; this step itself may have succeeded.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">rollback</span><span class="p">(</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">params</span><span class="p">:</span> <span class="n">ParamsT</span><span class="p">,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">result_from_failed</span><span class="p">:</span> <span class="n">FunctionBlockResult</span><span class="p">[</span><span class="n">ResultDataT</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">context</span><span class="p">:</span> <span class="n">ContextT</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">forward</span><span class="p">:</span> <span class="n">ForwardResult</span><span class="p">[</span><span class="n">ResultDataT</span><span class="p">,</span> <span class="n">RollbackDataT</span><span class="p">],</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionBlockRollbackResult</span><span class="p">:</span>
 </span></code></pre></div>
-<p>The default implementation returns <code>success=False</code> with the message <code>"Rollback not implemented"</code>; the engine then retries the rollback and finally leaves the run for a human to resolve. <code>result_from_failed</code> is <code>None</code> when the worker calls the method: the engine does not send the forward result along.</p>
+<p>The default implementation returns <code>success=False</code> with the message <code>"Rollback not implemented"</code>; the entry then ends <code>ROLLBACK_FAILED</code> and the run waits for a human to resolve it.</p>
+<p><code>forward</code> describes the <strong>earliest attempt of this step that may have changed something</strong>, as a whole: a retry runs on whatever the failed attempt left behind, so the earliest attempt holds the state from before the step. Attempts that reported <code>side_effects=False</code> are skipped; an attempt whose outcome is unknown never is.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>success</code>, <code>message</code></td>
+<td>That attempt&rsquo;s result</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Its result data, parsed into the block&rsquo;s <code>result_cls</code>, or <code>None</code></td>
+</tr>
+<tr>
+<td><code>rollback_data</code></td>
+<td>The <a href="#rollback-data">rollback data</a> it saved, parsed into the block&rsquo;s <code>rollback_data_cls</code>, or <code>None</code></td>
+</tr>
+<tr>
+<td><code>rollback_data_rejected</code></td>
+<td>Why the engine dropped its rollback data (<code>not_execute</code>, <code>not_reversible</code>, <code>no_schema</code>, <code>too_large</code>, <code>invalid</code>), or <code>None</code></td>
+</tr>
+<tr>
+<td><code>outcome_known</code></td>
+<td><code>False</code> when the engine wrote that attempt&rsquo;s result (a timeout, a lost worker) or there is none yet; <code>rollback_data</code> is then <code>None</code></td>
+</tr>
+<tr>
+<td><code>previous_rollbacks</code></td>
+<td>The step&rsquo;s earlier rollback attempts, oldest first, each with <code>success</code>, <code>message</code> and <code>outcome_known</code></td>
+</tr>
+</tbody>
+</table>
+<p>If <code>forward</code> is missing from the job, or does not parse into those classes, the worker fails the rollback job with <code>retryable=False</code> and does not call <code>rollback()</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Declare reversibility explicitly</p>
 <p>Only a block registered <code>reversible=True</code> receives rollback jobs (see
 <a href="../40-pure-and-idempotent/">Pure and idempotent blocks</a>). Register it so only once
-<code>rollback()</code> restores the state from <code>params</code> and <code>context</code> alone.</p>
+<code>rollback()</code> can restore the state, from rollback data or from <code>params</code> and <code>context</code>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Rollback undoes the device, not the CMS</p>
@@ -8930,10 +9022,64 @@ but a value you read here may still differ from the one <code>run()</code> recei
 so a run that is rolled back has written none of them. There is nothing in the CMS for
 <code>rollback()</code> to restore, and changes it makes to <code>context</code> are not sent to the engine.</p>
 </div>
+<h3 id="rollback-data">Rollback data</h3>
+<p>A reversible block can record what it needs to undo its change, such as the running configuration it is about to replace, <strong>before it changes anything</strong>. Declare the shape as a <code>FunctionBlockRollbackData</code> subclass, name it in the registration and pass it as the block&rsquo;s last generic argument:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.function_block.function_block</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">DeviceFunctionBlock</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">ForwardResult</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">FunctionBlockRollbackResult</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.function_block.rollback_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionBlockRollbackData</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">Snapshot</span><span class="p">(</span><span class="n">FunctionBlockRollbackData</span><span class="p">):</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">running</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nd">@register_function_block</span><span class="p">(</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">Registration</span><span class="p">(</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        <span class="n">param_cls</span><span class="o">=</span><span class="n">Params</span><span class="p">,</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        <span class="n">result_cls</span><span class="o">=</span><span class="n">Result</span><span class="p">,</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>        <span class="n">rollback_data_cls</span><span class="o">=</span><span class="n">Snapshot</span><span class="p">,</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>        <span class="n">reversible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    <span class="p">)</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="p">)</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="k">class</span><span class="w"> </span><span class="nc">Configure</span><span class="p">(</span><span class="n">DeviceFunctionBlock</span><span class="p">[</span><span class="n">Params</span><span class="p">,</span> <span class="n">Result</span><span class="p">,</span> <span class="n">Snapshot</span><span class="p">]):</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>        <span class="n">current</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_running</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">save_rollback_data</span><span class="p">(</span><span class="n">Snapshot</span><span class="p">(</span><span class="n">running</span><span class="o">=</span><span class="n">current</span><span class="p">))</span>  <span class="c1"># before any write</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>        <span class="o">...</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">forward</span><span class="p">:</span> <span class="n">ForwardResult</span><span class="p">[</span><span class="n">Result</span><span class="p">,</span> <span class="n">Snapshot</span><span class="p">]):</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>        <span class="k">if</span> <span class="n">forward</span><span class="o">.</span><span class="n">rollback_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># this block chooses to refuse</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>            <span class="k">return</span> <span class="n">FunctionBlockRollbackResult</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No snapshot: restore by hand&quot;</span><span class="p">)</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">forward</span><span class="o">.</span><span class="n">rollback_data</span><span class="o">.</span><span class="n">running</span><span class="p">)</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>        <span class="k">return</span> <span class="n">FunctionBlockRollbackResult</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Running configuration restored.&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The rollback data class is the fourth generic argument of <code>FunctionBlock</code> and the third of <code>DeviceFunctionBlock</code>, <code>InterfaceFunctionBlock</code> and <code>GroupFunctionBlock</code>; it defaults to <code>NoRollbackData</code>. The SDK checks the two declarations against each other: registration fails when the generic argument and <code>rollback_data_cls</code> disagree, or when <code>rollback_data_cls</code> is set on a block that is not reversible. The class forbids extra fields, and declaring a computed field on it is an error. Its JSON schema is registered with the block and frozen per exact version, so changing the shape means a new version. That includes giving an already registered version its first <code>rollback_data_cls</code>: bump the version.</p>
+<p><code>save_rollback_data(data, *, replace=False)</code>:</p>
+<ul>
+<li><strong>Serializes at once.</strong> It checks the type, dumps the model to JSON, re-validates that value and keeps the JSON, not the model. Changing the model afterwards changes nothing that is sent.</li>
+<li><strong>Saves once per attempt.</strong> A second save raises unless you pass <code>replace=True</code>. Use it for a cumulative snapshot that grows while the block works: save the changed model again with <code>replace=True</code>. Only the thread that made the first save may replace it.</li>
+<li><strong>Has limits.</strong> The value may be at most 5 MiB, measured as the UTF-8 length of its compact JSON, integers beyond ±2^53 are refused, because the engine parses JSON with JavaScript numbers, and so is text that is not valid UTF-8, such as a lone surrogate, or that holds a NUL character, which the engine&rsquo;s database cannot store.</li>
+<li><strong>Raises on a failed save</strong> (wrong type, too large, invalid) and leaves the earlier snapshot untouched. Like any exception that means side effects are assumed. Because the save comes before every write, catching the error and returning <code>side_effects=False</code> is honest.</li>
+<li><strong>Survives a failure.</strong> The worker sends the saved value with whatever result the <code>EXECUTE</code> job ends with, also after an exception in <code>run()</code>.</li>
+<li><strong>Belongs to <code>run()</code>.</strong> Calling it inside <code>rollback()</code> raises.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Branches run in parallel save once</p>
+<p>A block that works on several devices through <code>run_parallel</code> collects the per-device
+snapshots first, saves them once as one model, and only then starts writing. Branches
+that each save, or each replace, would race for the one snapshot of the attempt.</p>
+</div>
+<p>The engine checks the value against the registered schema and drops a snapshot that does not fit; the result itself is never lost. Rollback data is left out of the worker&rsquo;s job log and of exception messages, but it is stored unencrypted by the engine: a snapshot of a device configuration is as sensitive as the configuration.</p>
+<h3 id="the-block-decides">The block decides</h3>
+<p><code>forward.rollback_data</code> is <code>None</code> when no snapshot was saved, when the engine rejected it (<code>forward.rollback_data_rejected</code> says why), when the outcome of the attempt is unknown (<code>forward.outcome_known</code> is <code>False</code>), or when the engine&rsquo;s retention removed it after the run settled. What the rollback does then is up to the block: restore from <code>params</code> and <code>context</code> if it can, or refuse. It also decides what to do when it runs a second time, which <code>forward.previous_rollbacks</code> shows. A refusal is a failed <code>FunctionBlockRollbackResult</code>; the entry ends <code>ROLLBACK_FAILED</code> and an operator re-runs or resolves it.</p>
 <p>When designing for rollback, consider:</p>
 <ul>
-<li><strong>Recover the &ldquo;before&rdquo; state</strong> from the device or from <code>context</code>: the forward result is not passed to <code>rollback()</code>.</li>
-<li><strong>Idempotent rollbacks</strong> — calling rollback twice should not cause errors.</li>
+<li><strong>Save before the first write</strong>, so the snapshot is the state the rollback must restore.</li>
+<li><strong>Idempotent rollbacks</strong> — a rollback may run again after an earlier one failed or was lost; check <code>previous_rollbacks</code> and the device state rather than assuming a clean start.</li>
 <li><strong>Partial rollback</strong> — if your block made three changes and only two succeeded, rollback should handle the partial state.</li>
 </ul>
 <h2 id="when-to-split-function-blocks">When to Split Function Blocks</h2>
@@ -8986,31 +9132,33 @@ so a run that is rolled back has written none of them. There is nothing in the C
 <p>Function blocks can signal failure in two ways:</p>
 <h3 id="1-return-successfalse">1. Return <code>success=False</code></h3>
 <p>The preferred approach. Return a <code>FunctionBlockResult</code> with <code>success=False</code> and a descriptive message:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No device in context.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No device in context.&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="p">)</span>
 </span></code></pre></div>
 <p>The workflow engine receives the result and decides how to proceed (retry, skip, abort) based on the workflow configuration.</p>
-<p>A failed job of a block registered <code>is_pure</code> or <code>is_idempotent</code> is retried by the engine, up to three times. When the
-failure would come out the same on every attempt (a verdict about the input or the network, not a fault), add
-<code>retryable=False</code> so the engine fails the step on its first attempt instead:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Could not discover the named host(s): </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">retryable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">)</span>
+<p>A failed job of a block registered <code>is_pure</code> or <code>is_idempotent</code>, or one whose result says <code>side_effects=False</code>, is
+retried by the engine, up to three times. When the failure would come out the same on every attempt (a verdict about
+the input or the network, not a fault), add <code>retryable=False</code> so the engine fails the step on its first attempt
+instead:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Could not discover the named host(s): </span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">retryable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">)</span>
 </span></code></pre></div>
 <p>The worker does this itself when a job&rsquo;s parameters fail validation. An exception raised by the block stays
-retryable.</p>
+retryable, and always means side effects are assumed. If the failure comes from a check that ran before anything was
+sent, also add <code>side_effects=False</code> (see <a href="../40-pure-and-idempotent/#side-effects-of-one-attempt">Side effects of one attempt</a>).</p>
 <h3 id="2-raise-an-exception">2. Raise an exception</h3>
 <p>If your code raises an unhandled exception, the <code>execute_function_block()</code> wrapper catches it and converts it to a failed result automatically:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># This exception becomes:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># FunctionBlockResult(message=&quot;Error executing function block: ...&quot;, success=False)</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;SSH connection timed out&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># This exception becomes:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># FunctionBlockResult(message=&quot;Error executing function block: ...&quot;, success=False)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;SSH connection timed out&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>The <code>propagate_exceptions</code> parameter on <code>execute_function_block()</code> controls this behavior:</p>
 <table>
@@ -9041,7 +9189,7 @@ retryable.</p>
 more actionable information than a raw exception. Reserve exceptions for truly
 unexpected situations.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:40:13'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:40:13+00:00'>2026-10-26 19:40:13</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

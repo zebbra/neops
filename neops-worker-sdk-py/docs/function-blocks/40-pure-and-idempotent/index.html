@@ -3798,6 +3798,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#side-effects-of-one-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side effects of one attempt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#idempotent-function-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8707,6 +8718,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#side-effects-of-one-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side effects of one attempt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#idempotent-function-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8868,7 +8890,8 @@
 <p>Every function block declares three boolean flags — <code>is_pure</code>,
 <code>is_idempotent</code> and <code>reversible</code> — that tell the workflow engine how the block
 behaves with respect to side effects. These flags drive retry logic, failure classification, and rollback
-decisions across the entire workflow.</p>
+decisions across the entire workflow. On top of them, each result can say
+whether that one attempt changed anything (<code>side_effects</code>).</p>
 <hr />
 <h2 id="why-it-matters">Why it matters</h2>
 <p>When a workflow step fails, the engine must decide: <strong>is it safe to retry?</strong></p>
@@ -8878,8 +8901,10 @@ blindly might apply that configuration twice. <code>is_pure</code> and <code>is_
 give the engine the information it needs to make that decision automatically.</p>
 <hr />
 <h2 id="pure-function-blocks">Pure function blocks</h2>
-<p>A <strong>pure</strong> function block has no side effects. It reads state but never modifies
-it — not on devices, not in the CMS, not in external systems.</p>
+<p>A <strong>pure</strong> function block has no side effects. It changes nothing on devices
+or in external systems. Changes it declares to the CMS through the
+<code>WorkflowContext</code> (its <code>db_updates</code>) do not count: the engine applies them
+itself, and only when the whole run succeeds.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">is_pure</span><span class="o">=</span><span class="kc">True</span>
 </span></code></pre></div>
 <p>Examples:</p>
@@ -8888,24 +8913,96 @@ it — not on devices, not in the CMS, not in external systems.</p>
 <li>Reading running configuration for backup</li>
 <li>Checking compliance against a policy</li>
 <li>Computing a diff between intended and actual state</li>
+<li>Updating or creating CMS entities, such as the base blocks <code>device_update_device</code>,
+  <code>group_update_group</code>, <code>global_add_devices</code> and <code>global_add_groups</code></li>
 </ul>
 <p>Pure blocks are safe to <strong>retry</strong>, <strong>cache</strong>, and <strong>skip</strong> without consequence.
 The engine can re-execute them at any time and get the same result (assuming
 device state has not changed externally).</p>
+<p>A pure block has nothing to claim, so its results never say
+<code>side_effects=True</code>. If one does, the worker fails the job instead, with
+<code>retryable=False</code> and the message <code>pure block reported side effects: fix the
+block or its registration</code>; the engine refuses such a result too.</p>
+<div class="admonition note">
+<p class="admonition-title">A CMS-only run can leave nothing to remediate</p>
+<p>Because CMS changes are not side effects, a run that did only CMS work and then failed to
+write its changes back (<code>UNLOCK_FAILED</code>) has an empty remediation ledger. Check the CMS
+anyway: the engine has no record of which of those writes landed.</p>
+</div>
 <h3 id="failed_safe-vs-failed_unsafe"><code>FAILED_SAFE</code> vs <code>FAILED_UNSAFE</code></h3>
-<p>When a workflow fails, the engine inspects all steps that completed before the
-failure point. If every one of them is marked <code>is_pure=True</code>, the workflow
-transitions to <strong><code>FAILED_SAFE</code></strong> — indicating that no side effects occurred and
-the entire workflow can be retried safely.</p>
-<p>If any completed step is not pure, the workflow transitions to
-<strong><code>FAILED_UNSAFE</code></strong>, signaling that manual inspection may be required before
-retrying.</p>
+<p>When a workflow fails, the engine looks at the non-pure steps that ran before
+the failure, leaving out the steps whose every attempt reported
+<a href="#side-effects-of-one-attempt"><code>side_effects=False</code></a>. If none remain, the
+workflow transitions to <strong><code>FAILED_SAFE</code></strong> — no side effects occurred and the
+workflow can be retried safely.</p>
+<p>If some remain and every one of them is <code>reversible</code>, the engine rolls them
+back, wave by wave in reverse order. All rollbacks succeed → <code>FAILED_SAFE</code>.</p>
+<p>If any remaining step is irreversible, or a rollback fails, the workflow
+transitions to <strong><code>FAILED_UNSAFE</code></strong>, signaling that manual inspection is
+required before retrying.</p>
+<hr />
+<h2 id="side-effects-of-one-attempt">Side effects of one attempt</h2>
+<p><code>is_pure</code> is a promise about every run of the block. Often a block that can
+change a device knows, for one attempt, that it did not: it failed a check
+before it sent anything. Say so on the result:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">delay</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;delay must be provided when reload_type is scheduled.&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="n">retryable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="n">side_effects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th><code>side_effects</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code> (default)</td>
+<td>Side effects are assumed</td>
+</tr>
+<tr>
+<td><code>False</code></td>
+<td>This attempt changed nothing, on success or failure</td>
+</tr>
+<tr>
+<td><code>True</code></td>
+<td>This attempt may have changed something (the same as <code>None</code> for the engine)</td>
+</tr>
+</tbody>
+</table>
+<p>The engine trusts the flag and leaves the step out of the rollback, but only
+when <strong>every</strong> attempt of the step said <code>side_effects=False</code> and no rollback
+has run for it yet. A retry that does change something keeps the step in.</p>
+<ul>
+<li><strong>Only an explicit return marks a step safe.</strong> An exception raised by the
+  block always means side effects are assumed, even if it was raised before
+  anything was sent. Catch it and return a result if you know better.</li>
+<li><strong>The worker sets it for you</strong> when the block failed before <code>run()</code> was
+  entered (for example, parameters that do not validate): those failures get
+  <code>side_effects=False</code> and <code>retryable=False</code>.</li>
+<li><strong>It is for <code>run()</code> results only.</strong> The worker sends it on <code>EXECUTE</code> jobs
+  only.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title"><code>side_effects=False</code> alone means up to three retries</p>
+<p>A failure with <code>side_effects=False</code> is retried even when the block is neither
+pure nor idempotent: the attempt changed nothing, so another one is safe. If the
+failure would come out the same on every attempt, such as a missing setting or a
+template that does not compile, also set <code>retryable=False</code>, or the step runs up to
+three more times before it fails.</p>
+</div>
 <hr />
 <h2 id="idempotent-function-blocks">Idempotent function blocks</h2>
 <p>An <strong>idempotent</strong> function block can be executed multiple times and produce the
 same outcome each time. It may have side effects, but those side effects
 converge to a single state.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">is_idempotent</span><span class="o">=</span><span class="kc">True</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">is_idempotent</span><span class="o">=</span><span class="kc">True</span>
 </span></code></pre></div>
 <p>Examples:</p>
 <ul>
@@ -8921,20 +9018,26 @@ partway through, the engine can re-execute it without creating inconsistency.</p
 <hr />
 <h2 id="reversible-function-blocks">Reversible function blocks</h2>
 <p>A <strong>reversible</strong> function block can have its effects undone.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">reversible</span><span class="o">=</span><span class="kc">True</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">reversible</span><span class="o">=</span><span class="kc">True</span>
 </span></code></pre></div>
 <p><code>reversible=True</code> tells the engine it may undo this block&rsquo;s effects by
 dispatching a ROLLBACK job that calls the block&rsquo;s <code>rollback()</code>. The default,
 <code>False</code>, means the engine never attempts to roll the block back.</p>
 <p>The engine rolls back not only the failed step but also the earlier steps that
-completed. A reversible block&rsquo;s <code>rollback()</code> must therefore work from the
-original parameters and context alone, without assuming its own <code>run()</code> just
-failed.</p>
+completed. <code>rollback()</code> receives a <code>forward</code> argument describing the earliest
+attempt of the step that may have changed something: its result, the
+<a href="../60-advanced-patterns/#rollback-data">rollback data</a> it saved before
+changing anything, whether its outcome is known at all, and the step&rsquo;s earlier
+rollback attempts. What the rollback does when that data is missing, or when it
+runs a second time, is up to the block.</p>
+<p>A pure block has nothing to undo: registering a block both <code>is_pure=True</code> and
+<code>reversible=True</code> logs a warning.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Declaring <code>reversible=True</code> without overriding <code>rollback()</code> makes every
 rollback job fail: the base implementation returns <code>success=False</code> with
-<code>"Rollback not implemented"</code>, and the engine keeps retrying it.</p>
+<code>"Rollback not implemented"</code>, the entry ends <code>ROLLBACK_FAILED</code>, and the run
+stays <code>FAILED_UNSAFE</code> until an operator resolves it.</p>
 </div>
 <p>See <a href="../60-advanced-patterns/#rollback">Rollback</a> for how to implement
 <code>rollback()</code>.</p>
@@ -8970,6 +9073,18 @@ rollback job fail: the base implementation returns <code>success=False</code> wi
 <td>Reads operational data. No mutation.</td>
 </tr>
 <tr>
+<td>Update CMS entities</td>
+<td><code>True</code></td>
+<td><code>False</code></td>
+<td>Its only changes are <code>db_updates</code>, which the engine applies; they are not side effects.</td>
+</tr>
+<tr>
+<td>Device discovery with dedup</td>
+<td><code>True</code></td>
+<td><code>True</code></td>
+<td>Reads devices and creates entities; entity creation is a <code>db_update</code>, and <code>skip_if_identifier_exists</code> prevents duplicates.</td>
+</tr>
+<tr>
 <td>Push config template</td>
 <td><code>False</code></td>
 <td><code>True</code></td>
@@ -8980,12 +9095,6 @@ rollback job fail: the base implementation returns <code>success=False</code> wi
 <td><code>False</code></td>
 <td><code>True</code></td>
 <td>Writes to device, but result is the same on repeat.</td>
-</tr>
-<tr>
-<td>Device discovery with dedup</td>
-<td><code>False</code></td>
-<td><code>True</code></td>
-<td>Creates entities, but <code>skip_if_identifier_exists</code> prevents duplicates.</td>
 </tr>
 <tr>
 <td>Send Slack notification</td>
@@ -9009,63 +9118,67 @@ rollback job fail: the base implementation returns <code>success=False</code> wi
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A block that is <code>is_pure=True</code> is implicitly idempotent — a function with no
-side effects always produces the same outcome. You can set both flags to
-<code>True</code> for clarity, but <code>is_pure=True</code> alone is sufficient for the engine&rsquo;s
-retry logic.</p>
+<p>A block that is <code>is_pure=True</code> is implicitly safe to repeat — it has no
+side effects to repeat. You can set both flags to <code>True</code> for clarity, but
+<code>is_pure=True</code> alone is sufficient for the engine&rsquo;s retry logic.</p>
 </div>
 <hr />
 <h2 id="registration-example">Registration example</h2>
 <p>The config backup example demonstrates a pure, idempotent function block:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@register_function_block</span><span class="p">(</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">Registration</span><span class="p">(</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;configBackup&quot;</span><span class="p">,</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Back up the running configuration of a network device.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="n">package</span><span class="o">=</span><span class="s2">&quot;fb.examples.neops.io&quot;</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="n">run_on</span><span class="o">=</span><span class="s2">&quot;device&quot;</span><span class="p">,</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="n">fb_type</span><span class="o">=</span><span class="s2">&quot;facts&quot;</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="n">param_cls</span><span class="o">=</span><span class="n">ConfigBackupParams</span><span class="p">,</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="n">result_cls</span><span class="o">=</span><span class="n">ConfigBackupResult</span><span class="p">,</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="n">is_pure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="n">is_idempotent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="p">)</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@register_function_block</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">Registration</span><span class="p">(</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;configBackup&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Back up the running configuration of a network device.&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="n">package</span><span class="o">=</span><span class="s2">&quot;fb.examples.neops.io&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="n">run_on</span><span class="o">=</span><span class="s2">&quot;device&quot;</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">fb_type</span><span class="o">=</span><span class="s2">&quot;facts&quot;</span><span class="p">,</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">param_cls</span><span class="o">=</span><span class="n">ConfigBackupParams</span><span class="p">,</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">result_cls</span><span class="o">=</span><span class="n">ConfigBackupResult</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="n">is_pure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="n">is_idempotent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="p">)</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span>
 </span></code></pre></div>
 <p>Both flags are <code>True</code> because the block connects to a device, reads the running
 configuration, and stores it — without modifying any device state.</p>
 <hr />
 <h2 id="workflow-failure-semantics">Workflow failure semantics</h2>
-<p>How the engine classifies a workflow failure:</p>
+<p>How the engine handles a failed step:</p>
 <pre class="mermaid"><code>flowchart TD
-    A["Step N fails"] --&gt; B{"All completed steps&lt;br/&gt;marked is_pure=True?"}
-    B -- Yes --&gt; C["FAILED_SAFE"]
-    C --&gt; D["Safe to retry&lt;br/&gt;entire workflow"]
-    B -- No --&gt; E{"Failed step marked&lt;br/&gt;is_idempotent=True?"}
-    E -- Yes --&gt; F["Retry failed step&lt;br/&gt;(up to 3 attempts)"]
-    F --&gt; G{"Retry succeeded?"}
-    G -- Yes --&gt; H["Continue workflow"]
-    G -- No --&gt; I["FAILED_UNSAFE"]
+    A["Step N fails"] --&gt; R{"retryable is not False, and the block is&lt;br/&gt;pure or idempotent, or the attempt&lt;br/&gt;said side_effects=False?"}
+    R -- "Yes (up to 3 retries)" --&gt; S{"Retry succeeded?"}
+    S -- Yes --&gt; H["Continue workflow"]
+    S -- No --&gt; B
+    R -- No --&gt; B{"Any non-pure step left that&lt;br/&gt;may have changed something?"}
+    B -- No --&gt; C["FAILED_SAFE"]
+    B -- Yes --&gt; E{"All of them&lt;br/&gt;reversible?"}
+    E -- Yes --&gt; F["Roll back, wave by wave"]
+    F -- "all succeed" --&gt; C
+    F -- "any fails" --&gt; I["FAILED_UNSAFE"]
     E -- No --&gt; I
+    C --&gt; D["Safe to retry&lt;br/&gt;entire workflow"]
     I --&gt; J["Manual intervention&lt;br/&gt;required"]</code></pre>
-<div class="admonition warning">
-<p class="admonition-title">Implementation status</p>
-<p>The idempotent auto-retry path (retry failed step up to 3 attempts) is a <strong>planned design</strong>
-that is not yet enforced by the workflow engine. Currently, a failed step with a non-pure
-predecessor always results in <code>FAILED_UNSAFE</code>. The <code>is_idempotent</code> flag is stored and
-validated but does not yet trigger automatic retries.
-See the <a href="/neops-workflow-engine/docs/20-workflows/60-retry-and-rollback/">Workflow Engine&rsquo;s retry and rollback documentation</a>
-for the current implementation status.</p>
-</div>
 <ol>
-<li><strong>All prior steps pure</strong> — <code>FAILED_SAFE</code>. Retry the entire workflow.</li>
-<li><strong>Failed step is idempotent</strong> — retry that step (up to 3 attempts). <em>(planned, not yet implemented)</em></li>
-<li><strong>Neither</strong> — <code>FAILED_UNSAFE</code>. Manual intervention required.</li>
+<li><strong>Retry</strong> — a failed attempt is retried, up to three times, when its result
+   does not say <code>retryable=False</code> and the block is pure, idempotent, or the
+   attempt said <code>side_effects=False</code>.</li>
+<li><strong>Nothing left that changed anything</strong> — <code>FAILED_SAFE</code>. Retry the entire workflow.</li>
+<li><strong>Everything left is reversible</strong> — the engine rolls it back; <code>FAILED_SAFE</code>
+   if every rollback succeeds.</li>
+<li><strong>Otherwise</strong> — <code>FAILED_UNSAFE</code>. Manual intervention required.</li>
 </ol>
+<p>See the <a href="/neops-workflow-engine/docs/20-workflows/60-retry-and-rollback/">Workflow Engine&rsquo;s retry and rollback documentation</a>
+for the engine&rsquo;s side of these rules.</p>
 <hr />
 <h2 id="best-practices">Best practices</h2>
 <p><strong>Be conservative.</strong> Only mark <code>is_pure=True</code> if you are certain the block has
-zero side effects — no external writes, no notifications, no file mutations.</p>
+zero side effects — no device writes, no external writes, no notifications, no
+file mutations. Changes declared through the <code>WorkflowContext</code> are the only
+exception.</p>
+<p><strong>Report <code>side_effects=False</code> only where it holds.</strong> The engine has no other
+evidence: a step left out of the rollback is never undone. The safe places are
+checks that run before anything is sent.</p>
 <p><strong>Prefer idempotent designs.</strong> Use <code>replace</code> over <code>append</code>,
 <code>skip_if_identifier_exists</code> when creating entities, and full config templates
 rather than incremental patches.</p>
@@ -9080,7 +9193,6 @@ and release are managed separately by the engine and are always safe to
 retry.</p>
 </details>
 <hr />
-<hr />
 <p><strong>See also:</strong></p>
 <ul>
 <li><a href="/neops-workflow-engine/docs/30-function-blocks/40-types-and-safety/">Types &amp; Safety (Engine)</a> &ndash; How the engine uses <code>isPure</code> and <code>isIdempotent</code> for failure classification</li>
@@ -9089,7 +9201,7 @@ retry.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../50-async-and-concurrency/">Async and Concurrency</a> — learn how to
 run operations in parallel and offload blocking work to threads.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 15:22:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T15:22:19+00:00'>2026-10-15 15:22:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

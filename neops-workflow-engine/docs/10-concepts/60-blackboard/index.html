@@ -2095,6 +2095,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Lines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Lines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-log-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Log Lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#result-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8679,6 +8707,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Lines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Lines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-log-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Log Lines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#result-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8861,6 +8917,10 @@
 <li><strong><code>functionBlockIds</code></strong> &ndash; List of function block IDs the worker can execute</li>
 </ul>
 <p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>; at most one <code>ROLLBACK</code> job per response). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
+<p>Each returned job carries a <strong>lease</strong>, <code>leaseToken</code>: 64 random hex characters, new for every polled job. The worker
+proves it holds the job by sending its <code>workerId</code> and that lease with every push for the job, its result and its log
+lines. A push from another worker, or with another lease, is answered <code>403 LEASE_MISMATCH</code>; a job that holds no lease
+(polled before the engine handed leases out) is answered <code>403 LEASE_MISSING</code> and is left to the job cleanup.</p>
 <details class="info">
 <summary>Jobs the engine closes without a worker</summary>
 <p>The engine can close a <code>PENDING</code> job before any worker claims it, in two ways: a workflow
@@ -8879,11 +8939,75 @@ through its predicate <code>worker_uuid IS NULL AND NOT canceled</code>.</p>
         alt Jobs available
             BB-&gt;&gt;W: [Job 1, Job 2, ...]
             W-&gt;&gt;W: Execute function blocks
-            W-&gt;&gt;BB: POST /blackboard/job/result&lt;br/&gt;{jobId, status, result}
+            W-&gt;&gt;BB: POST /blackboard/job/result&lt;br/&gt;{jobExecutionId, workerId, leaseToken, status, result}
         else No matching jobs
             BB-&gt;&gt;W: []
         end
     end</code></pre>
+<h2 id="log-lines">Log Lines</h2>
+<p>Workers push their log lines to the engine, which adds what it knows and stores them in the log store
+(<code>NEOPS_LOG_BACKEND</code>), or writes them to its own stdout when none is configured:</p>
+<ul>
+<li><strong><code>POST /blackboard/job/logs</code></strong> &ndash; lines of a job, with <code>jobId</code>, <code>workerId</code> and the job&rsquo;s <code>leaseToken</code>. The engine
+  adds the run, workflow, step, job, function block, worker and entity from the job row. Lines that arrive after the
+  job&rsquo;s result are kept and marked <code>late</code>.</li>
+<li><strong><code>POST /workers/:uuid/logs</code></strong> &ndash; lines outside any job (startup, heartbeat, poll errors). They carry the worker
+  only.</li>
+</ul>
+<p>Both answer <code>202</code> with the number of accepted lines and a reason for each refused one (a message, a field value or the
+entry&rsquo;s metadata over its size limit, or a job line timed more than a minute before the job existed). A key the body
+may not carry is refused for the whole request: <code>400 UNKNOWN_LOG_KEY</code> for a key the route does not declare,
+<code>400 RESERVED_LOG_FIELD</code> for a <code>fields</code> key the record or core&rsquo;s task log already uses, each with the <code>path</code> of the
+key. The limits are published in <code>schema/LogRecord.schema.json</code> (<code>x-neops-limits</code>); a body is at most 1 MiB.</p>
+<h3 id="reading-log-lines">Reading Log Lines</h3>
+<p>Four routes read the lines back from the log store. Each returns a page of records in the total order
+<code>(timestamp, service, process, job_id, seq)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Permission</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /workflow-execution/:id/logs</code></td>
+<td><code>workflow-execution-log:read</code></td>
+<td>the run&rsquo;s lines from the engine, the workers and neops-core; filters <code>stepLabel</code>, <code>jobId</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>includeCore</code>, <code>includeEngine</code></td>
+</tr>
+<tr>
+<td><code>GET /blackboard/jobs/:jobId/logs</code></td>
+<td><code>workflow-execution-log:read</code></td>
+<td>one job&rsquo;s lines; <code>includeAttempts=true</code> adds the earlier attempts it retries</td>
+</tr>
+<tr>
+<td><code>GET /workers/:uuid/logs</code></td>
+<td><code>worker:read</code></td>
+<td>a worker&rsquo;s lines outside any job; with an identifier filter, its job lines across runs that match it, which also needs <code>workflow-execution-log:read</code></td>
+</tr>
+<tr>
+<td><code>GET /logs</code></td>
+<td><code>workflow-execution-log:read</code></td>
+<td>lines across runs; filters <code>stepLabel</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>includeCore</code>, <code>includeEngine</code>; the window starts 24 hours ago; needs at least one narrowing filter (below)</td>
+</tr>
+</tbody>
+</table>
+<p>Every route takes <code>level</code> (a minimum: <code>warn</code> returns <code>warn</code> and <code>error</code>), <code>limit</code> (1 to 1000, default 200), <code>order</code>
+(<code>asc</code> or <code>desc</code>), a window <code>start</code>/<code>end</code>, and exact-match identifier filters: <code>workflowId</code> and <code>functionBlockId</code>
+(<code>pkg/name:x.y.z</code>) and their parts <code>workflowPackage</code>, <code>workflowName</code>, <code>workflowVersion</code>, <code>functionBlockPackage</code>,
+<code>functionBlockName</code>, <code>functionBlockVersion</code>. Only job lines carry them. The window starts five minutes before the run or job was created (24
+hours ago for a worker), ends five minutes from now, and spans at most 30 days. An ascending page carries
+<code>nextCursor</code>; pass it as <code>after</code> to read on. A read with <code>after</code> returns only records older than <code>settledUntil</code>
+(now minus <code>NEOPS_LOG_SETTLE_MS</code>), so a polling view never skips a line that a slower producer delivers late; a line
+that takes longer than that to arrive appears on the next read without <code>after</code>. A descending read is one page of the
+newest records.</p>
+<p><code>GET /logs</code> answers <code>400 LOG_FILTER_REQUIRED</code> unless it names a workflow or function block (id or any part), an
+entity (<code>entityType</code>, <code>entityId</code>), a worker or a job type. The store sorts every line in the window to return a page,
+so a read narrowed only by level, step or service would sort a whole day of the installation; a narrowing filter keeps
+the sorted set to the lines that filter matches. Widening the window to 30 days multiplies that set accordingly.</p>
+<p>Without a log store the routes answer <code>503 LOGS_NOT_CONFIGURED</code>; a failing store answers <code>502 LOG_BACKEND_ERROR</code>.
+<code>GET /version</code> reports under <code>logs</code> whether logs can be read (<code>queryable</code>) and how delivery to the store is going.</p>
 <h2 id="result-structure">Result Structure</h2>
 <p>When a worker pushes a result, it includes:</p>
 <ul>
@@ -8922,7 +9046,7 @@ sufficient.</p>
 <li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
 <li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 13:58:21'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T13:58:21+00:00'>2026-10-29 13:58:21</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

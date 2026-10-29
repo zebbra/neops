@@ -4399,6 +4399,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#testing-a-reversible-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing a reversible block
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8768,6 +8779,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#testing-a-reversible-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing a reversible block
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8931,7 +8953,10 @@ detection. Tests are auto-discovered by pytest.</p>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">succeeds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">expected_result_data</span><span class="p">:</span> <span class="n">R</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">assertions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">FunctionBlockResult</span><span class="p">[</span><span class="n">R</span><span class="p">]],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">type</span><span class="p">[</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]]],</span> <span class="nb">type</span><span class="p">[</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]]]:</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">registration</span><span class="p">:</span> <span class="n">Registration</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">propagate_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">rollback_succeeds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">type</span><span class="p">[</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]]],</span> <span class="nb">type</span><span class="p">[</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]]]:</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -8964,6 +8989,18 @@ detection. Tests are auto-discovered by pytest.</p>
 <tr>
 <td><code>assertions</code></td>
 <td>Additional callables; each receives <code>FunctionBlockResult</code> and must return <code>True</code></td>
+</tr>
+<tr>
+<td><code>registration</code></td>
+<td>The block&rsquo;s <code>Registration</code>. Defaults to the one the registry holds for the class; pass it when the class is unregistered or registered more than once</td>
+</tr>
+<tr>
+<td><code>propagate_exceptions</code></td>
+<td><code>False</code> tests at the production boundary: an exception becomes the failed result the worker would push, and a failure before <code>run()</code> is marked free of side effects</td>
+</tr>
+<tr>
+<td><code>rollback_succeeds</code></td>
+<td>If set, also rolls the attempt back and asserts <code>rollback_result.success == rollback_succeeds</code>. See <a href="#testing-a-reversible-block">Testing a reversible block</a></td>
 </tr>
 </tbody>
 </table>
@@ -9014,6 +9051,29 @@ tests, while lab tests should always verify specific output.</p>
 </span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="k">class</span><span class="w"> </span><span class="nc">ShowVersionBlock</span><span class="p">(</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">VersionParams</span><span class="p">,</span> <span class="n">VersionResult</span><span class="p">]):</span>
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="o">...</span>
 </span></code></pre></div>
+<h3 id="testing-a-reversible-block">Testing a reversible block</h3>
+<p><code>rollback_succeeds</code> proves that the snapshot a block saves in <code>run()</code> reaches its <code>rollback()</code>. The harness runs <code>execute()</code>, then hands the attempt to <code>rollback()</code> on a <strong>fresh instance</strong>, through JSON, the way the engine does: the result data and the saved rollback data are serialized and parsed back into the block&rsquo;s classes. <code>rollback()</code> gets the parameters and the context as <code>execute()</code> was sent them, not as <code>run()</code> changed them. A snapshot that only survives in memory fails here.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@fb_test_case</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="s2">&quot;Restores the hostname from its snapshot&quot;</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">HostnameParams</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">),</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">ctx</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">registration</span><span class="o">=</span><span class="n">SET_HOSTNAME</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">propagate_exceptions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">rollback_succeeds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">SetHostname</span><span class="p">(</span><span class="n">DeviceFunctionBlock</span><span class="p">[</span><span class="n">HostnameParams</span><span class="p">,</span> <span class="n">HostnameResult</span><span class="p">,</span> <span class="n">HostnameSnapshot</span><span class="p">]):</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="o">...</span>
+</span></code></pre></div>
+<p>With <code>propagate_exceptions=False</code> the round trip also covers a <code>run()</code> that raises after its save: the worker still sends the snapshot with the failed result, so <code>rollback()</code> still gets it.</p>
+<p>For finer checks, drive <code>FunctionBlockTestCase</code> yourself and call <code>rollback_round_trip()</code> after <code>execute()</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">case</span> <span class="o">=</span> <span class="n">FunctionBlockTestCase</span><span class="p">(</span><span class="n">SetHostname</span><span class="p">,</span> <span class="n">HostnameParams</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">),</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">registration</span><span class="o">=</span><span class="n">SET_HOSTNAME</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">await</span> <span class="n">case</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">rollback</span> <span class="o">=</span> <span class="k">await</span> <span class="n">case</span><span class="o">.</span><span class="n">rollback_round_trip</span><span class="p">()</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">assert</span> <span class="n">rollback</span><span class="o">.</span><span class="n">success</span>
+</span></code></pre></div>
+<p>The harness also enforces the purity rule: a block registered with <code>is_pure=True</code> whose <code>run()</code> returns <code>side_effects=True</code> fails the test with an <code>AssertionError</code>; in production the worker fails such a job as non-retryable.</p>
 <div class="admonition tip">
 <p class="admonition-title">When to use standalone vs <code>@fb_test_case</code></p>
 <p>Use <strong>standalone</strong> tests when you need:</p>
@@ -9033,38 +9093,38 @@ tests, while lab tests should always verify specific output.</p>
 <h2 id="level-3-mocking-device-connections">Level 3: Mocking Device Connections</h2>
 <p>For function blocks that connect to devices, mock the proxy to avoid real
 connections:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span><span class="p">,</span> <span class="n">patch</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.connection.capabilities.network_device_information</span><span class="w"> </span><span class="kn">import</span> <span class="n">InformationResult</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_show_version_with_mock</span><span class="p">():</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">mock_proxy</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">mock_proxy</span><span class="o">.</span><span class="n">get_information</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">InformationResult</span><span class="p">(</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;csr1&quot;</span><span class="p">,</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="n">vendor</span><span class="o">=</span><span class="s2">&quot;Cisco&quot;</span><span class="p">,</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;CSR1000V&quot;</span><span class="p">,</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>        <span class="n">serial</span><span class="o">=</span><span class="s2">&quot;ABC123&quot;</span><span class="p">,</span>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        <span class="n">software_release</span><span class="o">=</span><span class="s2">&quot;17.3.4&quot;</span><span class="p">,</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="p">)</span>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">VersionProxy</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_connect</span><span class="p">:</span>
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>        <span class="n">mock_connect</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="fm">__enter__</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">mock_proxy</span><span class="p">)</span>
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="n">mock_connect</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="fm">__exit__</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="n">block</span> <span class="o">=</span> <span class="n">ShowVersionBlock</span><span class="p">()</span>
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">block</span><span class="o">.</span><span class="n">execute_function_block</span><span class="p">(</span>
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>            <span class="n">params</span><span class="o">=</span><span class="n">VersionParams</span><span class="p">(),</span>
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>            <span class="n">context</span><span class="o">=</span><span class="n">device_context</span><span class="p">,</span>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>            <span class="n">propagate_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>        <span class="p">)</span>
-</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>
-</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span>
-</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="s2">&quot;vendor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Cisco&quot;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span><span class="p">,</span> <span class="n">patch</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neops_worker_sdk.connection.capabilities.network_device_information</span><span class="w"> </span><span class="kn">import</span> <span class="n">InformationResult</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_show_version_with_mock</span><span class="p">():</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">mock_proxy</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">mock_proxy</span><span class="o">.</span><span class="n">get_information</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">InformationResult</span><span class="p">(</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>        <span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;csr1&quot;</span><span class="p">,</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>        <span class="n">vendor</span><span class="o">=</span><span class="s2">&quot;Cisco&quot;</span><span class="p">,</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;CSR1000V&quot;</span><span class="p">,</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>        <span class="n">serial</span><span class="o">=</span><span class="s2">&quot;ABC123&quot;</span><span class="p">,</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>        <span class="n">software_release</span><span class="o">=</span><span class="s2">&quot;17.3.4&quot;</span><span class="p">,</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="p">)</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">VersionProxy</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_connect</span><span class="p">:</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>        <span class="n">mock_connect</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="fm">__enter__</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">mock_proxy</span><span class="p">)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>        <span class="n">mock_connect</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="fm">__exit__</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>        <span class="n">block</span> <span class="o">=</span> <span class="n">ShowVersionBlock</span><span class="p">()</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">block</span><span class="o">.</span><span class="n">execute_function_block</span><span class="p">(</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>            <span class="n">params</span><span class="o">=</span><span class="n">VersionParams</span><span class="p">(),</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>            <span class="n">context</span><span class="o">=</span><span class="n">device_context</span><span class="p">,</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>            <span class="n">propagate_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>        <span class="p">)</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="s2">&quot;vendor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Cisco&quot;</span>
 </span></code></pre></div>
 <p>For integration tests against real devices, see
 <a href="../30-remote-lab/">Remote Lab Testing</a>.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-15 15:22:17'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-15T15:22:17+00:00'>2026-10-15 15:22:17</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

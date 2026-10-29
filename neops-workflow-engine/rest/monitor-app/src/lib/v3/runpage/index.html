@@ -8657,6 +8657,10 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <td><code>onaction(id)</code></td>
 <td>header actions: <code>run-again</code> (open the run dialog prefilled), <code>copy-link</code>, later <code>abort</code> (the run id&rsquo;s one copy is the title&rsquo;s)</td>
 </tr>
+<tr>
+<td><code>logs</code></td>
+<td>the host&rsquo;s log panel (<code>v3/logs/LogSection</code>), rendered last at the sections&rsquo; heading level</td>
+</tr>
 </tbody>
 </table>
 <h2 id="decided-behaviour">Decided behaviour</h2>
@@ -8729,9 +8733,18 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
   acquires fact is the entity-kind pills. Declared facts only: which entities a query found is not served.</li>
 <li>Edges: the title band and section titles sit at the content&rsquo;s 0; everything inside a section (cells, the outage
   notice, the line above the device table) at the table cells&rsquo; 16 px. Two edges, on purpose.</li>
-<li>Keyboard: the device table is one Tab stop (the list grammar&rsquo;s <code>rowCommand</code>): j / k / arrows / Home / End move,
+<li>
+<p>Keyboard: the device table is one Tab stop (the list grammar&rsquo;s <code>rowCommand</code>): j / k / arrows / Home / End move,
   Enter opens or closes the row, → walks into it, ← and Escape back out, <code>/</code> goes to the search. A focused row&rsquo;s cut
-  Step or Message reveals itself in place (<code>visual/Truncate</code>, which follows the row&rsquo;s focus).</li>
+  Step or Message reveals itself in place (<code>visual/Truncate</code>, which follows the row&rsquo;s focus).</p>
+</li>
+<li>
+<p>Logs (<code>core/logs</code>, spec §5.7): <code>LogSection</code> over <code>engineLogs()</code>, tabs from <code>runLogTabs(run, linkedJob(hash, jobs))</code>,
+  opened on the job a <code>#job=&lt;id&gt;</code> address names. Absent unless <code>GET /version</code> reports <code>logs.queryable</code>; a banner while
+  <code>logs.state</code> is not <code>ok</code>. A read from scratch on arrival, Reload, a failed poll, the store&rsquo;s recovery or a drained
+  outbox, and the run leaving RUNNING; otherwise <code>after=</code> polls, but only from a position an <code>after=</code> read showed to be
+  settled. At most <code>LOG_LINES_CAP</code> lines.</p>
+</li>
 </ul>
 <h2 id="angular-port">Angular port</h2>
 <p><code>RunPage</code> becomes the run route component; the header, sections and step tree are the shared object parts.
