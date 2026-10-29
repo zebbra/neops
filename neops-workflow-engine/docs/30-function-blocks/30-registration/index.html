@@ -8835,13 +8835,23 @@
 </tr>
 <tr>
 <td><code>isPure</code></td>
-<td>Yes</td>
-<td>Read-only flag</td>
+<td>No (default <code>false</code>)</td>
+<td>No side effects; declared <code>dbUpdates</code> do not count as side effects (<a href="../40-types-and-safety/#pure">Pure</a>)</td>
 </tr>
 <tr>
 <td><code>isIdempotent</code></td>
-<td>Yes</td>
+<td>No (default <code>false</code>)</td>
 <td>Safe-to-retry flag</td>
+</tr>
+<tr>
+<td><code>reversible</code></td>
+<td>No (default <code>false</code>)</td>
+<td>The block&rsquo;s <code>rollback()</code> undoes its side effects, so the engine may roll the step back. A pure block is never rolled back, so the flag has no effect on it</td>
+</tr>
+<tr>
+<td><code>rollbackDataJsonSchema</code></td>
+<td>No</td>
+<td>JSON Schema of the block&rsquo;s <a href="../../20-workflows/60-retry-and-rollback/#rollback-data">rollback data</a>. Without it, a reversible block&rsquo;s snapshots are dropped as <code>no_schema</code></td>
 </tr>
 <tr>
 <td><code>workerId</code></td>
@@ -8869,6 +8879,8 @@
 :   New versions can add fields to results but must not remove existing fields. This ensures that workflows that reference step results still find the expected data.</p>
 <p><strong>Immutable properties:</strong>
 :   <code>runOn</code> and <code>fbType</code> cannot change across versions of the same function block. These are part of the function block&rsquo;s contract.</p>
+<p><strong>Frozen per exact version:</strong>
+:   A re-registration of the same exact version may not flip <code>isPure</code> or <code>reversible</code>, because that would reshape the compensation ledgers of runs still open, and it must carry the same <code>rollbackDataJsonSchema</code>, compared regardless of key order; adding a schema to a version registered without one counts as a change. Such a re-registration is refused. A new patch or minor version may carry any rollback-data schema; that schema is not part of the compatibility checks against the latest patch and minor version.</p>
 <h2 id="worker-association">Worker Association</h2>
 <p>Function blocks can be associated with specific workers during registration. This enables:</p>
 <ul>
@@ -8880,7 +8892,7 @@
 <h2 id="deregistration">Deregistration</h2>
 <p>When a worker gracefully shuts down (<code>POST /workers/:uuid/unregister</code>), its function block registrations are preserved but unlinked from the worker. The function block definitions remain available for workflow resolution &ndash; only the worker&rsquo;s ability to execute them is removed.</p>
 <p>When a function block is deprecated, existing workflows can still reference it, but new workflows should use the latest version.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 07:50:17'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T07:50:17+00:00'>2026-10-27 07:50:17</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

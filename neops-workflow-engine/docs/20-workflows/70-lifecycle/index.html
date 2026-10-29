@@ -9103,8 +9103,8 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
     RUNNING --&gt; COMPLETED: all steps done
     RUNNING --&gt; ERROR: step failed
 
-    ERROR --&gt; FAILED_SAFE: nothing non-pure executed
-    ERROR --&gt; ROLLBACK: all executed non-pure FBs reversible
+    ERROR --&gt; FAILED_SAFE: nothing to roll back
+    ERROR --&gt; ROLLBACK: all ledger entries reversible
     ERROR --&gt; FAILED_UNSAFE: irreversible FB executed
 
     ROLLBACK --&gt; FAILED_SAFE: rollback succeeded
@@ -9161,10 +9161,12 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
 <p><strong>ERROR</strong>
 :   A step failed. The engine decides how the execution terminates based on what
     actually reached a worker — a job never handed to a worker provably never ran
-    and does not count as executed:
-    - No executed step was non-pure → nothing to revert → <code>FAILED_SAFE</code>
-    - Every executed non-pure function block is registered <code>reversible</code> → <code>ROLLBACK</code>
-    - Any executed non-pure function block is irreversible → rollback is all-or-nothing,
+    and does not count as executed, and neither does a step whose every attempt reported
+    that it <a href="../60-retry-and-rollback/#steps-that-changed-nothing">changed nothing</a>:
+    - No executed step was non-pure, or every one changed nothing → nothing to revert →
+      <code>FAILED_SAFE</code>
+    - Every remaining non-pure function block is registered <code>reversible</code> → <code>ROLLBACK</code>
+    - Any remaining non-pure function block is irreversible → rollback is all-or-nothing,
       so none is attempted → <code>FAILED_UNSAFE</code></p>
 <p><strong>ROLLBACK</strong>
 :   The engine reverses the executed non-pure steps by pushing <code>ROLLBACK</code> jobs to the
@@ -9173,12 +9175,13 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
     in parallel; the next (lower) wave starts only once the whole wave succeeded.
     - All rollback jobs succeed → <code>FAILED_SAFE</code>
     - Any rollback job fails → the phase halts → <code>FAILED_UNSAFE</code>
-    - Re-entered by remediation: resolved entries are skipped; an open irreversible entry
-      that stops the walk → <code>FAILED_UNSAFE</code>, with the blocking entries named in the reason</p>
+    - Re-entered by remediation: resolved entries are skipped; an open irreversible entry,
+      or an entry whose rollback failed, that stops the walk → <code>FAILED_UNSAFE</code>, with the
+      blocking entries named in the reason</p>
 <p><strong>FAILED_SAFE</strong>
 :   The execution failed with no remaining side effects: either nothing non-pure executed,
-    everything that did was successfully rolled back, or a human remediated an unsafe
-    failure. Safe to retry or discard.</p>
+    every non-pure step reported that it changed nothing, everything else was successfully
+    rolled back, or a human remediated an unsafe failure. Safe to retry or discard.</p>
 <p><strong>FAILED_UNSAFE</strong>
 :   The execution failed with potential side effects. Manual review required, and the
     execution&rsquo;s <strong>entity locks are deliberately kept</strong> (see below).</p>
@@ -9217,10 +9220,10 @@ reprocessing the execution every epoch and keeps it out of the active-execution 
 Only remediation, which a human drives, moves it on.</p>
 <h3 id="remediation-the-way-the-locks-come-off">Remediation: the way the locks come off</h3>
 <p>The remediation API walks the execution&rsquo;s <strong>compensation ledger</strong> — the executed non-pure steps,
-each of which must end <strong>rolled back</strong> (a worker ran the function block&rsquo;s <code>rollback()</code>) or
-<strong>resolved</strong> (a human attested the fix with a mandatory note; the engine records the request&rsquo;s
-authenticated principal as <code>resolvedBy</code> / <code>resolvedByUsername</code>). The moment every
-entry is compensated, the execution transitions to <code>FAILED_SAFE</code>:</p>
+except those that <a href="../60-retry-and-rollback/#steps-that-changed-nothing">changed nothing</a>, each of
+which must end <strong>rolled back</strong> (a worker ran the function block&rsquo;s <code>rollback()</code>) or <strong>resolved</strong>
+(a human attested the fix with a mandatory note; the engine records the request&rsquo;s authenticated
+principal as <code>resolvedBy</code> / <code>resolvedByUsername</code>). The moment every entry is compensated, the execution transitions to <code>FAILED_SAFE</code>:</p>
 <ul>
 <li>from <code>ROLLBACK</code> when a rollback phase re-entered by <code>rollback {"all": true}</code> or
   <code>continueRollback</code> completes the ledger;</li>
@@ -9233,7 +9236,7 @@ A CMS outage during that release is retried like any other failed-safe unlock, a
 restart in between resumes it, because <code>FAILED_SAFE</code> is not an <code>_ACK</code> state. A remediated execution
 releases its locks without applying any CMS updates the run had aggregated; the operator reconciles
 the CMS by hand where an attestation implies it.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># The ledger: every executed non-pure step and its compensation state</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># The ledger: every executed non-pure step that may have changed something, and its compensation state</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Roll back entries (each must be reversible and wave-gated), or walk all waves</span>
@@ -9270,8 +9273,14 @@ the CMS by hand where an attestation implies it.</p>
   blocks the walk (the reason names it). The request itself answers <code>409</code> when nothing is left to
   roll back, when a wave is still in flight, or when the walk is blocked from the start.</li>
 <li>Rolling back single entries (<code>{"jobs": [...]}</code>) keeps the execution in <code>FAILED_UNSAFE_ACK</code>.</li>
-<li>A failed rollback attempt leaves the entry <strong>retryable</strong> — request the rollback again, or
-  resolve the entry by hand instead.</li>
+<li>A failed rollback attempt leaves the entry <code>ROLLBACK_FAILED</code>, open to another attempt: name it
+  in <code>{"jobs": [...]}</code> to run its rollback again, or resolve it by hand instead. <strong>A walk never
+  re-runs it on its own</strong>; only the entries an operator names are run again. While the current
+  wave holds such an entry uncompensated, <code>rollback {"all": true}</code> answers <code>409</code> naming it
+  (<em>name it to re-run, or resolve it</em>), and a resolve with <code>continueRollback</code> records its
+  attestation but does not enter the walk, and its response says why. The function block&rsquo;s
+  second rollback sees the earlier attempts in
+  <a href="../60-retry-and-rollback/#what-the-rollback-receives"><code>previousRollbacks</code></a> and decides what to do.</li>
 <li><strong>Remediate and continue rollback</strong> (<code>"continueRollback": true</code> on resolve) attests the entry
   and, in the same request, puts the execution back into <code>ROLLBACK</code> when the attestation unblocked
   a wave, so the engine carries on wave by wave without a second call. If the current wave still
@@ -9280,20 +9289,31 @@ the CMS by hand where an attestation implies it.</p>
   and the execution stays in <code>FAILED_UNSAFE_ACK</code>; <code>createdRollbackJobs</code> and the ledger&rsquo;s <code>status</code>
   say which of these happened.</li>
 <li>An execution whose ledger is empty (it failed unsafely before any non-pure step reached a
-  worker) is vacuously complete: <code>resolve {"all": true}</code> on it is the operator act that moves it
-  to <code>FAILED_SAFE</code>. Its reason then records <code>remediation: resolved by &lt;user&gt;</code> instead of
+  worker, or every one that did changed nothing) is vacuously complete: <code>resolve {"all": true}</code>
+  on it is the operator act that moves it to <code>FAILED_SAFE</code>. Its reason then records <code>remediation: resolved by &lt;user&gt;</code> instead of
   <code>remediated: …</code>.</li>
+<li>The ledger also lists, under <code>leftOut</code>, the steps it leaves out because every attempt reported
+  <code>sideEffects: false</code>: one item per step and entity, with <code>stepLabel</code>, <code>entityId</code>,
+  <code>functionBlockId</code> and its <code>attempts</code>, each as <code>{jobUuid, status, sideEffects}</code>. They are not
+  entries: they need no compensation and do not count toward <code>complete</code>.</li>
 <li>The ledger stays readable during and after remediation: <code>GET .../remediation</code> answers for
   <code>FAILED_UNSAFE_ACK</code>, <code>ROLLBACK</code>, <code>FAILED_SAFE</code> and <code>FAILED_SAFE_ACK</code> executions, so the
   compensated entries and their attestations remain the audit trail. The mutating routes answer
   <code>409</code> for anything but <code>FAILED_UNSAFE_ACK</code> — during <code>ROLLBACK</code>, because a rollback is in
   progress.</li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">An <code>unlock_failed</code> run that did only CMS work has an empty ledger</p>
+<p>Declared CMS updates (<code>dbUpdates</code>) are not side effects, so a run whose steps were all pure
+ends with an empty ledger even when the CMS write-back of those updates failed (<code>unsafeCause</code>
+<code>unlock_failed</code>). Check the CMS anyway before you resolve it: the updates may or may not
+have been applied.</p>
+</div>
 <h4 id="reason-notes">Reason notes</h4>
 <p>Remediation and the rollback phase append notes to the execution&rsquo;s <code>reason</code>, separated by <code>|</code>.
 An engine note already present is not appended again, so repeated phase passes and restart
 replays converge on the same reason. An operator act (<code>remediation: …</code>) is appended every time,
-so a request re-issued after a failed wave leaves a second trace. A reason longer than its
+so an entry re-run by name after a failed wave leaves a second trace. A reason longer than its
 10 000-character column loses its middle (<code>…[truncated]…</code>): the original failure cause at the
 head and the latest notes at the tail are kept.</p>
 <table>
@@ -9379,7 +9399,7 @@ never renamed.</p>
 </tr>
 <tr>
 <td><code>invalid_result</code></td>
-<td>a step&rsquo;s result breaks its function block&rsquo;s result schema, or its dbUpdates write outside the step&rsquo;s entities or collide with another step&rsquo;s</td>
+<td>a step&rsquo;s result breaks its function block&rsquo;s result schema, its dbUpdates write outside the step&rsquo;s entities or collide with another step&rsquo;s, or a pure function block reported side effects</td>
 </tr>
 <tr>
 <td><code>assertion_failed</code></td>
@@ -9507,7 +9527,7 @@ principal who started the run) and then answers <code>501 Not Implemented</code>
 and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
 <code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 08:39:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T08:39:09+00:00'>2026-10-27 08:39:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

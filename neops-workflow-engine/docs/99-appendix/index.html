@@ -8721,7 +8721,7 @@
 <td>Schema defined</td>
 </tr>
 <tr>
-<td>Auto-retry (pure/idempotent)</td>
+<td>Auto-retry (pure/idempotent, or <code>sideEffects: false</code>)</td>
 <td><strong>Implemented</strong></td>
 <td>Up to 3 retries per job; a worker can mark a failure <code>retryable: false</code> → <a href="../20-workflows/60-retry-and-rollback/#automatic-retries">Retry &amp; Rollback</a></td>
 </tr>
@@ -8729,6 +8729,11 @@
 <td>Rollback</td>
 <td><strong>Implemented</strong></td>
 <td>All-or-nothing over executed non-pure FBs, gated on <code>reversible</code>; waves in reverse execution order → <a href="../20-workflows/60-retry-and-rollback/#rollback">Retry &amp; Rollback</a></td>
+</tr>
+<tr>
+<td>Rollback data</td>
+<td><strong>Implemented</strong></td>
+<td>A reversible FB&rsquo;s snapshot rides along with its execute result and reaches its <code>rollback()</code> in <code>forwardResult</code> → <a href="../20-workflows/60-retry-and-rollback/#rollback-data">Rollback Data</a></td>
 </tr>
 <tr>
 <td>Abort</td>
@@ -8763,7 +8768,7 @@
 <tr>
 <td>Failure classification</td>
 <td><strong>Implemented</strong></td>
-<td>Nothing non-pure executed → <code>FAILED_SAFE</code>; all executed non-pure FBs reversible → rollback; any irreversible → <code>FAILED_UNSAFE</code></td>
+<td>Nothing non-pure executed, or every non-pure step reported <code>sideEffects: false</code> → <code>FAILED_SAFE</code>; all executed non-pure FBs reversible → rollback; any irreversible → <code>FAILED_UNSAFE</code></td>
 </tr>
 <tr>
 <td>Publishing &amp; version floor</td>
@@ -8829,7 +8834,7 @@
 <p><strong>Job</strong>
 :   A discrete unit of work on the blackboard. Each job represents one function block execution for one entity. Jobs have types: ACQUIRE, EXECUTE, ROLLBACK. → <a href="../10-concepts/60-blackboard/">Blackboard</a></p>
 <p><strong>Pure</strong>
-:   A function block with no side effects (read-only). If a workflow only executes pure steps before failing, the failure is classified as FAILED_SAFE. → <a href="../30-function-blocks/40-types-and-safety/">Types &amp; Safety</a></p>
+:   A function block with no side effects. Reading data and declaring CMS changes (<code>dbUpdates</code>) are not side effects. If a workflow only executes pure steps before failing, the failure is classified as FAILED_SAFE. → <a href="../30-function-blocks/40-types-and-safety/">Types &amp; Safety</a></p>
 <p><strong>Seed Entity</strong>
 :   The entity type a workflow is designed to operate on. When executing, you provide IDs or queries for entities of this type. The engine creates one execution path per seed entity. → <a href="../20-workflows/10-definition/#seed-entity">Workflow Definition</a></p>
 <p><strong>Worker</strong>
@@ -8847,7 +8852,7 @@
 :   Send <code>DELETE /workflow-execution/&lt;execution-id&gt;</code>. The engine will abort the execution and release entity locks.</p>
 <p><strong>Why is my job not being picked up?</strong>
 :   Check that a worker is online (<code>GET /workers/online</code>) and has the required function block registered. Verify the function block version in the workflow matches a registered version.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

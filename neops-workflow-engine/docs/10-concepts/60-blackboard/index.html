@@ -8850,7 +8850,7 @@
 <tr>
 <td><code>ROLLBACK</code></td>
 <td>During error recovery</td>
-<td>Runs the function block&rsquo;s <code>rollback()</code> method to undo changes</td>
+<td>Runs the function block&rsquo;s <code>rollback()</code> method to undo changes, given the step&rsquo;s forward result (<code>forwardResult</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -8860,7 +8860,7 @@
 <li><strong><code>workerId</code></strong> &ndash; The worker&rsquo;s unique ID</li>
 <li><strong><code>functionBlockIds</code></strong> &ndash; List of function block IDs the worker can execute</li>
 </ul>
-<p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
+<p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>; at most one <code>ROLLBACK</code> job per response). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
 <details class="info">
 <summary>Jobs the engine closes without a worker</summary>
 <p>The engine can close a <code>PENDING</code> job before any worker claims it, in two ways: a workflow
@@ -8888,10 +8888,16 @@ through its predicate <code>worker_uuid IS NULL AND NOT canceled</code>.</p>
 <p>When a worker pushes a result, it includes:</p>
 <ul>
 <li><strong><code>status</code></strong> &ndash; Success or failure</li>
-<li><strong><code>result</code></strong> &ndash; The function block&rsquo;s return data (conforms to the <code>resultDataJsonSchema</code>)</li>
-<li><strong><code>acquires</code></strong> (for ACQUIRE jobs) &ndash; Additional entity acquisition requests</li>
+<li><strong><code>result</code></strong> &ndash; The function block&rsquo;s outcome:<ul>
+<li><strong><code>success</code></strong> and <strong><code>message</code></strong></li>
+<li><strong><code>data</code></strong> &ndash; The function block&rsquo;s return data (conforms to the <code>resultDataJsonSchema</code>)</li>
 <li><strong><code>dbUpdates</code></strong> (for EXECUTE jobs) &ndash; Entity create/patch/delete operations to apply to the CMS</li>
-<li><strong><code>result.retryable</code></strong> (optional, on a failure) &ndash; <code>false</code> when the failure would recur on every attempt, so the engine does not retry the job; see <a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Automatic Retries</a></li>
+<li><strong><code>retryable</code></strong> (optional, on a failure) &ndash; <code>false</code> when the failure would recur on every attempt, so the engine does not retry the job; see <a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Automatic Retries</a></li>
+<li><strong><code>sideEffects</code></strong> (optional, for EXECUTE jobs) &ndash; <code>false</code> when the attempt changed nothing, on a success or a failure; see <a href="../../20-workflows/60-retry-and-rollback/#steps-that-changed-nothing">Steps that changed nothing</a></li>
+</ul>
+</li>
+<li><strong><code>acquires</code></strong> (for ACQUIRE jobs) &ndash; Additional entity acquisition requests</li>
+<li><strong><code>rollbackData</code></strong> (optional, for EXECUTE jobs of reversible function blocks) &ndash; The snapshot the function block&rsquo;s <code>rollback()</code> needs. It is checked against the block&rsquo;s <code>rollbackDataJsonSchema</code> and stored apart from the result; a snapshot that fails a check is dropped without failing the push. See <a href="../../20-workflows/60-retry-and-rollback/#rollback-data">Rollback Data</a></li>
 </ul>
 <p>The engine processes results asynchronously through an event-driven system. Each result triggers the next step in the workflow execution.</p>
 <h2 id="scaling">Scaling</h2>
@@ -8916,7 +8922,7 @@ sufficient.</p>
 <li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
 <li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

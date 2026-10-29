@@ -2660,6 +2660,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#side-effects-of-one-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side effects of one attempt
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8674,6 +8685,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#side-effects-of-one-attempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side effects of one attempt
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8805,7 +8827,7 @@
 
 
 <h1 id="types-safety-semantics">Types &amp; Safety Semantics</h1>
-<p>The <code>isPure</code> and <code>isIdempotent</code> flags on function blocks are the foundation of the engine&rsquo;s transaction model. They determine how the engine handles failures, retries, and execution classification.</p>
+<p>The <code>isPure</code>, <code>isIdempotent</code> and <code>reversible</code> flags on function blocks are the foundation of the engine&rsquo;s transaction model. They determine how the engine handles failures, retries, and rollback.</p>
 <h2 id="safety-properties">Safety Properties</h2>
 <table>
 <thead>
@@ -8818,8 +8840,8 @@
 <tbody>
 <tr>
 <td><code>isPure: true</code></td>
-<td>No side effects at all</td>
-<td>Collecting <code>show version</code>, reading facts</td>
+<td>No side effects</td>
+<td>Collecting <code>show version</code>, reading facts, declaring CMS updates</td>
 </tr>
 <tr>
 <td><code>isIdempotent: true</code></td>
@@ -8831,67 +8853,64 @@
 <td>Side effects that may not be safely repeated</td>
 <td>Incrementing a counter, appending to a log, rebooting a device</td>
 </tr>
+<tr>
+<td><code>reversible: true</code></td>
+<td>A <code>rollback()</code> undoes the block&rsquo;s side effects</td>
+<td>Restoring a configuration snapshot</td>
+</tr>
 </tbody>
 </table>
 <h3 id="pure">Pure</h3>
-<p>A pure function block only reads data. It never modifies the device, the CMS, or any external system. If a pure function block fails, nothing has changed &ndash; the world is exactly as it was before.</p>
-<p>The engine uses this to classify failures: if a workflow only ran pure steps before failing, the failure is <code>FAILED_SAFE</code>.</p>
+<p>A pure function block has no side effects: it changes nothing on the device or in any external system. If a pure function block fails, nothing has changed &ndash; the world is exactly as it was before.</p>
+<p>Declared CMS changes do not count as side effects. A block that returns <code>dbUpdates</code> only declares them; the engine, not the block, writes them to the CMS, so a block whose only effect is its <code>dbUpdates</code> is pure.</p>
+<p>The engine uses this to classify failures: if a workflow only ran pure steps before failing, the failure is <code>FAILED_SAFE</code>. A pure step is never rolled back.</p>
 <h3 id="idempotent">Idempotent</h3>
 <p>An idempotent function block can be safely executed multiple times with the same input. The result is the same whether it runs once or ten times. This is a weaker guarantee than pure (the function block does have side effects), but the side effects are predictable and repeatable.</p>
-<p>A failed job of a pure or idempotent function block is retried automatically, see <a href="#automatic-retry">Automatic Retry</a>. The run-level <code>isIdempotentExecution</code> is tracked throughout a workflow execution but does not yet drive the failure classification.</p>
+<p>A failed job of a pure or idempotent function block is retried automatically, see <a href="#automatic-retry">Automatic Retry</a>.</p>
+<h3 id="side-effects-of-one-attempt">Side effects of one attempt</h3>
+<p>The flags describe the function block. A single attempt can say more: its result may report <code>sideEffects: false</code>, on a success or a failure, when that attempt changed nothing. A step whose every attempt said so is left out of the rollback, and a failure that says so is retried even for a block that is neither pure nor idempotent. A pure block cannot report <code>sideEffects: true</code>: the Worker SDK turns such a result into a failure, and the engine stores it as an <code>invalid_result</code> failure. Details in <a href="../../20-workflows/60-retry-and-rollback/#steps-that-changed-nothing">Steps that changed nothing</a>.</p>
 <h2 id="transaction-classification">Transaction Classification</h2>
-<p>The engine tracks the safety properties of all executed steps throughout a workflow execution:</p>
-<pre class="mermaid"><code>graph LR
-    subgraph tracking ["Engine tracks during execution"]
-        IPE["isPureExecution&lt;br/&gt;(all steps were pure)"]
-        IIE["isIdempotentExecution&lt;br/&gt;(all steps were pure or idempotent)&lt;br/&gt;(tracked, not yet used for decisions)"]
-    end</code></pre>
+<p>The engine classifies a failure from the jobs that actually reached a worker, not from run-level flags:</p>
 <table>
 <thead>
 <tr>
-<th>All executed steps are&hellip;</th>
-<th><code>isPureExecution</code></th>
-<th><code>isIdempotentExecution</code></th>
+<th>The failed run executed&hellip;</th>
 <th>On failure →</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Pure</td>
-<td><code>true</code></td>
-<td><code>true</code></td>
+<td>Only pure steps, or non-pure steps whose every attempt reported <code>sideEffects: false</code></td>
 <td><code>FAILED_SAFE</code></td>
 </tr>
 <tr>
-<td>Pure or idempotent</td>
-<td><code>false</code></td>
-<td><code>true</code></td>
-<td>Retry eligible, then <code>FAILED_UNSAFE</code></td>
+<td>Other non-pure steps, all <code>reversible</code></td>
+<td><code>ROLLBACK</code>, then <code>FAILED_SAFE</code> or <code>FAILED_UNSAFE</code></td>
 </tr>
 <tr>
-<td>Mix (some neither)</td>
-<td><code>false</code></td>
-<td><code>false</code></td>
+<td>Other non-pure steps, at least one irreversible</td>
 <td><code>FAILED_UNSAFE</code></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Implementation status</p>
-<p><strong>Today:</strong> Only <code>isPureExecution</code> drives the failure classification. If all executed
-steps were pure → <code>FAILED_SAFE</code>; otherwise → <code>FAILED_UNSAFE</code>. The &ldquo;retry eligible&rdquo; path
-for idempotent executions is <strong>planned but not yet active</strong>. <code>isIdempotentExecution</code> is
-tracked throughout execution but not yet used for automatic retry decisions.</p>
+<p>Automatic retries happen before this: a failed job of a pure or idempotent block, or a failure that reported <code>sideEffects: false</code>, is retried up to three times before its step fails.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>isPureExecution</code> and <code>isIdempotentExecution</code> decide nothing</p>
+<p>The engine tracks two run-level flags while it executes: <code>isPureExecution</code> (every step was
+pure) and <code>isIdempotentExecution</code> (every step was pure or idempotent). It logs them, but
+neither drives the classification or the retries above.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">The flags are set by the function block developer</p>
-<p>The engine trusts the <code>isPure</code> and <code>isIdempotent</code> flags declared during registration.
-If a function block claims to be pure but actually modifies data, the engine will
-incorrectly classify failures as <code>FAILED_SAFE</code>. Accurate declarations are essential
-for the transaction model to work correctly.</p>
+<p>The engine trusts the <code>isPure</code>, <code>isIdempotent</code> and <code>reversible</code> flags declared during
+registration, and the <code>sideEffects</code> an attempt reports. If a function block claims to be
+pure, or an attempt claims it changed nothing, but it did modify the device, the engine will
+incorrectly classify failures as <code>FAILED_SAFE</code>. Accurate declarations are essential for the
+transaction model to work correctly. <code>isPure</code> and <code>reversible</code> are frozen per exact version,
+see <a href="../30-registration/#schema-compatibility-rules">Registration</a>.</p>
 </div>
 <h2 id="automatic-retry">Automatic Retry</h2>
-<p>A failed job of a function block registered as <code>isPure</code> or <code>isIdempotent</code> is retried up to three times; a worker can opt a deterministic failure out with <code>retryable: false</code>. Details in <a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Retry &amp; Rollback</a>. The step-level <code>retryConfig</code> is not consumed yet.</p>
+<p>A failed job of a function block registered as <code>isPure</code> or <code>isIdempotent</code>, or a failure that reported <code>sideEffects: false</code>, is retried up to three times; a worker can opt a deterministic failure out with <code>retryable: false</code>. Details in <a href="../../20-workflows/60-retry-and-rollback/#automatic-retries">Retry &amp; Rollback</a>. The step-level <code>retryConfig</code> is not consumed yet.</p>
 <h2 id="best-practices-for-workflow-authors">Best Practices for Workflow Authors</h2>
 <p><strong>Know your function blocks:</strong>
 :   Check the <code>isPure</code> and <code>isIdempotent</code> flags of the function blocks you use. This tells you what the engine will do if something goes wrong.</p>
@@ -8900,14 +8919,14 @@ for the transaction model to work correctly.</p>
 <p><strong>Design idempotent configs:</strong>
 :   When writing configuration function blocks, prefer declarative (replace entire config section) over imperative (append line). Declarative configs are naturally idempotent.</p>
 <p><strong>Use FAILED_SAFE as a signal:</strong>
-:   If your workflows frequently end as <code>FAILED_SAFE</code>, that means your read-only steps are failing (likely connectivity issues) but nothing harmful happened. Investigate the root cause but don&rsquo;t panic.</p>
+:   If your workflows frequently end as <code>FAILED_SAFE</code>, that means your pure steps, or checks that ran before anything was sent, are failing (likely connectivity issues) but nothing harmful happened. Investigate the root cause but don&rsquo;t panic.</p>
 <hr />
 <p><strong>See also:</strong></p>
 <ul>
 <li><a href="/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/">Pure and Idempotent (Worker SDK)</a> &ndash; How to declare and reason about <code>is_pure</code> / <code>is_idempotent</code> in Python</li>
 <li><a href="../../10-concepts/40-workflow-as-a-transaction/">Workflow as a Transaction</a> &ndash; How purity and idempotency drive the engine&rsquo;s transaction model</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

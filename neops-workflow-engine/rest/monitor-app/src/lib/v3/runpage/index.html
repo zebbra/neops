@@ -8610,6 +8610,10 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <td>the run context and the run&rsquo;s jobs, when the engine serves them</td>
 </tr>
 <tr>
+<td><code>leftOut</code></td>
+<td>the ledger&rsquo;s steps left out of the rollback (<code>live.leftOut</code>), where the engine keeps a ledger</td>
+</tr>
+<tr>
 <td><code>order</code></td>
 <td><code>run-page.body-order</code>: <code>devices-first</code> (recommended, <code>BODY_ORDER</code>) or <code>steps-first</code></td>
 </tr>
@@ -8700,6 +8704,11 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
   unlock that failed is resolved, so the resolve grant alone decides) and links the docs; the monitor
   offers no remediation itself yet (decision of 2026-10-21). Run again lives in the header only. Red (callout and
   masthead edge) only where a person must act; a safe failure is untinted.</li>
+<li>Left out of the rollback (<code>withLeftOut</code>, <code>leftOutRows</code>, <code>RunLeftOut</code>): the engine&rsquo;s verdict from the remediation ledger&rsquo;s
+  <code>leftOut</code>, read where the engine keeps a ledger (<code>ledgerServed</code>), never derived from the latest attempt. Each left-out
+  step on its entity carries the &ldquo;Nothing changed&rdquo; badge on its device line, and a read-only section after the outcome
+  callout lists them with each attempt&rsquo;s result and claim. A step line says what its attempts reported about their side
+  effects (<code>noChangesText</code>, from <code>JobShowResultDto.sideEffects</code>), a claim and not a verdict.</li>
 <li>Reading (visual system, P2): states are tinted pills in their status families (<code>outcomePill</code>, never solid: the fill
   belongs to the run&rsquo;s own status), a state no family names a grey tint with its own mark; devices, durations, keys, expressions and entities are typed values (<code>Value</code>); the
   facts line reads label · value with the submission time absolute and how long ago after it, a trigger as its pill and
@@ -8730,7 +8739,7 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <code>cds-content-switcher</code> and <code>cds-search</code>. Custom and owned by the port: the row-level roving focus (as every v3 list),
 the cut-text reveal (<code>Truncate</code>), and the virtual window (the shared <code>VirtualWindow</code> gives the slice and the held space, <code>follow</code> the scroll for a keyboard
 move).</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 23:02:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-27T23:02:01+00:00'>2026-10-27 23:02:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

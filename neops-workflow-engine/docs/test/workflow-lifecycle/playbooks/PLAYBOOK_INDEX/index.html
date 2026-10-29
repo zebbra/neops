@@ -8651,8 +8651,8 @@
 <td><code>job-count-exact</code></td>
 <td>SAFETY</td>
 <td>No spurious or missing jobs created</td>
-<td>5</td>
-<td>6</td>
+<td>7</td>
+<td>8</td>
 </tr>
 <tr>
 <td><code>non-retryable-failure-not-retried</code></td>
@@ -8671,7 +8671,28 @@
 <tr>
 <td><code>rollback-only-when-non-pure-all-reversible</code></td>
 <td>SAFETY</td>
-<td>Rollback is all-or-nothing over the executed NON-PURE function blocks: pure FBs are exempt (no side effects, never rolled back, need not be reversible), but if any executed non-pure FB is not reversible, no rollback job is created and the workflow fails unsafely</td>
+<td>Rollback is all-or-nothing over the executed steps that may have side effects: pure FBs and steps left out because every attempt reported side_effects=false are exempt (never rolled back, need not be reversible), but if any remaining executed non-pure FB is not reversible, no rollback job is created and the workflow fails unsafely</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>side-effect-free-step-left-out</code></td>
+<td>SAFETY</td>
+<td>A non-pure step whose every attempt that reached a worker reported side_effects=false in the worker&rsquo;s own result, succeeded or failed, is left out of the rollback: no rollback job is created for it and it is no ledger entry</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>unflagged-attempt-keeps-step-in-rollback</code></td>
+<td>SAFETY</td>
+<td>A retried step is left out only if every attempt reported side_effects=false: one attempt without the flag keeps the whole group in the rollback, rolled back once</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>walk-does-not-rerun-failed-rollback</code></td>
+<td>SAFETY</td>
+<td>rollback { all } never re-runs a failed rollback: while a ROLLBACK_FAILED entry stands at the walk front it is refused with 409 naming that entry, and only a rollback naming the entry re-runs it</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -8679,8 +8700,8 @@
 <td><code>rollback-jobs-reverse-order</code></td>
 <td>SAFETY</td>
 <td>Rollback jobs are created wave by wave in descending execution-wave order (parallel within a wave), derived from explicit wave numbers, not timestamps</td>
-<td>3</td>
-<td>3</td>
+<td>4</td>
+<td>4</td>
 </tr>
 <tr>
 <td><code>rollback-halts-on-rollback-failure</code></td>
@@ -8728,8 +8749,8 @@
 <td><code>rollback-dedupes-retried-steps</code></td>
 <td>SAFETY</td>
 <td>A step&rsquo;s auto-retry chain (replaces-linked attempts sharing stepLabel and entity) is rolled back exactly once, based on the latest attempt — retry chains never multiply rollback jobs, so a worker never reverts the same side effect twice</td>
-<td>1</td>
-<td>1</td>
+<td>2</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>remediation-attestation-records-principal</code></td>
@@ -8756,8 +8777,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>99</td>
-<td>104</td>
+<td>101</td>
+<td>106</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -8959,8 +8980,8 @@
 <td><code>reversible-failure-rolls-back-to-failed-safe</code></td>
 <td>LIVENESS</td>
 <td>A failed execution whose non-pure function blocks are all reversible rolls back every executed job and terminates FAILED_SAFE</td>
-<td>3</td>
-<td>3</td>
+<td>6</td>
+<td>6</td>
 </tr>
 <tr>
 <td><code>never-polled-job-fails-workflow</code></td>
@@ -8993,9 +9014,30 @@
 <tr>
 <td><code>remediation-rollback-all-reenters-rollback</code></td>
 <td>LIVENESS</td>
-<td>rollback { all } re-enters the ROLLBACK phase: the request creates the highest uncompensated wave and the engine creates each next wave once one completes (entities of a wave in parallel), skipping resolved entries; a failed attempt ends the phase back in FAILED_UNSAFE_ACK, and a re-issued rollback { all } retries it</td>
+<td>rollback { all } re-enters the ROLLBACK phase: the request creates the highest uncompensated wave and the engine creates each next wave once one completes (entities of a wave in parallel), skipping resolved entries; a failed attempt ends the phase back in FAILED_UNSAFE_ACK, where the operator re-runs it by name</td>
 <td>2</td>
 <td>2</td>
+</tr>
+<tr>
+<td><code>safe-failure-retried</code></td>
+<td>LIVENESS</td>
+<td>A retryable failure whose worker reported side_effects=false is retried even for a function block that is neither pure nor idempotent, and the step can still succeed</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>rollback-receives-forward-snapshot</code></td>
+<td>LIVENESS</td>
+<td>A reversible function block&rsquo;s rollback data, pushed beside the execute result, reaches its rollback job as forwardResult.rollbackData together with the attempt&rsquo;s outcome</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>rollback-forwards-earliest-effective-attempt</code></td>
+<td>LIVENESS</td>
+<td>A retried step&rsquo;s rollback job is handed the earliest attempt that may have changed something as forwardResult, not the latest attempt: a retry runs on whatever the failed attempt left behind</td>
+<td>1</td>
+<td>1</td>
 </tr>
 <tr>
 <td><code>remediation-continue-rollback-reenters-rollback</code></td>
@@ -9223,14 +9265,20 @@
 <tr>
 <td><code>tests/remediation-rollback-all-walk.ts</code></td>
 <td><code>RemediationRollbackAllWalk</code></td>
-<td>An operator attests the hand-restored flashes and lets rollback { all } revert the rest of a two-device run wave by wave, re-issuing it after a failed wave ended the rollback</td>
-<td><code>remediation-rollback-all-reenters-rollback</code>, <code>multi-entity-parallel-execution</code>, <code>remediation-failed-rollback-retryable</code>, <code>remediation-completes-to-failed-safe</code></td>
+<td>An operator attests the hand-restored flashes and lets rollback { all } revert the rest of a two-device run wave by wave, then re-runs the failed wave by name</td>
+<td><code>remediation-rollback-all-reenters-rollback</code>, <code>walk-does-not-rerun-failed-rollback</code>, <code>multi-entity-parallel-execution</code>, <code>remediation-failed-rollback-retryable</code>, <code>remediation-completes-to-failed-safe</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-blocked-irreversible.ts</code></td>
 <td><code>RollbackBlockedIrreversible</code></td>
 <td>Failure after an executed irreversible non-pure step creates no rollback jobs and terminates FAILED_UNSAFE_ACK</td>
 <td><code>failure-serves-stable-reason-code</code>, <code>run-entry-reports-held-locks</code>, <code>unsafe-failure-retains-locks</code>, <code>lifecycle-reaches-terminal-state</code>, <code>rollback-only-when-non-pure-all-reversible</code></td>
+</tr>
+<tr>
+<td><code>tests/rollback-forwards-snapshot.ts</code></td>
+<td><code>RollbackForwardsSnapshot</code></td>
+<td>A reversible step&rsquo;s rollback data reaches its rollback job as forwardResult, beside the attempt&rsquo;s outcome</td>
+<td><code>rollback-receives-forward-snapshot</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>rollback-jobs-reverse-order</code></td>
 </tr>
 <tr>
 <td><code>tests/rollback-job-fails.ts</code></td>
@@ -9255,6 +9303,30 @@
 <td><code>RollbackReversibleFailure</code></td>
 <td>Failure after two non-pure reversible steps rolls back both executed jobs in reverse order and terminates FAILED_SAFE_ACK</td>
 <td><code>failure-serves-stable-reason-code</code>, <code>lifecycle-reaches-terminal-state</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>rollback-jobs-reverse-order</code>, <code>no-db-mutation-on-failure</code></td>
+</tr>
+<tr>
+<td><code>tests/rollback-unflagged-attempt-kept.ts</code></td>
+<td><code>RollbackUnflaggedAttemptKept</code></td>
+<td>A retry chain whose first attempt did not report side_effects=false is rolled back once, although every later attempt did</td>
+<td><code>unflagged-attempt-keeps-step-in-rollback</code>, <code>rollback-dedupes-retried-steps</code>, <code>rollback-forwards-earliest-effective-attempt</code>, <code>reversible-failure-rolls-back-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/safe-failure-retried.ts</code></td>
+<td><code>SafeFailureRetried</code></td>
+<td>A non-idempotent step whose failure reported side_effects=false is retried, and the retry completes the run</td>
+<td><code>safe-failure-retried</code>, <code>job-count-exact</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>tests/side-effect-free-failure-safe.ts</code></td>
+<td><code>SideEffectFreeFailureSafe</code></td>
+<td>An irreversible step that fails reporting side_effects=false ends the run FAILED_SAFE_ACK without rollback jobs</td>
+<td><code>side-effect-free-step-left-out</code>, <code>rollback-only-when-non-pure-all-reversible</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>tests/side-effect-free-step-left-out.ts</code></td>
+<td><code>SideEffectFreeStepLeftOut</code></td>
+<td>A step that succeeded reporting side_effects=false is left out of the rollback of a later failure, which then rolls back to FAILED_SAFE_ACK</td>
+<td><code>side-effect-free-step-left-out</code>, <code>rollback-only-when-non-pure-all-reversible</code>, <code>reversible-failure-rolls-back-to-failed-safe</code>, <code>job-count-exact</code></td>
 </tr>
 <tr>
 <td><code>tests/simple-workflow-2.ts</code></td>
@@ -9768,7 +9840,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

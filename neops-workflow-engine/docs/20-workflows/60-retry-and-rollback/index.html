@@ -2406,6 +2406,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#steps-that-changed-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps that changed nothing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps that changed nothing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pure-blocks-cannot-claim-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pure blocks cannot claim side effects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rollback" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2413,6 +2441,67 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollback-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rollback Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checks-and-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks and storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-rollback-receives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the rollback receives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-block-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The block decides
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8713,6 +8802,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#steps-that-changed-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps that changed nothing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps that changed nothing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pure-blocks-cannot-claim-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pure blocks cannot claim side effects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rollback" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8720,6 +8837,67 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollback-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rollback Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checks-and-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checks and storage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-rollback-receives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the rollback receives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-block-decides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The block decides
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8829,7 +9007,7 @@
 <h1 id="retry-rollback">Retry &amp; Rollback</h1>
 <p>The engine provides two mechanisms for handling step failures: automatic retries and rollback.</p>
 <h2 id="automatic-retries">Automatic Retries</h2>
-<p>A failed job of a function block registered as <code>isPure</code> or <code>isIdempotent</code> is retried automatically, up to three times, at once and without a delay: the engine creates a new job that replaces the failed one (<code>replaces</code>/<code>replacedBy</code>). Any other failed job fails its step on the first attempt.</p>
+<p>A failed job is retried automatically, up to three times, at once and without a delay, when its function block is registered <code>isPure</code> or <code>isIdempotent</code>, or when the failed attempt reported that it changed nothing (<code>sideEffects: false</code>, see <a href="#steps-that-changed-nothing">Steps that changed nothing</a>). The engine creates a new job that replaces the failed one (<code>replaces</code>/<code>replacedBy</code>). Any other failed job fails its step on the first attempt.</p>
 <p>A worker can opt a failure out of the retry by pushing it with <code>retryable: false</code> in the result:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;jobExecutionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span>
@@ -8838,6 +9016,16 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Use it for a verdict that would come out the same on every attempt, such as a check that found what it was looking for to be absent. A result without the field, or with <code>retryable: true</code>, is retried as above. <code>GET /blackboard/jobs/{jobId}/result</code> serves the field back, <code>null</code> when the worker did not set it.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>sideEffects: false</code> alone means up to three retries</p>
+<p>A failure that reports <code>sideEffects: false</code> is retried even when its function block is
+neither pure nor idempotent: the attempt changed nothing, so another one is safe. If the
+failure would come out the same on every attempt, such as a missing setting or a template
+that does not compile, also set <code>retryable: false</code>, or the step runs up to three more times
+before it fails. The Worker SDK sets both for you when a block failed before its <code>run()</code> was
+entered. A retry that does change something keeps the step in the rollback, because a step
+is left out only when every attempt reported <code>sideEffects: false</code>.</p>
+</div>
 <h2 id="retry-configuration">Retry Configuration</h2>
 <div class="admonition warning">
 <p class="admonition-title">Not Yet Implemented</p>
@@ -8933,23 +9121,25 @@ planned for a future release.</p>
 </table>
 <p>Provide either <code>repeats</code> (fixed count), <code>condition</code> (repeat while true), or both (whichever limit is reached first). Use repeat for polling patterns (wait until a device reboots, check convergence).</p>
 <h2 id="failure-classification">Failure Classification</h2>
-<p>When a step fails (after retries are exhausted, once implemented), the engine classifies the overall workflow failure:</p>
+<p>When a step fails (after any automatic retries), the engine classifies the overall workflow failure:</p>
 <pre class="mermaid"><code>graph TD
     StepFail["Step failed"] --&gt; COE{"continueOnError?&lt;br/&gt;(planned)"}
     COE --&gt;|Yes| Continue["Continue to next step"]
     COE --&gt;|No| Classify["Classify failure"]
-    Classify --&gt; AnyNonPure{"Did any non-pure&lt;br/&gt;step execute?"}
+    Classify --&gt; AnyNonPure{"Did any non-pure step execute&lt;br/&gt;that may have changed something?"}
     AnyNonPure --&gt;|No| FS["FAILED_SAFE"]
-    AnyNonPure --&gt;|Yes| AllRev{"All executed non-pure&lt;br/&gt;FBs reversible?"}
+    AnyNonPure --&gt;|Yes| AllRev{"All of those&lt;br/&gt;FBs reversible?"}
     AllRev --&gt;|Yes| RB["ROLLBACK&lt;br/&gt;(wave by wave, reverse order)"]
     RB --&gt;|all waves succeed| FS2["FAILED_SAFE"]
     RB --&gt;|any rollback job fails| FU["FAILED_UNSAFE"]
     AllRev --&gt;|No| FU2["FAILED_UNSAFE"]</code></pre>
+<p>A non-pure step &ldquo;may have changed something&rdquo; unless it was <a href="#steps-that-changed-nothing">left out</a> because every attempt reported <code>sideEffects: false</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Implementation status</p>
-<p>The classification and rollback paths above are active. <code>continueOnError</code> is not yet
-enforced, and automatic idempotency-based retries are not yet implemented — the engine
-tracks <code>isIdempotentExecution</code> but does not yet use it for decisions.</p>
+<p>The classification, rollback and automatic-retry paths above are active. <code>continueOnError</code>
+is not yet enforced. The run-level <code>isPureExecution</code> and <code>isIdempotentExecution</code> flags are
+tracked and logged but decide nothing: the classification comes from the jobs that reached
+a worker.</p>
 </div>
 <table>
 <thead>
@@ -8962,7 +9152,7 @@ tracks <code>isIdempotentExecution</code> but does not yet use it for decisions.
 <tbody>
 <tr>
 <td><code>FAILED_SAFE</code></td>
-<td>No side effects remain (nothing non-pure executed, or everything that did was rolled back)</td>
+<td>No side effects remain (nothing non-pure executed, every non-pure step reported it changed nothing, or everything else was rolled back)</td>
 <td>Safe to discard or re-trigger</td>
 </tr>
 <tr>
@@ -8977,6 +9167,53 @@ tracks <code>isIdempotentExecution</code> but does not yet use it for decisions.
 </tr>
 </tbody>
 </table>
+<h2 id="steps-that-changed-nothing">Steps that changed nothing</h2>
+<p>A worker can report that an attempt changed nothing, neither on the device nor anywhere else, by setting <code>sideEffects: false</code> in the result of an <code>EXECUTE</code> job (<code>side_effects=False</code> on a Worker SDK result). It may do so on a success or on a failure:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;jobExecutionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;failed&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;reload delay not set&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;sideEffects&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;retryable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The engine trusts the claim, and leaves the step out of the rollback when both of these hold for its (step, entity):</p>
+<ul>
+<li><strong>Every attempt said it.</strong> Each <code>EXECUTE</code> attempt that reached a worker has a result the worker wrote with <code>sideEffects: false</code>. One attempt without the flag, an attempt with no result, or a result the engine wrote itself (a timeout, a lost worker) means side effects are assumed, and the step stays in.</li>
+<li><strong>No rollback job exists for it.</strong> A step that already has a rollback attempt is never left out: once a rollback has run, its outcome counts. A late result with the flag that arrives after a rollback of that step leaves it in the ledger.</li>
+</ul>
+<p>An exception in the block always means side effects are assumed; only an explicit return marks a step safe. The claim is the engine&rsquo;s only evidence, so a block reports it only where it holds, typically on a check that fails before anything is sent to the device.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The only non-pure step that ran fails with <code>sideEffects: false</code></td>
+<td><code>FAILED_SAFE</code>, no rollback</td>
+</tr>
+<tr>
+<td>A step succeeds with <code>sideEffects: false</code>, then a later step fails</td>
+<td>The step is left out: it is not rolled back, and an irreversible one does not block the rollback</td>
+</tr>
+<tr>
+<td>One attempt lacks the flag, or a worker was lost</td>
+<td>The step is rolled back (or blocks, if irreversible)</td>
+</tr>
+<tr>
+<td>A result with the flag arrives after the step was rolled back</td>
+<td>The step stays in the ledger</td>
+</tr>
+</tbody>
+</table>
+<p>The left-out steps are not ledger entries, but the remediation ledger lists them, with each attempt&rsquo;s claim, under <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off"><code>leftOut</code></a>.</p>
+<h3 id="pure-blocks-cannot-claim-side-effects">Pure blocks cannot claim side effects</h3>
+<p>A pure function block has no side effects by definition, so it has nothing to claim. If a pure block&rsquo;s <code>EXECUTE</code> result says <code>sideEffects: true</code>, its registration or the block is wrong:</p>
+<ul>
+<li>The Worker SDK does not send such a result. It pushes a failure instead, with <code>retryable: false</code>, no <code>sideEffects</code> and the message <code>pure block reported side effects: fix the block or its registration</code>, and logs an error.</li>
+<li>An engine that receives such a result anyway does not store the claim. It stores a failure of its own in its place, with <code>retryable: false</code>, so the run fails at once with <code>reasonCode</code> <a href="../70-lifecycle/#failure-codes"><code>invalid_result</code></a> and the violation in its <code>reason</code>.</li>
+</ul>
 <h2 id="rollback">Rollback</h2>
 <p>When a workflow fails, the engine automatically reverses the side effects of the steps that
 already ran — provided all of them can be reversed. Rollback is <strong>all-or-nothing over the
@@ -8984,15 +9221,17 @@ executed non-pure steps</strong>:</p>
 <ol>
 <li>The engine collects every <code>EXECUTE</code> job that reached a worker and whose function block
    is non-pure. Pure steps have nothing to revert, and a job that was never handed to a
-   worker provably never ran, so neither counts. A step that was retried is rolled back
-   exactly once, based on its latest attempt.</li>
+   worker provably never ran, so neither counts. Nor does a step that
+   <a href="#steps-that-changed-nothing">changed nothing</a>. A step that was retried is rolled back
+   exactly once, with the parameters and context of its latest attempt.</li>
 <li>If <strong>every</strong> collected function block is registered <code>reversible</code>, the execution enters
    <code>ROLLBACK</code> and the engine pushes <code>ROLLBACK</code> jobs to the blackboard <strong>wave by wave in
    descending execution-wave order</strong> — the reverse of the deterministic traversal that
    created the original jobs. Jobs within one wave roll back in parallel; the next (lower)
    wave starts only once every rollback job of the current wave succeeded.</li>
 <li>Workers run the function block&rsquo;s <code>rollback()</code> method with the same parameters and
-   context as the original job.</li>
+   context as the original job, and with the <a href="#what-the-rollback-receives">forward result</a>
+   of the step.</li>
 <li>All waves succeed → <code>FAILED_SAFE</code>. Any rollback job fails → the phase halts immediately
    and the workflow is <code>FAILED_UNSAFE</code> — which also
    <a href="../70-lifecycle/#locks-are-not-released-on-an-unsafe-failure">keeps its entity locks</a>.</li>
@@ -9002,14 +9241,119 @@ all — a partial rollback would leave a state nobody can reason about — and t
 fails <code>FAILED_UNSAFE</code> directly.</p>
 <p>To make a step eligible, implement <code>rollback()</code> in the Worker SDK and register the function
 block with <code>reversible: true</code>.</p>
+<h2 id="rollback-data">Rollback Data</h2>
+<p>A reversible function block can record what it needs to undo its change, such as the running configuration it is about to replace, before it changes anything. In the Worker SDK the block calls <code>save_rollback_data()</code> with an instance of its rollback-data class. The snapshot rides along with the <code>EXECUTE</code> result: the worker sends it as <code>rollbackData</code>, a sibling of <code>result</code>, and also on a failure or after an exception in the block.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;jobExecutionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;…&quot;</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">&quot;rollbackData&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;running&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hostname leaf1\n…&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="checks-and-storage">Checks and storage</h3>
+<p>The block declares the shape as <code>rollbackDataJsonSchema</code> when it <a href="../../30-function-blocks/30-registration/#registration-payload">registers</a>. When a result arrives, the engine checks its snapshot:</p>
+<ol>
+<li>the job is an <code>EXECUTE</code> job;</li>
+<li>the function block is <code>reversible</code> and has a registered <code>rollbackDataJsonSchema</code>;</li>
+<li>it fits within <code>ROLLBACK_DATA_MAX_BYTES</code> (5 MiB by default), measured as the UTF-8 byte length of its compact JSON;</li>
+<li>it passes <strong>exact</strong> validation against the schema: no type conversion and no defaults filled in, so the value must already match.</li>
+</ol>
+<p>A snapshot that passes is stored unchanged with the job result, in a column of its own. It is never part of <code>&lt;step&gt;.result</code>, the workflow context or any read API; the engine reads it only to hand it to the rollback.</p>
+<p><strong>A rejected snapshot never fails the push.</strong> The result, its <code>acquires</code> and its <code>dbUpdates</code> are stored as usual; only the snapshot is dropped, and the job result records why:</p>
+<table>
+<thead>
+<tr>
+<th><code>rollbackDataRejected</code></th>
+<th>The snapshot was dropped because</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>not_execute</code></td>
+<td>it came with a job that is not an <code>EXECUTE</code> job</td>
+</tr>
+<tr>
+<td><code>not_reversible</code></td>
+<td>the function block is not registered <code>reversible</code></td>
+</tr>
+<tr>
+<td><code>no_schema</code></td>
+<td>the function block registered no <code>rollbackDataJsonSchema</code></td>
+</tr>
+<tr>
+<td><code>too_large</code></td>
+<td>it exceeds <code>ROLLBACK_DATA_MAX_BYTES</code></td>
+</tr>
+<tr>
+<td><code>invalid</code></td>
+<td>it does not match the schema exactly, or it holds text Postgres <code>jsonb</code> cannot store: a NUL character or a lone surrogate</td>
+</tr>
+</tbody>
+</table>
+<p>The engine logs a refusal by the rule it breaks and that rule&rsquo;s place in the schema, never by the value or the snapshot&rsquo;s own keys. A push still answers <code>400</code> only when the result itself is malformed.</p>
+<p>Because the snapshot travels with the result, an attempt whose result never arrives (a lost push, a lost worker, a timeout) has none.</p>
+<h3 id="what-the-rollback-receives">What the rollback receives</h3>
+<p>Every <code>ROLLBACK</code> job carries <code>forwardResult</code> when a worker polls it. The engine resolves it at poll time from the attempts of the step it reverses. It walks the <code>EXECUTE</code> attempts that reached a worker, oldest first, and skips only those whose worker-written result said <code>sideEffects: false</code>; an attempt whose outcome is unknown is never skipped. The first remaining attempt, the earliest that may have changed something, is handed over <strong>whole</strong>: every field comes from that one attempt, never mixed across attempts. A retry runs on whatever the failed attempt left behind, so the earliest snapshot is the one taken before the step changed anything.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>success</code> / <code>message</code> / <code>data</code></td>
+<td>That attempt&rsquo;s result</td>
+</tr>
+<tr>
+<td><code>rollbackData</code></td>
+<td>Its stored snapshot, or <code>null</code></td>
+</tr>
+<tr>
+<td><code>rollbackDataRejected</code></td>
+<td>Why its snapshot was dropped, or <code>null</code></td>
+</tr>
+<tr>
+<td><code>outcomeKnown</code></td>
+<td><code>false</code> when the engine wrote that attempt&rsquo;s result (a timeout, a lost worker) or there is no result yet. <code>rollbackData</code> is then <code>null</code></td>
+</tr>
+<tr>
+<td><code>previousRollbacks</code></td>
+<td>The step&rsquo;s earlier rollback attempts that reached a worker, oldest first, each as <code>{success, message, outcomeKnown}</code></td>
+</tr>
+</tbody>
+</table>
+<p>A poll response carries at most one rollback job. The Worker SDK fails a rollback job whose <code>forwardResult</code> is missing or does not parse into the block&rsquo;s result and rollback-data classes, with <code>retryable: false</code>, without calling <code>rollback()</code>.</p>
+<h3 id="the-block-decides">The block decides</h3>
+<p>What a rollback does without a snapshot (<code>rollbackData</code> is <code>null</code>: none was saved, it was rejected, the outcome is unknown, or <a href="#retention">retention</a> removed it), and what it does when it runs a second time (<code>previousRollbacks</code> is not empty), is up to the function block. A block that refuses returns a failed rollback result, and the entry ends <code>ROLLBACK_FAILED</code>, and the run stays unsafe until an operator <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off">re-runs or resolves</a> it.</p>
+<h3 id="retention">Retention</h3>
+<p>A sweep removes stored rollback data from runs that no longer need it, every <code>ROLLBACK_DATA_SWEEP_INTERVAL_MS</code> (hourly by default):</p>
+<ul>
+<li>runs in <code>FAILED_SAFE</code> or <code>FAILED_SAFE_ACK</code>;</li>
+<li>runs in <code>COMPLETED_ACK</code>;</li>
+<li>runs that have been in <code>FAILED_UNSAFE_ACK</code> for longer than <code>ROLLBACK_DATA_RETENTION_DAYS</code> (30 by default) without an active rollback job.</li>
+</ul>
+<p>A rollback requested after that receives <code>rollbackData: null</code>. The variables are listed in <a href="../../50-deployment/10-configuration/#rollback-data">Configuration</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Rollback data is not protected</p>
+<p>The engine stores snapshots as plain JSON, not encrypted, and the worker routes that carry
+them (<code>POST /blackboard/job</code>, <code>POST /blackboard/job/result</code>) take no credential. A snapshot
+of a device configuration is as sensitive as the configuration. Snapshots are left out of
+the Worker SDK&rsquo;s job log and of the engine&rsquo;s validation error messages.</p>
+</div>
 <h2 id="designing-for-failure">Designing for Failure</h2>
 <p><strong>Use <code>isPure</code> liberally.</strong>
-:   Every read-only function block should be marked pure. This gives the engine maximum information for failure classification.</p>
+:   Every function block without side effects, one that only reads or only declares CMS changes, should be marked pure. This gives the engine maximum information for failure classification.</p>
 <p><strong>Order steps strategically.</strong>
 :   Put pure steps first (data collection, validation) and configuration steps last. If the workflow fails during data collection, it is <code>FAILED_SAFE</code>.</p>
 <p><strong>Design idempotent configuration steps.</strong>
-:   Prefer declarative configuration (replace entire section) over imperative (append line). Declarative configs are naturally idempotent, which will enable automatic retries when that feature is implemented.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 19:13:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T19:13:03+00:00'>2026-10-26 19:13:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+:   Prefer declarative configuration (replace entire section) over imperative (append line). Declarative configs are naturally idempotent, and a failed job of an idempotent function block is retried automatically.</p>
+<p><strong>Report what did not happen.</strong>
+:   A check that fails before anything is sent to the device can return <code>sideEffects: false</code>. The step then stays out of the rollback, and an irreversible block no longer turns such a failure into <code>FAILED_UNSAFE</code>. Add <code>retryable: false</code> when the check would fail the same way again.</p>
+<p><strong>Snapshot before you write.</strong>
+:   A reversible function block that saves its <a href="#rollback-data">rollback data</a> before its first change gives its <code>rollback()</code> the state to restore.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
