@@ -9120,15 +9120,21 @@ built-in <code>ConnectionError</code>):</p>
 <pre class="mermaid"><code>classDiagram
     class NeopsConnectionError
     NeopsConnectionError &lt;|-- ConnectionCreationError
-    NeopsConnectionError &lt;|-- ConnectionValidationError
-    NeopsConnectionError &lt;|-- PlatformNotSupportedError
+    NeopsConnectionError &lt;|-- PreContactError
+    PreContactError &lt;|-- ConnectionValidationError
+    PreContactError &lt;|-- PlatformNotSupportedError
     NeopsConnectionError &lt;|-- ConnectionStateError
     ConnectionStateError &lt;|-- ConnectionNotInitializedError
     ConnectionStateError &lt;|-- ConnectionAlreadyInitializedError
-    NeopsConnectionError &lt;|-- PluginNotFoundError
+    PreContactError &lt;|-- PluginNotFoundError
     NeopsConnectionError &lt;|-- PluginRegistrationError
-    NeopsConnectionError &lt;|-- AmbiguousPluginError
-    NeopsConnectionError &lt;|-- NotImplementedForThisPlatform</code></pre>
+    PreContactError &lt;|-- AmbiguousPluginError
+    PreContactError &lt;|-- NotImplementedForThisPlatform</code></pre>
+<p>A <code>PreContactError</code> is raised before the failing operation sent anything to the
+device. It speaks for that operation only: if nothing else in the job reached a
+device, a block can catch it and return <code>side_effects=False</code> with
+<code>retryable=False</code>, as the base configure and reload blocks do. After an earlier
+call that may have changed something, let it escape.</p>
 <h3 id="exceptions-by-phase">Exceptions by phase</h3>
 <table>
 <thead>
@@ -9206,7 +9212,7 @@ built-in <code>ConnectionError</code>):</p>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Connection failed: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
 </span></code></pre></div>
 </details>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 09:37:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T09:37:09+00:00'>2026-10-21 09:37:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:58:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:58:10+00:00'>2026-10-30 08:58:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
