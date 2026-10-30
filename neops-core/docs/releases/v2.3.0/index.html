@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://docs.neops.io/neops-core/docs/releases/unreleased/">
+        <link rel="canonical" href="https://docs.neops.io/neops-core/docs/releases/v2.3.0/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Neops Core, next release - Neops Docs</title>
+        <title>Neops Core 2.3.0 - Neops Docs</title>
       
     
     
@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-core-next-release" class="md-skip">
+        <a href="#neops-core-230" class="md-skip">
           Skip to content
         </a>
       
@@ -129,7 +129,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Core, next release
+              Neops Core 2.3.0
             
           </span>
         </div>
@@ -8519,6 +8519,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#task-log-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task log settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allowed-hosts-are-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allowed hosts are required
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics-endpoint-needs-a-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics endpoint needs a credential
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#elasticsearch-818-or-newer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8651,6 +8684,89 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#centralized-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Centralized logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#locking-and-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locking and workflows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication-and-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication and API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inventory-and-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inventory and providers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#aggregations-over-related-entities" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8748,7 +8864,7 @@
 
 
   
-    <a href="https://github.com/zebbra/neops/issues/new?title=Docs%3A+Neops+Core%2C+next+release&body=Page%3A+%2Fneops-core%2Fdocs%2Freleases%2Funreleased%2F%0ASource%3A+neops-core%2Fdocs%2Freleases%2Funreleased.md%0A%0AWhat+should+change%3F%0A" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/zebbra/neops/issues/new?title=Docs%3A+Neops+Core+2.3.0&body=Page%3A+%2Fneops-core%2Fdocs%2Freleases%2Fv2.3.0%2F%0ASource%3A+neops-core%2Fdocs%2Freleases%2Fv2.3.0.md%0A%0AWhat+should+change%3F%0A" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -8756,8 +8872,10 @@
   
 
 
-<h1 id="neops-core-next-release">Neops Core, next release</h1>
-<p>Not released yet. These notes cover the Elasticsearch work merged for the next release (<a href="https://github.com/zebbra/neops-core/pull/2184">https://github.com/zebbra/neops-core/pull/2184</a> and <a href="https://github.com/zebbra/neops-core/pull/2379">https://github.com/zebbra/neops-core/pull/2379</a>).</p>
+<h1 id="neops-core-230">Neops Core 2.3.0</h1>
+<p>Released 2026-10-29</p>
+<p>Core 2.3.0 covers everything merged since 2.2.0. It brings two larger pieces of work: search on Elasticsearch 8.18 with ES|QL, where index writes follow the database commit and repair themselves after an outage (<a href="https://github.com/zebbra/neops-core/pull/2184">https://github.com/zebbra/neops-core/pull/2184</a> and <a href="https://github.com/zebbra/neops-core/pull/2379">https://github.com/zebbra/neops-core/pull/2379</a>), and centralized logging, where task logs go to a log store of your choice and carry the workflow run they belong to (<a href="https://github.com/zebbra/neops-core/pull/2409">https://github.com/zebbra/neops-core/pull/2409</a>). Around them: locking by expansion for workflow acquires, safer host and rate-limit handling, and a series of fixes.</p>
+<p>Take a database backup before you upgrade. The upgrade applies Core migrations up to <code>0204_merge_20261029_logging_develop</code>, and the search indices are rebuilt.</p>
 <h2 id="at-a-glance">At a glance</h2>
 <table>
 <thead>
@@ -8798,6 +8916,51 @@
 <td>Aggregations over a related entity&rsquo;s field (<code>groups.name</code> on devices, <code>device.hostname</code> on interfaces, <code>interface.name</code> on clients, …) return the buckets they returned before the indices were split. A field nothing has is an error.</td>
 <td>Dashboard tiles that went empty after the split show data again; a misspelled field says so instead of showing nothing.</td>
 </tr>
+<tr>
+<td>Task log store</td>
+<td><code>NEOPS_LOG_BACKEND</code> selects where task logs go: <code>db</code>, <code>victorialogs</code> (new) or <code>loki</code>, with <code>NEOPS_LOG_URL</code> for a remote store. Unset, Core writes them to stdout.</td>
+<td>Before, unset meant the database. A deployment that sets nothing can no longer read its task logs back: <code>Query.logging</code> answers <code>queryable=false</code>.</td>
+</tr>
+<tr>
+<td>Log settings renamed</td>
+<td><code>NEOPS_LOGGER_*</code> and <code>EXECUTION_LOG_RETENTION_*</code> are replaced by <code>NEOPS_LOG_*</code> names, and Core refuses to start while an old name is set. <code>NEOPS_LOG_RETENTION</code> takes a unit (<code>30d</code>, <code>12w</code>).</td>
+<td>A deployment that still sets the old names does not start until they are renamed.</td>
+</tr>
+<tr>
+<td>Workflow runs on log lines</td>
+<td>Lock and unlock lines carry the workflow run (<code>workflow_execution_id</code>), stored on <code>LogEntry</code> and written as a field to VictoriaLogs and Loki. Reading them needs <code>workflow-execution-log:read</code>.</td>
+<td>Core&rsquo;s lines of a 2.0 workflow run can be found by its id, and <code>execution:read</code>, which every role holds, no longer shows them.</td>
+</tr>
+<tr>
+<td>Provider logging</td>
+<td>Providers that support it have a per-task <strong>Log Level</strong>, <code>NEOPS_TASK_LOG_LEVEL</code> sets the default, and templates can call <code>neops.log*</code>, <code>neops.fail</code> and <code>neops.skip</code>.</td>
+<td>Bulky response bodies move to DEBUG, and a template can stop or skip an element with a reason instead of a syntax error.</td>
+</tr>
+<tr>
+<td>Allowed hosts</td>
+<td>The image no longer sets <code>DJANGO_ALLOWED_HOSTS=*</code>. <code>ALLOWED_HOSTS</code> comes from <code>NEOPS_PUBLIC_URL</code>, or from <code>DJANGO_ALLOWED_HOSTS</code> when set, and the API refuses to start with neither.</td>
+<td>Host header validation is on by default.</td>
+</tr>
+<tr>
+<td>Health probes</td>
+<td><code>/healthz</code> (liveness) and <code>/readyz</code> (the database answers) are served before the host check; the chart probes them instead of <code>/admin/login/</code>.</td>
+<td>Probes keep working once real host names are configured.</td>
+</tr>
+<tr>
+<td>Rate limits</td>
+<td>A rate-limited login, <code>refreshToken</code>, <code>logout</code> or <code>exchangeOidcCode</code> answers HTTP 429 with <code>Retry-After</code>.</td>
+<td>Clients and proxies can tell a throttle from a failed login, and know when to retry.</td>
+</tr>
+<tr>
+<td>Metrics</td>
+<td>The <code>neops_metrics</code> plugin serves <code>/metrics</code> only with <code>NEOPS_METRICS_TOKEN</code> or <code>NEOPS_METRICS_ALLOW_ANONYMOUS=true</code>.</td>
+<td>Task names, fact keys and exception classes are no longer readable without a credential on the app port.</td>
+</tr>
+<tr>
+<td>Locking</td>
+<td>Workflow acquires can expand to related entities (<code>EntityAcquireInput.resolveRelated</code>), and lock creation, release and the global lock switch are race-safe.</td>
+<td>Concurrent workflows no longer corrupt or lose locks.</td>
+</tr>
 </tbody>
 </table>
 <p>Before upgrading, read &ldquo;Before you upgrade&rdquo;. After it, run the three checks in &ldquo;After you upgrade, check&rdquo;. To go back, follow &ldquo;Going back to an earlier release&rdquo;.</p>
@@ -8805,10 +8968,74 @@
 <h3 id="before-you-upgrade">Before you upgrade</h3>
 <ul>
 <li><strong>Both:</strong> Elasticsearch must be 8.18 or newer; see &ldquo;Elasticsearch 8.18 or newer&rdquo;.</li>
+<li><strong>Both:</strong> rename the log settings and choose a task log store; see &ldquo;Task log settings&rdquo;. Core does not start while an old name is set.</li>
+<li><strong>Both:</strong> set <code>NEOPS_PUBLIC_URL</code> or <code>DJANGO_ALLOWED_HOSTS</code>; see &ldquo;Allowed hosts are required&rdquo;. neops-docker-compose sets <code>NEOPS_PUBLIC_URL</code> from <code>NEOPS_CMS_URL</code>.</li>
 <li><strong>neops-docker-compose:</strong> <code>./neops up</code> backs up only <code>.env</code> and its state file, not the database, so before <code>git pull &amp;&amp; ./neops up</code>, take a backup with <code>./neops backup</code> and note the neops-docker-compose commit you are on (<code>git rev-parse HEAD</code>; the repository has no release tags yet).</li>
 <li><strong>Helm:</strong> set <code>--timeout</code> and <code>migrate.activeDeadlineSeconds</code> as &ldquo;Before <code>helm upgrade</code>&rdquo; under &ldquo;Where it runs&rdquo; says. Note the Core image you upgrade to (<code>quay.io/zebbra/neops-core:&lt;the version&gt;</code>, or the <code>image.tag</code> you set, <code>neops-core.image.tag</code> under the umbrella chart; once it runs, <code>kubectl -n &lt;namespace&gt; get deploy &lt;release&gt;-neops-core -o jsonpath='{.spec.template.spec.containers[0].image}'</code> prints it), since a rollback by <code>--atomic</code> needs it, and the replica counts of the Core worker, beat and workflow engine Deployments (<code>kubectl -n &lt;namespace&gt; get deploy</code>), which going back restores.</li>
 <li><strong>Both:</strong> list the facts whose values disagree in type with the query in &ldquo;Facts whose values disagree in type&rdquo;, and fix them.</li>
 </ul>
+<h3 id="task-log-settings">Task log settings</h3>
+<p>Core and the workflow engine read the same <code>NEOPS_LOG_*</code> names. Core refuses to start while one of the old names below is set, with an <code>ImproperlyConfigured</code> error that names its replacement:</p>
+<table>
+<thead>
+<tr>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NEOPS_LOGGER_CLASS</code></td>
+<td><code>NEOPS_LOG_BACKEND</code> (<code>db</code>, <code>victorialogs</code> or <code>loki</code>), or <code>NEOPS_LOG_CLASS</code> for an explicit class</td>
+</tr>
+<tr>
+<td><code>NEOPS_LOGGER_ENV</code></td>
+<td><code>NEOPS_LOG_ENV</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOGGER_LOKI_BASE_URL</code>, <code>NEOPS_LOGGER_VLOGS_BASE_URL</code></td>
+<td><code>NEOPS_LOG_URL</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOGGER_LOKI_USERNAME</code> / <code>_PASSWORD</code>, <code>NEOPS_LOGGER_VLOGS_USERNAME</code> / <code>_PASSWORD</code></td>
+<td><code>NEOPS_LOG_USERNAME</code> / <code>NEOPS_LOG_PASSWORD</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOGGER_VLOGS_INSERT_BATCH_SIZE</code></td>
+<td><code>NEOPS_LOG_BATCH_MAX_RECORDS</code></td>
+</tr>
+<tr>
+<td><code>NEOPS_LOGGER_VLOGS_FLUSH_INTERVAL_SECONDS</code></td>
+<td><code>NEOPS_LOG_FLUSH_INTERVAL_MS</code> (milliseconds)</td>
+</tr>
+<tr>
+<td><code>EXECUTION_LOG_RETENTION_ENABLED</code></td>
+<td><code>NEOPS_LOG_RETENTION_ENABLED</code></td>
+</tr>
+<tr>
+<td><code>EXECUTION_LOG_RETENTION_DAYS</code></td>
+<td><code>NEOPS_LOG_RETENTION</code>, with a unit: <code>90d</code> or <code>12w</code></td>
+</tr>
+<tr>
+<td><code>EXECUTION_LOG_RETENTION_INTERVAL_MINUTES</code></td>
+<td><code>NEOPS_LOG_RETENTION_INTERVAL_MINUTES</code></td>
+</tr>
+<tr>
+<td><code>EXECUTION_LOG_RETENTION_BATCH_SIZE</code></td>
+<td><code>NEOPS_LOG_RETENTION_BATCH_SIZE</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Where task logs go.</strong> 2.2.0 wrote them to the database when nothing was set. 2.3.0 writes them to stdout when <code>NEOPS_LOG_BACKEND</code> is unset, where nothing can read them back. Set <code>NEOPS_LOG_BACKEND=db</code> to keep the 2.2.0 behaviour. <code>victorialogs</code> and <code>loki</code> also need <code>NEOPS_LOG_URL</code>; <code>NEOPS_LOG_TENANT</code> sets the Loki <code>X-Scope-OrgID</code> or the VictoriaLogs <code>&lt;account&gt;[:&lt;project&gt;]</code>. neops-docker-compose sets <code>db</code> by default, and <code>victorialogs</code> with its <code>compose.logs.yaml</code> overlay. The core chart sets <code>db</code> in its <code>values.yaml</code>.</li>
+<li><strong>Retention.</strong> <code>NEOPS_LOG_RETENTION</code> defaults to <code>30d</code>, where <code>EXECUTION_LOG_RETENTION_DAYS</code> defaulted to 90 days; the core chart ships <code>90d</code>. A bare number refuses to start, since it means days to Core and months to VictoriaLogs. Retention is still off unless <code>NEOPS_LOG_RETENTION_ENABLED</code> is true, and it deletes executions older than the horizon with their results and logs, not only the logs.</li>
+<li><strong>Global task log level.</strong> <code>NEOPS_TASK_LOG_LEVEL</code> (<code>DEBUG</code> or <code>INFO</code>, default <code>INFO</code>) applies to tasks without their own Log Level. <code>WARNING</code> refuses to start, since providers that do not classify their lines log everything at INFO.</li>
+<li><strong>Old logs stay where they are.</strong> Switching the store does not move existing lines; <code>manage.py migrate_logs</code> copies them between the database, Loki and VictoriaLogs.</li>
+</ul>
+<h3 id="allowed-hosts-are-required">Allowed hosts are required</h3>
+<p>The image used to set <code>DJANGO_ALLOWED_HOSTS=*</code>, which turned off Django&rsquo;s host check and let a request&rsquo;s <code>Host</code> header decide the OIDC login URLs Core hands out. That default is gone. <code>ALLOWED_HOSTS</code> is now <code>DJANGO_ALLOWED_HOSTS</code> when it is set (including <code>*</code>), otherwise the host of <code>NEOPS_PUBLIC_URL</code>. With neither, the API refuses to start (<code>ImproperlyConfigured: No allowed Host is configured</code>); management commands and Celery are not affected. When other services reach the API by another name, such as the in-cluster Service, list every name in <code>DJANGO_ALLOWED_HOSTS</code>, the public host included. <code>/healthz</code> and <code>/readyz</code> answer any host, so point probes there; the core chart does.</p>
+<h3 id="metrics-endpoint-needs-a-credential">Metrics endpoint needs a credential</h3>
+<p>With the <code>neops_metrics</code> plugin enabled, <code>/metrics</code> is mounted only when <code>NEOPS_METRICS_TOKEN</code> is set (scrape with that bearer token) or <code>NEOPS_METRICS_ALLOW_ANONYMOUS=true</code>. Without either, the route is not mounted and a scraper that read it before gets nothing. The standalone metrics exporter still has no authentication; keep its port private.</p>
 <h3 id="elasticsearch-818-or-newer">Elasticsearch 8.18 or newer</h3>
 <p><code>sync_lookup_indices</code>, which <code>elastic_index --rebuild</code> runs, fails on an older Elasticsearch. Upgrade Elasticsearch before Core.</p>
 <h3 id="the-rebuild-runs-on-upgrade-and-search-is-down-while-it-runs">The rebuild runs on upgrade, and search is down while it runs</h3>
@@ -8946,6 +9173,7 @@
 <li><code>elastic_sync_schema --analyze --sample-size -1</code> lists no &ldquo;Type conflicts&rdquo;.</li>
 </ul>
 <h3 id="going-back-to-an-earlier-release">Going back to an earlier release</h3>
+<p>Going back undoes the logging migration too: <code>migrate core 0188_refreshtoken_auth_provider</code> removes <code>0192_logentry_workflow_execution_id</code>, so log lines lose the workflow run they were linked to. Restoring the backup you took before the upgrade is the only way to get the database exactly as it was; everything written since is then lost. The earlier release reads the old log setting names: put <code>NEOPS_LOGGER_*</code> and <code>EXECUTION_LOG_RETENTION_*</code> back where you set <code>NEOPS_LOG_*</code> yourself (Helm values, an <code>.env</code> of your own), or it falls back to its defaults (database logs, retention off), and remove them again before the next upgrade. Keep <code>DJANGO_ALLOWED_HOSTS</code> or <code>NEOPS_PUBLIC_URL</code>; the earlier image ignores neither.</p>
 <h4 id="first-on-both-while-this-release-still-runs">First, on both, while this release still runs</h4>
 <p>Make every device and interface fit the types its facts and checks are indexed with. Otherwise the earlier release&rsquo;s rebuild (with neops-docker-compose, the one <code>./neops up --allow-downgrade</code> runs) fails with &ldquo;BulkIndexError: <n> document(s) failed to index.&rdquo;, search stays empty, and saving the affected devices, their interfaces and their groups&rsquo; memberships then fails too. List the keys and keep the list, since the earlier release cannot list the conflicts itself:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># neops-docker-compose</span>
@@ -9046,6 +9274,51 @@
 </span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>neops-core-migrate-back
 </span></code></pre></div>
 <p>Then run the rest of step 4, and bring the writers back: <code>kubectl -n &lt;namespace&gt; scale deploy/&lt;release&gt;-neops-core-worker deploy/&lt;release&gt;-neops-core-beat deploy/&lt;engine deployment&gt; --replicas=&lt;the counts before step 1&gt;</code> (one command per count, if they differ). Or run <code>helm -n &lt;namespace&gt; rollback &lt;release&gt; &lt;the revision --atomic restored&gt;</code>, then check the counts as in step 3. A rollback after which neither step 2 nor the index delete ran cannot be detected: the next upgrade trusts the indices the older Core wrote under, and can show a restricted user a device whose access was revoked meanwhile.</p>
+<h2 id="centralized-logging">Centralized logging</h2>
+<p><a href="https://github.com/zebbra/neops-core/pull/2409">https://github.com/zebbra/neops-core/pull/2409</a> brings Core&rsquo;s half of the centralized logging design; the workflow engine, worker SDK and neops-docker-compose follow it with the same settings and record keys.</p>
+<ul>
+<li><strong>Stores.</strong> <code>NEOPS_LOG_BACKEND</code> picks the writer: <code>db</code> (<code>DbLogger</code>), <code>victorialogs</code> (the new <code>VictoriaLogsLogger</code>, <a href="https://github.com/zebbra/neops-core/pull/2355">https://github.com/zebbra/neops-core/pull/2355</a>) or <code>loki</code>. <code>NEOPS_LOG_CLASS</code> names any class explicitly, such as <code>neops.core.log.loggers.optimized_db.OptimizedDbLogger</code>. Loki is pushed through Core&rsquo;s own emitter with structured metadata; <code>python-logging-loki</code> is gone. VictoriaLogs splits a message above about 200 KB into <code>[part i/n]</code> lines, since VictoriaLogs silently drops lines above 256 KiB.</li>
+<li><strong>Record keys.</strong> Lines written to VictoriaLogs and Loki carry the canonical record keys shared with the workflow engine, including the workflow run (<code>workflow_execution_id</code>) and the keys for function block identifiers that the engine and worker fill in. Core itself writes the workflow run on the lines of its lock mutations: the lock reference is bound as <code>workflow_execution_id</code>, and the unlock audit lines keep it. <code>LogEntry</code> stores it in a new column (migration <code>0192_logentry_workflow_execution_id</code>).</li>
+<li><strong>Log context.</strong> Every task log line, and every console line of the API, the Celery worker and beat, carries the ambient log context and a per-process <code>seq</code>.</li>
+<li><strong>Reading.</strong> <code>Query.logging</code> needs <code>execution:read</code> or the new <code>workflow-execution-log:read</code>, which the operator and admin profiles grant. Lines of a workflow run are returned only with <code>workflow-execution-log:read</code>. Its <code>query</code> argument is now an escaped, case-insensitive substring filter on every store instead of a raw store query, <code>newest</code> and <code>oldest</code> are no longer swapped, and a store that cannot be queried answers <code>queryable=false</code>.</li>
+<li><strong>Lines survive rollbacks.</strong> <code>OptimizedDbLogger</code> buffers writes and flushes them from a background thread in autocommit, so lines logged inside a transaction that rolls back are kept. A line whose linked row is not committed yet is retried for 30 seconds and then written without that link, never dropped. <code>DbLogger</code> now also keeps lines that carry no execution, such as the attribution line of each change applied under a lock (<a href="https://github.com/zebbra/neops-core/pull/2397">https://github.com/zebbra/neops-core/pull/2397</a>), and retention purges them.</li>
+<li><strong>Unlock audit lines</strong> are written after the unlock commits, so they are no longer atomic with it.</li>
+<li><strong>Providers.</strong> <code>generic-rest-facts</code> v2 and v3 and <code>generic-netbox-jinja-facts</code> have a per-task <strong>Log Level</strong> (DEBUG, INFO, WARNING; <a href="https://github.com/zebbra/neops-core/pull/2282">https://github.com/zebbra/neops-core/pull/2282</a>). INFO logs one line per request, DEBUG adds bodies and facts, capped at 200 KB, and failed requests are logged at WARNING with their body. Saved tasks keep working: <code>disable_log</code> maps to WARNING and <code>log_long_returns</code> to DEBUG. Lines below a task&rsquo;s level go to the container log instead of disappearing (DEBUG lines are dropped), and <code>NEOPS_TASK_LOG_LEVEL</code> sets the default (<a href="https://github.com/zebbra/neops-core/pull/2286">https://github.com/zebbra/neops-core/pull/2286</a>).</li>
+<li><strong>Templates.</strong> Provider templates can write to the task log with <code>neops.log(message, level)</code> and <code>neops.log_debug/info/warning/error</code> (<a href="https://github.com/zebbra/neops-core/pull/2283">https://github.com/zebbra/neops-core/pull/2283</a>), and stop on purpose with <code>neops.fail(reason)</code> or skip an element with <code>neops.skip(reason)</code> (<a href="https://github.com/zebbra/neops-core/pull/2285">https://github.com/zebbra/neops-core/pull/2285</a>).</li>
+<li><strong>Metrics.</strong> The enterprise <code>neops_metrics</code> plugin (<a href="https://github.com/zebbra/neops-core/pull/2213">https://github.com/zebbra/neops-core/pull/2213</a>) exports task, log size and retention metrics, and optionally database and table sizes; <code>/metrics</code> needs a credential, see &ldquo;Metrics endpoint needs a credential&rdquo;.</li>
+<li><strong>Performance.</strong> Execution results and log entries are written in batches, retention raw-deletes the execution cascade, and Nornir hosts load without a platform query per device (<a href="https://github.com/zebbra/neops-core/pull/2367">https://github.com/zebbra/neops-core/pull/2367</a>).</li>
+</ul>
+<h2 id="other-changes">Other changes</h2>
+<h3 id="locking-and-workflows">Locking and workflows</h3>
+<ul>
+<li><strong>Locking by expansion.</strong> A workflow acquire can walk from the step&rsquo;s entities to related ones (<code>EntityAcquireInput.resolveRelated</code> with an optional <code>type</code>; <code>queryContainingJmesExpr</code> becomes optional). The GraphQL change is additive (<a href="https://github.com/zebbra/neops-core/pull/2332">https://github.com/zebbra/neops-core/pull/2332</a>, <a href="https://github.com/zebbra/neops-core/pull/2336">https://github.com/zebbra/neops-core/pull/2336</a>).</li>
+<li><strong>Race-safe locks.</strong> One locked global lock at a time (migration <code>0189_unique_locked_global_lock</code>), a global lock mode switch serialised against fine-grained acquisitions, concurrent identical lock requests that get the existing lock, a lock whose resources vanished that fails instead of half-locking, interfaces re-read <code>FOR UPDATE</code> during lock creation, lock ids stored as integers, and an abort that no longer overwrites a concurrently completed execution (<a href="https://github.com/zebbra/neops-core/pull/2320">https://github.com/zebbra/neops-core/pull/2320</a> to <a href="https://github.com/zebbra/neops-core/pull/2336">https://github.com/zebbra/neops-core/pull/2336</a>, and the follow-ups <a href="https://github.com/zebbra/neops-core/pull/2369">https://github.com/zebbra/neops-core/pull/2369</a> to <a href="https://github.com/zebbra/neops-core/pull/2376">https://github.com/zebbra/neops-core/pull/2376</a>). Every lock refusal carries a <code>LockErrorCode</code>, and an invalid <code>db_updates</code> value is reported as a lock error naming the field (<a href="https://github.com/zebbra/neops-core/pull/2391">https://github.com/zebbra/neops-core/pull/2391</a>).</li>
+<li><strong>Remediation resolve permission.</strong> The new <code>workflow-execution-resolve</code> element, granted to the admin profile, lets the workflow engine gate remediation resolve separately from rollback (<a href="https://github.com/zebbra/neops-core/pull/2398">https://github.com/zebbra/neops-core/pull/2398</a>).</li>
+<li><strong>Failed input fails the execution.</strong> When <code>executeNeopsTask</code> rejects the task input, the execution is set to <code>failed</code> instead of staying <code>pending</code> (<a href="https://github.com/zebbra/neops-core/pull/2390">https://github.com/zebbra/neops-core/pull/2390</a>).</li>
+<li><strong>Scopes</strong> return every entity they match, not the first 10 (<a href="https://github.com/zebbra/neops-core/pull/2378">https://github.com/zebbra/neops-core/pull/2378</a>), and topology scans no longer fail past the Elasticsearch result window (<a href="https://github.com/zebbra/neops-core/pull/2385">https://github.com/zebbra/neops-core/pull/2385</a>).</li>
+</ul>
+<h3 id="authentication-and-api">Authentication and API</h3>
+<ul>
+<li><strong>API keys</strong> report the new key&rsquo;s id; <code>list_api_keys</code> and <code>revoke_api_key</code> are new (<a href="https://github.com/zebbra/neops-core/pull/2351">https://github.com/zebbra/neops-core/pull/2351</a>, <a href="https://github.com/zebbra/neops-core/pull/2366">https://github.com/zebbra/neops-core/pull/2366</a>).</li>
+<li><strong>Access tokens</strong> carry a <code>principal_type</code> claim, <code>user</code> for every token Core issues (<a href="https://github.com/zebbra/neops-core/pull/2394">https://github.com/zebbra/neops-core/pull/2394</a>).</li>
+<li><strong>SSO.</strong> The social account is linked at the first email match and keeps its roles (<a href="https://github.com/zebbra/neops-core/pull/2365">https://github.com/zebbra/neops-core/pull/2365</a>); a failed OIDC discovery redirects with <code>provider_error</code> (<a href="https://github.com/zebbra/neops-core/pull/2352">https://github.com/zebbra/neops-core/pull/2352</a>); SSO logout returns to the frontend named by <code>?client</code> (<a href="https://github.com/zebbra/neops-core/pull/2350">https://github.com/zebbra/neops-core/pull/2350</a>); and the OIDC provider lookup is skipped where allauth is not installed (<a href="https://github.com/zebbra/neops-core/pull/2380">https://github.com/zebbra/neops-core/pull/2380</a>).</li>
+<li><strong>Rate limits</strong> answer HTTP 429 with <code>Retry-After</code> and <code>extensions.code</code> <code>RATE_LIMITED</code>, or 503 <code>RATE_LIMIT_UNAVAILABLE</code> when the limiter&rsquo;s cache fails (<a href="https://github.com/zebbra/neops-core/pull/2403">https://github.com/zebbra/neops-core/pull/2403</a>). Behind a proxy, set <code>RATELIMIT_IP_META_KEY</code>, or every user shares one bucket.</li>
+<li><strong>CORS.</strong> <code>CORS_ALLOWED_ORIGINS</code> is honoured, and <code>CorsMiddleware</code> runs first so short-circuited responses carry CORS headers (<a href="https://github.com/zebbra/neops-core/pull/2343">https://github.com/zebbra/neops-core/pull/2343</a>, <a href="https://github.com/zebbra/neops-core/pull/2347">https://github.com/zebbra/neops-core/pull/2347</a>).</li>
+<li><strong>Smaller fixes.</strong> The bearer token is authenticated once per request (<a href="https://github.com/zebbra/neops-core/pull/2349">https://github.com/zebbra/neops-core/pull/2349</a>), ordering by password is refused (<a href="https://github.com/zebbra/neops-core/pull/2348">https://github.com/zebbra/neops-core/pull/2348</a>), unknown paths answer 404 instead of 500 now that the legacy SPA catch-all is gone (<a href="https://github.com/zebbra/neops-core/pull/2342">https://github.com/zebbra/neops-core/pull/2342</a>, <a href="https://github.com/zebbra/neops-core/pull/2357">https://github.com/zebbra/neops-core/pull/2357</a>), Core warns at start-up when stored grants have no permissions plugin to read them (<a href="https://github.com/zebbra/neops-core/pull/2353">https://github.com/zebbra/neops-core/pull/2353</a>), and the BitField permission labels are recorded by migrations (<a href="https://github.com/zebbra/neops-core/pull/2299">https://github.com/zebbra/neops-core/pull/2299</a>).</li>
+</ul>
+<h3 id="deployment">Deployment</h3>
+<ul>
+<li><code>init.sh</code> judges <code>elastic_index --create</code> by its own exit status (<a href="https://github.com/zebbra/neops-core/pull/2341">https://github.com/zebbra/neops-core/pull/2341</a>), and <code>ELASTICSEARCH_SSL_VERIFY_DISABLE</code> is parsed as a boolean (<a href="https://github.com/zebbra/neops-core/pull/2356">https://github.com/zebbra/neops-core/pull/2356</a>).</li>
+<li>The <code>enterprise-bullseye</code> image flavor is no longer built (<a href="https://github.com/zebbra/neops-core/pull/2279">https://github.com/zebbra/neops-core/pull/2279</a>).</li>
+</ul>
+<h3 id="inventory-and-providers">Inventory and providers</h3>
+<ul>
+<li>The device inventory provider falls back to Django credentials (<a href="https://github.com/zebbra/neops-core/pull/2209">https://github.com/zebbra/neops-core/pull/2209</a>), the importer restores an archived device found by its external reference (<a href="https://github.com/zebbra/neops-core/pull/2363">https://github.com/zebbra/neops-core/pull/2363</a>), facts and checks skip interfaces deleted earlier in the run (<a href="https://github.com/zebbra/neops-core/pull/2364">https://github.com/zebbra/neops-core/pull/2364</a>), the LogicMonitor API supports <code>DELETE</code> (<a href="https://github.com/zebbra/neops-core/pull/2337">https://github.com/zebbra/neops-core/pull/2337</a>), and the C9500-16X boots from <code>flash:</code> (<a href="https://github.com/zebbra/neops-core/pull/2393">https://github.com/zebbra/neops-core/pull/2393</a>).</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>Security updates for aiohttp, certifi, dnspython, msgpack and tornado. The remaining Twisted and autobahn advisories are on the annotated ignore list in <code>backend/scripts/pip_audit.sh</code>, since the affected code is not reachable (<a href="https://github.com/zebbra/neops-core/pull/2354">https://github.com/zebbra/neops-core/pull/2354</a>, <a href="https://github.com/zebbra/neops-core/pull/2382">https://github.com/zebbra/neops-core/pull/2382</a>, <a href="https://github.com/zebbra/neops-core/pull/2410">https://github.com/zebbra/neops-core/pull/2410</a>, <a href="https://github.com/zebbra/neops-core/pull/2418">https://github.com/zebbra/neops-core/pull/2418</a>, <a href="https://github.com/zebbra/neops-core/pull/2459">https://github.com/zebbra/neops-core/pull/2459</a>).</li>
+</ul>
 <h2 id="aggregations-over-related-entities">Aggregations over related entities</h2>
 <p>The search documents link related rows by id instead of embedding them, so an aggregation such as <code>groups.name</code> on devices is now computed from the related indices. Every field develop&rsquo;s documents mapped aggregates as it did on develop: a row counts once per distinct value, values keep their type, and buckets are ordered by count, then value. A text field such as <code>groups.name</code> still buckets by word (<code>zurich</code>, <code>hq</code>); <code>groups.name.raw</code> buckets by name.</p>
 <p>Three results differ from develop, on purpose:</p>
@@ -9154,7 +9427,7 @@
 </ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>./neops<span class="w"> </span>compose<span class="w"> </span>--<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>cms<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>elastic_index<span class="w"> </span>--rebuild-if-stale
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 10:12:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T10:12:35+00:00'>2026-10-29 10:12:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 19:30:12'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-29T19:30:12+00:00'>2026-10-29 19:30:12</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 19:30:12'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T19:30:12+00:00'>2026-10-29 19:30:12</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
