@@ -8961,7 +8961,7 @@
 <p>Three things follow from the container mode:</p>
 <ul>
 <li>The repo is mounted at the <strong>same absolute path</strong> inside the clab container, because containerlab hands the topology&rsquo;s bind paths to the docker daemon as absolute host paths. On Docker Desktop the checkout must therefore live under a shared path (<code>/Users</code>, <code>/Volumes</code>, <code>/private</code>, <code>/tmp</code> by default) and must not contain spaces — <code>make doctor</code> checks the mount round-trips.</li>
-<li>containerlab&rsquo;s convenience entries (<code>/etc/hosts</code>, <code>ssh_config.d</code>) land inside the ephemeral container, on both hosts. Reach devices with <code>docker exec &lt;node&gt;</code> / <code>docker logs &lt;node&gt;</code> — the topology sets <code>prefix: ""</code>, so node names are container names.</li>
+<li>containerlab&rsquo;s convenience entries (<code>/etc/hosts</code>, <code>ssh_config.d</code>) land inside the ephemeral container, on both hosts. Reach devices with <code>docker exec &lt;LAB_NAME&gt;-&lt;node&gt;</code> / <code>docker logs &lt;LAB_NAME&gt;-&lt;node&gt;</code> (<code>neops-lab-core-rtr-01</code> by default) — the topology prefixes node names with the lab name, so two labs never share a container name.</li>
 <li>On plain Linux the lab runtime dir (<code>generated/&lt;scenario&gt;/clab/clab-neops-lab/</code>) is written as root; the launcher chowns it back to you after each run.</li>
 </ul>
 <p>Verify with the two-node probe — it confirms the whole chain (docker socket, privileged mode, veth wiring) without pulling the NeOps stack:</p>
@@ -9064,7 +9064,7 @@ the default path it needs no registry credentials at all.</p>
 <tbody>
 <tr>
 <td><code>NEOPS_WORKFLOW_ENGINE_IMAGE</code></td>
-<td><code>quay.io/zebbra/neops-workflow-engine-preview:${NEOPS_ENGINE_TAG:-develop}</code></td>
+<td><code>quay.io/zebbra/neops-workflow-engine-preview:${NEOPS_ENGINE_TAG:-develop}</code> (<code>.env.example</code> pins <code>NEOPS_ENGINE_TAG=0.44.1</code>)</td>
 </tr>
 <tr>
 <td><code>NEOPS_WEB_CLIENT_IMAGE</code></td>
@@ -9072,7 +9072,7 @@ the default path it needs no registry credentials at all.</p>
 </tr>
 <tr>
 <td><code>NEOPS_WORKER_SDK_IMAGE</code></td>
-<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> (<code>.env.example</code> pins a fixed prerelease)</td>
+<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> (<code>.env.example</code> pins <code>0.3.0</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -9085,7 +9085,7 @@ the default path it needs no registry credentials at all.</p>
 </ul>
 <h2 id="next">Next</h2>
 <p><a href="../20-quickstart/">Quickstart <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 12:28:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T12:28:16+00:00'>2026-10-28 12:28:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:08:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:08:16+00:00'>2026-10-30 08:08:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

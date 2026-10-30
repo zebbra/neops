@@ -8610,8 +8610,12 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <td>the run context and the run&rsquo;s jobs, when the engine serves them</td>
 </tr>
 <tr>
-<td><code>leftOut</code></td>
-<td>the ledger&rsquo;s steps left out of the rollback (<code>live.leftOut</code>), where the engine keeps a ledger</td>
+<td><code>ledger</code></td>
+<td>the remediation ledger (<code>live.ledger</code>), where the engine keeps one: the Remediation section and the steps left out</td>
+</tr>
+<tr>
+<td><code>remediation</code></td>
+<td>the host&rsquo;s rollback and resolve calls (<code>RemediationActs</code>); absent, the Remediation section is read-only</td>
 </tr>
 <tr>
 <td><code>order</code></td>
@@ -8704,10 +8708,26 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <li>The outcome callout (<code>outcomeNote</code>, <code>RunOutcome</code>): headline, a lede that says what the failure left (devices may be
   changed, or nothing left changed), then Engine said, Locks, Waiting and Next. Next follows the state: FAILED_UNSAFE
   waits for the engine&rsquo;s acknowledgement (remediation answers 409 before FAILED_UNSAFE_ACK); FAILED_UNSAFE_ACK names
-  remediation through the engine (&ldquo;you&rdquo; with both the rollback and the resolve grant, both grants named otherwise; an
-  unlock that failed is resolved, so the resolve grant alone decides) and links the docs; the monitor
-  offers no remediation itself yet (decision of 2026-10-21). Run again lives in the header only. Red (callout and
+  the Remediation section below (&ldquo;you&rdquo; with both the rollback and the resolve grant, both grants named otherwise; an
+  unlock that failed is resolved, so the resolve grant alone decides) and links the docs. A safe end says, by the
+  ledger, whether its changes were rolled back or there was nothing to roll back (<code>safeEndLede</code>); an <code>invalid_result</code>
+  names its cause from the jobs&rsquo; <code>resultRejected</code> (<code>failureWords</code>). Run again lives in the header only. Red (callout and
   masthead edge) only where a person must act; a safe failure is untinted.</li>
+<li>Remediation (<code>ledgerRows</code>, <code>entryActs</code>, <code>ledgerActs</code>, <code>resolveForm</code>, <code>remediationAnswer</code>, <code>RunRemediation</code>): the
+  ledger&rsquo;s entries in rollback order, each with its state, wave, what blocks its rollback (<code>rollbackBlockedBy</code>, by step
+  and entity), its rollback attempts, who resolved it, when and why, and the snapshot its rollback receives
+  (<code>forwardedAttempt</code>: the earliest attempt that may have changed something), by size or why it was dropped, never its
+  contents. On FAILED_UNSAFE_ACK each entry offers Roll back (a reversible entry, held back with the reason while
+  the wave gate is closed; a failed rollback is re-run by name) and Resolve… (open or failed entries), the section Roll
+  back all (held back with the reason where the engine would refuse the walk: a failed rollback or nothing rollbackable
+  at its front) and Resolve all… (the one act on an empty ledger, an unlock that failed after pure or CMS-only work,
+  which the section then shows); each act is disabled with its grant for a role without it. While an entry rolls back
+  the page refreshes fast. Every act asks in an in-page dialog
+  (<code>DecisionModal</code>), never <code>window.confirm</code>; Resolve needs a note, and its &ldquo;go on rolling back&rdquo; needs the rollback grant
+  too. A 409 stays in the open dialog in the engine&rsquo;s own words; a resolve whose walk did not continue says the
+  engine&rsquo;s <code>continueRollbackRefusal</code> verbatim. During ROLLBACK the section says the wave the walk is in
+  (<code>waveProgress</code>); in any other state it is the audit trail, read-only. After every answer the page reads the run
+  and its ledger again.</li>
 <li>Left out of the rollback (<code>withLeftOut</code>, <code>leftOutRows</code>, <code>RunLeftOut</code>): the engine&rsquo;s verdict from the remediation ledger&rsquo;s
   <code>leftOut</code>, read where the engine keeps a ledger (<code>ledgerServed</code>), never derived from the latest attempt. Each left-out
   step on its entity carries the &ldquo;Nothing changed&rdquo; badge on its device line, and a read-only section after the outcome
@@ -8752,7 +8772,7 @@ canSee(model, 'runs'), knownIds, answer, lastOkAt })</code> gives the page state
 <code>cds-content-switcher</code> and <code>cds-search</code>. Custom and owned by the port: the row-level roving focus (as every v3 list),
 the cut-text reveal (<code>Truncate</code>), and the virtual window (the shared <code>VirtualWindow</code> gives the slice and the held space, <code>follow</code> the scroll for a keyboard
 move).</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:06:40'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:06:40+00:00'>2026-10-17 12:06:40</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 21:55:50'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T21:55:50+00:00'>2026-10-29 21:55:50</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -8710,12 +8710,15 @@ failure:</p>
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
 <li><strong>A worker image that carries <code>fb.base.neops.io/global_discover_network:0.1.0</code>.</strong>
-  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does, and <code>.env.example</code> pins a
-  prerelease <code>0.3.0-beta.*</code> to hold the lab on a fixed release; it needs
-  engine <code>v0.44.0-beta.8</code> or later, the first with the job leases and rollback forward results that worker relies on. Prerelease
-  tags expire 20 days after they are pushed, so when the pin stops pulling,
-  move it to the newest <code>0.3.0-beta.*</code> and run the <code>discover_network.py</code> check
-  below against it. An engine older than <code>v0.43.0-beta.6</code> lacks
+  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does, and <code>.env.example</code> pins
+  <code>0.3.0</code> to hold the lab on a fixed release; it needs engine <code>v0.44.0</code> or
+  later, the first with the job leases and rollback forward results that worker
+  relies on. <code>.env.example</code> pins <code>NEOPS_ENGINE_TAG=0.44.1</code> with it. When you
+  pin another tag, run the <code>discover_network.py</code> check below against it.
+  <code>make lab-env</code> never rewrites an existing <code>.env</code>, so a lab set up before this
+  release still pins <code>0.3.0-beta.2</code>, which expires on 2026-11-18: set
+  <code>NEOPS_WORKER_SDK_IMAGE</code> and <code>NEOPS_ENGINE_TAG</code> in <code>.env</code> by hand. An engine
+  older than <code>v0.43.0-beta.6</code> lacks
   <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a>, and
   that worker cannot discover against it — see
   <a href="docs/20-operations/40-troubleshooting/">Troubleshooting</a>.
@@ -8956,11 +8959,11 @@ and the committed discovery parameter files are tracked.</p>
 </span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>gen_device_configs      # per-device renderers + topology loading, reused by the others
 </span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>gen_kind_manifests      # renders the FRR devices -&gt; generated/&lt;name&gt;/kind/lab.yaml
 </span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>gen_kind_discover_params # discovery targets for the pods: one /32 per Service ClusterIP
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>generated/&lt;name&gt;/       # git-ignored: scenario/ (resolved), clab/, kind/, clab runtime
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint; no FRR config
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>cms/jwt/                # git-ignored dev RSA keypair (make lab-jwt)
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>monitor/config.js       # runtime config for the monitor app (webclientOrigin), bind-mounted into it
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>generated/&lt;name&gt;/       # git-ignored: scenario/ (resolved), clab/, kind/, clab runtime, deployed params
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>generated/monitor/      # git-ignored: the monitor app&#39;s config.js, written by make monitor-config
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>clab/probe.clab.yml     # 2-node probe to re-check containerlab deploy works
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>devices/frr/            # Dockerfile (adds sshd to frrouting/frr) + entrypoint; no FRR config
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>cms/jwt/                # git-ignored dev RSA keypair (make lab-jwt)
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>bootstrap/              # one-shot container that POSTs every workflow document
 </span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>containerlab            # containerlab launcher (runs ghcr.io/srl-labs/clab via the docker socket)
 </span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>doctor                  # host preflight (docker, RAM, mount round-trip, subnets, images)
@@ -9114,6 +9117,20 @@ without it they use the <code>Makefile</code>&rsquo;s default, <code>wan-and-fab
 <li>CMS admin: <a href="http://localhost:8001/admin/">http://localhost:8001/admin/</a> (login <code>neops</code> / <code>neops</code>)</li>
 <li>Engine REST: <a href="http://localhost:3030">http://localhost:3030</a></li>
 </ul>
+<p>These are the defaults of <code>LAB_WEB_PORT</code>, <code>LAB_MONITOR_PORT</code>, <code>LAB_CMS_PORT</code> and
+<code>LAB_ENGINE_PORT</code>. To run a second lab on a host where another one, or anything
+else, holds them, give it its own ports, networks and lab name on every make
+call, and its own compose project in that checkout&rsquo;s <code>.env</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">COMPOSE_PROJECT_NAME</span><span class="o">=</span>lab-b<span class="w"> </span>&gt;&gt;<span class="w"> </span>.env
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>make<span class="w"> </span>full-e2e-test<span class="w"> </span><span class="nv">LAB_NAME</span><span class="o">=</span>lab-b<span class="w"> </span><span class="nv">LAB_NET</span><span class="o">=</span>lab-b-net<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nv">LAB_SUBNET</span><span class="o">=</span><span class="m">10</span>.131.0.0/24<span class="w"> </span><span class="nv">LAB_COMPOSE_SUBNET</span><span class="o">=</span><span class="m">10</span>.131.1.0/24<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nv">LAB_CMS_PORT</span><span class="o">=</span><span class="m">28001</span><span class="w"> </span><span class="nv">LAB_ENGINE_PORT</span><span class="o">=</span><span class="m">23030</span><span class="w"> </span><span class="nv">LAB_MONITOR_PORT</span><span class="o">=</span><span class="m">23031</span><span class="w"> </span><span class="nv">LAB_WEB_PORT</span><span class="o">=</span><span class="m">28080</span>
+</span></code></pre></div>
+<p>The devices keep their host offsets in <code>LAB_SUBNET</code> (<code>172.30.0.11</code> becomes
+<code>10.131.0.11</code>), and discovery runs on the parameter files written for that subnet
+under <code>generated/&lt;name&gt;/workflow-execution-parameters/</code>. Device containers are
+named <code>&lt;LAB_NAME&gt;-&lt;node&gt;</code>. The hand-written <code>discover-params-mixed.json</code> only fits
+the default subnet.</p>
 <p>Every lab caller carries an engine token (<code>./lab_token</code> mints one); how much the
 engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code> service. Besides
 <code>neops</code>, the lab declares three personas in the scenario&rsquo;s <code>cms/permissions.json</code>
@@ -9172,7 +9189,7 @@ engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code
 <li><code>make test</code> — the generator and manifest guards run against every scenario, so
    a new one is covered without writing a new assertion.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 18:34:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T18:34:07+00:00'>2026-10-29 18:34:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:08:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:08:16+00:00'>2026-10-30 08:08:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -8571,7 +8571,7 @@ engine API forces it (<code>workflow-execution</code> routes and DTOs).</p>
 </tr>
 <tr>
 <td>Needs attention</td>
-<td>Runs that failed unsafely and keep their locks, and runs rolling back.</td>
+<td>Runs that failed unsafely and keep their locks until an operator remediates them (<code>FAILED_UNSAFE_ACK</code>); a run rolling back is in progress.</td>
 </tr>
 <tr>
 <td>Stale</td>
@@ -8593,9 +8593,29 @@ engine API forces it (<code>workflow-execution</code> routes and DTOs).</p>
 <td>Lock</td>
 <td>A hold a run keeps on a CMS entity; <code>FAILED_UNSAFE</code> runs keep their locks until a person releases them.</td>
 </tr>
+<tr>
+<td>Remediation</td>
+<td>What a person does to a run that failed unsafely: roll back or resolve each step it may have changed, until its locks come off.</td>
+</tr>
+<tr>
+<td>Ledger entry</td>
+<td>One step on one entity a run may have changed: open, rolling back, rolled back, rollback failed or resolved.</td>
+</tr>
+<tr>
+<td>Wave</td>
+<td>The order a run&rsquo;s steps executed in; a rollback goes highest wave first, and an entry waits for the waves above it.</td>
+</tr>
+<tr>
+<td>Resolve</td>
+<td>A person&rsquo;s word, with a note, that a step&rsquo;s device is as it should be; the engine then treats the step as compensated.</td>
+</tr>
+<tr>
+<td>Snapshot</td>
+<td>What a reversible function block saved before it changed a device, for its rollback. The monitor shows its size only.</td>
+</tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:07:23'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:07:23+00:00'>2026-10-17 12:07:23</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-21 11:24:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-21T11:24:56+00:00'>2026-10-21 11:24:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-17 12:07:23'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-17T12:07:23+00:00'>2026-10-17 12:07:23</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 21:53:31'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T21:53:31+00:00'>2026-10-29 21:53:31</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

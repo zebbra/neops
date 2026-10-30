@@ -9016,6 +9016,11 @@
 
 <h1 id="configuration">Configuration</h1>
 <p>All configuration is via environment variables. No config files are required. The engine reads <code>.env</code> if present (via <code>dotenv</code>).</p>
+<p>A numeric variable takes a plain integer: digits only, no unit, no exponent, no separators. A byte
+size takes a number with an optional binary unit: <code>5242880</code>, <code>100kb</code>, <code>50mb</code>, <code>5MiB</code> and <code>5 MiB</code>
+all work, and <code>mb</code> means MiB. Leading and trailing spaces are ignored. Any other value, such as
+<code>60000ms</code>, <code>1.5e6</code> or <code>5 242 880</code>, stops the engine at boot with an error that names the variable
+and the value, so a typo cannot start the engine with a limit you did not set.</p>
 <h2 id="runtime-logging">Runtime &amp; Logging</h2>
 <table>
 <thead>
@@ -9184,7 +9189,7 @@ and is raised to <strong>50 MB</strong>:</p>
 <tr>
 <td><code>MAX_REQUEST_BODY_SIZE</code></td>
 <td><em>(unset)</em></td>
-<td>Replaces the 50 MB limit of <code>POST /blackboard/job/result</code>, e.g. <code>100mb</code> or a plain byte count. Leave unset to keep the built-in limit</td>
+<td>Replaces the 50 MB limit of <code>POST /blackboard/job/result</code>, e.g. <code>100mb</code>, <code>100MiB</code> or a plain byte count. Leave unset to keep the built-in limit</td>
 </tr>
 </tbody>
 </table>
@@ -9521,7 +9526,7 @@ aggressive the retention setting.</p>
 <tr>
 <td><code>ROLLBACK_DATA_MAX_BYTES</code></td>
 <td><code>5242880</code> (5 MiB)</td>
-<td>Largest snapshot the engine stores per attempt, measured as the UTF-8 byte length of its compact JSON. A larger one is dropped as <code>too_large</code>; the result itself is still stored. The Worker SDK applies its own 5 MiB cap, measured the same way</td>
+<td>A byte size such as <code>5242880</code>, <code>10mb</code> or <code>10MiB</code>. Largest snapshot the engine stores per attempt, measured as the UTF-8 byte length of its compact JSON. A larger one is dropped as <code>too_large</code>; the result itself is still stored. The Worker SDK applies its own 5 MiB cap, measured the same way</td>
 </tr>
 <tr>
 <td><code>ROLLBACK_DATA_RETENTION_DAYS</code></td>
@@ -9535,7 +9540,8 @@ aggressive the retention setting.</p>
 </tr>
 </tbody>
 </table>
-<p>Unset or <code>0</code> keeps the default for these three. A negative value stops the engine at boot.</p>
+<p>Unset or <code>0</code> keeps the default for these three. A negative value stops the engine at boot, as does
+any value that is not an integer, or for <code>ROLLBACK_DATA_MAX_BYTES</code> not a byte size.</p>
 <h2 id="example-env">Example .env</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Production configuration</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">NODE_ENV</span><span class="o">=</span>production
@@ -9552,7 +9558,7 @@ aggressive the retention setting.</p>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nv">NEOPS_CMS_URL</span><span class="o">=</span>http://neops-cms.internal:8000/graphql
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="nv">NEOPS_CMS_TOKEN</span><span class="o">=</span>&lt;cms-auth-token&gt;
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 01:20:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T01:20:32+00:00'>2026-10-30 01:20:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 
