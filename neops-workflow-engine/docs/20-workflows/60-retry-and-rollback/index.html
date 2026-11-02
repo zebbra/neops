@@ -9281,7 +9281,7 @@ block with <code>reversible: true</code>.</p>
 <li>it fits within <code>ROLLBACK_DATA_MAX_BYTES</code> (5 MiB by default), measured as the UTF-8 byte length of its compact JSON;</li>
 <li>it passes <strong>exact</strong> validation against the schema: no type conversion and no defaults filled in, so the value must already match.</li>
 </ol>
-<p>A snapshot that passes is stored unchanged with the job result, in a column of its own. It is never part of <code>&lt;step&gt;.result</code>, the workflow context or any read API; the engine reads it only to hand it to the rollback. The job rows of the read API say only its size, <code>rollbackDataBytes</code> (the compact UTF-8 JSON it was capped by; <code>null</code> when none is held), and <code>rollbackDataRejected</code>.</p>
+<p>A snapshot that passes is stored unchanged with the job result, in a column of its own. It is never part of <code>&lt;step&gt;.result</code>, the workflow context or any read API; the engine reads it only to hand it to the rollback. The job rows of the read API say only its size, <code>rollbackDataSizeBytes</code> (the compact UTF-8 JSON it was capped by; <code>null</code> when none is held), and <code>rollbackDataRejected</code>.</p>
 <p><strong>A rejected snapshot never fails the push.</strong> The result, its <code>acquires</code> and its <code>dbUpdates</code> are stored as usual; only the snapshot is dropped, and the job result records why:</p>
 <table>
 <thead>
@@ -9327,7 +9327,7 @@ block with <code>reversible: true</code>.</p>
 <li>no earlier late push left a snapshot or a rejection: the first one stays.</li>
 </ul>
 <p>The <a href="#retention">retention</a> sweep clears a late snapshot like any other. Stored does not mean used: the rollback reads the <a href="#what-the-rollback-receives">earliest attempt</a> that may have changed something, and that may be an earlier attempt with no snapshot.</p>
-<p>Every such push logs a warning that its change is not recorded, with the job, the worker, the status it pushed, its <code>sideEffects</code> and <code>lateSnapshot</code>: <code>stored</code>, <code>none_sent</code>, <code>too_late</code>, <code>already_held</code> or the <code>rollbackDataRejected</code> reason. The log never carries the snapshot. On the job, a held snapshot shows as <code>rollbackDataBytes</code> beside the engine&rsquo;s failure.</p>
+<p>Every such push logs a warning that its change is not recorded, with the job, the worker, the status it pushed, its <code>sideEffects</code> and <code>lateSnapshot</code>: <code>stored</code>, <code>none_sent</code>, <code>too_late</code>, <code>already_held</code> or the <code>rollbackDataRejected</code> reason. The log never carries the snapshot. On the job, a held snapshot shows as <code>rollbackDataSizeBytes</code> beside the engine&rsquo;s failure.</p>
 <p>So the lease of a failed job stays good for this one write, until a rollback or a later attempt is taken or the run settles. Deleting a worker does not end it: a deleted worker&rsquo;s late push is treated the same.</p>
 <p>With several workers, another worker can poll the rollback first. The rollback then runs without the snapshot, and it may run while the late worker is still changing the device. The block decides what to do <a href="#the-block-decides">without a snapshot</a>.</p>
 <h3 id="what-the-rollback-receives">What the rollback receives</h3>
