@@ -8980,8 +8980,8 @@
 <td><code>reversible-failure-rolls-back-to-failed-safe</code></td>
 <td>LIVENESS</td>
 <td>A failed execution whose non-pure function blocks are all reversible rolls back every executed job and terminates FAILED_SAFE</td>
-<td>6</td>
-<td>6</td>
+<td>7</td>
+<td>7</td>
 </tr>
 <tr>
 <td><code>never-polled-job-fails-workflow</code></td>
@@ -9029,6 +9029,13 @@
 <td><code>rollback-receives-forward-snapshot</code></td>
 <td>LIVENESS</td>
 <td>A reversible function block&rsquo;s rollback data, pushed beside the execute result, reaches its rollback job as forwardResult.rollbackData together with the attempt&rsquo;s outcome</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>late-lease-holder-snapshot-reaches-rollback</code></td>
+<td>LIVENESS</td>
+<td>The snapshot of a lease holder&rsquo;s push that lost to a timeout or lost-worker failure is kept on the engine&rsquo;s result and reaches a rollback job that has not been polled yet, as forwardResult.rollbackData with outcomeKnown false; the push still answers 409 and the first result stands</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -9309,6 +9316,12 @@
 <td><code>RollbackUnflaggedAttemptKept</code></td>
 <td>A retry chain whose first attempt did not report side_effects=false is rolled back once, although every later attempt did</td>
 <td><code>unflagged-attempt-keeps-step-in-rollback</code>, <code>rollback-dedupes-retried-steps</code>, <code>rollback-forwards-earliest-effective-attempt</code>, <code>reversible-failure-rolls-back-to-failed-safe</code></td>
+</tr>
+<tr>
+<td><code>tests/rollback-uses-late-push-snapshot.ts</code></td>
+<td><code>RollbackUsesLatePushSnapshot</code></td>
+<td>A snapshot pushed after the stuck timeout reaches a rollback that hasn&rsquo;t been polled yet</td>
+<td><code>late-lease-holder-snapshot-reaches-rollback</code>, <code>reversible-failure-rolls-back-to-failed-safe</code></td>
 </tr>
 <tr>
 <td><code>tests/safe-failure-retried.ts</code></td>
@@ -9840,7 +9853,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 09:46:53'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T09:46:53+00:00'>2026-10-30 09:46:53</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

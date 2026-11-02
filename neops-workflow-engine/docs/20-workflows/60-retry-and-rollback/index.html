@@ -2468,6 +2468,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-push-after-the-engine-gave-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A push after the engine gave up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-the-rollback-receives" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8864,6 +8875,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-push-after-the-engine-gave-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A push after the engine gave up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-the-rollback-receives" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9292,7 +9314,22 @@ block with <code>reversible: true</code>.</p>
 </tbody>
 </table>
 <p>The engine logs a refusal by the rule it breaks and that rule&rsquo;s place in the schema, never by the value or a key: a key the schema declares reads <code>*</code> in that place, so a <code>maxLength</code> under a property logs as <code>#/properties/*/maxLength</code>. A push still answers <code>400</code> only when the result itself is malformed.</p>
-<p>Because the snapshot travels with the result, an attempt whose result never arrives (a lost push, a lost worker, a timeout) has none.</p>
+<p>Because the snapshot travels with the result, an attempt whose result never arrives (a lost push, a dead worker) has none.</p>
+<h3 id="a-push-after-the-engine-gave-up">A push after the engine gave up</h3>
+<p>The engine fails a job on the stuck timeout or when its worker goes offline, and moves on. A worker that was only paused or cut off then finishes the job, change included, and pushes. That push still answers <code>409</code> and the engine&rsquo;s failure stands: the first committed result wins, so the status, the reason and <code>outcomeKnown: false</code> do not change, and whatever the push says about the outcome, <code>sideEffects: false</code> included, counts for nothing. The step stays in the rollback.</p>
+<p>Its snapshot is kept if it can still help. It goes through the <a href="#checks-and-storage">same checks</a>, and the engine stores it, or the reason it dropped it, beside its own result, when all of these hold:</p>
+<ul>
+<li>the existing result is one the engine wrote with <code>reasonCode</code> <code>job_timed_out</code> or <code>worker_lost</code>. A second push against a result the worker wrote changes nothing;</li>
+<li>the push comes from the lease holder of that attempt. Anyone else gets <code>403</code>, as on any push;</li>
+<li>no <code>ROLLBACK</code> job of the step has been polled or has ended. A worker that polled one has its <code>forwardResult</code> already, so the snapshot comes too late and is not stored;</li>
+<li>no later attempt of the step has reached a worker. The paused worker may have taken its snapshot after that attempt changed the device, and restoring such a snapshot would undo nothing, so a rollback is better off refusing;</li>
+<li>the run is not in <code>FAILED_SAFE</code>, <code>FAILED_SAFE_ACK</code> or <code>COMPLETED_ACK</code>: nothing there can read it;</li>
+<li>no earlier late push left a snapshot or a rejection: the first one stays.</li>
+</ul>
+<p>The <a href="#retention">retention</a> sweep clears a late snapshot like any other. Stored does not mean used: the rollback reads the <a href="#what-the-rollback-receives">earliest attempt</a> that may have changed something, and that may be an earlier attempt with no snapshot.</p>
+<p>Every such push logs a warning that its change is not recorded, with the job, the worker, the status it pushed, its <code>sideEffects</code> and <code>lateSnapshot</code>: <code>stored</code>, <code>none_sent</code>, <code>too_late</code>, <code>already_held</code> or the <code>rollbackDataRejected</code> reason. The log never carries the snapshot. On the job, a held snapshot shows as <code>rollbackDataBytes</code> beside the engine&rsquo;s failure.</p>
+<p>So the lease of a failed job stays good for this one write, until a rollback or a later attempt is taken or the run settles. Deleting a worker does not end it: a deleted worker&rsquo;s late push is treated the same.</p>
+<p>With several workers, another worker can poll the rollback first. The rollback then runs without the snapshot, and it may run while the late worker is still changing the device. The block decides what to do <a href="#the-block-decides">without a snapshot</a>.</p>
 <h3 id="what-the-rollback-receives">What the rollback receives</h3>
 <p>Every <code>ROLLBACK</code> job carries <code>forwardResult</code> when a worker polls it. The engine resolves it at poll time from the attempts of the step it reverses. It walks the <code>EXECUTE</code> attempts that reached a worker, oldest first, and skips only those whose worker-written result said <code>sideEffects: false</code>; an attempt whose outcome is unknown is never skipped. The first remaining attempt, the earliest that may have changed something, is handed over <strong>whole</strong>: every field comes from that one attempt, never mixed across attempts. A retry runs on whatever the failed attempt left behind, so the earliest snapshot is the one taken before the step changed anything.</p>
 <table>
@@ -9317,7 +9354,7 @@ block with <code>reversible: true</code>.</p>
 </tr>
 <tr>
 <td><code>outcomeKnown</code></td>
-<td><code>false</code> when the engine wrote that attempt&rsquo;s result (a timeout, a lost worker) or there is no result yet. <code>rollbackData</code> is then <code>null</code></td>
+<td><code>false</code> when the engine wrote that attempt&rsquo;s result (a timeout, a lost worker) or there is no result yet. <code>success</code> is then <code>false</code> and <code>data</code> is <code>null</code>; <code>rollbackData</code> is <code>null</code> unless <a href="#a-push-after-the-engine-gave-up">a late push</a> left its snapshot</td>
 </tr>
 <tr>
 <td><code>previousRollbacks</code></td>
@@ -9327,7 +9364,7 @@ block with <code>reversible: true</code>.</p>
 </table>
 <p>A poll response carries at most one rollback job. The Worker SDK fails a rollback job whose <code>forwardResult</code> is missing or does not parse into the block&rsquo;s result and rollback-data classes, with <code>retryable: false</code>, without calling <code>rollback()</code>.</p>
 <h3 id="the-block-decides">The block decides</h3>
-<p>What a rollback does without a snapshot (<code>rollbackData</code> is <code>null</code>: none was saved, it was rejected, the outcome is unknown, or <a href="#retention">retention</a> removed it), and what it does when it runs a second time (<code>previousRollbacks</code> is not empty), is up to the function block. A block that refuses returns a failed rollback result, and the entry ends <code>ROLLBACK_FAILED</code>, and the run stays unsafe until an operator <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off">re-runs or resolves</a> it.</p>
+<p>What a rollback does without a snapshot (<code>rollbackData</code> is <code>null</code>: none was saved, it was rejected, no result of that attempt arrived in time, or <a href="#retention">retention</a> removed it), and what it does when it runs a second time (<code>previousRollbacks</code> is not empty), is up to the function block. A block that refuses returns a failed rollback result, and the entry ends <code>ROLLBACK_FAILED</code>, and the run stays unsafe until an operator <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off">re-runs or resolves</a> it.</p>
 <h3 id="retention">Retention</h3>
 <p>A sweep removes stored rollback data from runs that no longer need it, every <code>ROLLBACK_DATA_SWEEP_INTERVAL_MS</code> (hourly by default):</p>
 <ul>
@@ -9354,7 +9391,7 @@ the Worker SDK&rsquo;s job log and of the engine&rsquo;s validation error messag
 :   A check that fails before anything is sent to the device can return <code>sideEffects: false</code>. The step then stays out of the rollback, and an irreversible block no longer turns such a failure into <code>FAILED_UNSAFE</code>. Add <code>retryable: false</code> when the check would fail the same way again.</p>
 <p><strong>Snapshot before you write.</strong>
 :   A reversible function block that saves its <a href="#rollback-data">rollback data</a> before its first change gives its <code>rollback()</code> the state to restore.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:59:53'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:59:53+00:00'>2026-10-30 08:59:53</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 10:13:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T10:13:54+00:00'>2026-10-30 10:13:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

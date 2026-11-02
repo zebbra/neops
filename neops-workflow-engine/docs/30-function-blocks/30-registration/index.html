@@ -8784,7 +8784,7 @@
     Engine-&gt;&gt;Engine: Validate schema compatibility
     alt New FB or compatible version
         Engine-&gt;&gt;Worker: 201 Created
-    else Incompatible schema
+    else Incompatible schema or changed frozen property
         Engine-&gt;&gt;Worker: 400 Bad Request
     end</code></pre>
 <h2 id="registration-payload">Registration Payload</h2>
@@ -8874,13 +8874,27 @@
 <h2 id="schema-compatibility-rules">Schema Compatibility Rules</h2>
 <p>When registering a new version of an existing function block, the engine enforces compatibility:</p>
 <p><strong>Parameter schema (input) &ndash; backward compatible:</strong>
-:   New versions must ensure that the set of required parameters in the new version is a subset of (or equal to) the required parameters in the existing version. Adding new optional parameters is always safe. The engine validates compatibility against the exact version (if re-registering), the latest patch version, and the latest minor version of the same major.</p>
+:   New versions must ensure that the set of required parameters in the new version is a subset of (or equal to) the required parameters in the existing version. Adding new optional parameters is always safe. The engine validates compatibility against the exact version (if re-registering), the latest patch version, and the latest minor version of the same major, so only a new major version escapes it.</p>
 <p><strong>Result schema (output) &ndash; forward compatible:</strong>
-:   New versions can add fields to results but must not remove existing fields. This ensures that workflows that reference step results still find the expected data.</p>
+:   New versions can add fields to results but must not stop returning required fields or return values the existing schema doesn&rsquo;t allow. This ensures that workflows that reference step results still find the expected data.</p>
 <p><strong>Immutable properties:</strong>
 :   <code>runOn</code> and <code>fbType</code> cannot change across versions of the same function block. These are part of the function block&rsquo;s contract.</p>
 <p><strong>Frozen per exact version:</strong>
-:   A re-registration of the same exact version may not flip <code>isPure</code> or <code>reversible</code>, because that would reshape the compensation ledgers of runs still open, and it must carry the same <code>rollbackDataJsonSchema</code>, compared regardless of key order; adding a schema to a version registered without one counts as a change. Such a re-registration is refused. A new patch or minor version may carry any rollback-data schema; that schema is not part of the compatibility checks against the latest patch and minor version.</p>
+:   A re-registration of the same exact version may not flip <code>isPure</code>, <code>isIdempotent</code> or <code>reversible</code>, because runs still open read them for their compensation ledgers and retries, and it must carry the same <code>rollbackDataJsonSchema</code>, compared regardless of key order; adding a schema to a version registered without one counts as a change. Such a re-registration is refused with a <code>400</code>. A new patch or minor version may change these flags and carry any rollback-data schema; that schema is not part of the compatibility checks against the latest patch and minor version.</p>
+<p><strong>Re-registering one exact version:</strong>
+:   The rules above apply to the stored row of that version too. Its parameter schema may only widen, so the new registration accepts every parameter the stored one accepted, and its result schema may only narrow, so anything reading the stored schema can read the new results. A change the check finds incompatible answers <code>400</code>, naming each finding by schema and path, for example <code>parameterJsonSchema/properties/a</code>. Against the stored row of the same exact version, <code>enum</code> and <code>const</code> count too: dropping a value from parameters, or adding one to results, is refused. A change that only reorders object keys is no change. Only <code>description</code>, <code>markdownHelpText</code> and <code>deprecated</code> can change freely.</p>
+<div class="admonition warning">
+<p class="admonition-title">A refused registration stops the worker</p>
+<p>The Neops worker SDK treats a <code>400</code> as permanent: the worker unregisters and exits at the first refused block, and the blocks after it are not registered. A compatible schema change is also one-way. Once a copy with wider parameters is stored, a worker still carrying the narrower copy of that version is refused, so roll back such a change by publishing a new version.</p>
+</div>
+<p>The check is structural and doesn&rsquo;t see every incompatible change. A change it doesn&rsquo;t find is stored and only warned about:</p>
+<ul>
+<li>Inside <code>anyOf</code>, <code>oneOf</code>, <code>allOf</code> or <code>$ref</code>. An optional <code>str | None</code> field is an <code>anyOf</code>.</li>
+<li>Keywords it doesn&rsquo;t read, such as <code>format</code>, <code>not</code>, <code>minProperties</code>, <code>propertyNames</code>, <code>contains</code> and <code>if</code>/<code>then</code>/<code>else</code>.</li>
+<li><code>additionalProperties</code> gaining a schema, such as <code>dict</code> becoming <code>dict[str, str]</code>.</li>
+<li><code>items</code> appearing on an array that had none, and <code>uniqueItems: true</code> appearing where the keyword was absent.</li>
+</ul>
+<p>Each of these goes unnoticed for parameters that narrow, and the reverse change for results. Give such a change a new version.</p>
 <h2 id="worker-association">Worker Association</h2>
 <p>Function blocks can be associated with specific workers during registration. This enables:</p>
 <ul>
@@ -8888,11 +8902,11 @@
 <li><strong>Job routing</strong> &ndash; the blackboard only returns jobs to workers that have registered the matching function block</li>
 <li><strong>Health monitoring</strong> &ndash; if a worker goes offline, the engine knows which function blocks are affected</li>
 </ul>
-<p>Multiple workers can register the same function block (for horizontal scaling).</p>
+<p>Multiple workers can register the same function block (for horizontal scaling). They share one stored row per exact version, so the last accepted registration wins for <code>description</code>, <code>markdownHelpText</code>, <code>deprecated</code>, and the parameter and result schemas. A registration that changes any of these logs one warning naming the function block, the worker that wrote, the workers linked to the version before it, and the changed fields, without their values. The engine doesn&rsquo;t record which linked worker wrote the replaced content. An identical re-registration stays silent, whatever the key order of its schemas, so a restart or further workers of one deployment add no warning. Two deployments that register different descriptive content for one version warn each time the stored content flips: give the changed copy a new version.</p>
 <h2 id="deregistration">Deregistration</h2>
 <p>When a worker gracefully shuts down (<code>POST /workers/:uuid/unregister</code>), its function block registrations are preserved but unlinked from the worker. The function block definitions remain available for workflow resolution &ndash; only the worker&rsquo;s ability to execute them is removed.</p>
 <p>When a function block is deprecated, existing workflows can still reference it, but new workflows should use the latest version.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 11:06:42'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T11:06:42+00:00'>2026-11-02 11:06:42</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 
