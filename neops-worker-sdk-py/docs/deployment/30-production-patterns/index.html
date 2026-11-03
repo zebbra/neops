@@ -9114,7 +9114,12 @@ as well: that restart is what brings it back.</p>
 <tr>
 <td><code>Worker registration failed</code></td>
 <td>ERROR</td>
-<td>Cannot reach workflow engine</td>
+<td>Cannot reach the workflow engine, it kept failing until <code>STARTUP_RETRY_TIMEOUT</code>, or it answered with a client error such as a 404 from a wrong <code>URL_BLACKBOARD</code></td>
+</tr>
+<tr>
+<td><code>The engine refused this worker: …</code></td>
+<td>ERROR</td>
+<td>The engine refused the worker&rsquo;s client version (HTTP 426): the SDK does not match this engine. The line carries the engine&rsquo;s reason, and the worker exits without retrying</td>
 </tr>
 <tr>
 <td><code>Worker expired! Backend rejected ping with 404.</code></td>
@@ -9176,7 +9181,7 @@ for alerting.</p>
 <li><strong>Least privilege</strong>: Each worker only needs access to the devices its
   function blocks manage. Use separate workers for different network zones.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-03 09:53:22'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-03T09:53:22+00:00'>2026-11-03 09:53:22</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

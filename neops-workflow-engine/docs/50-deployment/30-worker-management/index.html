@@ -2876,6 +2876,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#refused-workers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refused workers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#heartbeat" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8731,6 +8742,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#refused-workers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refused workers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#heartbeat" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8892,7 +8914,10 @@
     UNREACHABLE --&gt; OFFLINE: no ping for 6 min
     OFFLINE --&gt; ONLINE: ping received
     OFFLINE --&gt; Deleted: auto-cleanup after 24h
-    Deleted --&gt; [*]</code></pre>
+    Deleted --&gt; [*]
+    [*] --&gt; REFUSED: registration refused
+    REFUSED --&gt; REFUSED: refused again
+    REFUSED --&gt; Deleted: no attempt for 24h, or the worker registers</code></pre>
 <table>
 <thead>
 <tr>
@@ -8922,6 +8947,11 @@
 <td>Offline for 24+ hours</td>
 <td>Worker registration removed</td>
 </tr>
+<tr>
+<td><strong>REFUSED</strong></td>
+<td>Registration refused; the row carries the <code>refusal</code></td>
+<td>Never gets a job; not a worker, see <a href="#refused-workers">Refused workers</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="threshold-cascade">Threshold Cascade</h3>
@@ -8936,9 +8966,19 @@
 <h3 id="registration">Registration</h3>
 <p>Workers register on startup via <code>POST /workers/register</code> and receive a UUID. They then register their function blocks with this UUID, enabling the blackboard to route jobs to them.</p>
 <p>Registration enforces the same rule as <code>POST /version/compatibility</code>, which a worker does not have to call: the engine refuses a generated Python client that the compatibility check rejects, or that is on the kill-switch list. While the engine is 0.x a client must be on the engine&rsquo;s minor, so a 0.44 client restarting against a 0.45 engine is refused, and so is a 0.45 client against a 0.44 engine. Upgrade the engine first, then its workers, and pin both in the same change.</p>
-<p>A refused worker gets <code>426 Upgrade Required</code> naming both versions, the engine logs a warning with the address it connected from, and no worker is created, so the SDK exits at startup. At the license&rsquo;s worker cap the quota check answers its <code>403</code> first, so an old worker sees the upgrade message only once a slot frees. The engine reads the client version from the <code>User-Agent</code> header, not from the <code>version</code> the worker registers, since a worker built from a commit reports <code>0.0.0</code>.</p>
+<p>A refused worker gets <code>426 Upgrade Required</code> naming both versions, the engine logs a warning with the address it connected from and <a href="#refused-workers">lists the refusal</a>, and no working worker is created, so the SDK exits at startup. At the license&rsquo;s worker cap the quota check answers its <code>403</code> first, so an old worker sees the upgrade message only once a slot frees. The engine reads the client version from the <code>User-Agent</code> header, not from the <code>version</code> the worker registers, since a worker built from a commit reports <code>0.0.0</code>.</p>
 <p>The check does not refuse what it cannot read. A worker that does not use the generated client, or whose header a proxy rewrites, is not checked, nor is a client version the compatibility check cannot parse. An engine that reports <code>develop</code>, which every image not built from a release tag does, applies only the kill-switch list. An engine stamped through <code>NEOPS_VERSION</code> compares against that stamp, so stamp only the real release.</p>
 <p>The check applies only at registration, so a worker that registered before an engine upgrade keeps taking jobs until it restarts. After upgrading the engine, look through <code>GET /workers/online</code> for an SDK <code>version</code> older than the release pinned with this engine (the list does not show the client version), then stop that worker or remove it with <code>DELETE /workers/:uuid</code>, which fails the jobs it holds. Its next ping answers 404, the SDK exits, and its restart is refused. A worker built from a commit reports <code>0.0.0</code> and cannot be told apart in this list.</p>
+<h3 id="refused-workers">Refused workers</h3>
+<p>A refused registration shows up in <code>GET /workers</code> and in the Monitor App&rsquo;s Workers list with state <code>refused</code> and the message the worker was told in <code>refusal</code>, so a restart loop of an old worker is visible without reading logs. The Monitor App shows only its link and its reason: a refused row has no jobs, function blocks or logs, and nothing to remove.</p>
+<p>Such a row reports an attempt and is no worker. It is not in <code>GET /workers/online</code>, does not count against the license&rsquo;s worker quota, and its UUID, which the worker never learns, answers <code>404</code> on ping, unregister, log push and job poll, on function block registration, and on <code>GET /workers/:uuid/jobs</code>.</p>
+<ul>
+<li><strong>One row per worker.</strong> A refusal is recorded under <code>(version, name, ipAddress)</code>, as the worker reported them; an absent field is a value of its own. Workers that report the same three share a row, which is what the replicas of one deployment do. A repeat refreshes <code>lastPingAt</code> and <code>refusal</code> and brings a soft-deleted row back.</li>
+<li><strong>It clears itself.</strong> A registration with the same <code>name</code> and <code>ipAddress</code> removes the rows of that worker, whatever <code>version</code> they recorded. A worker that reports no name clears nothing, since it cannot tell itself from any other unnamed worker. Otherwise the row ages out like an offline worker, 24 hours after the last attempt (<code>WORKER_OFFLINE_DELETE_THRESHOLD_MS</code>); <code>POST /workers/cleanup-offline</code> also removes one idle for longer than <code>WORKER_OFFLINE_THRESHOLD_MS</code>.</li>
+<li><strong>It is bounded.</strong> <code>POST /workers/register</code> is public and the name is the caller&rsquo;s, so at most 100 refused rows are kept, soft-deleted ones included. At the cap a new key takes the place of the oldest soft-deleted row. With none to replace it stays in the log only, while known keys keep updating. Several new keys arriving at once just below the cap can pass it by a few rows; it comes back down as those age out.</li>
+<li><strong>Names are not proof.</strong> <code>name</code>, <code>ipAddress</code> and <code>version</code> are what the caller claims, also in a refused row. The address it really connected from is in the log warning, as <code>remoteAddress</code>.</li>
+<li><strong>The log stays the record.</strong> A refusal that could not be stored is logged and still answers <code>426</code>. At the worker cap the quota answers <code>403</code> first, so that attempt is neither refused nor listed.</li>
+</ul>
 <h3 id="heartbeat">Heartbeat</h3>
 <p>Workers send periodic pings (<code>POST /workers/:uuid/ping</code>). The Worker SDK defaults to every 20 seconds. If a ping returns 404 (worker was cleaned up), the worker shuts down.</p>
 <h3 id="graceful-shutdown">Graceful Shutdown</h3>
@@ -9030,7 +9070,7 @@
 queuing up (many PENDING jobs), add more workers. If workers are frequently going
 UNREACHABLE, check network connectivity between workers and the engine.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 11:00:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T11:00:54+00:00'>2026-11-02 11:00:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 11:50:41'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T11:50:41+00:00'>2026-11-02 11:50:41</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
