@@ -2034,6 +2034,8 @@
       
         
       
+        
+      
     
     
     
@@ -2215,6 +2217,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -8623,6 +8653,13 @@
 <td style="text-align: left;"><a href="../rootworkflow-definitions-workflow-reference-properties-label/" title="docs.neops.io/schema/RootWorkflow#/definitions/WorkflowReference/properties/label">Root Workflow</a></td>
 </tr>
 <tr>
+<td style="text-align: left;"><a href="#networkzone">networkZone</a></td>
+<td style="text-align: left;">Merged</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">cannot be null</td>
+<td style="text-align: left;"><a href="../rootworkflow-definitions-workflow-reference-properties-network-zone/" title="docs.neops.io/schema/RootWorkflow#/definitions/WorkflowReference/properties/networkZone">Root Workflow</a></td>
+</tr>
+<tr>
 <td style="text-align: left;"><a href="#parameters">parameters</a></td>
 <td style="text-align: left;"><code>object</code></td>
 <td style="text-align: left;">Optional</td>
@@ -8842,6 +8879,44 @@ If any condition evaluates to false, the step will fail.</p>
 </span></code></pre></div>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="s2">&quot;ping_new&quot;</span>
 </span></code></pre></div>
+<h2 id="networkzone">networkZone</h2>
+<p>Zone for this step&rsquo;s jobs; nested steps inherit it. A string is short for { name }.</p>
+<p><code>networkZone</code></p>
+<ul>
+<li>
+<p>is optional</p>
+</li>
+<li>
+<p>Type: merged type (<a href="../rootworkflow-definitions-workflow-reference-properties-network-zone/">Network Zone</a>)</p>
+</li>
+<li>
+<p>cannot be null</p>
+</li>
+<li>
+<p>defined in: <a href="../rootworkflow-definitions-workflow-reference-properties-network-zone/" title="docs.neops.io/schema/RootWorkflow#/definitions/WorkflowReference/properties/networkZone">Root Workflow</a></p>
+</li>
+</ul>
+<h3 id="networkzone-type">networkZone Type</h3>
+<p>merged type (<a href="../rootworkflow-definitions-workflow-reference-properties-network-zone/">Network Zone</a>)</p>
+<p>any of</p>
+<ul>
+<li>
+<p><a href="../rootworkflow-definitions-workflow-reference-properties-network-zone-anyof-0/" title="check type definition">Untitled string in Root Workflow</a></p>
+</li>
+<li>
+<p><a href="../rootworkflow-definitions-network-zone-declaration/" title="check type definition">Network Zone Declaration</a></p>
+</li>
+</ul>
+<h3 id="networkzone-examples">networkZone Examples</h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="s2">&quot;default&quot;</span>
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="s2">&quot;zone-b&quot;</span>
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;override&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">}</span>
+</span></code></pre></div>
 <h2 id="parameters">parameters</h2>
 <p>Key-value pairs of parameters to pass to the step during execution.
 Supports dynamic values through JMESPath expressions enclosed in double curly braces.
@@ -8865,7 +8940,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-step-parameters/">Step Parameters</a>)</p>
 <h3 id="parameters-default-value">parameters Default Value</h3>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h2 id="rawparameters">rawParameters</h2>
 <p>Key-value pairs of raw parameters to pass to the step during execution.
@@ -8890,7 +8965,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-raw-step-parameters-not-interpolated/">Raw Step Parameters (not interpolated)</a>)</p>
 <h3 id="rawparameters-default-value">rawParameters Default Value</h3>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h2 id="repeatconfig">repeatConfig</h2>
 <p>Optional settings for repeating the step execution multiple times. Null if not repeating.</p>
@@ -9039,9 +9114,9 @@ Parameters are specific to each step type and implementation.</p>
 </tbody>
 </table>
 <h3 id="strategy-examples">strategy Examples</h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="s2">&quot;dispatch&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="s2">&quot;dispatch&quot;</span>
 </span></code></pre></div>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="s2">&quot;embed&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="s2">&quot;embed&quot;</span>
 </span></code></pre></div>
 <h2 id="type">type</h2>
 <p>The type discriminator for this workflow step</p>
@@ -9064,10 +9139,10 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-workflow-reference-properties-step-type/">Step Type</a>)</p>
 <h3 id="type-constraints">type Constraints</h3>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="s2">&quot;workflowReference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="s2">&quot;workflowReference&quot;</span>
 </span></code></pre></div>
 <h3 id="type-examples">type Examples</h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="s2">&quot;workflowReference&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="s2">&quot;workflowReference&quot;</span>
 </span></code></pre></div>
 <h2 id="workflow">workflow</h2>
 <p>A SemVer identifier of the workflow being referenced</p>
@@ -9091,13 +9166,13 @@ Parameters are specific to each step type and implementation.</p>
 <h3 id="workflow-constraints">workflow Constraints</h3>
 <p><strong>minimum length</strong>: the minimum number of characters for this string is: <code>1</code></p>
 <p><strong>pattern</strong>: the string must match the following regular expression:&#x20;</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>^([^/:]+)\/([^/:]+):\d+(\.\d+)?(\.\d+)?$
 </span></code></pre></div>
 <p><a href="https://regexr.com/?expression=%5E(%5B%5E%2F%3A%5D%2B)%5C%2F(%5B%5E%2F%3A%5D%2B)%3A%5Cd%2B(%5C.%5Cd%2B)%3F(%5C.%5Cd%2B)%3F%24" title="try regular expression with regexr.com">try pattern</a></p>
 <h3 id="workflow-examples">workflow Examples</h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="s2">&quot;wf.neops.io/ping:1.0.0&quot;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-20 15:46:04'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-08-20T15:46:04+00:00'>2026-08-20 15:46:04</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 18:42:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T18:42:00+00:00'>2026-10-30 18:42:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

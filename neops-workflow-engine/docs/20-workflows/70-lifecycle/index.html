@@ -2053,6 +2053,8 @@
       
         
       
+        
+      
     
     
     
@@ -2237,6 +2239,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -9379,7 +9409,11 @@ never renamed.</p>
 </tr>
 <tr>
 <td><code>invalid_parameters</code></td>
-<td>a step&rsquo;s parameters break its function block&rsquo;s parameter schema</td>
+<td>a step&rsquo;s parameters break its function block&rsquo;s parameter schema, or a <code>networkZone</code> in the run resolves to no zone (<a href="../45-network-zones/">Network zones</a>)</td>
+</tr>
+<tr>
+<td><code>unknown_network_zone</code></td>
+<td>a <code>networkZone</code> names a zone the CMS does not hold: at pre-flight the run fails before anything is locked, at job creation the step fails (<a href="../45-network-zones/">Network zones</a>)</td>
 </tr>
 <tr>
 <td><code>interpolation_failed</code></td>
@@ -9527,7 +9561,7 @@ principal who started the run) and then answers <code>501 Not Implemented</code>
 and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
 <code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:24:39'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:24:39+00:00'>2026-10-29 14:24:39</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:27:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:27:26+00:00'>2026-10-30 20:27:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

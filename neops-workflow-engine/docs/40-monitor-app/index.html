@@ -2051,6 +2051,8 @@
       
         
       
+        
+      
     
     
     
@@ -2235,6 +2237,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -2726,6 +2756,17 @@
     <span class="md-ellipsis">
       
         Needs attention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
       
     </span>
   </a>
@@ -8822,6 +8863,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#run-page" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9145,7 +9197,7 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <tr>
 <td>Workers</td>
 <td><code>/workers</code></td>
-<td>Every worker with its state and the function blocks it serves; a worker&rsquo;s page adds its log lines (see <a href="#logs-across-runs">Logs across runs</a>). A registration the engine <a href="../50-deployment/30-worker-management/#refused-workers">refused</a> is listed with its reason</td>
+<td>Every worker with its state, the function blocks and the network zones it serves; a worker&rsquo;s page adds its log lines (see <a href="#logs-across-runs">Logs across runs</a>). A registration the engine <a href="../50-deployment/30-worker-management/#refused-workers">refused</a> is listed with its reason</td>
 </tr>
 <tr>
 <td>Logs</td>
@@ -9174,6 +9226,19 @@ start PostgreSQL, the Monitor App, and the engine. Then open
 <ul>
 <li><strong>Overview</strong> leads with a Needs attention card. It lists the runs, then offline workers and function blocks that have pending jobs and no online worker. A new installation without workers, function blocks or workflows lists what is missing.</li>
 <li><strong>Runs</strong> has the views Needs attention, In progress, Finished and All, with a count on each. The list is ordered most urgent first. A run in a status that needs a person is solid red.</li>
+</ul>
+<h2 id="network-zones">Network zones</h2>
+<p>Where installations use <a href="../20-workflows/45-network-zones/">network zones</a>:</p>
+<ul>
+<li>The <strong>Jobs</strong> table has a <strong>Zone</strong> column on a wide screen: the zone each job runs in.</li>
+<li>A step row names its zone when a <code>networkZone</code> declaration reaches it, and an opened step says where the
+  declaration sits (this step, an enclosing workflow, or the workflow itself) and whether it overrides the device&rsquo;s
+  zone.</li>
+<li>The <strong>Workers</strong> list has a <strong>Zones</strong> column (<code>default</code> for a worker that named none). Once zones besides <code>default</code>
+  exist, the page flags zones whose jobs wait with no online worker, zones a single online worker serves, and the
+  workers that registered no zone list: the engine refuses each of them at its next start until
+  <code>NEOPS_WORKER_NETWORK_ZONES</code> is set.</li>
+<li>The <strong>Builder</strong> sets a step&rsquo;s network zone, a name or an expression over parameters, with an override toggle.</li>
 </ul>
 <h2 id="run-page">Run page</h2>
 <p><code>/runs/&lt;id&gt;</code> shows one run on a single scrolling page. A prefix of the id in the URL resolves to the full id. While the tab is visible the page asks the engine again, often while the run is in flight and less often after it ends. If the engine stops answering, the page keeps the last data and marks it stale.</p>

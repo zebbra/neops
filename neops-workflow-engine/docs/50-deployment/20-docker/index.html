@@ -2051,6 +2051,8 @@
       
         
       
+        
+      
     
     
     
@@ -2235,6 +2237,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -9075,6 +9105,9 @@ and every gate that opens only in a declared development environment stays close
 the permission strings each route requires.</p>
 <h2 id="running-migrations">Running Migrations</h2>
 <p>The engine runs pending migrations automatically on startup.</p>
+<p>Upgrading to 0.46.0 recreates the index <code>job_pending_claim_index</code> on the <code>job</code> table
+(<code>migrations/Migration20261030195456.ts</code>) without <code>CONCURRENTLY</code>, so job writes wait while it
+builds. That is brief, and noticeable only on an installation with many jobs.</p>
 <h2 id="networking">Networking</h2>
 <p>The engine needs to reach:</p>
 <ul>
@@ -9104,7 +9137,7 @@ the permission strings each route requires.</p>
 </span></code></pre></div>
 <hr />
 <p><strong>See also:</strong> <a href="../10-configuration/">Configuration Reference</a> for all environment variables, <a href="../../getting-started/10-setup/">Setup</a> for local development.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-29 08:46:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-29T08:46:07+00:00'>2026-09-29 08:46:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 14:18:18'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T14:18:18+00:00'>2026-11-02 14:18:18</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

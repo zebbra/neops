@@ -2194,6 +2194,8 @@
       
         
       
+        
+      
     
     
     
@@ -2378,6 +2380,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -8916,7 +8946,7 @@
 <li><strong><code>workerId</code></strong> &ndash; The worker&rsquo;s unique ID</li>
 <li><strong><code>functionBlockIds</code></strong> &ndash; List of function block IDs the worker can execute</li>
 </ul>
-<p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks (default: 1 job per poll, configurable via <code>limit</code>; at most one <code>ROLLBACK</code> job per response). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers.</p>
+<p>The blackboard returns pending jobs that match the worker&rsquo;s function blocks and lie in one of the network zones it registered with, <code>default</code> for a worker that named none (default: 1 job per poll, configurable via <code>limit</code>; at most one <code>ROLLBACK</code> job per response). The assignment is atomic &ndash; once a job is returned to a worker, it is marked as <code>POLLED</code> and will not be returned to other workers. Each returned job carries <code>meta</code>: the zone it runs in and why (see <a href="../../20-workflows/45-network-zones/#workers-and-their-zones">Network Zones</a>).</p>
 <p>Each returned job carries a <strong>lease</strong>, <code>leaseToken</code>: 64 random hex characters, new for every polled job. The worker
 proves it holds the job by sending its <code>workerId</code> and that lease with every push for the job, its result and its log
 lines. A push from another worker, or with another lease, is answered <code>403 LEASE_MISMATCH</code>; a job that holds no lease
@@ -8949,7 +8979,8 @@ through its predicate <code>worker_uuid IS NULL AND NOT canceled</code>.</p>
 (<code>NEOPS_LOG_BACKEND</code>), or writes them to its own stdout when none is configured:</p>
 <ul>
 <li><strong><code>POST /blackboard/job/logs</code></strong> &ndash; lines of a job, with <code>jobId</code>, <code>workerId</code> and the job&rsquo;s <code>leaseToken</code>. The engine
-  adds the run, workflow, step, job, function block, worker and entity from the job row. Lines that arrive after the
+  adds the run, workflow, step, job, function block, worker, entity and network zone (<code>network_zone</code>) from the job
+  row. Lines that arrive after the
   job&rsquo;s result are kept and marked <code>late</code>.</li>
 <li><strong><code>POST /workers/:uuid/logs</code></strong> &ndash; lines outside any job (startup, heartbeat, poll errors). They carry the worker
   only.</li>
@@ -9046,7 +9077,7 @@ sufficient.</p>
 <li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
 <li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 09:46:53'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T09:46:53+00:00'>2026-10-30 09:46:53</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:46:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:46:24+00:00'>2026-10-30 20:46:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

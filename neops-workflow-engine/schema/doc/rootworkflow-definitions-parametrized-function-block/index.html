@@ -2034,6 +2034,8 @@
       
         
       
+        
+      
     
     
     
@@ -2215,6 +2217,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs/20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -8630,6 +8660,13 @@
 <td style="text-align: left;"><a href="../rootworkflow-definitions-parametrized-function-block-properties-label/" title="docs.neops.io/schema/RootWorkflow#/definitions/ParametrizedFunctionBlock/properties/label">Root Workflow</a></td>
 </tr>
 <tr>
+<td style="text-align: left;"><a href="#networkzone">networkZone</a></td>
+<td style="text-align: left;">Merged</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">cannot be null</td>
+<td style="text-align: left;"><a href="../rootworkflow-definitions-parametrized-function-block-properties-network-zone/" title="docs.neops.io/schema/RootWorkflow#/definitions/ParametrizedFunctionBlock/properties/networkZone">Root Workflow</a></td>
+</tr>
+<tr>
 <td style="text-align: left;"><a href="#parameters">parameters</a></td>
 <td style="text-align: left;"><code>object</code></td>
 <td style="text-align: left;">Optional</td>
@@ -8859,6 +8896,44 @@ If any condition evaluates to false, the step will fail.</p>
 </span></code></pre></div>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="s2">&quot;ping_new&quot;</span>
 </span></code></pre></div>
+<h2 id="networkzone">networkZone</h2>
+<p>Zone for this step&rsquo;s jobs; nested steps inherit it. A string is short for { name }.</p>
+<p><code>networkZone</code></p>
+<ul>
+<li>
+<p>is optional</p>
+</li>
+<li>
+<p>Type: merged type (<a href="../rootworkflow-definitions-parametrized-function-block-properties-network-zone/">Network Zone</a>)</p>
+</li>
+<li>
+<p>cannot be null</p>
+</li>
+<li>
+<p>defined in: <a href="../rootworkflow-definitions-parametrized-function-block-properties-network-zone/" title="docs.neops.io/schema/RootWorkflow#/definitions/ParametrizedFunctionBlock/properties/networkZone">Root Workflow</a></p>
+</li>
+</ul>
+<h3 id="networkzone-type">networkZone Type</h3>
+<p>merged type (<a href="../rootworkflow-definitions-parametrized-function-block-properties-network-zone/">Network Zone</a>)</p>
+<p>any of</p>
+<ul>
+<li>
+<p><a href="../rootworkflow-definitions-parametrized-function-block-properties-network-zone-anyof-0/" title="check type definition">Untitled string in Root Workflow</a></p>
+</li>
+<li>
+<p><a href="../rootworkflow-definitions-network-zone-declaration/" title="check type definition">Network Zone Declaration</a></p>
+</li>
+</ul>
+<h3 id="networkzone-examples">networkZone Examples</h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="s2">&quot;default&quot;</span>
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="s2">&quot;zone-b&quot;</span>
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">&quot;override&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">}</span>
+</span></code></pre></div>
 <h2 id="parameters">parameters</h2>
 <p>Key-value pairs of parameters to pass to the step during execution.
 Supports dynamic values through JMESPath expressions enclosed in double curly braces.
@@ -8882,7 +8957,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-step-parameters/">Step Parameters</a>)</p>
 <h3 id="parameters-default-value">parameters Default Value</h3>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h2 id="rawparameters">rawParameters</h2>
 <p>Key-value pairs of raw parameters to pass to the step during execution.
@@ -8907,7 +8982,7 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>object</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-raw-step-parameters-not-interpolated/">Raw Step Parameters (not interpolated)</a>)</p>
 <h3 id="rawparameters-default-value">rawParameters Default Value</h3>
 <p>The default value is:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{}</span>
 </span></code></pre></div>
 <h2 id="repeatconfig">repeatConfig</h2>
 <p>Optional settings for repeating the step execution multiple times. Null if not repeating.</p>
@@ -9037,12 +9112,12 @@ Parameters are specific to each step type and implementation.</p>
 <p><code>string</code> (<a href="../rootworkflow-definitions-parametrized-function-block-properties-type/">Type</a>)</p>
 <h3 id="type-constraints">type Constraints</h3>
 <p><strong>constant</strong>: the value of this property must be equal to:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="s2">&quot;functionBlock&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="s2">&quot;functionBlock&quot;</span>
 </span></code></pre></div>
 <h3 id="type-examples">type Examples</h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="s2">&quot;functionBlock&quot;</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="s2">&quot;functionBlock&quot;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-22 08:43:13'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-22T08:43:13+00:00'>2026-10-22 08:43:13</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2025-05-08 08:15:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2025-05-08T08:15:35+00:00'>2025-05-08 08:15:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 18:42:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T18:42:00+00:00'>2026-10-30 18:42:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

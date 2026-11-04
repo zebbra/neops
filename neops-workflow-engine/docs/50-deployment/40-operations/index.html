@@ -2051,6 +2051,8 @@
       
         
       
+        
+      
     
     
     
@@ -2235,6 +2237,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -9069,7 +9099,7 @@
 <ul>
 <li><code>authz</code> tells a wrong or unreachable verification key apart from a CMS outage without reading logs. <code>mode</code> is <code>NEOPS_AUTHZ_MODE</code>. <code>keySource</code> is <code>pem</code> (a pinned <code>NEOPS_JWT_PUBLIC_KEY[_PATH]</code>), <code>jwks</code> (<code>NEOPS_JWKS_URL</code>) or <code>null</code> (mode <code>disabled</code>). <code>keyReachable</code> is, for a JWKS, whether the key set was obtainable the last time the engine fetched it: at boot, or verifying a token. While it is <code>false</code>, every gated route answers <code>503 KEY_UNAVAILABLE</code>. It is <code>null</code> before the first fetch, and always <code>null</code> for a PEM, which has no runtime dependency. The JWKS URL is never included.</li>
 <li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered the engine&rsquo;s probe, sent with the engine&rsquo;s <code>NEOPS_CMS_TOKEN</code>, as a GraphQL server: a status below 500 with a JSON body carrying <code>data</code> or <code>errors</code>. A GraphQL error answer, such as a rejected token, still counts as reachable. A 5xx, a timeout, a refused connection, or a body that is not a GraphQL answer counts as unreachable; a plain <code>404</code> or a proxy&rsquo;s HTML page means <code>NEOPS_CMS_URL</code> does not point at the CMS GraphQL endpoint. The probe runs at boot, repeats every 30 seconds until it knows whether the CMS is compatible (see <code>cms.compatible</code>), and then runs at most every 30 seconds in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished. Because the chart&rsquo;s readiness probe polls <code>/health</code> every few seconds, each pod keeps probing the CMS about every 30 seconds for as long as it runs.</li>
-<li><code>cms.compatible</code> is whether the CMS schema serves every field the engine&rsquo;s CMS queries select. The probe introspects those types (<code>__type(name: …) { fields { name } }</code>); the list of required fields and the minimum neops-core release live in one place, <code>src/engine/core-engine/cms-client/cms-requirements.ts</code>. It is <code>null</code> when the probe could not tell: the CMS was unreachable, or answered with a GraphQL error, such as a rejected <code>NEOPS_CMS_TOKEN</code> (the CMS introspects types only for an authenticated caller). Until it is known, the boot probe repeats every 30 seconds. When it is <code>false</code>, <code>cms.incompatibleReason</code> names the missing fields and the minimum release, for example <code>the CMS lacks LockErrorType.code; this engine needs neops-core &gt;= 2.3.0</code>, and the engine logs the same reason as an error, with the CMS URL, when it detects it. The minimum release is the neops-core release whose GraphQL client the engine is built with; the check reads only the listed fields, so an older core that serves them still reads as compatible. Without that check, an older CMS rejects the lock mutation and every run that locks devices ends <code>FAILED_SAFE_ACK</code> with <code>Cannot query field 'code' on type 'LockErrorType'</code>, while runs on <code>global</code> still succeed. The check reads the schema at <code>NEOPS_CMS_URL</code>: a proxy in front of the CMS that hides fields, or a CMS with introspection disabled, makes it report <code>false</code> or <code>null</code> respectively.</li>
+<li><code>cms.compatible</code> is whether the CMS schema serves every field the engine&rsquo;s CMS queries select. The probe introspects those types (<code>__type(name: …) { fields { name } }</code>); the list of required fields and the minimum neops-core release live in one place, <code>src/engine/core-engine/cms-client/cms-requirements.ts</code>. It is <code>null</code> when the probe could not tell: the CMS was unreachable, or answered with a GraphQL error, such as a rejected <code>NEOPS_CMS_TOKEN</code> (the CMS introspects types only for an authenticated caller). Until it is known, the boot probe repeats every 30 seconds. When it is <code>false</code>, <code>cms.incompatibleReason</code> names the missing fields and the minimum release, for example <code>the CMS lacks DeviceType.networkZone; this engine needs neops-core &gt;= 2.4.0-beta.1</code>, and the engine logs the same reason as an error, with the CMS URL, when it detects it. The minimum release is the neops-core release whose GraphQL client the engine is built with; the check reads only the listed fields, so an older core that serves them still reads as compatible. Without that check, an older CMS rejects the lock mutation and every run that locks devices ends <code>FAILED_SAFE_ACK</code> with <code>Cannot query field 'networkZone' on type 'DeviceType'</code>, while runs on <code>global</code> still succeed. The check reads the schema at <code>NEOPS_CMS_URL</code>: a proxy in front of the CMS that hides fields, or a CMS with introspection disabled, makes it report <code>false</code> or <code>null</code> respectively.</li>
 </ul>
 <h3 id="when-the-cms-is-too-old">When the CMS is too old</h3>
 <ul>
@@ -9190,7 +9220,7 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 18:03:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T18:03:24+00:00'>2026-10-30 18:03:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-04 09:21:42'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-04T09:21:42+00:00'>2026-11-04 09:21:42</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

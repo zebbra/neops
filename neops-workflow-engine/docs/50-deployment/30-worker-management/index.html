@@ -2051,6 +2051,8 @@
       
         
       
+        
+      
     
     
     
@@ -2235,6 +2237,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -8965,6 +8995,7 @@
 <h2 id="worker-lifecycle">Worker Lifecycle</h2>
 <h3 id="registration">Registration</h3>
 <p>Workers register on startup via <code>POST /workers/register</code> and receive a UUID. They then register their function blocks with this UUID, enabling the blackboard to route jobs to them.</p>
+<p>A worker also names the network zones it serves (<code>networkZones</code>, from the SDK&rsquo;s <code>NEOPS_WORKER_NETWORK_ZONES</code>) and only claims jobs of those zones. Once the CMS holds a zone besides <code>default</code>, every worker must name its zones; a central worker sets <code>NEOPS_WORKER_NETWORK_ZONES=default</code> in its own service definition. See <a href="../../20-workflows/45-network-zones/#workers-and-their-zones">Network Zones</a>.</p>
 <p>Registration enforces the same rule as <code>POST /version/compatibility</code>, which a worker does not have to call: the engine refuses a generated Python client that the compatibility check rejects, or that is on the kill-switch list. While the engine is 0.x a client must be on the engine&rsquo;s minor, so a 0.44 client restarting against a 0.45 engine is refused, and so is a 0.45 client against a 0.44 engine. Upgrade the engine first, then its workers, and pin both in the same change.</p>
 <p>A refused worker gets <code>426 Upgrade Required</code> naming both versions, the engine logs a warning with the address it connected from and <a href="#refused-workers">lists the refusal</a>, and no working worker is created, so the SDK exits at startup. At the license&rsquo;s worker cap the quota check answers its <code>403</code> first, so an old worker sees the upgrade message only once a slot frees. The engine reads the client version from the <code>User-Agent</code> header, not from the <code>version</code> the worker registers, since a worker built from a commit reports <code>0.0.0</code>.</p>
 <p>The check does not refuse what it cannot read. A worker that does not use the generated client, or whose header a proxy rewrites, is not checked, nor is a client version the compatibility check cannot parse. An engine that reports <code>develop</code>, which every image not built from a release tag does, applies only the kill-switch list. An engine stamped through <code>NEOPS_VERSION</code> compares against that stamp, so stamp only the real release.</p>
@@ -9056,12 +9087,18 @@
 <td>POST</td>
 <td>Manual cleanup (all currently offline)</td>
 </tr>
+<tr>
+<td><code>/network-zones</code></td>
+<td>GET</td>
+<td>Every network zone, <code>default</code> first, with its online workers and waiting jobs</td>
+</tr>
 </tbody>
 </table>
 <h2 id="scaling-workers">Scaling Workers</h2>
 <ul>
 <li><strong>Horizontal scaling</strong> &ndash; Deploy multiple workers with the same function blocks. The blackboard distributes jobs across them.</li>
 <li><strong>Specialized workers</strong> &ndash; Deploy workers with different function block sets (e.g., one worker for Cisco FBs, another for Juniper).</li>
+<li><strong>Workers per network zone</strong> &ndash; Deploy at least one worker in each zone, inside the network it reaches. Two workers per zone keep its jobs moving when one stops; the <code>developer-preview</code> engine admits at most 2 workers per installation, so that needs the licensed (<code>enterprise</code>) engine once there is more than one zone.</li>
 <li><strong>Geographic distribution</strong> &ndash; Workers can run in different locations as long as they can reach the engine&rsquo;s REST API and the target devices.</li>
 </ul>
 <div class="admonition tip">

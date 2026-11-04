@@ -2034,6 +2034,8 @@
       
         
       
+        
+      
     
     
     
@@ -2215,6 +2217,34 @@
     
   
     Conditions & Assertions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../20-workflows/45-network-zones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Zones
   
 
     
@@ -8567,8 +8597,8 @@
 <td><code>no-db-mutation-on-failure</code></td>
 <td>SAFETY</td>
 <td>CMS database unchanged after failed workflow execution</td>
-<td>4</td>
-<td>4</td>
+<td>5</td>
+<td>5</td>
 </tr>
 <tr>
 <td><code>reject-invalid-fb-name-format</code></td>
@@ -8732,11 +8762,25 @@
 <td>9</td>
 </tr>
 <tr>
+<td><code>unknown-network-zone-fails-pre-flight</code></td>
+<td>SAFETY</td>
+<td>A run whose networkZone names a zone the CMS does not hold fails at pre-flight with unknown_network_zone, before anything is locked and before any job reaches a worker</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>job-carries-network-zone-meta</code></td>
+<td>SAFETY</td>
+<td>Every polled job carries meta: the zone it runs in, why (device, step, override, default), and the step&rsquo;s own declaration, so a worker knows where its block works</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
 <td><code>failure-serves-stable-reason-code</code></td>
 <td>SAFETY</td>
 <td>A run that fails serves a stable reasonCode beside its free-text reason, set where the engine decides the failure, so a client can group and phrase failures without matching engine wording</td>
-<td>19</td>
-<td>19</td>
+<td>20</td>
+<td>20</td>
 </tr>
 <tr>
 <td><code>run-entry-reports-held-locks</code></td>
@@ -8777,8 +8821,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>101</td>
-<td>106</td>
+<td>102</td>
+<td>107</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -9130,6 +9174,18 @@
 <td><code>SimpleSuccessOnSingleDevice</code></td>
 <td>Interface toggle workflow with 3 FBs (show, check, configure) on a single device resolved from interface context</td>
 <td><code>lifecycle-reaches-terminal-state</code>, <code>multi-step-sequential-completes</code>, <code>multi-fb-workflow-completes</code>, <code>acquisition-phase-completes</code>, <code>job-count-exact</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/jobs-carry-zone-meta.ts</code></td>
+<td><code>JobsCarryZoneMeta</code></td>
+<td>A global step declaring default and an undeclared device step: each job is claimed by a worker serving default and its poll meta names the zone, its source and the step declaration</td>
+<td><code>job-carries-network-zone-meta</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/unknown-zone-fails-pre-flight.ts</code></td>
+<td><code>UnknownZoneFailsPreFlight</code></td>
+<td>A global step whose networkZone &ldquo;{{ parameters.zone }}&rdquo; resolves to zone-c, which the CMS does not hold, fails the run at pre-flight with unknown_network_zone</td>
+<td><code>unknown-network-zone-fails-pre-flight</code>, <code>failure-serves-stable-reason-code</code>, <code>no-db-mutation-on-failure</code></td>
 </tr>
 <tr>
 <td><code>publish-resolution/tests/accept-bump-displaces-resolution.ts</code></td>
@@ -9853,7 +9909,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 09:46:53'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T09:46:53+00:00'>2026-10-30 09:46:53</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:27:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:27:26+00:00'>2026-10-30 20:27:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
