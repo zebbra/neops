@@ -57,15 +57,15 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
-    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -8534,6 +8534,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Upgrade notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-role-for-the-first-superuser-bootstrap_admin_role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A role for the first superuser: bootstrap_admin_role
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8580,6 +8597,17 @@
   
     <nav class="md-nav" aria-label="Writes from workflow runs">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-refused-write-write_refused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A refused write: WRITE_REFUSED
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#identifier-groups" class="md-nav__link">
@@ -8749,11 +8777,25 @@
 <td>The engine&rsquo;s lock operation returns each locked device&rsquo;s zone, and each locked interface&rsquo;s device with that device&rsquo;s zone.</td>
 <td>The engine knows every job&rsquo;s zone when it locks.</td>
 </tr>
+<tr>
+<td>Refused writes</td>
+<td><code>unlockResources</code> answers a <code>code</code>: <code>WRITE_REFUSED</code> when a run&rsquo;s writes can never be applied as sent, <code>UNEXPECTED</code> for any other failure, <code>null</code> on success.</td>
+<td>The workflow engine can end such a run instead of retrying it.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="upgrade-notes">Upgrade notes</h2>
 <p>The upgrade applies migration <code>0206_network_zone</code>. It creates the zone table and adds an empty <code>network_zone</code> column to devices, so every device starts in <code>default</code>. No device row is rewritten.</p>
 <p>The <code>network</code> search index gains a field, so its schema hash changes and <code>manage.py elastic_index --rebuild-if-stale</code> rebuilds it on the upgrade with no further step. While the rebuild runs, and after a failed one until a later one finishes, core refuses every lock that searches the index; the workflow engine retries those locks, so a run that selects devices waits. Until the rebuild has run, devices with no zone are not indexed under <code>default</code>, so a selector on <code>network_zone.name</code> misses them. Run discovery, or any workflow that selects devices by zone, after the rebuild.</p>
+<h3 id="a-role-for-the-first-superuser-bootstrap_admin_role">A role for the first superuser: <code>bootstrap_admin_role</code></h3>
+<p>The new command <code>manage.py bootstrap_admin_role --user &lt;username&gt; --role &lt;role&gt;</code> gives that user the role, creating it if needed, with:</p>
+<ul>
+<li>write on the scope <code>Global</code> (the first of <code>NEOPS_SCOPES</code>), whose own fields, such as its visibility flags, it leaves alone;</li>
+<li>write on <code>network-zones</code>, so the user can create zones right after a fresh install.</li>
+</ul>
+<p>Run <code>manage.py grant_workflow_permissions --role &lt;role&gt; --profile admin --yes</code> after it for the workflow grants. Both commands re-apply their grants on every run, so a grant removed from that role by hand comes back on the next one; give other users roles of their own. Without the <code>neops_permissions_simple</code> plugin it seeds nothing, since every user may already do everything.</p>
+<p>If other users already hold a role of this name, the seed leaves it alone and warns; set superuser.role (NEOPS_ADMIN_ROLE) to a role only the superuser holds. The command then only adds the user to the role and exits 3, so a script that runs <code>grant_workflow_permissions</code> after it can skip that too, as the Helm hook and <code>cms-init</code> do.</p>
+<p>With <code>superuser.enabled</code>, the Helm chart&rsquo;s migrate hook now runs both for the superuser and the role <code>superuser.role</code> (default <code>admin</code>), on every install and upgrade. Before, the chart&rsquo;s superuser could log in and then read and write nothing until someone granted a role by hand. neops-docker-compose&rsquo;s <code>cms-init</code> runs the same two commands.</p>
 <h2 id="zone-names">Zone names</h2>
 <p>A zone name is lowercase letters, digits and hyphens, at most 63 characters, and starts and ends with a letter or digit: <code>zone-a</code>, <code>stadium-3</code>. Names are unique, and <code>default</code> is reserved: no zone can take it, since a device with no zone is already in it.</p>
 <p>A name is fixed once the zone exists. Admin shows it read-only, and <code>networkZoneUpsert</code> with an <code>id</code> refuses a different name. To fix a misspelt zone, create the right one, move its devices with a workflow run, then delete the old one. The description stays editable.</p>
@@ -8789,16 +8831,39 @@
 <p>If the site is already unreachable, its devices can still be moved. Run <code>fb.base.neops.io/device_update_device:0.2.0</code> with <code>network_zone</code> set to the target zone, in a step whose zone is <code>{name: &lt;target&gt;, override: true}</code>, so a worker that still runs picks the job up. The block doesn&rsquo;t connect to the device, and <code>override</code> only decides where the job runs; the <code>network_zone</code> parameter is what moves the device.</p>
 <h2 id="writes-from-workflow-runs">Writes from workflow runs</h2>
 <p>The workflow engine applies a run&rsquo;s creates, patches and deletes through <code>unlockResources</code>, in order and in one transaction, so a move earlier in the run counts for the writes after it.</p>
+<h3 id="a-refused-write-write_refused">A refused write: <code>WRITE_REFUSED</code></h3>
+<p>When core refuses a run&rsquo;s writes, <code>unlockResources</code> answers <code>success: false</code>, <code>lockExists: true</code> and a <code>message</code>, as before, and now also a <code>code</code>. Nothing of the run is written and the lock stays held.</p>
+<ul>
+<li><code>WRITE_REFUSED</code>: the same writes would be refused again on every attempt. Examples:</li>
+<li>a value a field can&rsquo;t take, such as a string where a relation needs an id or <code>{"id": ...}</code>, or a reference that matches no entity or more than one;</li>
+<li>a field the entity doesn&rsquo;t have: an unknown <code>PATCH</code> path such as <code>nosuchfield</code> or <code>hostname.x</code>, or an unknown key in a <code>CREATE</code>&rsquo;s <code>data</code>;</li>
+<li>a create an identifier group refuses;</li>
+<li>a value another entity already holds where it must be unique, such as a group&rsquo;s <code>name</code> or a device&rsquo;s <code>external_reference</code>, archived entities included;</li>
+<li>a patch or delete of an entity outside the lock;</li>
+<li>a <code>dbUpdates</code> payload that doesn&rsquo;t validate, such as a <code>PATCH</code> without <code>path</code>. Before, that came back as a GraphQL error instead of an answer.</li>
+<li><code>UNEXPECTED</code>: anything else went wrong, such as a lost database connection, or two runs writing the same unique value at the same moment. Trying again can succeed: in that race the retry finds the other run&rsquo;s entity (with <code>skipIfExists</code>), or is refused with <code>WRITE_REFUSED</code>.</li>
+<li>On success, and when the lock doesn&rsquo;t exist (<code>lockExists: false</code>), <code>code</code> is <code>null</code>.</li>
+</ul>
+<p>The <code>message</code> names the entity, for example <code>DEVICE 42 is not locked by this lock</code>, <code>Group with name 'core' already exists</code>, <code>Invalid value for device (id 42) at nosuchfield: invalid path nosuchfield</code> or, for a create, <code>Invalid value for device (new): ... (while setting 'platform')</code>. Core logs every refusal as a warning:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Unlock &#39;wf-exec-123&#39; for owner 7 refused (WRITE_REFUSED): Group with name &#39;core&#39; already exists
+</span></code></pre></div>
+<p>What happens to the run depends on the workflow engine:</p>
+<ul>
+<li>An engine that acts on <code>WRITE_REFUSED</code> ends the run <code>FAILED_SAFE</code> with that message. Such an engine requires this core version.</li>
+<li>An older engine ignores <code>code</code> and keeps retrying a refused unlock with the locks held, as before.</li>
+</ul>
+<p>Upgrade core first. An engine built on the client that selects <code>code</code> fails every unlock against an older core with <code>Cannot query field 'code' on type 'UnlockResources'.</code> The engine will raise its minimum core version to guard against that.</p>
+<p><code>code</code> is a <code>LockErrorCode</code>, the enum lock refusals already use. The operation in <code>neops-graphql/graphql/unlock_resources.graphql</code> selects it.</p>
 <h3 id="identifier-groups">Identifier groups</h3>
 <p>A create&rsquo;s <code>mapByFieldOrdered</code> is a list of groups. The fields of a group must all match. Groups are tried in order, a group is skipped when the data lacks one of its fields, and the first group that finds an entity decides: one match is reused when <code>skipIfExists</code> is set and refused otherwise, two or more are refused.</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CREATE&quot;</span><span class="p">,</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DEVICE&quot;</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="p">}},</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">&quot;mapByFieldOrdered&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;ip&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">]],</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">&quot;skipIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CREATE&quot;</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DEVICE&quot;</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="p">}},</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">&quot;mapByFieldOrdered&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;ip&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">]],</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">&quot;skipIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
 </span></code></pre></div>
 <ul>
 <li>This create looks <code>10.0.0.1</code> up only among the devices of <code>zone-b</code>. <code>{"name": "default"}</code> matches the devices with no zone.</li>
@@ -8817,9 +8882,9 @@
 <p>An interface names its device as <code>{"id": ...}</code>, or as <code>{"hostname": ..., "ip": ..., "network_zone": {"name": ...}}</code> with a hostname, an ip or both. Core resolves it on every field it carries, inside the zone it names, both in the interface create&rsquo;s existence check and when it sets the interface&rsquo;s device. An <code>id</code> wins over the other fields and may be the temporary id of a device created earlier in the run. A reference that matches no device, or more than one, is refused with a message naming it. A reference without <code>network_zone</code> is matched across every zone.</p>
 <h2 id="search-by-zone">Search by zone</h2>
 <p>Each device in the <code>network</code> index carries <code>network_zone: {"id": ..., "name": ...}</code>. A device with no zone is indexed with the name <code>default</code> and no id, so a selector names <code>default</code> as it names any zone.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ip:&quot;10.0.0.1&quot; AND network_zone.name:zone-b
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>network_zone.name:default
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>device.network_zone.name:zone-b
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ip:&quot;10.0.0.1&quot; AND network_zone.name:zone-b
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>network_zone.name:default
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>device.network_zone.name:zone-b
 </span></code></pre></div>
 <ul>
 <li>The name is a keyword, so <code>network_zone.name:acme</code> matches the zone <code>acme</code> and not <code>acme-dr</code>. A wildcard such as <code>network_zone.name:acme*</code> matches both.</li>
@@ -8853,7 +8918,7 @@
 <p>New settings, all optional: <code>NEOPS_LOG_OUTBOX_MAX_ROWS</code>, <code>NEOPS_LOG_OUTBOX_MAX_BYTES</code>, <code>NEOPS_LOG_OUTBOX_MAX_ATTEMPTS</code>, <code>NEOPS_LOG_BATCH_MAX_BYTES</code> (1 MiB) and <code>NEOPS_LOG_QUEUE_MAX_RECORDS</code> (10000). They have the same names and defaults as the engine&rsquo;s. <code>neops-docker-compose</code> and the Helm charts do not pass them through yet, so changing one there needs an override.</p>
 <p><strong>Upgrade:</strong> migration <code>0205_log_outbox</code> adds two tables and needs no downtime.</p>
 <p><strong>Going back:</strong> the procedure in the 2.3.0 notes runs <code>migrate core 0188_refreshtoken_auth_provider</code> with the new code. That removes both tables, with every line still waiting in them and the drop counts, and nothing warns about it. An older core does not replay these lines either. Before that step, with the log store up and core serving requests, run <code>manage.py log_store_status</code> until <code>rows</code> is 0. If the store cannot come back in time, the waiting lines are lost: save them first with <code>pg_dump --table=core_logoutboxentry</code> if you need them. Do not go back without draining while lines of an applied change wait there, because those are the only record of who applied it.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 14:13:49'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T14:13:49+00:00'>2026-11-02 14:13:49</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-04 11:20:50'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-04T11:20:50+00:00'>2026-11-04 11:20:50</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
