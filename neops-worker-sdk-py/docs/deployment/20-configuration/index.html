@@ -8910,8 +8910,24 @@ via <code>python-dotenv</code>.</p>
 <td><code>None</code></td>
 <td>IP address reported to the workflow engine</td>
 </tr>
+<tr>
+<td><code>NEOPS_WORKER_NETWORK_ZONES</code></td>
+<td><code>str</code></td>
+<td><em>(unset)</em></td>
+<td>Comma-separated <a href="../10-worker-lifecycle/#network-zones">network zones</a> this worker serves, e.g. <code>zone-b</code> or <code>default,zone-lab</code>. Unset or empty, the worker serves <code>default</code> until the CMS holds another zone; from then on the engine refuses it at registration</td>
+</tr>
 </tbody>
 </table>
+<p>The zone setting is split on commas and trimmed; empty items and repeats are dropped. The
+engine checks each name against the zones the CMS holds, so the worker keeps no naming rule
+of its own. <code>default</code> is a zone like any other here: a worker that should take jobs for
+devices without a zone lists it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Set the zone in each worker&rsquo;s own service definition</p>
+<p>Keep <code>NEOPS_WORKER_NETWORK_ZONES</code> out of any <code>.env</code> file a remote site copies. A remote
+worker that misses its own setting should be refused, not quietly serve <code>default</code> from
+inside another network.</p>
+</div>
 <hr />
 <h2 id="timing">Timing</h2>
 <table>
@@ -8984,7 +9000,7 @@ via <code>python-dotenv</code>.</p>
 <td><code>HEALTH_FILE</code></td>
 <td><code>str</code></td>
 <td><code>/tmp/neops-worker-alive</code></td>
-<td>File the worker touches on every poll cycle, after every job and on every heartbeat tick, read by the <a href="../30-production-patterns/#container-healthcheck">healthcheck</a>. Removed at startup. Set it empty to disable.</td>
+<td>File the worker touches on every poll cycle, after every job and on every heartbeat tick, read by the <a href="../30-production-patterns/#container-healthcheck">healthcheck</a>. Removed at startup and on stop. Set it empty to disable.</td>
 </tr>
 <tr>
 <td><code>HEALTH_STALL_TIMEOUT</code></td>
@@ -9128,7 +9144,7 @@ for how entity data flows into function blocks.</p>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1"># CMS</span>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="nv">URL_GRAPHQL</span><span class="o">=</span>http://localhost:8000/graphql
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 13:11:14'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T13:11:14+00:00'>2026-10-28 13:11:14</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:50:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:50:59+00:00'>2026-11-06 12:50:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

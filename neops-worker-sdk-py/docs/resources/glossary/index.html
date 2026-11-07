@@ -9066,6 +9066,11 @@ Workflow Engine docs.
 <div class="language-text highlight"><pre><span></span><code>See the [Workflow Engine documentation](/neops-workflow-engine/docs/) for workflow definitions,
 execution lifecycle, retry logic, and the Blackboard API.
 </code></pre></div>
+<p><strong>Network zone</strong>
+:   A network that only its own workers reach; zones may reuse each other&rsquo;s
+    addresses. Every device is in one zone (<code>default</code> when none is set),
+    and a job goes only to a worker that lists its zone in
+    <code>NEOPS_WORKER_NETWORK_ZONES</code>. See <a href="../../deployment/10-worker-lifecycle/#network-zones">Network zones</a>.</p>
 <hr />
 <h2 id="p">P</h2>
 <p><strong>Parameters</strong>
@@ -9143,7 +9148,7 @@ execution lifecycle, retry logic, and the Blackboard API.
 :   The data context passed to a function block&rsquo;s <code>run()</code> method. Contains
     devices, interfaces, groups, and the entity the block runs on. Changes
     made to entities are automatically tracked and persisted.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:50:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:50:59+00:00'>2026-11-06 12:50:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

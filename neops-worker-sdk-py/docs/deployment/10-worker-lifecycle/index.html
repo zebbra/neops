@@ -4543,10 +4543,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-discovery" class="md-nav__link">
+  <a href="#1-version-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Discovery
+        1. Version check
       
     </span>
   </a>
@@ -4554,10 +4554,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-registration" class="md-nav__link">
+  <a href="#2-discovery" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Registration
+        2. Discovery
       
     </span>
   </a>
@@ -4565,10 +4565,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-concurrent-tasks" class="md-nav__link">
+  <a href="#3-registration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Concurrent Tasks
+        3. Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-concurrent-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Concurrent Tasks
       
     </span>
   </a>
@@ -4620,6 +4631,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#graceful-shutdown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4646,6 +4668,17 @@
     <span class="md-ellipsis">
       
         Upgrading Past Re-Versioned Base Blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-to-network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading to network zones
       
     </span>
   </a>
@@ -8727,10 +8760,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-discovery" class="md-nav__link">
+  <a href="#1-version-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Discovery
+        1. Version check
       
     </span>
   </a>
@@ -8738,10 +8771,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-registration" class="md-nav__link">
+  <a href="#2-discovery" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Registration
+        2. Discovery
       
     </span>
   </a>
@@ -8749,10 +8782,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-concurrent-tasks" class="md-nav__link">
+  <a href="#3-registration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Concurrent Tasks
+        3. Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-concurrent-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Concurrent Tasks
       
     </span>
   </a>
@@ -8804,6 +8848,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#graceful-shutdown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8830,6 +8885,17 @@
     <span class="md-ellipsis">
       
         Upgrading Past Re-Versioned Base Blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upgrading-to-network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading to network zones
       
     </span>
   </a>
@@ -8939,26 +9005,59 @@ registers them with the workflow engine, and continuously polls for jobs.</p>
     participant WE as Workflow Engine
 
     W-&gt;&gt;W: Load environment (.env)
-    W-&gt;&gt;W: Check client/backend version compatibility
+    W-&gt;&gt;WE: POST /version/compatibility/
+    WE--&gt;&gt;W: compatible, deprecated
+    W-&gt;&gt;WE: GET /version
+    WE--&gt;&gt;W: networkZones.supported
     W-&gt;&gt;FS: Scan DIR_FUNCTION_BLOCKS directories
     FS--&gt;&gt;W: Discovered function block modules
     W-&gt;&gt;W: Import modules (triggers @register_function_block)
-    W-&gt;&gt;WE: Register worker (name, IP)
-    WE--&gt;&gt;W: worker_id
+    W-&gt;&gt;WE: Register worker (name, IP, networkZones)
+    WE--&gt;&gt;W: worker_id, networkZones
     W-&gt;&gt;WE: Register function blocks (schemas, metadata)
     W-&gt;&gt;W: Start heartbeat task
     W-&gt;&gt;W: Start job polling task</code></pre>
-<h3 id="1-discovery">1. Discovery</h3>
+<h3 id="1-version-check">1. Version check</h3>
+<p>The worker sends its engine client&rsquo;s version to <code>POST /version/compatibility/</code>:</p>
+<ul>
+<li>an answer of <code>compatible: false</code> ends the worker with exit code 1. An engine before <code>0.46</code>
+  answers that for this SDK&rsquo;s client, and the worker names both ways out: <em>Client
+  0.46.0-beta.4 is not compatible with workflow engine v0.45.0; refusing to start. Upgrade the
+  engine to 0.46, or run the SDK release built for workflow engine v0.45.0.</em> The engine also
+  answers <code>compatible: false</code> for a client version it has withdrawn; the message then ends
+  <em>Run the SDK release built for workflow engine &lt;version&gt;.</em>;</li>
+<li>an engine that cannot be asked gets the benefit of the doubt: the worker logs a warning
+  and starts. That covers an unreachable engine, a timeout, an error status such as a <code>404</code>
+  from an engine without the route (one before <code>0.41.12</code>; the zone check below then stops
+  the worker), and an answer it cannot read. Such a worker can still be incompatible:
+  registration or the first job shows it.</li>
+</ul>
+<p>A deprecated client only gets a warning.</p>
+<p>The worker then asks <code>GET /version</code> whether the engine routes jobs by network zone. Every
+job this SDK polls carries the zone fields, so it needs workflow engine <code>0.46</code> or later
+whether or not the worker serves zones. An engine whose answer lacks
+<code>networkZones.supported: true</code> ends the worker with exit code 1 and the message <em>This
+worker needs a workflow engine that routes by network zone, 0.46 or later; the engine at
+&lt;URL_BLACKBOARD&gt; is &lt;version&gt;.</em> An engine that cannot be asked gets a warning, and
+the worker starts.</p>
+<h3 id="2-discovery">2. Discovery</h3>
 <p>The worker scans directories listed in <code>DIR_FUNCTION_BLOCKS</code> (comma-separated
 paths). For each directory, it recursively imports all Python modules. Import
 triggers the <code>@register_function_block</code> decorator, which adds the class and
 its registration metadata to the global registry.</p>
-<h3 id="2-registration">2. Registration</h3>
+<h3 id="3-registration">3. Registration</h3>
 <p>The worker registers itself with the workflow engine via the blackboard API,
-receiving a <code>worker_id</code>. It then sends all discovered function block
-registrations — including parameter/result JSON schemas, version information,
-and purity/idempotency flags.</p>
-<h3 id="3-concurrent-tasks">3. Concurrent Tasks</h3>
+with the <a href="#network-zones">network zones</a> it serves, receiving a <code>worker_id</code>.
+It then sends all discovered function block registrations — including
+parameter/result JSON schemas, version information, and purity/idempotency flags.</p>
+<p>A refused registration ends the worker with exit code 1, without a retry. Workflow engine
+<code>0.45</code> or later applies the version check to the registration too and answers <code>426</code> for a
+client it refuses, also when the check in step 1 could not be asked; the worker then logs <em>The
+engine refused this worker: &lt;the engine&rsquo;s reason&gt;</em>. The engine&rsquo;s own refusal, a <code>400</code> such
+as one of the worker&rsquo;s network zones, logs <em>Worker registration failed: &lt;the engine&rsquo;s
+message&gt;</em>. Any other client error, such as a <code>404</code> or <code>405</code>, comes from a wrong URL or a proxy
+and adds <em>Check URL_BLACKBOARD and any proxy in front of the engine.</em></p>
+<h3 id="4-concurrent-tasks">4. Concurrent Tasks</h3>
 <p>Two async tasks run concurrently on the main event loop:</p>
 <table>
 <thead>
@@ -8986,6 +9085,8 @@ and purity/idempotency flags.</p>
 <p>When the polling task receives jobs:</p>
 <ol>
 <li>Match <code>job.function_block_id</code> against the local registry.</li>
+<li>Build the job&rsquo;s <code>JobMeta</code>: its zone fields from the poll&rsquo;s <code>meta</code>, its identity from the
+   job&rsquo;s own fields, and the worker from its registration.</li>
 <li>Submit the job to a <code>ThreadPoolExecutor</code> with <code>max_workers=1</code>.</li>
 <li>Inside the worker thread, call <code>asyncio.run()</code> to execute the function
    block (this gives each job its own event loop).</li>
@@ -9028,6 +9129,42 @@ in order.</p>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="network-zones">Network zones</h2>
+<p>A network zone is a network that only its own workers reach; zones may reuse each other&rsquo;s
+addresses, for example two sites whose devices share the range <code>10.0.0.0/24</code>. Every device
+in the CMS is in one zone, and a device without one is in <code>default</code>. The engine hands a job
+only to a worker that serves the job&rsquo;s zone, so a worker must run where it reaches that
+zone&rsquo;s devices.</p>
+<p><code>NEOPS_WORKER_NETWORK_ZONES</code> lists the zones a worker serves. On startup the worker:</p>
+<ol>
+<li>runs the <a href="#1-version-check">version check</a>, as every worker does: it ends on an engine
+   that does not route by zone. An engine that cannot be asked at all is left to the
+   registration below;</li>
+<li>registers with its zones (<code>networkZones</code>):<ul>
+<li>a <code>400</code> ends the worker with the engine&rsquo;s message. The engine sends it for a zone the
+  CMS does not hold, and for a worker without zones once the CMS holds a zone besides
+  <code>default</code>;</li>
+<li>a <code>503</code> means the engine has not read the zones from the CMS since it first started.
+  The worker retries, as for an unreachable engine, for <code>STARTUP_RETRY_TIMEOUT</code> seconds;</li>
+<li>an answer that registers other zones than the worker asked for, or no zones at all (an
+  engine before <code>0.46</code>), ends the worker after it unregisters again. A worker without
+  <code>NEOPS_WORKER_NETWORK_ZONES</code> expects <code>default</code> back.</li>
+</ul>
+</li>
+</ol>
+<p>Each job&rsquo;s <a href="../../function-blocks/10-anatomy/#job-meta">meta</a> names the zone the job runs in
+and the zones its worker serves; job log lines carry the zone as <code>network_zone</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Several zones on one worker</p>
+<p>List several zones only if their addresses do not overlap as this host sees them. A
+worker that serves <code>zone-a</code> and <code>zone-b</code> reaches <code>10.0.0.1</code> in only one of them, and a
+job meant for the other zone&rsquo;s <code>10.0.0.1</code> logs in to the wrong device with that device&rsquo;s
+credentials.</p>
+</div>
+<p>How workflows place jobs into zones (the step&rsquo;s <code>networkZone</code>, <code>override</code>, and the zone of a
+job&rsquo;s device) is described in the engine&rsquo;s
+<a href="/neops-workflow-engine/docs/20-workflows/45-network-zones/">Network Zones</a> page.</p>
 <hr />
 <h2 id="graceful-shutdown">Graceful Shutdown</h2>
 <p>The worker handles <code>SIGINT</code> and <code>SIGTERM</code> signals:</p>
@@ -9078,7 +9215,90 @@ orchestrator&rsquo;s restart policy (Docker <code>restart: unless-stopped</code>
 <li>Keep one worker on the previous SDK image until the runs pinned to <code>0.1.0</code> have drained.</li>
 </ul>
 <p><strong>Order.</strong> Upgrade the workflow engine first, then the workers; an older worker keeps working against the newer engine. To roll back, do it the other way round: workers first, then the engine.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<hr />
+<h2 id="upgrading-to-network-zones">Upgrading to network zones</h2>
+<p>SDK <code>0.5.0</code> serves network zones. It needs workflow engine <code>0.46</code> or later, and on <code>0.x</code> the
+engine accepts only clients of its own minor version. Unlike the
+<a href="#upgrading-past-re-versioned-base-blocks">base-block upgrade above</a>, an older worker does not
+keep working against the newer engine once it restarts. The order for the whole platform
+(runs, core, engine, workers, zones), and what goes wrong on the core and engine side out of
+order, is on the engine&rsquo;s
+<a href="/neops-workflow-engine/docs/50-deployment/40-operations/#upgrading-to-046">Upgrading to 0.46</a>.
+The worker side of it:</p>
+<ul>
+<li>Replace every worker with SDK <code>0.5</code> once the engine runs <code>0.46</code>.</li>
+<li>Set <code>NEOPS_WORKER_NETWORK_ZONES=default</code> on the workers that serve the central network, in
+  their own service definition. Once a zone exists, the engine refuses every worker without
+  the setting at its next start.</li>
+<li>Start each zone&rsquo;s workers once their zones exist in the CMS. The engine refuses a worker that
+  names a zone the CMS does not hold yet.</li>
+</ul>
+<p>Out of order, on the worker side:</p>
+<ul>
+<li>a worker on SDK <code>0.5</code> against engine <code>0.45</code> exits 1 at its version check on every start,
+  until the engine is upgraded;</li>
+<li>a worker on SDK <code>0.4</code> keeps running against engine <code>0.46</code> until it restarts; restarted, it
+  stops at its version check and exits 1 with <em>Client 0.45.0 is not compatible with this
+  engine. Update the SDK.</em> Only when that check cannot reach the engine does the registration
+  refuse it instead, with <em>The engine refused this worker: …</em>.</li>
+</ul>
+<p><strong>Going back.</strong> Going back below core <code>2.4.0</code> deletes every zone and every device&rsquo;s zone; see
+core&rsquo;s <a href="https://github.com/zebbra/neops-core/blob/v2.4.0/docs/releases/v2.4.0.md#going-back-below-240">notes on going back below 2.4.0</a>.
+No order keeps the workers running across the engine&rsquo;s minor version, so go back in one
+stop: let every run finish, stop the workers, take the engine back to <code>0.45</code> (see the engine&rsquo;s
+<a href="/neops-workflow-engine/docs/50-deployment/40-operations/#going-back-to-045">Going back to 0.45</a>
+for its migration), then core, if you go below <code>2.4.0</code>, and then start the workers on SDK <code>0.4</code>.
+The engine goes back before core; the engine&rsquo;s
+<a href="/neops-workflow-engine/docs/50-deployment/40-operations/#going-back-to-045">Going back to 0.45</a>
+says why.</p>
+<p><strong>Base blocks.</strong> Four base blocks are re-versioned. A stored definition that pins an old
+version keeps starting and its job stays pending, as in the
+<a href="#upgrading-past-re-versioned-base-blocks">base-block upgrade above</a>: republish it with the new
+pins. A worker on the previous SDK cannot serve the old versions once it is replaced, so runs
+pinned to them have to finish before the upgrade starts.</p>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>From</th>
+<th>To</th>
+<th>What changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fb.base.neops.io/global_discover_network</code></td>
+<td><code>0.1.0</code></td>
+<td><code>0.2.0</code></td>
+<td>Creates devices in the job&rsquo;s zone and recognises them by IP inside that zone; each <code>device_identifiers</code> entry is paired with the zone, and <code>network_zone</code> is refused as an entry</td>
+</tr>
+<tr>
+<td><code>fb.base.neops.io/global_add_devices</code></td>
+<td><code>0.1.1</code></td>
+<td><code>0.2.0</code></td>
+<td>Takes an optional <code>network_zone</code> per device, else the job&rsquo;s zone, and recognises devices by IP inside that zone</td>
+</tr>
+<tr>
+<td><code>fb.base.neops.io/device_update_device</code></td>
+<td><code>0.1.1</code></td>
+<td><code>0.2.0</code></td>
+<td>Takes an optional <code>network_zone</code>, which moves the device</td>
+</tr>
+<tr>
+<td><code>fb.base.neops.io/network_device_get_interfaces</code></td>
+<td><code>0.1.0</code></td>
+<td><code>0.1.1</code></td>
+<td>Names its device by id, so its interfaces bind to that device also on an override job</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Your own blocks.</strong> A block that creates a device must now set <code>network_zone</code>, and an
+interface that names its device without an id must name the device&rsquo;s zone and its hostname
+or IP; see
+<a href="../../function-blocks/30-creating-entities/#network-zones">Creating Entities</a>. Both fail the
+job otherwise. <code>identifier_fields</code> takes groups now; a list of bare fields keeps working,
+each field being a group of one.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 20:05:18'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T20:05:18+00:00'>2026-11-06 20:05:18</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

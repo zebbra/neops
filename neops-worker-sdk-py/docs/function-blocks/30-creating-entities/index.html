@@ -3816,6 +3816,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network zones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-reference-without-an-id-is-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a reference without an id is bound
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-diffing-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8714,6 +8742,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network zones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-reference-without-an-id-is-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a reference without an id is bound
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-diffing-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8879,11 +8935,12 @@ programmatically, repeatably, and idempotently.</p>
 </tr>
 <tr>
 <td><code>identifier_fields</code></td>
-<td><code>Sequence[DeviceField\|InterfaceField\|GroupField]</code></td>
-<td>Fields used to detect duplicates</td>
+<td>groups of <code>DeviceField\|InterfaceField\|GroupField</code></td>
+<td>Fields used to detect duplicates; see <a href="#identifier-fields">Identifier fields</a></td>
 </tr>
 </tbody>
 </table>
+<p>A <code>Device</code> also requires <code>network_zone</code>; see <a href="#network-zones">Network zones</a>.</p>
 <p>An <code>id</code> is auto-generated at instantiation via a cryptographically random
 temporary value, usable immediately for cross-entity references (e.g., linking
 a new <code>Interface</code> to its parent <code>Device</code>).</p>
@@ -8892,39 +8949,43 @@ a new <code>Interface</code> to its parent <code>Device</code>).</p>
 <p>This function block discovers devices on a subnet and registers them in the
 CMS by appending new <code>Device</code> instances to the context:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DiscoverDevices</span><span class="p">(</span><span class="n">FunctionBlock</span><span class="p">[</span><span class="n">DiscoverParams</span><span class="p">,</span> <span class="n">DiscoverResult</span><span class="p">]):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">DiscoverParams</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionBlockResult</span><span class="p">[</span><span class="n">DiscoverResult</span><span class="p">]:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="n">discovered_ips</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_subnet</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">subnet</span><span class="p">)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="n">discovered_ips</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>            <span class="n">new_device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                <span class="n">hostname</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;discovered-</span><span class="si">{</span><span class="n">ip</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                <span class="n">ip</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                <span class="n">skip_if_identifier_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                <span class="n">identifier_fields</span><span class="o">=</span><span class="p">[</span><span class="n">DeviceField</span><span class="o">.</span><span class="n">ip</span><span class="p">],</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>            <span class="p">)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>            <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">devices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                <span class="n">context</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_device</span><span class="p">)</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Discovered </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)</span><span class="si">}</span><span class="s2"> devices on </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">subnet</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Discovered </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)</span><span class="si">}</span><span class="s2"> devices.&quot;</span><span class="p">,</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>            <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>            <span class="n">data</span><span class="o">=</span><span class="n">DiscoverResult</span><span class="p">(</span><span class="n">discovered_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)),</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="p">)</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_scan_subnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subnet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder: in practice, use icmplib or SNMP discovery.&quot;&quot;&quot;</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="k">del</span> <span class="n">subnet</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;10.0.1.1&quot;</span><span class="p">,</span> <span class="s2">&quot;10.0.1.2&quot;</span><span class="p">,</span> <span class="s2">&quot;10.0.1.3&quot;</span><span class="p">]</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">AcquireParams</span><span class="p">[</span><span class="n">DiscoverParams</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FunctionBlockAcquireResult</span><span class="p">:</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        <span class="k">del</span> <span class="n">params</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>        <span class="k">return</span> <span class="n">FunctionBlockAcquireResult</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;No resources required.&quot;</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">acquires</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">DiscoverParams</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">JobMeta</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionBlockResult</span><span class="p">[</span><span class="n">DiscoverResult</span><span class="p">]:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="n">discovered_ips</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_subnet</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">subnet</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="n">discovered_ips</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>            <span class="n">new_device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                <span class="n">hostname</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;discovered-</span><span class="si">{</span><span class="n">ip</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                <span class="n">ip</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                <span class="n">network_zone</span><span class="o">=</span><span class="n">NetworkZone</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">meta</span><span class="o">.</span><span class="n">network_zone</span><span class="p">),</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                <span class="n">skip_if_identifier_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                <span class="n">identifier_fields</span><span class="o">=</span><span class="p">[[</span><span class="n">DeviceField</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="n">DeviceField</span><span class="o">.</span><span class="n">network_zone</span><span class="p">]],</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>            <span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">devices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>                <span class="n">context</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_device</span><span class="p">)</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Discovered </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)</span><span class="si">}</span><span class="s2"> devices on </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">subnet</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="k">return</span> <span class="n">FunctionBlockResult</span><span class="p">(</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Discovered </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)</span><span class="si">}</span><span class="s2"> devices.&quot;</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>            <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>            <span class="n">data</span><span class="o">=</span><span class="n">DiscoverResult</span><span class="p">(</span><span class="n">discovered_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">discovered_ips</span><span class="p">)),</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="p">)</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_scan_subnet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subnet</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Placeholder: in practice, use icmplib or SNMP discovery.&quot;&quot;&quot;</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="k">del</span> <span class="n">subnet</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;10.0.1.1&quot;</span><span class="p">,</span> <span class="s2">&quot;10.0.1.2&quot;</span><span class="p">,</span> <span class="s2">&quot;10.0.1.3&quot;</span><span class="p">]</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">AcquireParams</span><span class="p">[</span><span class="n">DiscoverParams</span><span class="p">],</span> <span class="n">meta</span><span class="p">:</span> <span class="n">JobMeta</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionBlockAcquireResult</span><span class="p">:</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="k">del</span> <span class="n">params</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        <span class="k">return</span> <span class="n">FunctionBlockAcquireResult</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;No resources required.&quot;</span><span class="p">,</span> <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">acquires</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </span></code></pre></div>
 <p>Key observations:</p>
 <ol>
-<li><strong><code>Device(...)</code></strong> creates a wrapper with standard DTO fields plus creation options.</li>
+<li><strong><code>Device(...)</code></strong> creates a wrapper with standard DTO fields plus creation options,
+   in the job&rsquo;s network zone (<code>meta.network_zone</code>).</li>
 <li><strong><code>context.devices.append(new_device)</code></strong> adds the entity to the context; the
    diffing engine detects it as new at the end of execution.</li>
 <li>The temporary ID on <code>new_device.id</code> is valid for cross-references within the
@@ -8947,8 +9008,7 @@ enforces this constraint via a Pydantic model validator.</p>
 </div>
 <hr />
 <h2 id="identifier-fields">Identifier fields</h2>
-<p>Identifier fields tell the CMS which combination of fields constitutes a
-&ldquo;unique&rdquo; entity. Available options:</p>
+<p>Identifier fields tell the CMS how to find an existing entity. Available options:</p>
 <table>
 <thead>
 <tr>
@@ -8961,7 +9021,7 @@ enforces this constraint via a Pydantic model validator.</p>
 <tr>
 <td>Device</td>
 <td><code>DeviceField</code></td>
-<td><code>hostname</code>, <code>ip</code></td>
+<td><code>hostname</code>, <code>ip</code>, <code>network_zone</code></td>
 </tr>
 <tr>
 <td>Interface</td>
@@ -8977,16 +9037,85 @@ enforces this constraint via a Pydantic model validator.</p>
 </table>
 <p>These enums are validated against actual DTO model fields at import time — if
 the upstream API renames a field, the SDK fails fast rather than silently
-ignoring the mismatch. You can combine multiple fields for compound uniqueness:</p>
+ignoring the mismatch.</p>
+<p><code>identifier_fields</code> is a list of <strong>groups</strong>, tried in order:</p>
+<ul>
+<li>every field of a group must match the same record;</li>
+<li>a group is skipped when the entity lacks one of its fields;</li>
+<li>the first group that finds a record decides;</li>
+<li>a bare field is a group of one, so <code>[DeviceField.hostname, DeviceField.ip]</code> tries the
+  hostname, then the IP.</li>
+</ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Device</span><span class="p">(</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;core-rtr-01&quot;</span><span class="p">,</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">ip</span><span class="o">=</span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">skip_if_identifier_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">identifier_fields</span><span class="o">=</span><span class="p">[</span><span class="n">DeviceField</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">DeviceField</span><span class="o">.</span><span class="n">ip</span><span class="p">],</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">network_zone</span><span class="o">=</span><span class="n">NetworkZone</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">meta</span><span class="o">.</span><span class="n">network_zone</span><span class="p">),</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">skip_if_identifier_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">identifier_fields</span><span class="o">=</span><span class="p">[[</span><span class="n">DeviceField</span><span class="o">.</span><span class="n">ip</span><span class="p">,</span> <span class="n">DeviceField</span><span class="o">.</span><span class="n">network_zone</span><span class="p">]],</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
 </span></code></pre></div>
-<p>The CMS considers the entity a duplicate only if <strong>all</strong> listed fields match an
-existing record. Field order is preserved in the generated DTO.</p>
+<p>A group that names <code>network_zone</code> looks only inside that zone; one that does not matches
+devices in every zone. Every base block puts the zone in each device group. A group needs a
+field besides <code>network_zone</code>, and an empty group is refused. A lookup that finds two records
+fails the run.</p>
+<hr />
+<h2 id="network-zones">Network zones</h2>
+<p>Every device is in one <a href="../../deployment/10-worker-lifecycle/#network-zones">network zone</a>; a
+device without one is in <code>default</code>. A block sets the zone of each device it creates itself:
+nothing fills it in.</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create a device</td>
+<td><code>Device(..., network_zone=NetworkZone(name=meta.network_zone))</code>. Without <code>network_zone</code> the wrapper raises a <code>ValidationError</code>. Any zone the CMS holds is accepted, so map it from <code>meta</code>: the job&rsquo;s zone is the one network its worker reached</td>
+</tr>
+<tr>
+<td>Name an interface&rsquo;s device</td>
+<td><code>DeviceReference(id=...)</code>, or <code>DeviceReference(hostname=..., ip=..., network_zone=...)</code> with the device&rsquo;s own zone. Without an id, a reference needs its zone and a hostname or an IP; otherwise it raises a <code>ValidationError</code></td>
+</tr>
+<tr>
+<td>Move a device</td>
+<td><code>context.device.network_zone = NetworkZone(name="zone-a")</code>. The device&rsquo;s next jobs, with its credentials, go to that zone&rsquo;s workers</td>
+</tr>
+<tr>
+<td>Work on one zone&rsquo;s devices</td>
+<td><code>context.devices_in_zone(meta.network_zone)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>NetworkZone(name=...)</code> is sent by name, as <code>Platform(short_name=...)</code> is; the CMS resolves it.
+A zone a block writes, on a device or in a reference, always goes by its name alone, also one
+copied from a locked device together with its id.
+<code>NetworkZone(name="default")</code> stores no zone.</p>
+<h3 id="how-a-reference-without-an-id-is-bound">How a reference without an id is bound</h3>
+<p>Before the result leaves the worker, an interface&rsquo;s device reference without an id is matched
+against the job&rsquo;s devices, on every field it carries, its zone included, in this order:</p>
+<ol>
+<li>devices created in the same job: the reference becomes the device&rsquo;s temporary id, which
+   the CMS maps to the device it creates, or to the existing one it skips to;</li>
+<li>the device the job runs on (<code>context.device</code>): the reference becomes that device&rsquo;s id;</li>
+<li>the devices the job holds: the same.</li>
+</ol>
+<p>A reference that matches none of them, or carries no zone, is sent as it is, and the CMS
+resolves it. The job fails with <code>retryable=False</code>, and none of its changes are sent, when a
+reference matches two devices at one step, or matches a device of the job by hostname and IP
+but names another zone. Name the device by its id where you have it, as
+<code>network_device_get_interfaces</code> does for the device it runs on.</p>
+<div class="admonition warning">
+<p class="admonition-title">Narrow with <code>devices_in_zone</code>, never by removing devices</p>
+<p>A device removed from <code>context.devices</code> is <strong>deleted</strong> in the CMS. <code>devices_in_zone()</code>
+returns a read-only tuple of the context&rsquo;s devices in that zone; the devices left out of
+it stay where they are.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">devices_in_zone</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">network_zone</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="o">...</span>
+</span></code></pre></div>
+</div>
 <hr />
 <h2 id="the-diffing-engine">The diffing engine</h2>
 <p>You never call a &ldquo;create entity&rdquo; API yourself. Instead, the SDK tracks changes
@@ -9048,7 +9177,7 @@ and <code>global_add_devices</code>.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../40-pure-and-idempotent/">Pure and Idempotent Function Blocks</a> —
 understand how safety semantics affect workflow retry and rollback behavior.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 14:49:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T14:49:16+00:00'>2026-10-29 14:49:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:03:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:03:24+00:00'>2026-11-06 13:03:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -4642,6 +4642,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#workers-per-network-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workers per network zone
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8781,6 +8792,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#workers-per-network-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workers per network zone
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -9028,6 +9050,44 @@ more concurrent work, add more worker instances.</p>
 </tbody>
 </table>
 <p>This lets you scale each concern independently and isolate failures.</p>
+<h3 id="workers-per-network-zone">Workers per network zone</h3>
+<p>A worker takes only jobs in the <a href="../10-worker-lifecycle/#network-zones">network zones</a> it
+serves, so each zone needs workers that run inside its network. Run at least two per zone: a
+rollback goes back to the zone its forward job ran in, and the worker it needs is often the one
+that just failed. A zone with a single worker also holds up its runs during every restart of
+that worker.</p>
+<p>A worker inside network B, on host networking; <code>10.99.0.1</code> stands for an engine address
+network B can reach:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>neops-worker-b<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">URL_BLACKBOARD</span><span class="o">=</span>http://10.99.0.1:3030<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DIR_FUNCTION_BLOCKS</span><span class="o">=</span>neops/fb<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">WORKER_NAME</span><span class="o">=</span>neops-worker-b<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">NEOPS_WORKER_NETWORK_ZONES</span><span class="o">=</span>zone-b<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>quay.io/zebbra/neops-worker-sdk:0.5.0
+</span></code></pre></div>
+<p>With Helm, one more release per zone, pinned to nodes inside that network. Every key under
+<code>env</code> becomes an environment variable:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>helm<span class="w"> </span>install<span class="w"> </span>neops-worker-b<span class="w"> </span>oci://quay.io/zebbra/charts/neops-worker<span class="w"> </span>--version<span class="w"> </span><span class="m">0</span>.5.0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--set<span class="w"> </span><span class="nv">replicaCount</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--set<span class="w"> </span>env.URL_BLACKBOARD<span class="o">=</span>http://neops-neops-workflow-engine:3030<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--set<span class="w"> </span>env.WORKER_NAME<span class="o">=</span>neops-worker-b<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span>--set<span class="w"> </span>env.NEOPS_WORKER_NETWORK_ZONES<span class="o">=</span>zone-b<span class="w">   </span><span class="c1"># escape commas for several zones: default\,zone-b</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Networking.</strong> A device address inside one of the worker host&rsquo;s own networks is answered
+  there, by whatever runs on that host, and that answer receives the device&rsquo;s credentials. On
+  a Docker host those networks include Docker&rsquo;s default bridge (<code>172.17.0.0/16</code>) and the
+  compose address pools; in Kubernetes, the pod and service ranges. Run another zone&rsquo;s
+  workers on a host of their own inside that zone&rsquo;s network, with host networking. On a
+  shared Docker host, host networking does not get a worker out of Docker&rsquo;s ranges: the
+  bridges are routes on the host itself. A worker serves several zones only when their
+  addresses do not overlap as seen from its host.</li>
+<li><strong>Reaching the engine.</strong> The engine&rsquo;s worker routes are unauthenticated. Giving a remote
+  site&rsquo;s workers a network path to them, such as a site-to-site VPN, is the operator&rsquo;s job and
+  outside Neops.</li>
+<li><strong>The central workers</strong> serve the devices without a zone: set
+  <code>NEOPS_WORKER_NETWORK_ZONES=default</code> on them before the first zone is created.</li>
+</ul>
 <hr />
 <h2 id="health-monitoring">Health Monitoring</h2>
 <h3 id="heartbeat">Heartbeat</h3>
@@ -9037,46 +9097,51 @@ offline threshold (6 minutes by default), it marks the worker offline and fails 
 in-flight job as worker-offline; it never re-queues a claimed job.</p>
 <h3 id="container-healthcheck">Container healthcheck</h3>
 <p>The worker removes <code>HEALTH_FILE</code> (default <code>/tmp/neops-worker-alive</code>) when it starts, so
-a restarted container cannot report healthy from the previous process&rsquo;s file. Once it
+a restarted container cannot report healthy from the previous process&rsquo;s file, and again
+when it stops, after its last heartbeat. Once it
 polls, it touches the file at the start of every poll cycle, after every job, and on
 every heartbeat tick. <code>neops_worker_health</code> exits 0 when that file is younger than
 <code>--max-age</code> seconds (default: 3 × <code>HEARTBEAT_INTERVAL</code>) and 1 otherwise;
 <code>python -m neops_worker_sdk.cli.health</code> is the same check.</p>
 <p>The image declares this check as its <code>HEALTHCHECK</code>, so Docker and Docker Compose report
 the worker&rsquo;s health without any extra configuration:</p>
-<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>10s<span class="w"> </span>--start-period<span class="o">=</span>300s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>CMD<span class="w"> </span><span class="o">[</span><span class="s2">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="o">]</span>
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>10s<span class="w"> </span>--start-period<span class="o">=</span>300s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>CMD<span class="w"> </span><span class="o">[</span><span class="s2">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="o">]</span>
 </span></code></pre></div>
 <p>To change the timings in Compose, override it (<code>uv run --no-sync neops_worker_health</code>
 runs the same check):</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">worker</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300s</span><span class="w">  </span><span class="c1"># &gt;= 2 x STARTUP_RETRY_TIMEOUT: registration can retry for 240 s</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">worker</span><span class="p">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300s</span><span class="w">  </span><span class="c1"># covers an engine back during registration; raise it with the timeouts</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </span></code></pre></div>
 <p>The Helm chart (<code>chart/neops-worker</code>) runs the same command as a <code>startupProbe</code> (30 × 10 s,
 the same 300 s budget as <code>start_period</code>) and a <code>livenessProbe</code>. Both are on by default and
 are configured in <code>values.yaml</code>; set <code>livenessProbe.enabled: false</code> (or
 <code>startupProbe.enabled: false</code>) to drop one. There is no readiness probe, since the worker
 serves no traffic.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">livenessProbe</span><span class="p">:</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">exec</span><span class="p">:</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">livenessProbe</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">exec</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;/app/.venv/bin/neops_worker_health&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </span></code></pre></div>
 <p>The probes need a writable, non-empty <code>HEALTH_FILE</code>. With <code>readOnlyRootFilesystem: true</code>,
 mount an <code>emptyDir</code> at <code>/tmp</code> (or point <code>HEALTH_FILE</code> at a writable volume). An empty
 <code>HEALTH_FILE</code> disables the file, and the probes then fail on every check.</p>
-<p>Before it polls, the worker registers itself and then its function blocks, each retried
-for up to <code>STARTUP_RETRY_TIMEOUT</code> seconds (120 by default) while the engine is
-unreachable. Keep <code>start_period</code> at or above twice that, or a worker waiting out an engine
+<p>Before it polls, the worker asks the engine twice about its version, each call waiting up
+to <code>API_REQUEST_TIMEOUT</code> seconds (30 by default) on an engine that hangs. It then registers
+itself and its function blocks, each retried for up to <code>STARTUP_RETRY_TIMEOUT</code> seconds (120
+by default) while the engine is unreachable. With the defaults, 300 s covers an engine that
+comes back while the worker registers. If you raise either timeout, raise <code>start_period</code>
+(and the chart&rsquo;s <code>startupProbe.failureThreshold</code>) with it, towards
+2 x <code>STARTUP_RETRY_TIMEOUT</code> + 2 x <code>API_REQUEST_TIMEOUT</code>, or a worker waiting out an engine
 restart is reported unhealthy before it ever polls.</p>
 <p>The heartbeat tick refreshes the file whether or not the engine answers, so an engine
 outage does not make a busy worker look dead: a job that is still running, or a result
@@ -9142,9 +9207,19 @@ as well: that restart is what brings it back.</p>
 <td>The engine is unreachable; delivery is retried for up to <code>RESULT_PUSH_TIMEOUT</code></td>
 </tr>
 <tr>
+<td><code>Client … is not compatible with workflow engine …; refusing to start. …</code></td>
+<td>ERROR</td>
+<td>The engine refused the worker&rsquo;s client version at the version check (for example an engine before 0.46); the worker exits 1 before it registers. The line says whether to upgrade the engine or run another SDK release</td>
+</tr>
+<tr>
+<td><code>This worker needs a workflow engine that routes by network zone, …</code></td>
+<td>ERROR</td>
+<td>The engine is older than 0.46 or does not report <code>networkZones.supported</code>; the worker exits 1 before it registers. Upgrade the engine</td>
+</tr>
+<tr>
 <td><code>Worker registration failed</code></td>
 <td>ERROR</td>
-<td>Cannot reach the workflow engine, it kept failing until <code>STARTUP_RETRY_TIMEOUT</code>, or it answered with a client error such as a 404 from a wrong <code>URL_BLACKBOARD</code></td>
+<td>Cannot reach the workflow engine, it kept failing until <code>STARTUP_RETRY_TIMEOUT</code>, or it answered with a client error such as a 404 from a wrong <code>URL_BLACKBOARD</code>. When the engine itself refused the worker with a 400, such as for its network zones, or registered it for other zones, the line carries the engine&rsquo;s reason without the hint to check <code>URL_BLACKBOARD</code></td>
 </tr>
 <tr>
 <td><code>The engine refused this worker: …</code></td>
@@ -9209,9 +9284,14 @@ for alerting.</p>
 <li><strong>TLS</strong>: Configure <code>URL_BLACKBOARD</code> with <code>https://</code> in production.
   The underlying HTTP client respects standard TLS settings.</li>
 <li><strong>Least privilege</strong>: Each worker only needs access to the devices its
-  function blocks manage. Use separate workers for different network zones.</li>
+  function blocks manage. Give each network its own workers and
+  <a href="#workers-per-network-zone">network zone</a>, so a worker never reaches into
+  another network&rsquo;s address space.</li>
+<li><strong>Zones route jobs; they do not authenticate workers</strong>: any worker that
+  reaches the engine&rsquo;s worker routes can register any zone and receive its
+  devices&rsquo; credentials. Keep those routes on a private network path.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-03 09:53:22'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-03T09:53:22+00:00'>2026-11-03 09:53:22</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:52:10'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:52:10+00:00'>2026-11-06 13:52:10</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

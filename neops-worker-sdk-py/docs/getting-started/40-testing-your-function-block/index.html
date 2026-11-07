@@ -8823,7 +8823,7 @@ handle this internally.</p>
 <ol>
 <li>Build a <code>WorkflowContext</code> &ndash; the data envelope your function block receives at runtime.</li>
 <li>Instantiate your function block class.</li>
-<li>Call <code>execute_function_block()</code> with parameters and context.</li>
+<li>Call <code>execute_function_block()</code> with parameters, context and the job&rsquo;s meta (<code>create_job_meta()</code>).</li>
 <li>Assert against the result.</li>
 </ol>
 <p>Start with a helper that creates a minimal context:</p>
@@ -8834,20 +8834,19 @@ handle this internally.</p>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">)</span>
 </span></code></pre></div>
 <p><code>WorkflowContext</code> is the data envelope that neops passes to your function block at
-runtime — it contains device info, credentials, and workflow metadata. For unit tests
+runtime — it contains the devices, interfaces and groups the job works on. For unit tests
 of a simple block like Echo, an empty context is enough since the block does not
 access any device data.</p>
 <p>Now write the actual test:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_echo_returns_same_text</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">block</span> <span class="o">=</span> <span class="n">Echo</span><span class="p">()</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">block</span><span class="o">.</span><span class="n">execute_function_block</span><span class="p">(</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="n">params</span><span class="o">=</span><span class="n">EchoParameters</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">),</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="n">context</span><span class="o">=</span><span class="n">_create_context</span><span class="p">(),</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="p">)</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">echoed_message</span> <span class="o">==</span> <span class="s2">&quot;hello&quot;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="n">params</span><span class="o">=</span><span class="n">EchoParameters</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">),</span> <span class="n">context</span><span class="o">=</span><span class="n">_create_context</span><span class="p">(),</span> <span class="n">meta</span><span class="o">=</span><span class="n">create_job_meta</span><span class="p">()</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">echoed_message</span> <span class="o">==</span> <span class="s2">&quot;hello&quot;</span>
 </span></code></pre></div>
 <p>The test creates an <code>Echo</code> instance, executes it with <code>text="hello"</code>, and verifies that
 the result is successful and contains the expected output. Run it with:</p>
@@ -8930,7 +8929,7 @@ is ~10 min for offline dev.</p>
 <li><strong><a href="../../device-connections/">Device Connections</a></strong> &ndash; opening sessions, running commands, parsing output</li>
 <li><strong><a href="../../testing/">Testing</a></strong> &ndash; remote lab setup, fixtures, and advanced assertions</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 13:44:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T13:44:16+00:00'>2026-09-08 13:44:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:45:57'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:45:57+00:00'>2026-11-06 12:45:57</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
