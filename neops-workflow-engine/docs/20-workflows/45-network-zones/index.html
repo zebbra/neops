@@ -9134,7 +9134,8 @@ parameter.</p>
 <li>A <code>networkZone</code> expression that reads anything but <code>parameters</code>, or does not compile, is refused with
   <code>400 InvalidDocument</code>.</li>
 <li>A plain zone name the CMS does not hold is reported as the advisory finding <code>NETWORK_ZONE_UNKNOWN</code>: the zone may be
-  created before the first run. See <a href="../15-publishing/#network-zones">Publishing</a>.</li>
+  created before the first run. When the engine could not read the CMS, the finding says that its last read lacks the
+  zone. See <a href="../15-publishing/#network-zones">Publishing</a>.</li>
 </ul>
 <h2 id="workers-and-their-zones">Workers and their zones</h2>
 <p>A worker names the zones it serves when it registers, from <code>NEOPS_WORKER_NETWORK_ZONES</code> (comma-separated) in the
@@ -9142,13 +9143,20 @@ Worker SDK. The engine sends it <code>networkZones</code> on <code>POST /workers
 <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;worker-b&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.5.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;networkZones&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;zone-b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <ul>
-<li>A worker that lists no zones serves <code>default</code>. Once the CMS holds a zone besides <code>default</code>, a worker must list its
-  zones, even if only <code>default</code>: registration without a list (or with an empty one) is refused with
+<li>A worker that lists no zones serves <code>default</code>, and is stored and echoed as <code>["default"]</code>, like one that lists it.
+  Its <code>zonesListed</code> is <code>false</code> in the worker responses, so the Monitor App can name it. Once the CMS holds a zone
+  besides <code>default</code>, a worker must list its zones, even if only <code>default</code>: registration without a list (or with an
+  empty one) is refused with
   <code>400 This installation has network zones. Set NEOPS_WORKER_NETWORK_ZONES, for example to default.</code></li>
 <li>A zone the CMS does not hold is refused with <code>400 Unknown network zone: &lt;name&gt;. Create it in the CMS first, on the
-  web client's Network zones page, in Django admin, or with networkZoneUpsert.</code></li>
+  web client's Network zones page, in Django admin, or with networkZoneUpsert.</code>
+  When the engine could not read the CMS for this registration, the refusal says so instead: <code>400 Unknown network
+  zone &lt;name&gt;: the CMS could not be read; its last read lacks the zone. GET /health says whether it answers.</code>
+  The Worker SDK takes that <code>400</code> as final and exits: restart the worker once the CMS answers.</li>
 <li>A worker that lists several zones registers, with a warning in the engine log: the addresses of those zones must
   not overlap as seen from the worker&rsquo;s host.</li>
+<li>Every registration reads the CMS&rsquo;s zones before it is answered, so a zone created a moment ago is found, and a zone
+  the CMS deleted is refused.</li>
 <li>Registration answers <code>503</code> only while the engine has never read the zones from the CMS (see below).</li>
 </ul>
 <p>A worker claims only jobs of the zones it serves. The zone is part of the claim query, so a job in a zone no worker
@@ -9174,25 +9182,83 @@ jobs:</p>
 </span></code></pre></div>
 <p>The engine does not check whether a zone has an online worker before it creates a job there: a job in a zone nobody
 serves waits until a worker of that zone comes online or <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code> (one hour by default) fails
-it with <em>No worker serving network zone &lsquo;<name>&rsquo; polled the job within …</em>. A waiting <code>EXECUTE</code> job holds the engine&rsquo;s
-drain phase, so new runs in every zone wait with it. The Monitor App&rsquo;s Workers page flags such zones.</p>
+it with <em>No worker serving the job&rsquo;s network zone polled it; it waited … (pending timeout: …)</em>. When no live worker of
+the zone has the job&rsquo;s function block registered, the engine does not retry that failure, so it comes after one
+timeout. When one has, that worker is busy with other jobs: the failure says so and is retried like any other failure.
+The job and its log records name the zone. A waiting <code>EXECUTE</code> job holds the engine&rsquo;s drain phase, so new runs in every
+zone wait with it. The Monitor App&rsquo;s Workers page flags such zones.</p>
+<ul>
+<li>A never-polled <code>EXECUTE</code> job fails its run like any failed step.</li>
+<li>A never-polled <code>ROLLBACK</code> job halts the rollback, and the run ends <code>FAILED_UNSAFE</code>. Until the pending timeout fails
+  it, the waiting job holds the drain phase like a waiting <code>EXECUTE</code> job. Its ledger entry stays open: resolve it
+  in <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off">remediation</a>, which needs no worker, or roll it back once
+  a worker of the zone is back; a rollback started while the zone has no worker waits out another pending timeout.</li>
+</ul>
 <p>Run at least two workers for every zone, <code>default</code> included, so a zone&rsquo;s jobs keep moving while one of its workers
 restarts. The <code>developer-preview</code> engine admits at most 2 workers per installation, so two workers in each of several
 zones need the licensed (<code>enterprise</code>) engine.</p>
 <h2 id="where-the-engine-reads-zones">Where the engine reads zones</h2>
-<p>The engine keeps its own table of zones, read from the CMS when it starts and every 60 seconds after: the CMS&rsquo;s zones
-plus <code>default</code>. A zone the CMS deletes is marked deleted in the table and comes back if the CMS creates it again. Once
-read, the table serves while the CMS is down.</p>
-<p>Before refusing a name its table lacks, the engine reads the CMS once more, so a zone created a moment ago is found.
-It does so at worker registration, when a run starts, when a job is created, and when a result writes a zone (see
-<a href="#what-the-engine-refuses">What the engine refuses</a>):</p>
+<p>The engine keeps its own table of zones: the CMS&rsquo;s zones plus <code>default</code>. A zone the CMS deletes is marked deleted in the
+table and comes back if the CMS creates it again. Once read, the table serves while the CMS is down. A read the CMS does
+not answer within <code>NEOPS_CMS_REQUEST_TIMEOUT_MS</code> (30 seconds by default) counts as the CMS being down.</p>
+<p>The engine reads the CMS&rsquo;s zones at fixed moments only, never on a timer:</p>
 <ul>
-<li><strong>When a run starts</strong>, a declared zone the CMS does not hold fails the run <code>FAILED_SAFE</code> with reason
-  <code>unknown_network_zone</code>, before anything is locked. The reason names each declaration and its zone. While the CMS
-  is down, the engine decides from its last read.</li>
-<li><strong>When a job is created</strong>, a declared zone the CMS has deleted since the run started fails the step with
-  <code>unknown_network_zone</code>. If the CMS cannot be read, the job is created and waits like any other. A zone read from the
-  job&rsquo;s device is not checked again: the CMS holds it.</li>
+<li><strong>At start.</strong> It reads them once, retrying with backoff (1 second, doubling up to 1 minute) until the CMS answers.</li>
+<li><strong>When a worker registers.</strong> It waits for that read at most 10 seconds, then answers from the table.</li>
+<li><strong>When a definition is published, or a run&rsquo;s resource discovery starts,</strong> naming a zone the table lacks. It reads them
+  once more before it reports the zone or fails the run, so a zone created a moment ago is found. Resource discovery
+  waits for that read at most 2 seconds; a publish waits until the read gives up, after <code>NEOPS_CMS_REQUEST_TIMEOUT_MS</code>
+  when the CMS does not answer, and then answers from the table.</li>
+<li><strong>In every run&rsquo;s lock phase,</strong> right before it asks the CMS to lock the run&rsquo;s entities.</li>
+</ul>
+<p>A run talks to the CMS only in its lock phase and at its write-back (the unlock). Between the two it makes no CMS call:
+it checks zones against the zones it read when it locked, its snapshot, and leaves every lookup to the CMS at the unlock.</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant W as Worker
+  participant E as Engine
+  participant T as Engine zone table
+  participant C as neops-core (CMS)
+  Note over E,C: Boot
+  E-&gt;&gt;C: networkZones (retry with backoff until it answers)
+  C--&gt;&gt;T: zones stored
+  Note over W,C: Worker registration
+  W-&gt;&gt;E: register(networkZones)
+  E-&gt;&gt;C: networkZones (waits at most 10 s)
+  C--&gt;&gt;T: refreshed
+  E--&gt;&gt;W: 503 before the first read / 400 unknown zone / registered
+  Note over E,C: Run, lock phase
+  E-&gt;&gt;C: networkZones
+  C--&gt;&gt;T: refreshed, the run keeps its snapshot
+  E-&gt;&gt;C: getAndLockResources
+  Note over E: Execution: no CMS call, zone checks use the snapshot
+  Note over E,C: Run, write-back
+  E-&gt;&gt;C: unlockResources(dbUpdates)
+  C--&gt;&gt;E: applied, or refused (the CMS judges zones and lookups)
+  opt refused: WRITE_REFUSED, nothing applied
+    alt the run has no side effects
+      E-&gt;&gt;C: unlockResources(no writes)
+      C--&gt;&gt;E: locks released, the run ends FAILED_SAFE
+    else the run has side effects
+      Note over E: the run ends FAILED_UNSAFE, keeps its locks and its writes for an operator's retry
+    end
+  end</code></pre>
+<p>A declared zone the CMS does not hold fails the run <code>FAILED_SAFE</code> with reason <code>unknown_network_zone</code>, before anything
+is locked:</p>
+<ul>
+<li><strong>When resource discovery starts,</strong> the engine checks every step&rsquo;s <code>ACQUIRE</code> job against its table, reading the CMS
+  once more when the table lacks a declared zone. A zone the CMS does not hold either fails the run before any job is
+  created. When that read fails or has not arrived within 2 seconds, resource discovery refuses nothing, and the run
+  sits in <code>RESOURCE_DISCOVERY</code> while the step&rsquo;s <code>ACQUIRE</code> job waits for a worker of its zone. A zone the CMS lacks
+  then fails the run only after <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code> (60 minutes by default), as <code>acquire_failed</code>, not
+  <code>unknown_network_zone</code>. See
+  <a href="../../50-deployment/40-operations/#a-cms-that-stops-answering">A CMS that stops answering</a>.</li>
+<li><strong>In the lock phase,</strong> the engine reads the CMS&rsquo;s zones. A declaration naming a zone the CMS does not hold fails the
+  run; the reason names each declaration and its zone. When the CMS cannot be read, the read fails like the lock
+  would: a refusal the CMS will repeat, such as a rejected <code>NEOPS_CMS_TOKEN</code> or a query its schema lacks, ends the run
+  <code>FAILED_SAFE</code> with <code>lock_refused</code>; any other failure retries the lock attempt with backoff, the cause in the reason,
+  and the run stays in <code>LOCKING</code>. So does a failure of the engine&rsquo;s own database to store the zones the CMS answered,
+  which the reason and the log name as such, not as a CMS failure. The engine logs every failed read at warn with the
+  run&rsquo;s id.</li>
 </ul>
 <h2 id="a-devices-zone-in-the-context">A device&rsquo;s zone in the context</h2>
 <p>Every device a run locks carries its zone under <code>networkZone</code>, and so does the device of every locked interface:</p>
@@ -9269,7 +9335,7 @@ its <code>reason</code>, and the job&rsquo;s row says why in <code>resultRejecte
 <tbody>
 <tr>
 <td><code>network_zone</code></td>
-<td>names a zone in a shape other than <code>{"name": ...}</code>, an id alone included; patches a path below <code>network_zone</code>, or at <code>networkZone</code>, the context&rsquo;s spelling; or creates or moves a device into a zone the engine&rsquo;s zone table does not hold</td>
+<td>names a zone in a shape other than <code>{"name": ...}</code>, an id alone included; patches a path below <code>network_zone</code>, or at <code>networkZone</code>, the context&rsquo;s spelling; or creates or moves a device into a zone missing from the zones the run read when it locked</td>
 </tr>
 <tr>
 <td><code>cms_lookup</code></td>
@@ -9278,9 +9344,15 @@ its <code>reason</code>, and the job&rsquo;s row says why in <code>resultRejecte
 </tbody>
 </table>
 <p>Whether a create&rsquo;s lookup finds one record, two or none, whether a group name is taken, and whether a reference finds
-its device are for the CMS to decide at the unlock. The zone check reads the engine&rsquo;s zone table, and reads the CMS&rsquo;s
-zones once more when a result names a zone the table lacks, so a zone created since the last read is taken; a zone the
-CMS deleted since is caught at the unlock.</p>
+its device are for the CMS to decide at the unlock. A zone the CMS deletes while the run holds its locks is caught
+there too.</p>
+<p>A write-back the CMS refuses is applied in none of its parts. The run fails with <code>reasonCode</code>
+<a href="../70-lifecycle/#failure-codes"><code>write_refused</code></a> and the CMS&rsquo;s message in its <code>reason</code>. Once the refusal is recorded, the engine never sends
+the refused writes again on its own, not on a retry and not after a restart. When the run has no side effects, it ends
+<code>FAILED_SAFE</code>, its writes are discarded, and the engine releases the locks with an unlock that carries no writes. When
+it has side effects, the devices may hold what the CMS refused: the run ends <code>FAILED_UNSAFE</code> with <code>unsafeCause</code>
+<code>write_refused</code>, keeps its writes and its locks, and an operator either
+<a href="../70-lifecycle/#retrying-a-refused-write-back">retries the write-back</a> once the cause is fixed, or remediates the run.</p>
 <h2 id="reading-where-a-step-ran">Reading where a step ran</h2>
 <p><code>&lt;step_label&gt;.meta</code> holds the zone a step&rsquo;s job ran in and why, the step&rsquo;s own declaration, the worker that ran it and
 the job&rsquo;s identity. See <a href="../30-parameters/#where-a-step-ran-meta">Where a step ran: <code>meta</code></a>.</p>
@@ -9353,7 +9425,7 @@ them.</p>
 </span></code></pre></div>
 <p>The first step sends the record&rsquo;s credentials to whatever answers at that address in network B before any identity
 check runs, so onboard with credentials meant for that network.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:43:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:43:54+00:00'>2026-11-06 16:43:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 12:37:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T12:37:01+00:00'>2026-11-07 12:37:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

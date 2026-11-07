@@ -3352,6 +3352,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#retry-a-write-back-the-cms-refused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry a write-back the CMS refused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#health-check" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8959,6 +8970,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#retry-a-write-back-the-cms-refused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry a write-back the CMS refused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#health-check" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9108,7 +9130,7 @@
 <tr>
 <td>Workflow Executions</td>
 <td><code>/workflow-execution</code></td>
-<td>Trigger, monitor, and abort workflow executions; remediate unsafe failures (<code>/:id/remediation</code>, <code>/:id/remediation/rollback</code>, <code>/:id/remediation/resolve</code>)</td>
+<td>Trigger, monitor, and abort workflow executions; remediate unsafe failures (<code>/:id/remediation</code>, <code>/:id/remediation/rollback</code>, <code>/:id/remediation/resolve</code>, <code>/:id/remediation/write-back</code>)</td>
 </tr>
 <tr>
 <td>Blackboard</td>
@@ -9303,17 +9325,66 @@ started (<code>triggerType</code>). <code>GET /workflow-definition/&lt;id&gt;</c
 <code>createdByUsername</code>).</p>
 <h3 id="errors-for-an-unknown-id">Errors for an unknown id</h3>
 <p>Every route that names one object (a run, a workflow definition, a function block, a worker) answers <code>404</code> with the standard error body when it does not exist, and <code>400</code> when the id is not a UUID where a UUID is required. None answers <code>200</code> with an empty body.</p>
+<h3 id="retry-a-write-back-the-cms-refused">Retry a write-back the CMS refused</h3>
+<p>A run with side effects whose writes the CMS refused rests in <code>FAILED_UNSAFE_ACK</code> with
+<code>unsafeCause</code> <code>write_refused</code>, holding its locks and keeping its writes. Once the cause is fixed in the CMS, send them
+again, with no body:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/write-back
+</span></code></pre></div>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;applied&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;refusal&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed_ack&quot;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Answer</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200</code>, <code>applied: true</code></td>
+<td>The CMS applied the writes and released the locks; the run is <code>COMPLETED_ACK</code></td>
+</tr>
+<tr>
+<td><code>200</code>, <code>applied: false</code></td>
+<td>The CMS refused them again: <code>refusal</code> is its message, and the run stays <code>FAILED_UNSAFE_ACK</code> with its locks</td>
+</tr>
+<tr>
+<td><code>409</code></td>
+<td>The run has no refused write-back to retry, is in <code>ROLLBACK</code>, no longer holds its locks, or its rollback or resolve has started</td>
+</tr>
+<tr>
+<td><code>409</code>, the CMS no longer holds the locks</td>
+<td>The CMS took nothing this time; the run records that it no longer holds the locks and is offered no further retry, and <code>remediation/rollback</code> answers <code>409</code> too, since its jobs would change devices another run may lock. An earlier retry whose answer was lost may have applied the writes: check the CMS, then resolve the run. Do not run the workflow again to apply them: that could apply them twice</td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td>The engine failed around the call: the writes may or may not have been applied; check the CMS</td>
+</tr>
+<tr>
+<td><code>502</code></td>
+<td>The CMS refused the call itself; the run is unchanged</td>
+</tr>
+<tr>
+<td><code>503</code></td>
+<td>No usable answer from the CMS, or the engine is changing epochs; the run is unchanged and nothing retries in the background. If the CMS applied the writes and only its answer was lost, the next retry answers <code>409</code> because the locks are gone</td>
+</tr>
+</tbody>
+</table>
+<p>It needs <code>workflow-execution-resolve:write</code>. The ledger&rsquo;s <code>writeBackRetryable</code> says whether the route takes a retry
+now, and its <code>rollbackRefusal</code> why a rollback is not taken once the locks are gone. See
+<a href="../../20-workflows/70-lifecycle/#retrying-a-refused-write-back">Retrying a refused write-back</a>.</p>
 <h3 id="health-check">Health check</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># {&quot;healthy&quot;: true, &quot;authz&quot;: {&quot;mode&quot;: &quot;enforce&quot;, &quot;keySource&quot;: &quot;pem&quot;, &quot;keyReachable&quot;: null}, &quot;cms&quot;: {&quot;reachable&quot;: true, &quot;compatible&quot;: true, &quot;checkedAt&quot;: &quot;...&quot;}}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>http://localhost:3030/health/
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># {&quot;healthy&quot;: true, &quot;authz&quot;: {&quot;mode&quot;: &quot;enforce&quot;, &quot;keySource&quot;: &quot;pem&quot;, &quot;keyReachable&quot;: null}, &quot;cms&quot;: {&quot;reachable&quot;: true, &quot;compatible&quot;: true, &quot;checkedAt&quot;: &quot;...&quot;}}</span>
 </span></code></pre></div>
 <p>See <a href="../../50-deployment/40-operations/#health-checks">Operations</a> for what each field means.</p>
 <h3 id="get-the-workflow-schema">Get the workflow schema</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>http://localhost:3030/schema/
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>http://localhost:3030/schema/
 </span></code></pre></div>
 <p>Returns the full <code>RootWorkflow</code> JSON Schema. Point your IDE at this endpoint for live validation &ndash; see <a href="../../getting-started/10-setup/#6-ide-setup-recommended">IDE Setup</a>.</p>
 <h3 id="check-the-license-and-its-quotas">Check the license and its quotas</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>http://localhost:3030/license/
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>http://localhost:3030/license/
 </span></code></pre></div>
 <p>Returns the identity of the license (<code>flavor</code>, <code>displayName</code>, <code>productionUse</code>), and every cap in <code>quotas</code>: for
 each its <code>name</code>, a <code>label</code> a person can read, the <code>limit</code> (a number or <code>"unlimited"</code>), the live <code>usage</code>, what is
@@ -9331,7 +9402,7 @@ at once. A ping that would bring an offline worker back over the cap is refused 
 <p>For the full list of endpoints, request/response schemas, and interactive testing,
 open the <strong><a href="http://localhost:3030/api">Swagger UI</a></strong> (requires a running engine with <code>NODE_ENV=development</code>).</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 09:41:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T09:41:59+00:00'>2026-10-30 09:41:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 11:21:03'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T11:21:03+00:00'>2026-11-07 11:21:03</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

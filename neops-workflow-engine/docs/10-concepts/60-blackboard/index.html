@@ -9005,7 +9005,7 @@ key. The limits are published in <code>schema/LogRecord.schema.json</code> (<cod
 <tr>
 <td><code>GET /workflow-execution/:id/logs</code></td>
 <td><code>workflow-execution-log:read</code></td>
-<td>the run&rsquo;s lines from the engine, the workers and neops-core; filters <code>stepLabel</code>, <code>jobId</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>includeCore</code>, <code>includeEngine</code></td>
+<td>the run&rsquo;s lines from the engine, the workers and neops-core; filters <code>stepLabel</code>, <code>jobId</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>networkZone</code>, <code>includeCore</code>, <code>includeEngine</code></td>
 </tr>
 <tr>
 <td><code>GET /blackboard/jobs/:jobId/logs</code></td>
@@ -9020,7 +9020,7 @@ key. The limits are published in <code>schema/LogRecord.schema.json</code> (<cod
 <tr>
 <td><code>GET /logs</code></td>
 <td><code>workflow-execution-log:read</code></td>
-<td>lines across runs; filters <code>stepLabel</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>includeCore</code>, <code>includeEngine</code>; the window starts 24 hours ago; needs at least one narrowing filter (below)</td>
+<td>lines across runs; filters <code>stepLabel</code>, <code>jobType</code>, <code>entityType</code>, <code>entityId</code>, <code>workerId</code>, <code>networkZone</code>, <code>includeCore</code>, <code>includeEngine</code>; the window starts 24 hours ago; needs at least one narrowing filter (below)</td>
 </tr>
 </tbody>
 </table>
@@ -9035,7 +9035,7 @@ that takes longer than that to arrive appears on the next read without <code>aft
 newest records.</p>
 <p><code>GET /logs</code> answers <code>400 LOG_FILTER_REQUIRED</code> unless it names a workflow or function block (id or any part), an
 entity (<code>entityType</code>, <code>entityId</code>), a worker or a job type. The store sorts every line in the window to return a page,
-so a read narrowed only by level, step or service would sort a whole day of the installation; a narrowing filter keeps
+so a read narrowed only by level, step, network zone or service would sort a whole day of the installation; a narrowing filter keeps
 the sorted set to the lines that filter matches. Widening the window to 30 days multiplies that set accordingly.</p>
 <p>Without a log store the routes answer <code>503 LOGS_NOT_CONFIGURED</code>; a failing store answers <code>502 LOG_BACKEND_ERROR</code>.
 <code>GET /version</code> reports under <code>logs</code> whether logs can be read (<code>queryable</code>) and how delivery to the store is going.</p>
@@ -9077,7 +9077,7 @@ sufficient.</p>
 <li><a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">Worker SDK Deployment</a> &ndash; Configuring <code>URL_BLACKBOARD</code> and polling intervals for workers</li>
 <li><a href="../../50-deployment/30-worker-management/">Worker Management</a> &ndash; How the engine monitors worker health and handles failures</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:46:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:46:24+00:00'>2026-10-30 20:46:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 15:03:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T15:03:55+00:00'>2026-11-06 15:03:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

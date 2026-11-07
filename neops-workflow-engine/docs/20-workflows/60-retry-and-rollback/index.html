@@ -2458,6 +2458,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-result-push-that-fails-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A result push that fails validation
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8865,6 +8876,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#a-result-push-that-fails-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A result push that fails validation
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -9068,6 +9090,7 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Use it for a verdict that would come out the same on every attempt, such as a check that found what it was looking for to be absent. A result without the field, or with <code>retryable: true</code>, is retried as above. <code>GET /blackboard/jobs/{jobId}/result</code> serves the field back, <code>null</code> when the worker did not set it.</p>
+<p>The engine writes <code>retryable: false</code> itself when it fails a job no worker polled within <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code> and no live worker of the job&rsquo;s network zone has its function block registered: another attempt would wait just as long. When such a worker is live, it is busy with other jobs, and the failure is retried as above. A job a worker took and then went silent on (<code>BLACKBOARD_STUCK_JOB_TIMEOUT</code>) is retried as above.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>sideEffects: false</code> alone means up to three retries</p>
 <p>A failure that reports <code>sideEffects: false</code> is retried even when its function block is
@@ -9267,6 +9290,14 @@ a worker.</p>
 <li>An engine that receives such a result anyway does not store the claim. It stores a failure of its own in its place, with <code>retryable: false</code>, so the run fails at once with <code>reasonCode</code> <a href="../70-lifecycle/#failure-codes"><code>invalid_result</code></a> and the violation in its <code>reason</code>.</li>
 </ul>
 <p>The job&rsquo;s row then says <code>resultRejected: pure_side_effects</code>. A result whose data breaks the block&rsquo;s result schema says <code>resultRejected: result_schema</code> on its row, and one whose <code>dbUpdates</code> the CMS would refuse for their shape or zone says <code>network_zone</code> or <code>cms_lookup</code> (<a href="../45-network-zones/#what-the-engine-refuses">What the engine refuses</a>); a run that fails with <code>invalid_result</code> while none of its jobs says any of these failed on a step&rsquo;s <code>dbUpdates</code> writing outside its entities.</p>
+<h3 id="a-result-push-that-fails-validation">A result push that fails validation</h3>
+<p>A result push whose body fails the blackboard&rsquo;s validation, such as a <code>result.success</code> that is not a boolean, is answered <code>400</code> with the validation messages. When the push names a job that the pushing worker holds (its <code>workerId</code> and <code>leaseToken</code> match) and that has no result yet, the engine also stores a failure of its own for that job, with <code>retryable: false</code> and the validation messages in its <code>message</code>, and the job&rsquo;s row says <code>resultRejected: result_body</code>. The run then fails at once with <code>reasonCode</code> <a href="../70-lifecycle/#failure-codes"><code>invalid_result</code></a>, as for any failed step:</p>
+<ul>
+<li>a pure step leaves nothing to roll back;</li>
+<li>a reversible step is rolled back, from the rollback snapshot the push carried when that snapshot passes the same checks a valid push&rsquo;s snapshot gets;</li>
+<li>an irreversible step that isn&rsquo;t pure ends the run <code>FAILED_UNSAFE</code>, since the worker may have changed the device before its push failed.</li>
+</ul>
+<p>A push that names no job, a job the worker does not hold, or a job that already has a result gets the <code>400</code> and changes nothing.</p>
 <h2 id="rollback">Rollback</h2>
 <p>When a workflow fails, the engine automatically reverses the side effects of the steps that
 already ran — provided all of them can be reversed. Rollback is <strong>all-or-nothing over the
@@ -9421,7 +9452,7 @@ the Worker SDK&rsquo;s job log and of the engine&rsquo;s validation error messag
 :   A check that fails before anything is sent to the device can return <code>sideEffects: false</code>. The step then stays out of the rollback, and an irreversible block no longer turns such a failure into <code>FAILED_UNSAFE</code>. Add <code>retryable: false</code> when the check would fail the same way again.</p>
 <p><strong>Snapshot before you write.</strong>
 :   A reversible function block that saves its <a href="#rollback-data">rollback data</a> before its first change gives its <code>rollback()</code> the state to restore.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:00:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:00:32+00:00'>2026-11-06 13:00:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 14:50:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T14:50:43+00:00'>2026-11-06 14:50:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

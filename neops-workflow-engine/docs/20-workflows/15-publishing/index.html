@@ -9522,9 +9522,9 @@ name is reported once: it is left out of the value checked for <code>STEP_PARAME
   values the worker receives.</li>
 </ul>
 <h3 id="network-zones">Network zones</h3>
-<p>A <code>networkZone</code> written as a plain name (not an expression) that the engine&rsquo;s zone table does not hold is reported as
-an advisory finding, since the zone may still be created in the CMS before the first run. Expressions are resolved
-and checked when a run starts.</p>
+<p>A <code>networkZone</code> written as a plain name (not an expression) that the engine&rsquo;s zone table does not hold, after it read
+the CMS&rsquo;s zones once more, is reported as an advisory finding, since the zone may still be created in the CMS before the
+first run. Expressions are resolved and checked when a run starts and again in its lock phase.</p>
 <table>
 <thead>
 <tr>
@@ -9537,7 +9537,7 @@ and checked when a run starts.</p>
 <tr>
 <td><code>NETWORK_ZONE_UNKNOWN</code></td>
 <td><code>/networkZone</code> or <code>/steps/&lt;label&gt;/networkZone</code></td>
-<td>The zone is not in the CMS. A run fails unless the zone is created first, on the web client&rsquo;s Network zones page, in Django admin, or with <code>networkZoneUpsert</code>.</td>
+<td>The zone is not in the CMS. A run fails unless the zone is created first, on the web client&rsquo;s Network zones page, in Django admin, or with <code>networkZoneUpsert</code>. When the engine could not read the CMS for the publish, the finding says so instead: its last read lacks the zone.</td>
 </tr>
 </tbody>
 </table>
@@ -9598,7 +9598,7 @@ included.</p>
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:00:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:00:28+00:00'>2026-11-06 13:00:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 19:07:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T19:07:00+00:00'>2026-11-06 19:07:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

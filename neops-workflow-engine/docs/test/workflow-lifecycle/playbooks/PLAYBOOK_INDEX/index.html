@@ -8597,8 +8597,8 @@
 <td><code>no-db-mutation-on-failure</code></td>
 <td>SAFETY</td>
 <td>CMS database unchanged after failed workflow execution</td>
-<td>5</td>
-<td>5</td>
+<td>6</td>
+<td>6</td>
 </tr>
 <tr>
 <td><code>reject-invalid-fb-name-format</code></td>
@@ -8762,9 +8762,9 @@
 <td>9</td>
 </tr>
 <tr>
-<td><code>unknown-network-zone-fails-pre-flight</code></td>
+<td><code>unknown-network-zone-fails-before-lock</code></td>
 <td>SAFETY</td>
-<td>A run whose networkZone names a zone the CMS does not hold fails at pre-flight with unknown_network_zone, before anything is locked and before any job reaches a worker</td>
+<td>A run whose networkZone names a zone the CMS does not hold fails with unknown_network_zone before anything is locked and before any job reaches a worker: at resource discovery from the zone table, else in the lock phase from a fresh read of the CMS</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -8772,15 +8772,57 @@
 <td><code>job-carries-network-zone-meta</code></td>
 <td>SAFETY</td>
 <td>Every polled job carries meta: the zone it runs in, why (device, step, override, default), and the step&rsquo;s own declaration, so a worker knows where its block works</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>job-runs-in-its-device-zone</code></td>
+<td>SAFETY</td>
+<td>A device&rsquo;s job is claimed only by a worker serving the device&rsquo;s zone, so twins sharing one address in two zones each reach the worker of their own network</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>write-checks-ask-the-cms-nothing</code></td>
+<td>SAFETY</td>
+<td>A result&rsquo;s writes are checked without a CMS call, by their shape and their zones; whether a lookup finds its record, or a reference its device, is left to the CMS at the unlock</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>refused-writes-fail-the-run</code></td>
+<td>SAFETY</td>
+<td>A result whose writes core would refuse at the unlock by their shape alone, or that create or move a device into a zone the CMS does not hold, fails the run with invalid_result and its cause before any later step runs</td>
 <td>1</td>
 <td>1</td>
+</tr>
+<tr>
+<td><code>refused-write-back-fails-safely</code></td>
+<td>SAFETY</td>
+<td>A write-back core refuses, of a run with no side effects, ends the run FAILED_SAFE with write_refused and core&rsquo;s message: none of its writes lands, and the engine releases the locks with an unlock that carries no writes</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>refused-write-back-with-side-effects-fails-unsafely</code></td>
+<td>SAFETY</td>
+<td>A write-back core refuses, of a run with side effects, ends the run FAILED_UNSAFE with write_refused as reason code and unsafe cause: none of its writes lands, the engine keeps the locks for remediation and never sends the writes again</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>moved-device-follows-its-zone</code></td>
+<td>LIVENESS</td>
+<td>A device a run moves with a network_zone write runs the run&rsquo;s later jobs in its new zone, its interfaces&rsquo; jobs included</td>
+<td>2</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>failure-serves-stable-reason-code</code></td>
 <td>SAFETY</td>
 <td>A run that fails serves a stable reasonCode beside its free-text reason, set where the engine decides the failure, so a client can group and phrase failures without matching engine wording</td>
-<td>20</td>
-<td>20</td>
+<td>23</td>
+<td>23</td>
 </tr>
 <tr>
 <td><code>run-entry-reports-held-locks</code></td>
@@ -8821,8 +8863,8 @@
 <td><code>lifecycle-reaches-terminal-state</code></td>
 <td>LIVENESS</td>
 <td>Every submitted workflow reaches a terminal state</td>
-<td>102</td>
 <td>107</td>
+<td>112</td>
 </tr>
 <tr>
 <td><code>single-step-completes</code></td>
@@ -9031,6 +9073,13 @@
 <td><code>never-polled-job-fails-workflow</code></td>
 <td>LIVENESS</td>
 <td>A workflow whose jobs no worker ever polls is failed by the pending-job cleanup after BLACKBOARD_PENDING_JOB_TIMEOUT and reaches a terminal state instead of holding its epoch open forever</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>never-polled-job-not-retried</code></td>
+<td>LIVENESS</td>
+<td>A job no worker polled within BLACKBOARD_PENDING_JOB_TIMEOUT fails without a retry when no live worker of its network zone has its function block, even for a pure or idempotent block. It never reached a worker, so it has no side effects: a run with no other side effects fails safe after one timeout</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -9176,16 +9225,58 @@
 <td><code>lifecycle-reaches-terminal-state</code>, <code>multi-step-sequential-completes</code>, <code>multi-fb-workflow-completes</code>, <code>acquisition-phase-completes</code>, <code>job-count-exact</code></td>
 </tr>
 <tr>
+<td><code>network-zones/tests/core-refuses-the-write-back-with-side-effects.ts</code></td>
+<td><code>CoreRefusesTheWriteBackWithSideEffects</code></td>
+<td>A run with side effects whose write-back core refuses ends FAILED_UNSAFE with write_refused, keeping its locks and applying none of its writes</td>
+<td><code>refused-write-back-with-side-effects-fails-unsafely</code>, <code>failure-serves-stable-reason-code</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/core-refuses-the-write-back.ts</code></td>
+<td><code>CoreRefusesTheWriteBack</code></td>
+<td>A run whose write-back core refuses ends FAILED_SAFE with write_refused and core&rsquo;s message, its locks released and none of its writes applied</td>
+<td><code>refused-write-back-fails-safely</code>, <code>failure-serves-stable-reason-code</code></td>
+</tr>
+<tr>
 <td><code>network-zones/tests/jobs-carry-zone-meta.ts</code></td>
 <td><code>JobsCarryZoneMeta</code></td>
 <td>A global step declaring default and an undeclared device step: each job is claimed by a worker serving default and its poll meta names the zone, its source and the step declaration</td>
 <td><code>job-carries-network-zone-meta</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
-<td><code>network-zones/tests/unknown-zone-fails-pre-flight.ts</code></td>
-<td><code>UnknownZoneFailsPreFlight</code></td>
-<td>A global step whose networkZone &ldquo;{{ parameters.zone }}&rdquo; resolves to zone-c, which the CMS does not hold, fails the run at pre-flight with unknown_network_zone</td>
-<td><code>unknown-network-zone-fails-pre-flight</code>, <code>failure-serves-stable-reason-code</code>, <code>no-db-mutation-on-failure</code></td>
+<td><code>network-zones/tests/lookups-are-left-to-the-unlock.ts</code></td>
+<td><code>LookupsAreLeftToTheUnlock</code></td>
+<td>A result whose writes only core&rsquo;s lookups can judge (a create finding both twins, a device create without a zone, an interface named by hostname alone) is taken as sent, the next step runs and the writes reach the unlock</td>
+<td><code>write-checks-ask-the-cms-nothing</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/move-into-unknown-zone-refuses-result.ts</code></td>
+<td><code>MoveIntoUnknownZoneRefusesResult</code></td>
+<td>A network_zone write into zone-c, which the CMS does not hold, refuses the result with the cause network_zone and fails the run</td>
+<td><code>refused-writes-fail-the-run</code>, <code>failure-serves-stable-reason-code</code>, <code>no-db-mutation-on-failure</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/moved-device-follows-its-zone.ts</code></td>
+<td><code>MovedDeviceFollowsItsZone</code></td>
+<td>A network_zone write moves device 1 from zone-a to zone-b, and the next step&rsquo;s job for it is claimed by zone-b&rsquo;s worker</td>
+<td><code>moved-device-follows-its-zone</code>, <code>job-runs-in-its-device-zone</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/moved-device-interfaces-follow-its-zone.ts</code></td>
+<td><code>MovedDeviceInterfacesFollowItsZone</code></td>
+<td>A network_zone write moves device 1 from zone-a to zone-b, and the next interface step&rsquo;s job on its eth0 is claimed by zone-b&rsquo;s worker</td>
+<td><code>moved-device-follows-its-zone</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/twin-devices-run-in-their-zones.ts</code></td>
+<td><code>TwinDevicesRunInTheirZones</code></td>
+<td>Two devices sharing 10.0.0.1 in zone-a and zone-b each run on their zone&rsquo;s worker, and a discovery in zone-b writes naming zone-b</td>
+<td><code>job-runs-in-its-device-zone</code>, <code>write-checks-ask-the-cms-nothing</code>, <code>job-carries-network-zone-meta</code>, <code>lifecycle-reaches-terminal-state</code></td>
+</tr>
+<tr>
+<td><code>network-zones/tests/unknown-zone-fails-before-lock.ts</code></td>
+<td><code>UnknownZoneFailsBeforeLock</code></td>
+<td>A global step whose networkZone &ldquo;{{ parameters.zone }}&rdquo; resolves to zone-c, which the CMS does not hold, fails the run with unknown_network_zone before any job is created</td>
+<td><code>unknown-network-zone-fails-before-lock</code>, <code>failure-serves-stable-reason-code</code>, <code>no-db-mutation-on-failure</code></td>
 </tr>
 <tr>
 <td><code>publish-resolution/tests/accept-bump-displaces-resolution.ts</code></td>
@@ -9282,6 +9373,12 @@
 <td><code>NeverPolledJobCleanup</code></td>
 <td>A pending execute job no worker ever polls is failed by the cleanup after the pending deadline and the workflow terminates FAILED_SAFE_ACK</td>
 <td><code>failure-serves-stable-reason-code</code>, <code>never-polled-job-fails-workflow</code>, <code>lifecycle-reaches-terminal-state</code>, <code>no-rollback-for-pure-failure</code>, <code>no-db-mutation-on-failure</code></td>
+</tr>
+<tr>
+<td><code>tests/never-polled-pure-job-not-retried.ts</code></td>
+<td><code>NeverPolledPureJobNotRetried</code></td>
+<td>A pending execute job of a pure function block that no worker polls is failed once by the cleanup, not retried, and the workflow terminates FAILED_SAFE_ACK</td>
+<td><code>never-polled-job-not-retried</code>, <code>never-polled-job-fails-workflow</code>, <code>lifecycle-reaches-terminal-state</code></td>
 </tr>
 <tr>
 <td><code>tests/pure-failure-no-rollback.ts</code></td>
@@ -9909,7 +10006,7 @@
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:27:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:27:26+00:00'>2026-10-30 20:27:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-25 13:24:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-25T13:24:56+00:00'>2026-03-25 13:24:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 13:25:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T13:25:26+00:00'>2026-11-07 13:25:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

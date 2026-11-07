@@ -2504,6 +2504,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#retrying-a-refused-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrying a refused write-back
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reason-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8894,6 +8905,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#retrying-a-refused-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrying a refused write-back
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reason-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9141,10 +9163,13 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
     ROLLBACK --&gt; FAILED_UNSAFE: rollback failed / blocked by a human-only entry
 
     COMPLETED --&gt; COMPLETED_ACK: DB updates applied, locks released
+    COMPLETED --&gt; FAILED_SAFE: CMS refused the DB updates, no side effects (write_refused)
+    COMPLETED --&gt; FAILED_UNSAFE: CMS refused the DB updates, side effects (write_refused)
     FAILED_SAFE --&gt; FAILED_SAFE_ACK: locks released
     FAILED_UNSAFE --&gt; FAILED_UNSAFE_ACK: locks RETAINED
     FAILED_UNSAFE_ACK --&gt; ROLLBACK: remediation rollback all / continueRollback
     FAILED_UNSAFE_ACK --&gt; FAILED_SAFE: remediated (ledger complete)
+    FAILED_UNSAFE_ACK --&gt; COMPLETED_ACK: write-back retried, CMS applied the DB updates
 
     COMPLETED_ACK --&gt; [*]
     FAILED_SAFE_ACK --&gt; [*]
@@ -9174,9 +9199,12 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
 :   The execution is ready for locking. If the required entities are locked by another execution, the workflow waits here.
     - → <code>LOCKING</code></p>
 <p><strong>LOCKING</strong>
-:   The engine has sent a lock request to the CMS for all required entities.
+:   The engine reads the CMS&rsquo;s network zones, then sends a lock request to the CMS for all required entities. The run
+    keeps the zones it read as its snapshot; from here until the unlock it makes no CMS call
+    (<a href="../45-network-zones/#where-the-engine-reads-zones">Where the engine reads zones</a>).
     - Success → <code>LOCKED</code>
-    - Failure → <code>FAILED_SAFE</code></p>
+    - A declared zone the CMS does not hold, or a lock the CMS refuses → <code>FAILED_SAFE</code>
+    - The zones cannot be read, or the entities are locked elsewhere → retried with backoff</p>
 <p><strong>LOCKED</strong>
 :   All entities are exclusively locked. No other workflow can modify them until this execution completes.
     - → <code>RUNNING</code></p>
@@ -9187,7 +9215,14 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
     - Any step fails → <code>ERROR</code></p>
 <h3 id="terminal-states">Terminal States</h3>
 <p><strong>COMPLETED</strong>
-:   All steps finished successfully. DB updates are applied to the CMS, locks are released.</p>
+:   All steps finished successfully. DB updates are applied to the CMS, locks are released.
+    When the CMS refuses the DB updates it applies none of them, and the run fails with
+    <a href="#failure-codes"><code>write_refused</code></a> without its updates:
+    - Every executed step was pure or reported that it changed nothing → <code>FAILED_SAFE</code>
+    - Otherwise the run has side effects, which the CMS now does not reflect → <code>FAILED_UNSAFE</code>.
+      The run keeps its updates for an operator to
+      <a href="#retrying-a-refused-write-back">retry the write-back</a>; the engine never sends them again on
+      its own.</p>
 <p><strong>ERROR</strong>
 :   A step failed. The engine decides how the execution terminates based on what
     actually reached a worker — a job never handed to a worker provably never ran
@@ -9211,12 +9246,16 @@ entity locks</strong> instead of releasing them, until human-driven remediation 
 <p><strong>FAILED_SAFE</strong>
 :   The execution failed with no remaining side effects: either nothing non-pure executed,
     every non-pure step reported that it changed nothing, everything else was successfully
-    rolled back, or a human remediated an unsafe failure. Safe to retry or discard.</p>
+    rolled back, or a human remediated an unsafe failure. A run whose DB updates the CMS refused
+    ends here only when it has no side effects. Safe to retry or discard.</p>
 <p><strong>FAILED_UNSAFE</strong>
 :   The execution failed with potential side effects. Manual review required, and the
-    execution&rsquo;s <strong>entity locks are deliberately kept</strong> (see below).</p>
+    execution&rsquo;s <strong>entity locks are deliberately kept</strong> (see below). This includes a run with
+    side effects whose DB updates the CMS refused: the devices may hold what the CMS refused to
+    record.</p>
 <h3 id="locks-are-not-released-on-an-unsafe-failure">Locks are NOT released on an unsafe failure</h3>
-<p><code>COMPLETED</code> and <code>FAILED_SAFE</code> release the execution&rsquo;s CMS locks on their way to <code>_ACK</code>.
+<p><code>COMPLETED</code> and <code>FAILED_SAFE</code> release the execution&rsquo;s CMS locks on their way to <code>_ACK</code>; a
+<code>FAILED_SAFE</code> whose DB updates the CMS refused releases them without the updates.
 <code>FAILED_UNSAFE</code> does not — this is the one deliberate asymmetry in the lifecycle.</p>
 <p>An unsafe failure means the state of the affected entities can no longer be derived from the
 engine&rsquo;s records: a non-pure step may have reached the network, and nothing proved otherwise.
@@ -9287,7 +9326,9 @@ the CMS by hand where an attestation implies it.</p>
 </span></code></pre></div>
 <ul>
 <li><strong>Two grants, one per act.</strong> Requesting a rollback needs <code>workflow-execution-rollback:write</code>;
-  resolving needs <code>workflow-execution-resolve:write</code>. Neither implies the other: a rollback asks
+  resolving needs <code>workflow-execution-resolve:write</code>, and so does
+  <a href="#retrying-a-refused-write-back">retrying a refused write-back</a>, which also releases the locks
+  on an operator&rsquo;s word. Neither implies the other: a rollback asks
   the engine to reverse a step on the devices, while a resolve releases the retained locks on a
   human&rsquo;s word about entities whose state the engine cannot derive. A resolve with
   <code>"continueRollback": true</code> also restarts the rollback, so it needs <strong>both</strong> grants; without the
@@ -9339,6 +9380,38 @@ ends with an empty ledger even when the CMS write-back of those updates failed (
 <code>unlock_failed</code>). Check the CMS anyway before you resolve it: the updates may or may not
 have been applied.</p>
 </div>
+<h4 id="retrying-a-refused-write-back">Retrying a refused write-back</h4>
+<p>A run with side effects whose DB updates the CMS refused
+(<code>unsafeCause</code> <code>write_refused</code>) keeps its updates. Once the refusal is recorded, the engine&rsquo;s own unlocks never
+send them: not the release after a remediation, not a retry, not after a restart. Only an
+operator sends them again, once the cause is fixed in the CMS:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/workflow-execution/&lt;id&gt;/remediation/write-back
+</span></code></pre></div>
+<p>The engine sends the kept updates in one unlock that also releases the locks:</p>
+<ul>
+<li><strong>The CMS applies them:</strong> the locks come off and the run moves straight to <code>COMPLETED_ACK</code>, the
+  end it would have reached had the first write-back gone through. Its reason records the retry.</li>
+<li><strong>The CMS refuses them again:</strong> the run stays <code>FAILED_UNSAFE_ACK</code> with its locks, and its reason
+  records the new refusal. Retry again after another fix, or roll back or resolve.</li>
+<li><strong>The CMS neither applies nor refuses them</strong> (unreachable, or it refuses the call itself): the
+  request answers <code>503</code> or <code>502</code> and the run is unchanged. Nothing retries in the background;
+  send the request again. A <code>503</code> also comes from the engine itself while it changes epochs
+  (<code>The engine is changing epochs; retry the write-back.</code>); the run is unchanged then too. A <code>500</code> means the engine failed around the call: the CMS may or may
+  not have applied the updates, so check it before you send the request again.</li>
+<li><strong>The CMS no longer holds the run&rsquo;s locks:</strong> it took nothing this time. The request answers
+  <code>409</code>, and the run records that it no longer holds the locks, so the ledger stops offering a
+  retry or a rollback: rollback jobs would change devices another run may lock now, so
+  <code>remediation/rollback</code> and <code>continueRollback</code> are refused too (the ledger&rsquo;s <code>rollbackRefusal</code>
+  says why). Resolve is still taken. The usual cause is an earlier retry whose answer was lost,
+  which may have applied the updates: check the CMS, then resolve the run. Do not run the
+  workflow again to apply them: that could apply them twice.</li>
+</ul>
+<p>A retry is taken only while every ledger entry is still open. Once a rollback job exists or an
+entry is resolved, the devices no longer hold what the updates describe, so the route answers
+<code>409</code>, the updates are dead, and the run ends the usual way: <code>FAILED_SAFE</code> once the ledger is
+complete, releasing the locks without the updates. The ledger&rsquo;s <code>writeBackRetryable</code> says whether
+the route takes a retry now. A run that ended <code>FAILED_SAFE</code> with <code>write_refused</code> has no retry:
+nothing on the devices needs the updates, so fix the cause and run the workflow again.</p>
 <h4 id="reason-notes">Reason notes</h4>
 <p>Remediation and the rollback phase append notes to the execution&rsquo;s <code>reason</code>, separated by <code>|</code>.
 An engine note already present is not appended again, so repeated phase passes and restart
@@ -9379,6 +9452,18 @@ head and the latest notes at the tail are kept.</p>
 <td>A resolve completes an empty ledger</td>
 </tr>
 <tr>
+<td><code>remediation: write-back retried by &lt;user&gt;; the CMS applied it</code></td>
+<td>A retried write-back completes the run</td>
+</tr>
+<tr>
+<td><code>remediation: write-back retried by &lt;user&gt;; the CMS refused it again: &lt;message&gt;</code></td>
+<td>The CMS refuses a retried write-back</td>
+</tr>
+<tr>
+<td><code>remediation: write-back retried by &lt;user&gt;; the CMS no longer held the locks and took nothing</code></td>
+<td>The CMS no longer holds the run&rsquo;s locks when a write-back is retried</td>
+</tr>
+<tr>
 <td><code>remediated: &lt;n&gt; rolled back, &lt;m&gt; resolved by &lt;users&gt;</code></td>
 <td>The execution turns <code>FAILED_SAFE</code> after a human took part: an entry was resolved, or needed more than one rollback attempt. <code>by &lt;users&gt;</code> lists the resolving principals&rsquo; usernames and is omitted when there are none</td>
 </tr>
@@ -9413,7 +9498,7 @@ never renamed.</p>
 </tr>
 <tr>
 <td><code>unknown_network_zone</code></td>
-<td>a <code>networkZone</code> names a zone the CMS does not hold: at pre-flight the run fails before anything is locked, at job creation the step fails (<a href="../45-network-zones/">Network zones</a>)</td>
+<td>a <code>networkZone</code> names a zone the CMS does not hold: when resource discovery starts (from the engine&rsquo;s zone table, read once more from the CMS when it lacks the zone) or in the lock phase (from a fresh read of the CMS) the run fails before anything is locked; a job on an interface whose device the run does not hold fails its step (<a href="../45-network-zones/#where-the-engine-reads-zones">Network zones</a>)</td>
 </tr>
 <tr>
 <td><code>interpolation_failed</code></td>
@@ -9452,6 +9537,10 @@ never renamed.</p>
 <td>the CMS write-back or the release of the run&rsquo;s locks failed</td>
 </tr>
 <tr>
+<td><code>write_refused</code></td>
+<td>the CMS refused the run&rsquo;s write-back and applied none of it. The run ends <code>FAILED_SAFE</code> when it has no side effects, else <code>FAILED_UNSAFE</code>, where an operator can <a href="#retrying-a-refused-write-back">retry the write-back</a></td>
+</tr>
+<tr>
 <td><code>aborted</code></td>
 <td>a person aborted the run (reserved: abort does not stop runs yet)</td>
 </tr>
@@ -9483,6 +9572,10 @@ never renamed.</p>
 <td>the CMS write-back or lock release failed</td>
 </tr>
 <tr>
+<td><code>write_refused</code></td>
+<td>the CMS refused the write-back of a run with side effects, so the CMS does not hold what the devices may now hold</td>
+</tr>
+<tr>
 <td><code>engine_fault</code></td>
 <td>the engine failed while executing and cannot tell what the run had done</td>
 </tr>
@@ -9492,7 +9585,9 @@ never renamed.</p>
 remediated run whose unlock the CMS then denies ends with <code>unlock_failed</code>, while <code>reasonCode</code> still
 names the first failure. It is null for every run that did not end unsafe. A run remediated to
 <code>FAILED_SAFE</code> keeps both codes: <code>FAILED_SAFE</code> or <code>FAILED_SAFE_ACK</code> with an <code>unsafeCause</code> is a run a
-person made safe.</p>
+person made safe. So does a <code>write_refused</code> run that reached <code>COMPLETED_ACK</code> through a
+<a href="#retrying-a-refused-write-back">retried write-back</a>: a <code>COMPLETED_ACK</code> with both codes is a run
+whose writes the CMS took only on an operator&rsquo;s retry.</p>
 <h3 id="acknowledged-states-the-real-terminal-states">Acknowledged States (the real terminal states)</h3>
 <p><code>COMPLETED</code>, <code>FAILED_SAFE</code> and <code>FAILED_UNSAFE</code> are <em>outcome</em> states: reaching one means the engine
 still has work to do (apply DB updates, release locks — or, for <code>FAILED_UNSAFE</code>, deliberately not).
@@ -9501,7 +9596,8 @@ actually rests in:</p>
 <p><strong>COMPLETED_ACK</strong> / <strong>FAILED_SAFE_ACK</strong> / <strong>FAILED_UNSAFE_ACK</strong>
 :   The engine is finished and initiates nothing further. <code>COMPLETED_ACK</code> and <code>FAILED_SAFE_ACK</code>
     are final. <code>FAILED_UNSAFE_ACK</code> still holds its entity locks, and remediation is the one way
-    out of it (to <code>FAILED_SAFE</code>, or back into <code>ROLLBACK</code>).</p>
+    out of it (to <code>FAILED_SAFE</code>, back into <code>ROLLBACK</code>, or, for a refused write-back, to
+    <code>COMPLETED_ACK</code> through a retry).</p>
 <div class="admonition tip">
 <p class="admonition-title">Poll for the <code>_ACK</code> state, not the outcome state</p>
 <p>When you wait for an execution to finish, treat <code>completed_ack</code>, <code>failed_safe_ack</code> and
@@ -9510,14 +9606,14 @@ is still releasing locks and writing entity updates.</p>
 </div>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="via-api">Via API</h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Executions not yet acknowledged, plus those that finished in the last 5 minutes</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Get a specific execution</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/id/&lt;execution-id&gt;
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># List executions by state</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/state/RUNNING
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Executions not yet acknowledged, plus those that finished in the last 5 minutes</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/active
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Get a specific execution</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/id/&lt;execution-id&gt;
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># List executions by state</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>curl<span class="w"> </span>http://localhost:3030/workflow-execution/state/RUNNING
 </span></code></pre></div>
 <h3 id="via-monitor-app">Via Monitor App</h3>
 <p>The Monitor App&rsquo;s Executions view shows all executions with their current state, progress (jobs completed/total), and drill-down to individual job results.</p>
@@ -9561,7 +9657,7 @@ principal who started the run) and then answers <code>501 Not Implemented</code>
 and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
 <code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:39:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:39:00+00:00'>2026-11-06 16:39:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 12:37:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T12:37:01+00:00'>2026-11-07 12:37:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

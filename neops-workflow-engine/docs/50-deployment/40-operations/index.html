@@ -3017,6 +3017,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-workers-result-push-answered-400" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A worker&rsquo;s result push answered 400
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#failed_unsafe-investigation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3050,10 +3061,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cms-unavailable-while-results-arrive" class="md-nav__link">
+  <a href="#cms-unavailable-while-a-run-executes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CMS unavailable while results arrive
+        CMS unavailable while a run executes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-write-back-the-cms-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A write-back the CMS refuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-cms-that-stops-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A CMS that stops answering
       
     </span>
   </a>
@@ -8966,6 +8999,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#a-workers-result-push-answered-400" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A worker&rsquo;s result push answered 400
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#failed_unsafe-investigation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8999,10 +9043,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cms-unavailable-while-results-arrive" class="md-nav__link">
+  <a href="#cms-unavailable-while-a-run-executes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CMS unavailable while results arrive
+        CMS unavailable while a run executes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-write-back-the-cms-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A write-back the CMS refuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-cms-that-stops-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A CMS that stops answering
       
     </span>
   </a>
@@ -9201,6 +9267,9 @@
    worker that lists no zones is refused.</li>
 <li>Create the zones in the CMS, then start each zone&rsquo;s workers with <code>NEOPS_WORKER_NETWORK_ZONES</code> set to their zones.</li>
 </ol>
+<p>From a 0.46 beta, restart every worker after the upgrade, so the Monitor&rsquo;s Workers page can flag one that lists no
+zones: a worker the beta linked to <code>default</code> reads as listing its zones until it registers again. Do the same after
+going back to 0.45 and forward again, where the upgrade marks every worker that kept running as listing none.</p>
 <p>Out of order:</p>
 <ul>
 <li>An engine upgraded first refuses to lock against the older core, so new runs end <code>FAILED_SAFE_ACK</code> with
@@ -9211,8 +9280,12 @@
 <li>A run that finishes on 0.45 after core is upgraded can have its write-back refused with <code>WRITE_REFUSED</code>, which 0.45
   reads as a failed unlock. It retries the write-back with backoff and parks the run after twelve failures, still
   holding its locks. Because the CMS answers, 0.45&rsquo;s parked-run probe resumes the run within
-  <code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code> (5 minutes by default), and the loop starts again.</li>
+  <code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code> (5 minutes by default), and the loop starts again. Upgrade the engine to
+  0.46: it resumes the parked run when it starts, reads the refusal, and ends the run with <code>write_refused</code> (see
+  <a href="#a-write-back-the-cms-refuses">A write-back the CMS refuses</a>).</li>
 </ul>
+<p>Saved log queries: the lines <code>Rollback job failed</code> and <code>Rollback job succeeded</code> name their job by <code>job_id</code>, as every
+other job line does, no longer by <code>rollbackJob</code> or <code>completedRollbackJob</code>.</p>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="active-executions">Active Executions</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Executions not yet acknowledged, plus those that finished in the last 5 minutes</span>
@@ -9249,6 +9322,16 @@
 <li><strong>No worker has the required FB</strong> &ndash; Check if any online worker has the function block registered</li>
 <li><strong>Workers not polling</strong> &ndash; Check worker logs for connectivity issues</li>
 </ol>
+<h3 id="a-workers-result-push-answered-400">A worker&rsquo;s result push answered 400</h3>
+<p>When the push&rsquo;s JSON parsed but failed validation, the response and the worker&rsquo;s log name the fields. Since 0.46.0
+the engine fails the job the push names with <code>invalid_result</code> (<code>resultRejected: result_body</code>) when the pushing worker
+holds it, so the run ends at once and goes through its normal failure handling (see
+<a href="../../20-workflows/60-retry-and-rollback/#a-result-push-that-fails-validation">A result push that fails validation</a>).
+Before, the job stayed claimed until <code>BLACKBOARD_STUCK_JOB_TIMEOUT</code>, its run kept its locks, and the epoch&rsquo;s drain held
+new runs back meanwhile. The fix is in the worker or its function block: a result that passes validation.</p>
+<p>A body that is not JSON the engine can parse is answered before validation runs and fails no job: a <code>400</code> with
+<code>entity.parse.failed</code>, such as a <code>NaN</code> or <code>Infinity</code> a Python worker wrote into its result data, or a <code>413</code> for a body
+over the size limit. That job still waits for <code>BLACKBOARD_STUCK_JOB_TIMEOUT</code>.</p>
 <h3 id="failed_unsafe-investigation">FAILED_UNSAFE investigation</h3>
 <p>When an execution ends as <a href="../../10-concepts/40-workflow-as-a-transaction/#failed_unsafe"><code>FAILED_UNSAFE</code></a> (meaning side effects may have occurred):</p>
 <ol>
@@ -9305,11 +9388,75 @@ break-glass measure, but bypasses the audit trail.</p>
 <li>the connection pool giving up waiting for a free connection (knex&rsquo;s acquire timeout)</li>
 </ul>
 <p>Any other database error, such as a constraint violation or a query timeout, still answers <code>500</code>. During an outage the engine logs one <code>Database unavailable, answering 503</code> warning every 30 seconds, with the number of 503s it answered in between.</p>
-<h3 id="cms-unavailable-while-results-arrive">CMS unavailable while results arrive</h3>
-<p>Since 0.46.0 the engine checks a result&rsquo;s CMS writes when the result arrives, without a lookup in the CMS (see
-<a href="../../20-workflows/45-network-zones/#what-the-engine-refuses">What the engine refuses</a>), so results keep being taken
-while the CMS is down. A result that names a zone the engine&rsquo;s zone table lacks makes it read the CMS&rsquo;s zones once
-more; while the CMS is down, that zone is refused as the table holds it.</p>
+<h3 id="cms-unavailable-while-a-run-executes">CMS unavailable while a run executes</h3>
+<p>A run calls the CMS only in its lock phase and at its unlock (see
+<a href="../../20-workflows/45-network-zones/#where-the-engine-reads-zones">Where the engine reads zones</a>). A locked run keeps
+executing while the CMS is down: its results are taken and checked without it, and only its unlock waits for the CMS.</p>
+<h3 id="a-write-back-the-cms-refuses">A write-back the CMS refuses</h3>
+<p>The CMS checks a run&rsquo;s writes at its unlock, and refuses the whole write-back when the writes can never be applied as
+sent: an invalid value, a broken constraint, or a write its rules forbid. It then applies none of them and keeps the
+locks. The run fails with <code>reasonCode</code> <code>write_refused</code> and the CMS&rsquo;s message in its <code>reason</code>. Once the refusal is recorded, the engine never
+sends the writes again on its own, not on a retry and not after a restart.</p>
+<ul>
+<li><strong>No side effects</strong> (every executed step was pure or reported that it changed nothing): the run ends
+  <code>FAILED_SAFE_ACK</code>. Its writes are discarded, as after a rollback, and the engine releases the locks with an unlock
+  that carries no writes. Fix the workflow or the data
+  it reads and run it again.</li>
+<li>
+<p><strong>Side effects:</strong> the devices may hold what the CMS refused to record. The run ends
+  <code>FAILED_UNSAFE_ACK</code> with <code>unsafeCause</code> <code>write_refused</code>, keeps its writes and keeps its locks, like any unsafe run.
+  There are three ways out:</p>
+<ol>
+<li><strong>Fix the cause in the CMS and retry the write-back</strong>
+   (<code>POST /workflow-execution/&lt;id&gt;/remediation/write-back</code>, or <em>Retry write-back…</em> in the Monitor). Applied, the
+   locks come off and the run is <code>COMPLETED_ACK</code>. Refused again, the run stays as it was with the new reason.
+   See <a href="../../20-workflows/70-lifecycle/#retrying-a-refused-write-back">Retrying a refused write-back</a>.</li>
+<li><strong>Roll the steps back</strong>, resolving those only a person can undo. The engine then releases the locks without the
+   writes, and the CMS keeps what it held before the run.</li>
+<li><strong>Resolve the steps</strong> once you have checked the devices, and reconcile the CMS by hand. The locks come off without
+   the writes.</li>
+</ol>
+<p>A retry is taken only before a rollback or resolve starts: from then on the writes no longer describe the devices.</p>
+</li>
+</ul>
+<p>Any other unlock that fails retries with backoff. An unlock that fails twelve times in a row parks the run, still
+holding its locks, until the CMS answers again: the engine probes the CMS every <code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code>
+(5 minutes by default) and then resumes the run (see <a href="#engine-restart-recovery">Engine restart recovery</a>). Telling a
+refused write-back apart needs neops-core 2.4.0-beta.2 or later, which answers it with the code <code>WRITE_REFUSED</code>.</p>
+<h3 id="a-cms-that-stops-answering">A CMS that stops answering</h3>
+<p>Each CMS GraphQL call the engine makes, except the <code>/health</code> probe, gives up when the whole answer has not arrived
+within <code>NEOPS_CMS_REQUEST_TIMEOUT_MS</code> (30 seconds by default); a paged read waits that long for each page. The
+<code>/health</code> probe keeps its own 2-second timeout. The engine then treats a timed-out call like any other CMS outage:</p>
+<ul>
+<li>A read of the network zones fails. Worker registration waits for that read for at most 10 seconds, inside the
+  worker&rsquo;s own 30-second request timeout, then answers as it does while the CMS is down: from the engine&rsquo;s last read
+  of the zones, or <code>503</code> if the engine has never read them; a zone that read lacks is refused as unread, not as
+  missing from the CMS. The Worker SDK takes that <code>400</code> as final and exits, even for a zone created a moment ago:
+  restart the worker once the CMS answers. The read goes on, and the table takes it in if it arrives.</li>
+<li>
+<p>A run whose declarations name a zone the table lacks waits for that read at most 2 seconds when its resource
+  discovery starts, so the CMS does not hold the engine&rsquo;s other runs. Without the read the run refuses no zone and
+  sits in <code>RESOURCE_DISCOVERY</code>: its <code>ACQUIRE</code> job in that zone waits for a worker of the zone, and none can register
+  while the table lacks it. The run page shows <code>Zone &lt;name&gt; · No worker yet</code>; the Workers page shows nothing, since
+  <code>GET /network-zones</code> lists the table&rsquo;s zones only.</p>
+<ul>
+<li>A zone the CMS holds: its workers exited on the <code>400</code> their registration got while the CMS was unread. Restart
+  them once <code>GET /health</code> shows the CMS answering; they register, and the job runs.</li>
+<li>A zone the CMS lacks (a typo, or not created yet): <strong>the run waits the whole <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code>,
+  60 minutes by default</strong>, then ends <code>FAILED_SAFE_ACK</code> with <code>reasonCode</code> <code>acquire_failed</code>. Only the job&rsquo;s result
+  says no worker polled it.</li>
+</ul>
+<p>A publish naming such a zone waits for the read up to <code>NEOPS_CMS_REQUEST_TIMEOUT_MS</code> before it answers. A run&rsquo;s
+lock attempt retries with backoff, as when the lock itself fails.</p>
+</li>
+<li>
+<p>Locking and unlocking retry with backoff. Neither is done twice when the CMS finished it after the engine gave up:
+  a lock retry finds the run&rsquo;s lock already taken, and an unlock retry finds it released and counts it as done.</p>
+</li>
+</ul>
+<p>A CMS that accepts connections but never answers, for example behind a stuck proxy, no longer holds locks, unlocks
+and registrations forever. Raise the value if large unlocks, such as a discovery that writes thousands of devices,
+legitimately take longer than 30 seconds: too low a value makes them time out and retry, again and again.</p>
 <h2 id="aborting-executions">Aborting Executions</h2>
 <p>Aborting is not implemented. <code>DELETE /workflow-execution/&lt;execution-id&gt;</code> keeps its
 authorization contract and then answers <code>501 Not Implemented</code>, writing nothing. Stuck
@@ -9336,20 +9483,30 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 whichever worker polls first.</p>
 <p>Stop every worker too, and run only workers on Worker SDK 0.4 while you stay on 0.45. 0.45 has no zones, so it hands a
 job of any zone to whichever worker polls first, a 0.5 worker that keeps running included.</p>
+<p>0.45 cannot retry a write-back. Retry or remediate every <code>write_refused</code> run you can on 0.46 first; an unsafe one left
+stays <code>FAILED_UNSAFE_ACK</code> and is remediated on 0.45 like any unsafe run.</p>
+<p>0.45 would also let an operator roll back a refused run whose locks the CMS no longer holds, and its rollback jobs could
+reach devices another run now holds. Resolve those runs on 0.46: this query must return no rows before you go on.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">select</span><span class="w"> </span><span class="n">uuid</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">workflow_execution</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">where</span><span class="w"> </span><span class="n">unsafe_cause</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;write_refused&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;FAILED_UNSAFE_ACK&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">cms_resources_locked</span><span class="p">;</span>
+</span></code></pre></div>
 <p>The <code>down()</code> of the 0.46 migrations restores 0.45&rsquo;s CHECK constraints, which refuse the values 0.46 writes, so it fails
-while any row holds one. Clear those values too. The rows keep their <code>reason</code>, which still says what failed:</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;network_zone&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cms_lookup&#39;</span><span class="p">);</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">update</span><span class="w"> </span><span class="n">workflow_execution</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
+while any row holds one. Clear those values first. The rows keep their <code>reason</code>, which still says what failed:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;network_zone&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cms_lookup&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;result_body&#39;</span><span class="p">);</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">update</span><span class="w"> </span><span class="n">workflow_execution</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unlock_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;write_refused&#39;</span><span class="p">;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">update</span><span class="w"> </span><span class="n">workflow_execution</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unlock_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;write_refused&#39;</span><span class="p">;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">update</span><span class="w"> </span><span class="n">workflow_execution</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">unsafe_cause</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unlock_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">unsafe_cause</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;write_refused&#39;</span><span class="p">;</span>
 </span></code></pre></div>
 <p>Then revert the 0.46 migrations, the first of them, <code>Migration20261030184705</code>, included, from the 0.46 image&rsquo;s working
 directory (<code>/app</code>), with the engine&rsquo;s database settings in the environment, and start 0.45:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>node<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;const { MikroORM } = require(&#39;@mikro-orm/core&#39;);</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s2">const config = require(&#39;./dist/neops-workflow-engine/src/mikro-orm.config&#39;).default;</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s2">MikroORM.init(config).then(async orm =&gt; {</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s2">  await orm.getMigrator().down({ to: &#39;Migration20261030184705&#39; });</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">  await orm.close(true);</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s2">});&quot;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>node<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;const { MikroORM } = require(&#39;@mikro-orm/core&#39;);</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s2">const config = require(&#39;./dist/neops-workflow-engine/src/mikro-orm.config&#39;).default;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s2">MikroORM.init(config).then(async orm =&gt; {</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s2">  await orm.getMigrator().down({ to: &#39;Migration20261030184705&#39; });</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s2">  await orm.close(true);</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s2">});&quot;</span>
 </span></code></pre></div>
 <p>The command loads the engine&rsquo;s configuration, so it reads what the engine reads, from the environment or from a <code>.env</code>
 file in the working directory:</p>
@@ -9361,7 +9518,7 @@ file in the working directory:</p>
 </ul>
 <p>A down that fails changes nothing: the migrations revert in one transaction, so the database stays as 0.46 left it.
 Run the SQL above and repeat the command.</p>
-<p>Reverting drops the engine&rsquo;s zone table and each job&rsquo;s zone.</p>
+<p>Reverting drops the engine&rsquo;s zone table, each job&rsquo;s zone and each run&rsquo;s zone snapshot.</p>
 <p>The command also reverts 0.45&rsquo;s own last two migrations, because migrations revert in name order and their names sort
 after <code>Migration20261030184705</code>: <code>Migration20261102104651</code> renames <code>rollback_data_size_bytes</code> back to
 <code>rollback_data_bytes</code>, and <code>Migration20261102113953</code> deletes the rows of refused workers. 0.45 applies both again when it
@@ -9369,15 +9526,15 @@ starts, so its list of refused workers starts empty.</p>
 <p>Reverting also drops the zones each worker registered. When you go forward to 0.46 again, restart every worker so that
 it registers its zones anew: a worker that kept running counts as serving only <code>default</code>.</p>
 <h2 id="version-information">Version Information</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Engine version and API version</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>http://localhost:3030/version/
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Check worker SDK compatibility</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/version/compatibility/<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Engine version and API version</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>curl<span class="w"> </span>http://localhost:3030/version/
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Check worker SDK compatibility</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/version/compatibility/<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 19:26:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T19:26:32+00:00'>2026-11-06 19:26:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 12:37:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T12:37:01+00:00'>2026-11-07 12:37:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 
