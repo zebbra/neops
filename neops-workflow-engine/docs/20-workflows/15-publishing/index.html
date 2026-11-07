@@ -9537,15 +9537,10 @@ and checked when a run starts.</p>
 <tr>
 <td><code>NETWORK_ZONE_UNKNOWN</code></td>
 <td><code>/networkZone</code> or <code>/steps/&lt;label&gt;/networkZone</code></td>
-<td>The zone is not in the CMS. A run fails unless the zone is created first, in Django admin or with <code>networkZoneUpsert</code>.</td>
+<td>The zone is not in the CMS. A run fails unless the zone is created first, on the web client&rsquo;s Network zones page, in Django admin, or with <code>networkZoneUpsert</code>.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The engine reads core&rsquo;s zones into its own table from the next release on. Until then, publishing reports no
-<code>NETWORK_ZONE_UNKNOWN</code> finding.</p>
-</div>
 <p>These findings come after the version findings, on a dry run, on a successful publish (<code>201</code>, or <code>200 unchanged</code>)
 and in the <code>findings</code> of a refused one (<code>409</code> and <code>422</code>). A <code>400</code> body carries no findings at all, version findings
 included.</p>
@@ -9603,7 +9598,7 @@ included.</p>
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-07-27 18:14:56'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-07-27T18:14:56+00:00'>2026-07-27 18:14:56</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:00:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:00:28+00:00'>2026-11-06 13:00:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

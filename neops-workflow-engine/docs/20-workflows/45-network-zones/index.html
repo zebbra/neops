@@ -2402,6 +2402,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-devices-zone-in-the-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A device&rsquo;s zone in the context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-devices-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing a device&rsquo;s zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing a device’s zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creates-and-lookups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creates and lookups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-engine-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine refuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reading-where-a-step-ran" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8787,6 +8837,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-devices-zone-in-the-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A device&rsquo;s zone in the context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-devices-zone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing a device&rsquo;s zone
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing a device’s zone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creates-and-lookups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creates and lookups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-engine-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine refuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reading-where-a-step-ran" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8901,13 +9001,13 @@
 
 
 <h1 id="network-zones">Network Zones</h1>
-<p>Network zones need Workflow Engine 0.46.0, neops-core 2.4 and Worker SDK 0.5, or later.</p>
+<p>Network zones need Workflow Engine 0.46.0, neops-core 2.4.0-beta.2 and Worker SDK 0.5, or later.</p>
 <p>A network zone is a network that only its own workers reach; zones may reuse each other&rsquo;s addresses. <code>10.0.0.1</code> in
 <code>zone-a</code> and <code>10.0.0.1</code> in <code>zone-b</code> are different devices. Every job runs in exactly one zone, and only a worker that
 serves that zone takes it.</p>
-<p>Zones are created in the CMS (neops-core), in Django admin or with <code>networkZoneUpsert</code>. <code>default</code> is reserved: it is
-the zone of every device that has no zone stored, and no CMS zone can take the name. Workflows name it like any other
-zone.</p>
+<p>Zones are created in the CMS (neops-core): on the web client&rsquo;s Network zones page, in Django admin, or with
+<code>networkZoneUpsert</code>. <code>default</code> is reserved: it is the zone of every device that has no zone stored, and no CMS zone
+can take the name. Workflows name it like any other zone.</p>
 <h2 id="declaring-a-zone">Declaring a zone</h2>
 <p><code>networkZone</code> is a key on every step kind (function blocks, embedded workflows, workflow references) and on the root
 workflow. Nested steps inherit it.</p>
@@ -8923,7 +9023,11 @@ workflow. Nested steps inherit it.</p>
    <code>override</code> flag comes with it: an outer <code>override: true</code> does not reach a step that declares its own zone.</li>
 <li>If that declaration has <code>override: true</code>, the job runs in the declared zone.</li>
 <li>Otherwise a job on one device runs in <strong>the device&rsquo;s zone</strong>; a job on one interface runs in the zone of the
-   interface&rsquo;s device.</li>
+   interface&rsquo;s device. When the run does not hold that device, the zone is the one the lock read for it, else, for a
+   device the interface&rsquo;s write names by <code>hostname</code> or <code>ip</code>, the zone written beside them. Any other device, one
+   named by an id the run does not hold or by <code>hostname</code> or <code>ip</code> with no zone, has an unknown zone: the CMS finds it
+   by its id, or across every zone. The run then fails with <code>unknown_network_zone</code>, naming the device, rather than
+   guess <code>default</code>.</li>
 <li>Any other job (a <code>runOn: global</code> job, a group job, and every step&rsquo;s <code>ACQUIRE</code> job) runs in the declared zone, else
    in <code>default</code>.</li>
 </ol>
@@ -9041,8 +9145,8 @@ Worker SDK. The engine sends it <code>networkZones</code> on <code>POST /workers
 <li>A worker that lists no zones serves <code>default</code>. Once the CMS holds a zone besides <code>default</code>, a worker must list its
   zones, even if only <code>default</code>: registration without a list (or with an empty one) is refused with
   <code>400 This installation has network zones. Set NEOPS_WORKER_NETWORK_ZONES, for example to default.</code></li>
-<li>A zone the CMS does not hold is refused with <code>400 Unknown network zone: &lt;name&gt;. Create it in the CMS first, in
-  Django admin or with networkZoneUpsert.</code></li>
+<li>A zone the CMS does not hold is refused with <code>400 Unknown network zone: &lt;name&gt;. Create it in the CMS first, on the
+  web client's Network zones page, in Django admin, or with networkZoneUpsert.</code></li>
 <li>A worker that lists several zones registers, with a warning in the engine log: the addresses of those zones must
   not overlap as seen from the worker&rsquo;s host.</li>
 <li>Registration answers <code>503</code> only while the engine has never read the zones from the CMS (see below).</li>
@@ -9080,7 +9184,8 @@ zones need the licensed (<code>enterprise</code>) engine.</p>
 plus <code>default</code>. A zone the CMS deletes is marked deleted in the table and comes back if the CMS creates it again. Once
 read, the table serves while the CMS is down.</p>
 <p>Before refusing a name its table lacks, the engine reads the CMS once more, so a zone created a moment ago is found.
-It does so at worker registration, when a run starts, and when a job is created:</p>
+It does so at worker registration, when a run starts, when a job is created, and when a result writes a zone (see
+<a href="#what-the-engine-refuses">What the engine refuses</a>):</p>
 <ul>
 <li><strong>When a run starts</strong>, a declared zone the CMS does not hold fails the run <code>FAILED_SAFE</code> with reason
   <code>unknown_network_zone</code>, before anything is locked. The reason names each declaration and its zone. While the CMS
@@ -9089,79 +9194,166 @@ It does so at worker registration, when a run starts, and when a job is created:
   <code>unknown_network_zone</code>. If the CMS cannot be read, the job is created and waits like any other. A zone read from the
   job&rsquo;s device is not checked again: the CMS holds it.</li>
 </ul>
+<h2 id="a-devices-zone-in-the-context">A device&rsquo;s zone in the context</h2>
+<p>Every device a run locks carries its zone under <code>networkZone</code>, and so does the device of every locked interface:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;networkZone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sw9&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.9&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;networkZone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>A device with no zone stored reads as <code>{ "name": "default" }</code>, without an id, in the job&rsquo;s context and in the engine&rsquo;s
+copy of the run&rsquo;s entities.</p>
+<h2 id="writing-a-devices-zone">Writing a device&rsquo;s zone</h2>
+<p>A step writes a device&rsquo;s zone through <code>dbUpdates</code>, under the snake_case key <code>network_zone</code>, as <code>{"name": ...}</code>. The
+engine places the device&rsquo;s jobs by that name, so a zone named only by its id is refused, and it sends the zone to the
+CMS by its name alone: an <code>id</code> beside the <code>name</code> is dropped, so the name always decides the zone. The same holds for
+the zone an interface&rsquo;s write names its device in. An id decides only which device a write names:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;device&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;patch&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>The engine applies the write to its copy of the device, under <code>networkZone</code>, so later steps of the run and the
+<a href="#where-a-job-runs">job placement</a> of later jobs follow the move, the jobs of the device&rsquo;s interfaces included. The CMS
+stores it when the run unlocks. Only the path <code>network_zone</code> moves a device: a path below it, such as
+<code>network_zone.name</code>, would change the zone record in the CMS rather than the device, and is refused.</p>
+<h3 id="creates-and-lookups">Creates and lookups</h3>
+<p>A device create should name its zone, normally the zone its job runs in, from <code>meta.networkZone</code>. A create without one
+is passed to the CMS as sent, and the CMS stores the device in <code>default</code>; the engine does not fill the zone in.
+Naming <code>default</code> from a job in another zone records a device of that network in <code>default</code>, whose workers then receive
+its credentials.</p>
+<p>Its <code>identifierFields</code> are a list of groups: core tries them in order, a group matches when all its fields match, and
+a group is skipped when the data lacks one of its fields. To find a device by address, pair the address with the zone:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;device&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">&quot;identifierFields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;ip&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">]],</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">&quot;skipIfIdentifierExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Fields a group may name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>device</td>
+<td><code>hostname</code>, <code>ip</code>, <code>network_zone</code> (never alone)</td>
+</tr>
+<tr>
+<td>interface</td>
+<td><code>name</code>, looked up on its device</td>
+</tr>
+<tr>
+<td>group</td>
+<td><code>name</code></td>
+</tr>
+</tbody>
+</table>
+<p>An interface names its device by <code>id</code>, or by <code>hostname</code> or <code>ip</code>; a bare number is an id and a bare string a hostname.
+Without a <code>network_zone</code> beside them the CMS matches
+devices in every zone, so where addresses overlap, add the zone:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;device&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="what-the-engine-refuses">What the engine refuses</h3>
+<p>The CMS checks a run&rsquo;s writes when the run unlocks, after every step has run: it runs each create&rsquo;s identifier lookup,
+resolves each device reference and checks each zone. The engine checks what it can without a lookup in the CMS, when
+the result arrives, so the run fails at the step that wrote it, before its later steps run.</p>
+<p>A refused result fails the run with <code>reasonCode</code> <a href="../70-lifecycle/#failure-codes"><code>invalid_result</code></a>, the refusal in
+its <code>reason</code>, and the job&rsquo;s row says why in <code>resultRejected</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>resultRejected</code></th>
+<th>The result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>network_zone</code></td>
+<td>names a zone in a shape other than <code>{"name": ...}</code>, an id alone included; patches a path below <code>network_zone</code>, or at <code>networkZone</code>, the context&rsquo;s spelling; or creates or moves a device into a zone the engine&rsquo;s zone table does not hold</td>
+</tr>
+<tr>
+<td><code>cms_lookup</code></td>
+<td>names a field a group may not name, an empty group or a group of <code>network_zone</code> alone; or names an interface&rsquo;s device by none of <code>id</code>, <code>hostname</code> and <code>ip</code></td>
+</tr>
+</tbody>
+</table>
+<p>Whether a create&rsquo;s lookup finds one record, two or none, whether a group name is taken, and whether a reference finds
+its device are for the CMS to decide at the unlock. The zone check reads the engine&rsquo;s zone table, and reads the CMS&rsquo;s
+zones once more when a result names a zone the table lacks, so a zone created since the last read is taken; a zone the
+CMS deleted since is caught at the unlock.</p>
 <h2 id="reading-where-a-step-ran">Reading where a step ran</h2>
 <p><code>&lt;step_label&gt;.meta</code> holds the zone a step&rsquo;s job ran in and why, the step&rsquo;s own declaration, the worker that ran it and
 the job&rsquo;s identity. See <a href="../30-parameters/#where-a-step-ran-meta">Where a step ran: <code>meta</code></a>.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/post_message:1.0.0&quot;</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">                    </span><span class="c1"># the chat bridge is only reachable from the central site</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Discovery</span><span class="nv"> </span><span class="s">finished</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">discover.meta.networkZone</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/post_message:1.0.0&quot;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">                    </span><span class="c1"># the chat bridge is only reachable from the central site</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Discovery</span><span class="nv"> </span><span class="s">finished</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">discover.meta.networkZone</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
 <h2 id="examples">Examples</h2>
 <p>Discover one zone, then report from the central site:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_discovery</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_discovery</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wf.lab.neops.io</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">majorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">minorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nt">patchVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nt">seedEntity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workflow</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.zone</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">        </span><span class="c1"># every step below runs here unless it says otherwise</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nt">parameterSchema</span><span class="p">:</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="nt">properties</span><span class="p">:</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">string</span><span class="p p-Indicator">,</span><span class="nt"> description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Network</span><span class="nv"> </span><span class="s">zone</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">discover&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">array</span><span class="p p-Indicator">,</span><span class="nt"> items</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">object</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">  </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">zone</span><span class="p p-Indicator">]</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discover</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/global_discover_network:0.2.0&quot;</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">      </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.subnets</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/post_message:1.0.0&quot;</span>
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">      </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Discovery</span><span class="nv"> </span><span class="s">finished</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">discover.meta.networkZone</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_discovery</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_discovery</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wf.examples.neops.io</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nt">majorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nt">minorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">patchVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nt">seedEntity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workflow</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.zone</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">        </span><span class="c1"># every step below runs here unless it says otherwise</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nt">parameterSchema</span><span class="p">:</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span><span class="nt">properties</span><span class="p">:</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">    </span><span class="nt">zone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">string</span><span class="p p-Indicator">,</span><span class="nt"> description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Network</span><span class="nv"> </span><span class="s">zone</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">discover&quot;</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">    </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">array</span><span class="p p-Indicator">,</span><span class="nt"> items</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">object</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">  </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">zone</span><span class="p p-Indicator">]</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discover</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/global_discover_network:0.2.0&quot;</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">      </span><span class="nt">subnets</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">parameters.subnets</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notify</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/post_message:1.0.0&quot;</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">global</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="w">      </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Discovery</span><span class="nv"> </span><span class="s">finished</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">discover.meta.networkZone</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </span></code></pre></div>
 <p>Onboard devices that were imported into <code>default</code> but live in network B. Find the ones still in <code>default</code> with the
 CMS&rsquo;s devices filter, where <code>networkZone_Name: "default"</code> matches the devices that have no zone stored, and run the
 workflow on their ids (<code>"executeOnParameters": { "ids": [...] }</code>):</p>
-<div class="language-graphql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">query</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">devices</span><span class="p">(</span><span class="n">networkZone_Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="n">hostname</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<div class="language-graphql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">query</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">devices</span><span class="p">(</span><span class="n">networkZone_Name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="n">hostname</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <p><code>fb.examples.neops.io/get_facts</code> and <code>fb.examples.neops.io/check_identity</code> are illustrative names; no repository ships
 them.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_contact</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/get_facts:1.0.0&quot;</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">zone-b</span><span class="p p-Indicator">,</span><span class="nt"> override</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># reach the device from zone-b, wherever it is recorded</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">same_device</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/check_identity:1.0.0&quot;</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">                                     </span><span class="c1"># fails unless the device that answered matches the CMS record</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">serial</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.serial</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rehome</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/device_update_device:0.2.0&quot;</span>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">      </span><span class="nt">network_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone-b</span><span class="w">                          </span><span class="c1"># record the move; later steps and runs follow it</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_contact</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/get_facts:1.0.0&quot;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">zone-b</span><span class="p p-Indicator">,</span><span class="nt"> override</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># reach the device from zone-b, wherever it is recorded</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">same_device</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/check_identity:1.0.0&quot;</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">                                     </span><span class="c1"># fails unless the device that answered matches the CMS record</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">      </span><span class="nt">serial</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.serial</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rehome</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/device_update_device:0.2.0&quot;</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">      </span><span class="nt">network_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone-b</span><span class="w">                          </span><span class="c1"># record the move; later steps and runs follow it</span>
 </span></code></pre></div>
 <p>The first step sends the record&rsquo;s credentials to whatever answers at that address in network B before any identity
 check runs, so onboard with credentials meant for that network.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-02 14:18:18'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-02T14:18:18+00:00'>2026-11-02 14:18:18</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:43:54'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:43:54+00:00'>2026-11-06 16:43:54</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

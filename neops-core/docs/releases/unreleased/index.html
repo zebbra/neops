@@ -8538,6 +8538,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#going-back-below-240" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going back below 2.4.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#a-role-for-the-first-superuser-bootstrap_admin_role" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8749,8 +8760,8 @@
 </tr>
 <tr>
 <td>Permissions</td>
-<td>The mutations need write on the new permission element <code>network-zones</code>, which no role has by default. Reading zones needs no grant.</td>
-<td>Grant <code>network-zones</code> write to the roles that manage zones.</td>
+<td>The mutations need write on the new permission element <code>network-zones</code>, which no role has by default; <code>bootstrap_admin_role</code> gives it to the admin role, also when other users hold that role. Reading zones needs no grant.</td>
+<td>Grant <code>network-zones</code> write to the other roles that manage zones.</td>
 </tr>
 <tr>
 <td>Moving devices</td>
@@ -8787,6 +8798,8 @@
 <h2 id="upgrade-notes">Upgrade notes</h2>
 <p>The upgrade applies migration <code>0206_network_zone</code>. It creates the zone table and adds an empty <code>network_zone</code> column to devices, so every device starts in <code>default</code>. No device row is rewritten.</p>
 <p>The <code>network</code> search index gains a field, so its schema hash changes and <code>manage.py elastic_index --rebuild-if-stale</code> rebuilds it on the upgrade with no further step. While the rebuild runs, and after a failed one until a later one finishes, core refuses every lock that searches the index; the workflow engine retries those locks, so a run that selects devices waits. Until the rebuild has run, devices with no zone are not indexed under <code>default</code>, so a selector on <code>network_zone.name</code> misses them. Run discovery, or any workflow that selects devices by zone, after the rebuild.</p>
+<h3 id="going-back-below-240">Going back below 2.4.0</h3>
+<p>Going back to an earlier release undoes migration <code>0206_network_zone</code>, which deletes every zone and every device&rsquo;s zone without a warning. Note which devices are in which zone before you go back: for each zone, query <code>devices(networkZone_Name: "&lt;zone&gt;") { totalCount results { id hostname ip } }</code>, and page with <code>results(page: 2)</code> and on past 200 devices. Going forward again, every device starts in <code>default</code>: recreate the zones, then move the devices back with <code>fb.base.neops.io/device_update_device:0.2.0</code> runs, since a device changes zone only through a workflow run.</p>
 <h3 id="a-role-for-the-first-superuser-bootstrap_admin_role">A role for the first superuser: <code>bootstrap_admin_role</code></h3>
 <p>The new command <code>manage.py bootstrap_admin_role --user &lt;username&gt; --role &lt;role&gt;</code> gives that user the role, creating it if needed, with:</p>
 <ul>
@@ -8794,7 +8807,7 @@
 <li>write on <code>network-zones</code>, so the user can create zones right after a fresh install.</li>
 </ul>
 <p>Run <code>manage.py grant_workflow_permissions --role &lt;role&gt; --profile admin --yes</code> after it for the workflow grants. Both commands re-apply their grants on every run, so a grant removed from that role by hand comes back on the next one; give other users roles of their own. Without the <code>neops_permissions_simple</code> plugin it seeds nothing, since every user may already do everything.</p>
-<p>If other users already hold a role of this name, the seed leaves it alone and warns; set superuser.role (NEOPS_ADMIN_ROLE) to a role only the superuser holds. The command then only adds the user to the role and exits 3, so a script that runs <code>grant_workflow_permissions</code> after it can skip that too, as the Helm hook and <code>cms-init</code> do.</p>
+<p>If other users already hold a role of this name, the seed widens it only by the write on <code>network-zones</code>, which this release introduces, adds the user to it and exits 3, so a script that runs <code>grant_workflow_permissions</code> after it can skip that, as the Helm hook and <code>cms-init</code> do. It changes nothing else on a shared role: not its default permission, its scopes or its other grants. Whoever holds the role gets that write; with OIDC, the identity provider decides who that is. Zones are global, not per tenant, so a per-tenant IdP role named like superuser.role (NEOPS_ADMIN_ROLE) gives every tenant&rsquo;s admins write on all zones. The command re-applies the grant on every install and upgrade: to keep it off a shared role, point superuser.role (NEOPS_ADMIN_ROLE) at a role only the superuser holds, then remove the grant from the shared role by hand.</p>
 <p>With <code>superuser.enabled</code>, the Helm chart&rsquo;s migrate hook now runs both for the superuser and the role <code>superuser.role</code> (default <code>admin</code>), on every install and upgrade. Before, the chart&rsquo;s superuser could log in and then read and write nothing until someone granted a role by hand. neops-docker-compose&rsquo;s <code>cms-init</code> runs the same two commands.</p>
 <h2 id="zone-names">Zone names</h2>
 <p>A zone name is lowercase letters, digits and hyphens, at most 63 characters, and starts and ends with a letter or digit: <code>zone-a</code>, <code>stadium-3</code>. Names are unique, and <code>default</code> is reserved: no zone can take it, since a device with no zone is already in it.</p>
@@ -8918,7 +8931,7 @@
 <p>New settings, all optional: <code>NEOPS_LOG_OUTBOX_MAX_ROWS</code>, <code>NEOPS_LOG_OUTBOX_MAX_BYTES</code>, <code>NEOPS_LOG_OUTBOX_MAX_ATTEMPTS</code>, <code>NEOPS_LOG_BATCH_MAX_BYTES</code> (1 MiB) and <code>NEOPS_LOG_QUEUE_MAX_RECORDS</code> (10000). They have the same names and defaults as the engine&rsquo;s. <code>neops-docker-compose</code> and the Helm charts do not pass them through yet, so changing one there needs an override.</p>
 <p><strong>Upgrade:</strong> migration <code>0205_log_outbox</code> adds two tables and needs no downtime.</p>
 <p><strong>Going back:</strong> the procedure in the 2.3.0 notes runs <code>migrate core 0188_refreshtoken_auth_provider</code> with the new code. That removes both tables, with every line still waiting in them and the drop counts, and nothing warns about it. An older core does not replay these lines either. Before that step, with the log store up and core serving requests, run <code>manage.py log_store_status</code> until <code>rows</code> is 0. If the store cannot come back in time, the waiting lines are lost: save them first with <code>pg_dump --table=core_logoutboxentry</code> if you need them. Do not go back without draining while lines of an applied change wait there, because those are the only record of who applied it.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-04 11:20:50'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-04T11:20:50+00:00'>2026-11-04 11:20:50</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:00:38'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:00:38+00:00'>2026-11-06 16:00:38</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

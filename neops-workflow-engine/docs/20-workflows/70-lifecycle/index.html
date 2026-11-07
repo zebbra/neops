@@ -9421,7 +9421,7 @@ never renamed.</p>
 </tr>
 <tr>
 <td><code>lock_refused</code></td>
-<td>the CMS refused or could not complete the lock on the run&rsquo;s entities, or the lock was never requested because the run&rsquo;s starter maps to no CMS user</td>
+<td>the CMS refused or could not complete the lock on the run&rsquo;s entities, the engine refused to lock against a CMS too old for it (<code>GET /health</code> says why), or the lock was never requested because the run&rsquo;s starter maps to no CMS user</td>
 </tr>
 <tr>
 <td><code>acquire_failed</code></td>
@@ -9433,7 +9433,7 @@ never renamed.</p>
 </tr>
 <tr>
 <td><code>invalid_result</code></td>
-<td>a step&rsquo;s result breaks its function block&rsquo;s result schema, its dbUpdates write outside the step&rsquo;s entities or collide with another step&rsquo;s, or a pure function block reported side effects</td>
+<td>a step&rsquo;s result breaks its function block&rsquo;s result schema, its dbUpdates write outside the step&rsquo;s entities, collide with another step&rsquo;s or would be refused by the CMS for their shape or zone (<a href="../45-network-zones/#what-the-engine-refuses">Network zones</a>), or a pure function block reported side effects</td>
 </tr>
 <tr>
 <td><code>assertion_failed</code></td>
@@ -9561,7 +9561,7 @@ principal who started the run) and then answers <code>501 Not Implemented</code>
 and writes nothing; <code>abortedBy</code> stays empty. A run that cannot lock its entities waits in
 <code>LOCKING</code> and resumes on its own once they are free.</p>
 </div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 20:27:26'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T20:27:26+00:00'>2026-10-30 20:27:26</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:39:00'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:39:00+00:00'>2026-11-06 16:39:00</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 

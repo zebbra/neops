@@ -2905,6 +2905,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#upgrading-to-046" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading to 0.46
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3038,6 +3049,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cms-unavailable-while-results-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CMS unavailable while results arrive
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3062,6 +3084,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Database Maintenance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#going-back-to-045" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going back to 0.45
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8815,6 +8854,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#upgrading-to-046" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading to 0.46
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8948,6 +8998,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cms-unavailable-while-results-arrive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CMS unavailable while results arrive
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8972,6 +9033,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Database Maintenance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#going-back-to-045" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going back to 0.45
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -9099,14 +9177,41 @@
 <ul>
 <li><code>authz</code> tells a wrong or unreachable verification key apart from a CMS outage without reading logs. <code>mode</code> is <code>NEOPS_AUTHZ_MODE</code>. <code>keySource</code> is <code>pem</code> (a pinned <code>NEOPS_JWT_PUBLIC_KEY[_PATH]</code>), <code>jwks</code> (<code>NEOPS_JWKS_URL</code>) or <code>null</code> (mode <code>disabled</code>). <code>keyReachable</code> is, for a JWKS, whether the key set was obtainable the last time the engine fetched it: at boot, or verifying a token. While it is <code>false</code>, every gated route answers <code>503 KEY_UNAVAILABLE</code>. It is <code>null</code> before the first fetch, and always <code>null</code> for a PEM, which has no runtime dependency. The JWKS URL is never included.</li>
 <li><code>cms</code> is whether the CMS GraphQL endpoint (<code>NEOPS_CMS_URL</code>) answered the engine&rsquo;s probe, sent with the engine&rsquo;s <code>NEOPS_CMS_TOKEN</code>, as a GraphQL server: a status below 500 with a JSON body carrying <code>data</code> or <code>errors</code>. A GraphQL error answer, such as a rejected token, still counts as reachable. A 5xx, a timeout, a refused connection, or a body that is not a GraphQL answer counts as unreachable; a plain <code>404</code> or a proxy&rsquo;s HTML page means <code>NEOPS_CMS_URL</code> does not point at the CMS GraphQL endpoint. The probe runs at boot, repeats every 30 seconds until it knows whether the CMS is compatible (see <code>cms.compatible</code>), and then runs at most every 30 seconds in the background of a health request, with a 2-second timeout. A health request never waits for it, so <code>cms</code> is absent until the first probe has finished. Because the chart&rsquo;s readiness probe polls <code>/health</code> every few seconds, each pod keeps probing the CMS about every 30 seconds for as long as it runs.</li>
-<li><code>cms.compatible</code> is whether the CMS schema serves every field the engine&rsquo;s CMS queries select. The probe introspects those types (<code>__type(name: …) { fields { name } }</code>); the list of required fields and the minimum neops-core release live in one place, <code>src/engine/core-engine/cms-client/cms-requirements.ts</code>. It is <code>null</code> when the probe could not tell: the CMS was unreachable, or answered with a GraphQL error, such as a rejected <code>NEOPS_CMS_TOKEN</code> (the CMS introspects types only for an authenticated caller). Until it is known, the boot probe repeats every 30 seconds. When it is <code>false</code>, <code>cms.incompatibleReason</code> names the missing fields and the minimum release, for example <code>the CMS lacks DeviceType.networkZone; this engine needs neops-core &gt;= 2.4.0-beta.1</code>, and the engine logs the same reason as an error, with the CMS URL, when it detects it. The minimum release is the neops-core release whose GraphQL client the engine is built with; the check reads only the listed fields, so an older core that serves them still reads as compatible. Without that check, an older CMS rejects the lock mutation and every run that locks devices ends <code>FAILED_SAFE_ACK</code> with <code>Cannot query field 'networkZone' on type 'DeviceType'</code>, while runs on <code>global</code> still succeed. The check reads the schema at <code>NEOPS_CMS_URL</code>: a proxy in front of the CMS that hides fields, or a CMS with introspection disabled, makes it report <code>false</code> or <code>null</code> respectively.</li>
+<li><code>cms.compatible</code> is whether the CMS schema serves every field the engine&rsquo;s CMS queries select. The probe introspects those types (<code>__type(name: …) { fields { name } }</code>); the list of required fields and the minimum neops-core release live in one place, <code>src/engine/core-engine/cms-client/cms-requirements.ts</code>. It is <code>null</code> when the probe could not tell: the CMS was unreachable, or answered with a GraphQL error, such as a rejected <code>NEOPS_CMS_TOKEN</code> (the CMS introspects types only for an authenticated caller). Until it is known, the boot probe repeats every 30 seconds. When it is <code>false</code>, <code>cms.incompatibleReason</code> names the missing fields, the minimum release and the release the CMS runs (its <code>appSettings.version</code>), for example <code>the CMS lacks DeviceType.networkZone; this engine needs neops-core &gt;= 2.4.0-beta.2, found 2.3.1</code>, and the engine logs the same reason as an error, with the CMS URL, when it detects it. The minimum release is the neops-core release whose GraphQL client the engine is built with; the check reads only the listed fields, so an older core that serves them still reads as compatible. While it is <code>false</code>, the engine locks nothing: every run ends <code>FAILED_SAFE_ACK</code> with <code>reasonCode</code> <code>lock_refused</code> and <code>Failed to lock resources:</code> followed by that reason, runs on <code>global</code> included. Before it refuses a run, the engine probes again when the last probe is 30 seconds old or more, so a core upgraded since is not refused. While it is <code>null</code>, the engine locks as usual, and an older CMS rejects the lock: the run ends <code>FAILED_SAFE_ACK</code> with <code>lock_refused</code> and <code>Cannot query field 'networkZone' on type 'DeviceType'</code>. The check reads the schema at <code>NEOPS_CMS_URL</code>: a proxy in front of the CMS that hides fields, or a CMS with introspection disabled, makes it report <code>false</code> or <code>null</code> respectively.</li>
 </ul>
 <h3 id="when-the-cms-is-too-old">When the CMS is too old</h3>
 <ul>
 <li><strong>Symptom.</strong> Compose reports the engine service as unhealthy. In Kubernetes the pod is running but not ready, and <code>helm --wait</code> times out. The Monitor App says the engine runs but neops-core is too old for it, with the reason, wherever it reaches the engine; behind a Kubernetes Service the unready pod receives no traffic, so there it reports the engine as not answering.</li>
 <li><strong>Reason.</strong> <code>cms.incompatibleReason</code> in <code>curl http://localhost:3030/health</code>, or the error line starting <code>Upgrade neops-core:</code> in the engine log.</li>
 <li><strong>Action.</strong> Upgrade neops-core to at least the release named there.</li>
-<li><strong>Recovery.</strong> Within about 30 seconds of the upgrade, without restarting the engine: the platform&rsquo;s health checks keep the probe running and the next one finds the fields.</li>
+<li><strong>Recovery.</strong> Within about 30 seconds of the upgrade, without restarting the engine: the platform&rsquo;s health checks keep the probe running and the next one finds the fields. Runs started in the meantime ended <code>FAILED_SAFE_ACK</code> with <code>lock_refused</code>, having locked nothing; start them again.</li>
+</ul>
+<h3 id="upgrading-to-046">Upgrading to 0.46</h3>
+<p>Upgrade in this order:</p>
+<ol>
+<li>Let every run finish, and start none until the engine runs 0.46 (the engine cannot abort a run yet).</li>
+<li>Upgrade neops-core to 2.4.0-beta.2 or later.</li>
+<li>Upgrade the engine to 0.46.</li>
+<li>Upgrade the workers to Worker SDK 0.5. SDK 0.4 pins engine client 0.45.0: its worker exits at its own version
+   check with <code>Client 0.45.0 is not compatible with this engine. Update the SDK.</code> The <code>426</code> at registration (see
+   <a href="../30-worker-management/#registration">Registration</a>) shows only when that check could not reach the engine. The
+   worker side of the upgrade is in the Worker SDK&rsquo;s
+   <a href="https://docs.neops.io/neops-worker-sdk-py/docs/deployment/10-worker-lifecycle/#upgrading-to-network-zones">worker lifecycle</a>.</li>
+<li>Set <code>NEOPS_WORKER_NETWORK_ZONES=default</code> on the central workers: once the CMS holds a zone besides <code>default</code>, a
+   worker that lists no zones is refused.</li>
+<li>Create the zones in the CMS, then start each zone&rsquo;s workers with <code>NEOPS_WORKER_NETWORK_ZONES</code> set to their zones.</li>
+</ol>
+<p>Out of order:</p>
+<ul>
+<li>An engine upgraded first refuses to lock against the older core, so new runs end <code>FAILED_SAFE_ACK</code> with
+  <code>lock_refused</code>. A run that 0.45 had already locked is unlocked by 0.46, whose unlock selects a field the older core
+  lacks: that run ends <code>FAILED_UNSAFE_ACK</code> with <code>unlock_failed</code> and keeps its locks. Upgrade core first, then check the
+  CMS against the run&rsquo;s results and resolve it; the lock release that follows, with the run&rsquo;s writes, reaches the
+  upgraded core.</li>
+<li>A run that finishes on 0.45 after core is upgraded can have its write-back refused with <code>WRITE_REFUSED</code>, which 0.45
+  reads as a failed unlock. It retries the write-back with backoff and parks the run after twelve failures, still
+  holding its locks. Because the CMS answers, 0.45&rsquo;s parked-run probe resumes the run within
+  <code>PARKED_EXECUTION_PROBE_INTERVAL_MS</code> (5 minutes by default), and the loop starts again.</li>
 </ul>
 <h2 id="monitoring-executions">Monitoring Executions</h2>
 <h3 id="active-executions">Active Executions</h3>
@@ -9200,6 +9305,11 @@ break-glass measure, but bypasses the audit trail.</p>
 <li>the connection pool giving up waiting for a free connection (knex&rsquo;s acquire timeout)</li>
 </ul>
 <p>Any other database error, such as a constraint violation or a query timeout, still answers <code>500</code>. During an outage the engine logs one <code>Database unavailable, answering 503</code> warning every 30 seconds, with the number of 503s it answered in between.</p>
+<h3 id="cms-unavailable-while-results-arrive">CMS unavailable while results arrive</h3>
+<p>Since 0.46.0 the engine checks a result&rsquo;s CMS writes when the result arrives, without a lookup in the CMS (see
+<a href="../../20-workflows/45-network-zones/#what-the-engine-refuses">What the engine refuses</a>), so results keep being taken
+while the CMS is down. A result that names a zone the engine&rsquo;s zone table lacks makes it read the CMS&rsquo;s zones once
+more; while the CMS is down, that zone is refused as the table holds it.</p>
 <h2 id="aborting-executions">Aborting Executions</h2>
 <p>Aborting is not implemented. <code>DELETE /workflow-execution/&lt;execution-id&gt;</code> keeps its
 authorization contract and then answers <code>501 Not Implemented</code>, writing nothing. Stuck
@@ -9211,16 +9321,63 @@ executions end through the job cleanup timeouts; an unsafe one through remediati
 <li><strong>Backup</strong> &ndash; Standard <code>pg_dump</code> for backups</li>
 <li><strong>Disk space</strong> &ndash; Completed executions and their jobs are retained indefinitely. Consider periodic cleanup of old execution data if disk space is a concern.</li>
 </ul>
-<h2 id="version-information">Version Information</h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Engine version and API version</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>curl<span class="w"> </span>http://localhost:3030/version/
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Check worker SDK compatibility</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/version/compatibility/<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
+<h3 id="going-back-to-045">Going back to 0.45</h3>
+<p>Go back in this order, the reverse of <a href="#upgrading-to-046">Upgrading to 0.46</a>:</p>
+<ol>
+<li>Let every run finish.</li>
+<li>Stop every worker.</li>
+<li>Take the engine back to 0.45: the SQL and the migration revert below.</li>
+<li>Take neops-core below 2.4.0, if you go back that far, as core&rsquo;s own release notes for 2.4.0 describe under going
+   back. Core goes after the engine: a 0.46 engine refuses to lock against a core older than 2.4.0-beta.2, and every
+   unlock it sends there fails.</li>
+<li>Start the workers on Worker SDK 0.4.</li>
+</ol>
+<p>Let every run finish first (the engine cannot abort a run yet): a job still waiting loses its zone, and 0.45 hands it to
+whichever worker polls first.</p>
+<p>Stop every worker too, and run only workers on Worker SDK 0.4 while you stay on 0.45. 0.45 has no zones, so it hands a
+job of any zone to whichever worker polls first, a 0.5 worker that keeps running included.</p>
+<p>The <code>down()</code> of the 0.46 migrations restores 0.45&rsquo;s CHECK constraints, which refuse the values 0.46 writes, so it fails
+while any row holds one. Clear those values too. The rows keep their <code>reason</code>, which still says what failed:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">result_rejected</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;network_zone&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cms_lookup&#39;</span><span class="p">);</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">update</span><span class="w"> </span><span class="n">job_result</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">update</span><span class="w"> </span><span class="n">workflow_execution</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;step_failed&#39;</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">reason_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown_network_zone&#39;</span><span class="p">;</span>
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-04 09:21:42'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-04T09:21:42+00:00'>2026-11-04 09:21:42</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<p>Then revert the 0.46 migrations, the first of them, <code>Migration20261030184705</code>, included, from the 0.46 image&rsquo;s working
+directory (<code>/app</code>), with the engine&rsquo;s database settings in the environment, and start 0.45:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>node<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;const { MikroORM } = require(&#39;@mikro-orm/core&#39;);</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s2">const config = require(&#39;./dist/neops-workflow-engine/src/mikro-orm.config&#39;).default;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s2">MikroORM.init(config).then(async orm =&gt; {</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s2">  await orm.getMigrator().down({ to: &#39;Migration20261030184705&#39; });</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">  await orm.close(true);</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s2">});&quot;</span>
+</span></code></pre></div>
+<p>The command loads the engine&rsquo;s configuration, so it reads what the engine reads, from the environment or from a <code>.env</code>
+file in the working directory:</p>
+<ul>
+<li><code>POSTGRES_HOST</code> (default <code>localhost</code>), <code>POSTGRES_PORT</code> (default <code>5434</code>) and <code>POSTGRES_PASSWORD</code>.</li>
+<li><code>POSTGRES_USER</code> (default <code>postgres</code>). The database is always <code>neops-workflow</code>.</li>
+<li>Any <code>MIKRO_ORM_*</code> variable, <code>MIKRO_ORM_USER</code> included, overrides the setting it names.</li>
+<li>A malformed value of any other engine variable stops the command, as it would stop the engine.</li>
+</ul>
+<p>A down that fails changes nothing: the migrations revert in one transaction, so the database stays as 0.46 left it.
+Run the SQL above and repeat the command.</p>
+<p>Reverting drops the engine&rsquo;s zone table and each job&rsquo;s zone.</p>
+<p>The command also reverts 0.45&rsquo;s own last two migrations, because migrations revert in name order and their names sort
+after <code>Migration20261030184705</code>: <code>Migration20261102104651</code> renames <code>rollback_data_size_bytes</code> back to
+<code>rollback_data_bytes</code>, and <code>Migration20261102113953</code> deletes the rows of refused workers. 0.45 applies both again when it
+starts, so its list of refused workers starts empty.</p>
+<p>Reverting also drops the zones each worker registered. When you go forward to 0.46 again, restart every worker so that
+it registers its zones anew: a worker that kept running counts as serving only <code>default</code>.</p>
+<h2 id="version-information">Version Information</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Engine version and API version</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>curl<span class="w"> </span>http://localhost:3030/version/
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Check worker SDK compatibility</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:3030/version/compatibility/<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;library&quot;: &quot;neops_worker_sdk&quot;}&#39;</span>
+</span></code></pre></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 19:26:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T19:26:32+00:00'>2026-11-06 19:26:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
 
 
 
