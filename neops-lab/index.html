@@ -8717,7 +8717,8 @@ failure:</p>
 <ul>
 <li><strong>Docker</strong> + <code>docker compose</code> ≥ 2.20. No registry login needed: the CMS, the
   web client and the default <strong>developer preview</strong> engine all pull anonymously.
-  <code>docker login quay.io</code> is only for swapping in the full licensed engine.</li>
+  <code>docker login quay.io</code> is only for the full licensed engine, which the
+  <code>network-zones</code> scenario runs.</li>
 <li><strong>containerlab</strong> needs no install: every make target and documented command
   uses <code>./containerlab</code>, which runs the official <code>ghcr.io/srl-labs/clab</code> image
   through the docker socket — the same command and the same pinned containerlab
@@ -8739,15 +8740,16 @@ failure:</p>
   stdlib-only and import under the <code>/usr/bin/python3</code> a stock macOS ships.</li>
 <li><strong><code>uv</code></strong> — only for <code>make test</code> / <code>make lint</code> / <code>make check</code> and the docs.</li>
 <li><strong><code>cms_api_key.env</code></strong> exists (produced by <code>make local-env-init</code> — needed once).</li>
-<li><strong>A worker image that carries <code>fb.base.neops.io/global_discover_network:0.1.0</code>.</strong>
-  <code>quay.io/zebbra/neops-worker-sdk:develop</code> does, and <code>.env.example</code> pins
-  <code>0.3.0</code> to hold the lab on a fixed release; it needs engine <code>v0.44.0</code> or
-  later, the first with the job leases and rollback forward results that worker
-  relies on. <code>.env.example</code> pins <code>NEOPS_ENGINE_TAG=0.44.1</code> with it. When you
-  pin another tag, run the <code>discover_network.py</code> check below against it.
+<li><strong>A worker image that carries <code>fb.base.neops.io/global_discover_network:0.2.0</code>.</strong>
+  That version ships first in neops-worker-sdk <code>0.5.0</code>, which needs engine
+  <code>0.46.0</code>, which in turn needs a CMS from neops-core <code>2.4.0</code>: the engine
+  refuses every worker until it has read the network zones from the CMS.
+  <code>.env.example</code> pins all three (<code>NEOPS_WORKER_SDK_IMAGE</code>, <code>NEOPS_ENGINE_TAG</code>,
+  <code>NEOPS_CMS_IMAGE</code>); move them together. When you pin another worker tag,
+  run the <code>discover_network.py</code> check below against it.
   <code>make lab-env</code> never rewrites an existing <code>.env</code>, so a lab set up before this
-  release still pins <code>0.3.0-beta.2</code>, which expires on 2026-11-18: set
-  <code>NEOPS_WORKER_SDK_IMAGE</code> and <code>NEOPS_ENGINE_TAG</code> in <code>.env</code> by hand. An engine
+  release keeps its older pins, and an older worker carries the block at
+  <code>0.1.0</code> only: copy the three lines from <code>.env.example</code> into <code>.env</code> by hand. An engine
   older than <code>v0.43.0-beta.6</code> lacks
   <a href="https://github.com/zebbra/neops-workflow-engine/pull/402">engine #402</a>, and
   that worker cannot discover against it — see
@@ -8760,11 +8762,11 @@ failure:</p>
 </span></code></pre></div>
 <p>Check what you got before bringing the lab up — the image must carry the
   block, not just build:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;ls neops/fb/base/global/discover_network.py&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>neops-worker-sdk:latest<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;grep -n &quot;version=(0, 2, 0)&quot; neops/fb/base/global/discover_network.py&#39;</span>
 </span></code></pre></div>
 <p>Without the block the worker runs but never announces it, so <code>local-lab-up</code>
   burns its full <code>wait_ready</code> budget and gives up with <code>timeout: no online
-  worker for fb.base.neops.io/global_discover_network:0.1.0</code>.
+  worker for fb.base.neops.io/global_discover_network:0.2.0</code>.
 - <strong>A workflow-engine image with the publish route and the large-payload +
   reference-resolution fixes.</strong> Discovery emits a few hundred <code>Interface</code> rows in
   one job result, and <code>bootstrap/register.py</code> writes definitions through
@@ -8776,8 +8778,8 @@ failure:</p>
   <code>export NEOPS_WORKFLOW_ENGINE_IMAGE=quay.io/zebbra/neops-workflow-engine:develop</code>)
   or run a local build (<code>neops-workflow-engine:latest</code>); <code>NEOPS_ENGINE_TAG=&lt;tag&gt;</code>
   in <code>.env</code> pins just the tag on the preview.
-  <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work the same way — see
-  <code>.env.example</code>.
+  <code>NEOPS_CMS_IMAGE</code>, <code>NEOPS_WEB_CLIENT_IMAGE</code> and <code>NEOPS_WORKER_SDK_IMAGE</code> work
+  the same way — see <code>.env.example</code>.
 - <strong>Host resources</strong>: for <code>wan-and-fabric</code> the 5 SR Linux nodes want ≈1.5–2 GB
   each; with Elasticsearch and the control plane that scenario needs roughly
   <strong>14–16 GB</strong> for containers. <code>SCENARIO=frr-only</code> drops the SR Linux nodes and
@@ -8818,6 +8820,12 @@ configuration. Anything a scenario does not carry comes from
 <td>10</td>
 <td>clab, kind</td>
 <td>The FRR half alone; carries only a topology, everything else inherited — see <a href="./scenarios/frr-only/README.md"><code>scenarios/frr-only/README.md</code></a></td>
+</tr>
+<tr>
+<td><code>network-zones</code></td>
+<td>6</td>
+<td>clab</td>
+<td>Two FRR routers in <code>default</code> and two in each of <code>zone-a</code> and <code>zone-b</code>, each zone on its own subnet with a worker of its own; needs the zone-capable images and the licensed engine (<code>docker login quay.io</code>) — see <a href="./scenarios/network-zones/README.md"><code>scenarios/network-zones/README.md</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -9086,15 +9094,15 @@ without it they use the <code>Makefile</code>&rsquo;s default, <code>wan-and-fab
 </tr>
 <tr>
 <td><code>make local-lab-discover</code></td>
-<td>POSTs an execution of the discovery workflow; every device in the scenario <strong>and its interfaces</strong> appears in the CMS. Override <code>DISCOVER_PARAMS</code> to exercise explicit hosts, autodetection, or subnet expansion. Devices are keyed by IP (re-running skips existing devices); interfaces are always recorded, so run discovery against a <strong>fresh</strong> CMS to avoid duplicate interface rows.</td>
+<td>POSTs an execution of the discovery workflow; every device in the scenario <strong>and its interfaces</strong> appears in the CMS. Override <code>DISCOVER_PARAMS</code> to exercise explicit hosts, autodetection, or subnet expansion; it covers the <code>default</code> zone, and a scenario with network zones then runs the same workflow once per zone with that zone&rsquo;s parameters. Devices are keyed by IP and network zone (re-running skips existing devices); interfaces are always recorded, so run discovery against a <strong>fresh</strong> CMS to avoid duplicate interface rows.</td>
 </tr>
 <tr>
 <td><code>make local-lab-logs</code></td>
-<td>Tails worker + bootstrap logs.</td>
+<td>Tails worker + bootstrap logs, each zone&rsquo;s worker included.</td>
 </tr>
 <tr>
 <td><code>make local-lab-down</code></td>
-<td><code>containerlab destroy --cleanup</code> (removes the devices and <code>generated/$(SCENARIO)/clab/clab-neops-lab</code>) then <code>docker compose down</code> (preserves volumes).</td>
+<td><code>containerlab destroy --cleanup</code> for every topology of the deployed scenario (removes the devices, <code>generated/&lt;scenario&gt;/clab/clab-neops-lab*</code> and the topology files) then <code>docker compose down --remove-orphans</code>, then removes each torn-down topology&rsquo;s mgmt network (preserves volumes).</td>
 </tr>
 <tr>
 <td><code>make local-env-prune</code></td>
@@ -9219,7 +9227,7 @@ engine gates is <code>NEOPS_AUTHZ_MODE</code> on the <code>workflow_engine</code
 <li><code>make test</code> — the generator and manifest guards run against every scenario, so
    a new one is covered without writing a new assertion.</li>
 </ol>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:08:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:08:16+00:00'>2026-10-30 08:08:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:28:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:28:07+00:00'>2026-11-06 13:28:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 

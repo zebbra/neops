@@ -8932,7 +8932,7 @@
 <p>Only <code>vendor: "frr"</code> devices are rendered, so a scenario declares whether it supports this flavour in its <code>scenario.json</code>:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&quot;flavours&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;clab&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;kind&quot;</span><span class="p">]</span>
 </span></code></pre></div>
-<p>Both shipped scenarios do. <code>make kind-lab-up SCENARIO=frr-only</code> brings up the same ten devices as the containerlab flavour of that scenario, since <code>frr-only</code> has no SR Linux nodes to leave out.</p>
+<p><code>wan-and-fabric</code> and <code>frr-only</code> do; <code>network-zones</code> does not, and the <code>kind-lab-*</code> targets refuse a scenario whose <code>flavours</code> leave out <code>kind</code> before they touch the cluster. <code>make kind-lab-up SCENARIO=frr-only</code> brings up the same ten devices as the containerlab flavour of that scenario, since <code>frr-only</code> has no SR Linux nodes to leave out.</p>
 <h2 id="targets">Targets</h2>
 <table>
 <thead>
@@ -9031,7 +9031,7 @@ would strand the rest. <code>make local-lab-up</code> refuses too; run
 <p>Bringing the pods up needs no product stack. Wiring them to one is a separate target, the same way <code>local-lab-up</code> and <code>local-lab-discover</code> are separate:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>kind-lab-cms-config<span class="w">   </span><span class="c1"># grant the CMS role and seed the Global scope</span>
 </span></code></pre></div>
-<p>That runs <code>apply_cms_config</code>, the compose lab&rsquo;s own script, reused rather than copied: it drives <code>manage.py</code> through a <code>CMS_EXEC</code> prefix, which this flavour sets to <code>kubectl exec</code> instead of <code>docker compose exec</code>. Without it a freshly installed CMS gives the <code>neops</code> user no role, and the web client shows <em>You don&rsquo;t have access to any scope</em>.</p>
+<p>That runs <code>apply_cms_config</code>, the compose lab&rsquo;s own script, reused rather than copied: it drives <code>manage.py</code> through a <code>CMS_EXEC</code> prefix, which this flavour sets to <code>kubectl exec</code> instead of <code>docker compose exec</code>. Without it a freshly installed CMS gives the <code>neops</code> user no role, and the web client shows <em>You don&rsquo;t have access to any scope</em>. The CMS must be neops-core 2.4.0 or later: the script grants the role through core&rsquo;s <code>bootstrap_admin_role</code>, which earlier releases lack.</p>
 <p>The host reaches the CMS through a short-lived <code>kubectl port-forward</code> that the target opens and tears down, so no ingress, public DNS or TLS is involved.</p>
 <table>
 <thead>
@@ -9106,7 +9106,7 @@ against the pods.</p>
 </ul>
 <p>The output is git-ignored and regenerated on every run, because a <code>kind-lab-down</code> / <code>kind-lab-up</code> cycle hands out a fresh set of addresses.</p>
 <h3 id="the-worker-image-has-to-carry-global_discover_network">The worker image has to carry <code>global_discover_network</code></h3>
-<p>Discovery runs the <code>fb.base.neops.io/global_discover_network:0.1.0</code> block, which ships <strong>inside the worker image</strong> rather than being mounted from here. Which image you deployed decides whether this works at all:</p>
+<p>Discovery runs the <code>fb.base.neops.io/global_discover_network:0.2.0</code> block, which ships <strong>inside the worker image</strong> rather than being mounted from here. Which image you deployed decides whether this works at all:</p>
 <table>
 <thead>
 <tr>
@@ -9119,12 +9119,17 @@ against the pods.</p>
 <tr>
 <td><code>quay.io/zebbra/neops-worker-sdk:develop</code>, the default</td>
 <td>base blocks, including <code>global_discover_network</code></td>
-<td>Works on engine <code>v0.43.0-beta.6</code> or later</td>
+<td>Works on an engine of the release line its client pins</td>
 </tr>
 <tr>
-<td><code>quay.io/zebbra/neops-worker-sdk:0.3.0</code></td>
-<td>base blocks, including <code>global_discover_network</code></td>
-<td>Works on engine <code>v0.44.0</code> or later, the first with the job leases and rollback forward results this worker relies on</td>
+<td><code>quay.io/zebbra/neops-worker-sdk:0.5.0</code></td>
+<td>base blocks, including <code>global_discover_network:0.2.0</code></td>
+<td>Works on engine <code>0.46.0</code> or later</td>
+</tr>
+<tr>
+<td><code>quay.io/zebbra/neops-worker-sdk:0.4.0</code> and older</td>
+<td>base blocks, with <code>global_discover_network</code> at <code>0.1.0</code></td>
+<td><code>wait_ready</code> times out: discovery names <code>0.2.0</code></td>
 </tr>
 <tr>
 <td>the <code>neops-worker-sdk-py</code> checkout, <code>make build-docker</code></td>
@@ -9166,12 +9171,12 @@ against the pods.</p>
 </tr>
 <tr>
 <td><code>DISCOVER_FB</code></td>
-<td><code>fb.base.neops.io/global_discover_network:0.1.0</code></td>
+<td><code>fb.base.neops.io/global_discover_network:0.2.0</code></td>
 <td>The block <code>wait_ready</code> blocks on — shared with the containerlab flavour</td>
 </tr>
 <tr>
 <td><code>DISCOVER_WORKFLOW</code></td>
-<td><code>wf.lab.neops.io/simple_lab_discovery:1.3.0</code></td>
+<td><code>wf.lab.neops.io/simple_lab_discovery:1.4.0</code></td>
 <td>The definition that is published and executed — shared with the containerlab flavour</td>
 </tr>
 <tr>
@@ -9224,7 +9229,7 @@ counts rather than assuming, on either flavour.</p>
 <li><strong>Deploying the control plane.</strong> Nothing here installs a CMS, engine, worker or web client; <code>make local-env-*</code> and <code>make local-lab-up</code> still do that for the compose flavour. <code>kind-lab-cms-config</code> and <code>kind-lab-discover</code> <em>use</em> a control plane someone else deployed — they configure and drive it, and they never install, upgrade or delete it.</li>
 <li><strong>Real links.</strong> The <code>swpN</code> ports are dummy interfaces with the right names and descriptions, not point-to-point wiring. Discovery sees a realistic device; packets do not cross between devices.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:44'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:44+00:00'>2026-09-08 11:32:44</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-29 21:52:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-29T21:52:32+00:00'>2026-10-29 21:52:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:44'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:44+00:00'>2026-09-08 11:32:44</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:28:07'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:28:07+00:00'>2026-11-06 13:28:07</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

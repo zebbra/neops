@@ -8582,6 +8582,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#network-zones-in-a-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network zones in a scenario
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-scenarios-that-ship" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8729,14 +8740,14 @@ five; a scenario that adds a workflow keeps the base&rsquo;s discovery workflow 
 <tbody>
 <tr>
 <td><code>topology.json</code></td>
-<td>No — required in every scenario</td>
+<td>No — required in every scenario. Its optional <code>zones</code> declare network zones</td>
 </tr>
 <tr>
 <td><code>scenario.json</code>, <code>README.md</code></td>
 <td>No — required in every scenario</td>
 </tr>
 <tr>
-<td><code>workflow-execution-parameters/*.json</code></td>
+<td><code>workflow-execution-parameters/*.json</code>, <code>…/zones/*.json</code></td>
 <td>No — generated from the topology</td>
 </tr>
 <tr>
@@ -8853,6 +8864,46 @@ unique within the scenario.
 FRR baseline ships a <code>devices/frr/daemons</code> or <code>devices/frr/frr.conf</code> delta —
 there is no second image to build, because the FRR image no longer bakes either
 file.</p>
+<h2 id="network-zones-in-a-scenario">Network zones in a scenario</h2>
+<p>A network zone is a network that only its own workers reach; zones may reuse
+each other&rsquo;s addresses. A topology may declare network zones. The lab gives
+each one what a file overlay cannot carry: a management network, a
+containerlab topology and a worker of its own.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;zones&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;zone-a&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;subnet&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.10.0/24&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Site A&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;devices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">&quot;core-rtr-01&quot;</span><span class="p">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mgmt_ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.0.11&quot;</span><span class="p">,</span><span class="w">  </span><span class="nt">&quot;vendor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frr&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">&quot;site-a-rtr-01&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mgmt_ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.30.10.11&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;vendor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frr&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-a&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>A device without <code>zone</code> is in <code>default</code>, on <code>lab-net</code>, and is moved into
+  <code>LAB_SUBNET</code> like every other scenario&rsquo;s devices. A zone&rsquo;s devices keep the
+  addresses the topology gives them, inside that zone&rsquo;s <code>subnet</code>.</li>
+<li>Zone names follow the CMS&rsquo;s rule: lowercase letters, digits and hyphens.
+  <code>default</code> cannot be declared; it is where a device without a zone already is.</li>
+<li>No link may cross zones, and no zone subnet may overlap another or the lab&rsquo;s
+  own networks; <code>tests/test_network_zones.py</code> checks both. Zone subnets are
+  fixed in the topology and <code>LAB_SUBNET</code> does not move them, so a scenario with
+  zones cannot run as a second lab beside itself; <code>make doctor</code> names a network
+  that holds one of them.</li>
+<li><code>apply_cms_config</code> creates the zones in the CMS from the resolved topology,
+  before any worker starts. It needs neops-core 2.4.0, the release
+  <code>.env.example</code> pins.</li>
+<li>A scenario with zones runs on containerlab only (<code>"flavours": ["clab"]</code>); the
+  <code>kind-lab-*</code> targets refuse it.</li>
+<li>A scenario that starts more workers than the developer preview admits (two)
+  names <code>"engine": "enterprise"</code> in its <code>scenario.json</code>, so the lab pulls the
+  licensed engine, which needs <code>docker login quay.io</code>. <code>./resolve_scenario
+  --engine</code> prints what a scenario asks for; without the key it is
+  <code>developer-preview</code>. <code>wait_ready</code> stops at once, naming the license, when
+  the engine admits fewer workers than the lab starts.</li>
+</ul>
+<p><a href="../20-operations/10-make-targets/#network-zones">Make targets</a> lists what
+each lab target does with them.</p>
 <h2 id="the-scenarios-that-ship">The scenarios that ship</h2>
 <h1 id="wan-and-dc-fabric">WAN and DC fabric</h1>
 <p>The lab&rsquo;s original network, and the one every make target uses unless
@@ -8894,7 +8945,136 @@ from <code>scenarios/_base/</code>.</p>
 <p>The three generated files only. There is no <code>discover-params-mixed.json</code> here —
 mixing per-subnet platforms and credentials has nothing to express when every
 device runs the same NOS.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:50'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:50+00:00'>2026-09-08 11:32:50</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-11 10:57:55'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-11T10:57:55+00:00'>2026-09-11 10:57:55</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h1 id="network-zones">Network zones</h1>
+<p>A network zone is a network that only its own workers reach; zones may reuse
+each other&rsquo;s addresses.</p>
+<p>Six FRR routers in three network zones. Two sit on the lab network in
+<code>default</code>, as every other scenario&rsquo;s devices do; <code>zone-a</code> and <code>zone-b</code> each hold
+two on a subnet of their own, with a worker attached to that subnet alone.
+Reached over SSH as <code>frr</code> / <code>frr</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Zone</th>
+<th>Subnet</th>
+<th>Devices</th>
+<th>Worker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default</code></td>
+<td><code>172.30.0.0/24</code> (<code>LAB_SUBNET</code>)</td>
+<td><code>core-rtr-01</code>, <code>core-rtr-02</code></td>
+<td><code>worker</code>, the central one</td>
+</tr>
+<tr>
+<td><code>zone-a</code></td>
+<td><code>172.30.10.0/24</code></td>
+<td><code>site-a-rtr-01</code>, <code>site-a-rtr-02</code></td>
+<td><code>worker-zone-a</code></td>
+</tr>
+<tr>
+<td><code>zone-b</code></td>
+<td><code>172.30.20.0/24</code></td>
+<td><code>site-b-rtr-01</code>, <code>site-b-rtr-02</code></td>
+<td><code>worker-zone-b</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="why-it-exists_1">Why it exists</h2>
+<p>It shows network zones on real devices. Each zone&rsquo;s worker is the only one that
+can reach that zone&rsquo;s routers, so a discovery job that ran on the wrong worker
+would find nothing:</p>
+<ul>
+<li><strong>Routing.</strong> <code>make local-lab-discover</code> discovers <code>default</code> as every scenario
+  does, then runs the same <code>wf.lab.neops.io/simple_lab_discovery</code> once per zone
+  with that zone&rsquo;s parameters. Its step declares
+  <code>networkZone: "{{ parameters.zone || 'default' }}"</code>, so the engine hands each
+  run&rsquo;s job only to a worker serving the zone the parameters name.</li>
+<li><strong>Stamping.</strong> The discovery block records each device in the zone its job ran
+  in. The web client&rsquo;s device list shows the zone, and the CMS filters by it:
+  <code>devices(networkZone_Name: "zone-a")</code>.</li>
+</ul>
+<p>No two zones share an address here, because one Docker daemon refuses
+overlapping subnets. Two devices answering on the same address in two zones is
+covered by the workflow engine&rsquo;s end-to-end playbook, not by this lab.</p>
+<h2 id="what-it-needs">What it needs</h2>
+<p>The licensed workflow engine. The scenario starts three workers, the central
+one and one per zone, and the public developer preview admits two. Its
+<code>scenario.json</code> names <code>"engine": "enterprise"</code>, so the lab pulls
+<code>quay.io/zebbra/neops-workflow-engine</code> instead of the preview. That image is
+not public: run <code>docker login quay.io</code> with an account that can pull it before
+<code>make local-env-init</code> or <code>make local-lab-up</code>. A <code>NEOPS_WORKFLOW_ENGINE_IMAGE</code> in
+<code>.env</code> or the environment still wins over the scenario, so unset it or point it
+at a licensed engine. On an engine that admits fewer workers than the lab
+starts, <code>make local-lab-up</code> stops at <code>wait_ready</code> with a message saying so,
+rather than timing out.</p>
+<p>Images that carry network zones. <code>.env.example</code> pins these releases; a <code>.env</code>
+written before them keeps its older pins, so copy the three image pins over:</p>
+<ul>
+<li>a CMS from neops-core 2.4.0 or later (<code>NEOPS_CMS_IMAGE</code>): <code>apply_cms_config</code>
+  stops at <code>bootstrap_admin_role</code> otherwise;</li>
+<li>a workflow engine 0.46.0 or later (<code>NEOPS_ENGINE_TAG</code>, the tag of the licensed
+  engine in this scenario);</li>
+<li>a worker from neops-worker-sdk 0.5.0 or later (<code>NEOPS_WORKER_SDK_IMAGE</code>),
+  which carries <code>global_discover_network:0.2.0</code>.</li>
+</ul>
+<p>It also needs <code>docker compose</code> 2.24.4 or later, for the <code>!override</code> that keeps
+each zone&rsquo;s worker off the other networks.</p>
+<p>It runs on containerlab only: the Kubernetes flavour puts every FRR device in
+one namespace and knows no zones, and the <code>kind-lab-*</code> targets refuse it.</p>
+<h2 id="how-the-lab-carries-it">How the lab carries it</h2>
+<p>The zones are declared in <code>topology.json</code> under <code>zones</code>, each with its subnet
+and a description, and each device names its zone with <code>"zone"</code>; a device
+without one is in <code>default</code>. From that one declaration:</p>
+<ul>
+<li><code>apply_cms_config</code> creates the zones in the CMS before any worker starts. A
+  zone&rsquo;s worker is refused while its zone does not exist.</li>
+<li><code>make generate</code> writes one containerlab topology per zone
+  (<code>generated/network-zones/clab/neops-lab-&lt;zone&gt;.clab.json</code>, on network
+  <code>${LAB_NET}-&lt;zone&gt;</code>), a compose overlay with one worker per zone
+  (<code>generated/network-zones/compose/zones.yml</code>), and the per-zone discovery
+  parameters under <code>workflow-execution-parameters/zones/</code>.</li>
+<li><code>make local-lab-up</code> waits until <code>default</code> and each zone have an online worker
+  holding the discovery block, then for each zone&rsquo;s devices from inside that
+  zone&rsquo;s worker.</li>
+</ul>
+<p>The central worker serves <code>default</code> in every scenario
+(<code>NEOPS_WORKER_NETWORK_ZONES: default</code> in <code>docker-compose.worker.yml</code>). The zones
+stay in the CMS volume after <code>make local-lab-down</code>, and once a zone exists the
+engine refuses a worker that lists none. <code>move_device_to_zone</code> stays in the
+engine&rsquo;s database too: on the developer preview, which admits five workflows, a
+scenario started afterwards has one slot fewer for workflows of your own.</p>
+<p>Edit the zones while the scenario is deployed and <code>make generate</code> keeps the
+topology of a zone you removed, so <code>make local-lab-down</code> still tears that zone
+down, its worker included.</p>
+<p>The zone subnets are fixed in <code>topology.json</code>. <code>LAB_SUBNET</code> moves only the
+<code>default</code> devices, so this scenario cannot run as a second lab beside itself;
+<code>make doctor</code> names the networks that hold a zone&rsquo;s subnet.</p>
+<h2 id="discovery-parameters_1">Discovery parameters</h2>
+<p>The three generated files cover the <code>default</code> devices only. Each zone has one
+generated file, <code>zones/&lt;zone&gt;.json</code>, which carries the zone&rsquo;s name beside its
+<code>/32</code> targets and credentials.</p>
+<h2 id="moving-a-device-to-another-zone">Moving a device to another zone</h2>
+<p><code>workflows/move-device.workflow.yaml</code> is registered with the scenario&rsquo;s other
+workflows as <code>wf.lab.neops.io/move_device_to_zone:1.0.0</code>. It runs
+<code>fb.base.neops.io/device_update_device:0.2.0</code> on one device, with the block&rsquo;s
+<code>network_zone</code> parameter set to the zone you give it:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./run_workflow<span class="w"> </span>wf.lab.neops.io/move_device_to_zone:1.0.0<span class="w"> </span><span class="s1">&#39;{&quot;zone&quot;: &quot;zone-b&quot;}&#39;</span><span class="w"> </span>--ids<span class="w"> </span>&lt;device<span class="w"> </span>id&gt;
+</span></code></pre></div>
+<p><code>--ids</code> takes the device&rsquo;s id in the CMS, which
+<code>devices(networkZone_Name: "zone-a") { results { id hostname } }</code> lists. The
+block records the move without connecting to the device, and its job runs in
+the device&rsquo;s current zone. The device&rsquo;s next jobs go to the new zone&rsquo;s
+workers. In this lab those workers cannot reach the device&rsquo;s own subnet, so
+move it back with <code>'{"zone": "zone-a"}'</code> before you run anything else on it.</p>
+<p>When the device&rsquo;s current zone has no worker left, as at a site that is
+already unreachable, copy the workflow and give its step
+<code>networkZone: { name: &lt;target zone&gt;, override: true }</code>: the job then runs on a
+worker of the target zone, and only the <code>network_zone</code> parameter moves the
+device.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:50'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T11:32:50+00:00'>2026-09-08 11:32:50</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:49:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:49:19+00:00'>2026-11-06 12:49:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

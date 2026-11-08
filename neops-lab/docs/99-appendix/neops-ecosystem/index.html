@@ -8957,9 +8957,9 @@
 <h2 id="the-contracts-it-depends-on">The contracts it depends on</h2>
 <p>None of these are verified at build time. All three fail at runtime, in the lab, with a message that does not obviously point at the cause.</p>
 <h3 id="the-function-block-identifier">The function-block identifier</h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>fb.base.neops.io/global_discover_network:0.1.0
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>fb.base.neops.io/global_discover_network:0.2.0
 </span></code></pre></div>
-<p>Named in <code>scenarios/_base/workflows/simple-lab-discovery.workflow.yaml</code> and in the <code>Makefile</code>&rsquo;s <code>DISCOVER_FB</code>. Renaming it in <code>neops-worker-sdk-py</code> breaks both, <strong>with no compile-time check</strong>. Symptom: <code>Function block … not found</code>.</p>
+<p>Named in <code>scenarios/_base/workflows/simple-lab-discovery.workflow.yaml</code> and in the <code>Makefile</code>&rsquo;s <code>DISCOVER_FB</code>. Renaming or re-versioning it in <code>neops-worker-sdk-py</code> breaks both, <strong>with no compile-time check</strong>. Symptom: <code>wait_ready</code> times out, or <code>Function block … not found</code>. A published workflow cannot change, so a new block version also moves the workflow&rsquo;s own version and <code>DISCOVER_WORKFLOW</code>.</p>
 <h3 id="the-workflow-engine-rest-api">The workflow-engine REST API</h3>
 <p>Used by three things in this repo:</p>
 <table>
@@ -8976,7 +8976,7 @@
 </tr>
 <tr>
 <td><code>wait_ready</code></td>
-<td><code>GET /function-blocks/{pkg}/{name}/{version}/workers</code></td>
+<td><code>GET /function-blocks/{pkg}/{name}/{version}/workers</code>, whose <code>networkZones</code> per worker <code>--zone</code> reads; with <code>--workers</code>, <code>GET /license</code></td>
 </tr>
 <tr>
 <td><code>run_workflow</code></td>
@@ -8986,7 +8986,7 @@
 </table>
 <p><code>run_workflow</code> also encodes the engine&rsquo;s terminal-state vocabulary: <code>completed_ack</code>, <code>failed_safe_ack</code>, <code>failed_unsafe_ack</code>. A change to any of these in <code>neops-workflow-engine</code> breaks the lab&rsquo;s automation, not just its output.</p>
 <h3 id="the-cms">The CMS</h3>
-<p><code>apply_cms_config</code> depends on the GraphQL mutation <code>scopesUpsert</code> <strong>and</strong> on the <code>neops.core.models</code> ORM shape it manipulates through <code>manage.py shell</code>. It also depends on the image seeding a scope named <code>Global</code> and on <code>init_scopes</code> re-running on every <code>manage.py</code> invocation — which is why its step ordering is load-bearing.</p>
+<p><code>apply_cms_config</code> depends on the GraphQL mutation <code>scopesUpsert</code> <strong>and</strong> on the <code>neops.core.models</code> ORM shape it manipulates through <code>manage.py shell</code>, <code>NetworkZone</code> included for a scenario with zones, and on core&rsquo;s <code>bootstrap_admin_role</code> command (neops-core 2.4.0 or later), which gives <code>lab-admin</code> write on <code>Global</code> and on the <code>network-zones</code> permission element. It also depends on the image seeding a scope named <code>Global</code> and on <code>init_scopes</code> re-running on every <code>manage.py</code> invocation — which is why its step ordering is load-bearing.</p>
 <h2 id="where-the-lab-fits-in-a-change">Where the lab fits in a change</h2>
 <p>Because nothing imports it, the lab is never the <em>source</em> of a cross-repo change. It is frequently the <em>victim</em> of one:</p>
 <ul>
@@ -9003,7 +9003,7 @@
 <li><a href="https://netlab.tools/">Netlab</a> — used by <code>neops-remote-lab</code>, <strong>not</strong> by this repo.</li>
 <li><a href="https://docs.neops.io/">NeOps platform docs</a> — the umbrella site.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 11:32:56'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-09-08T11:32:56+00:00'>2026-09-08 11:32:56</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:49:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:49:19+00:00'>2026-11-06 12:49:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

@@ -8955,7 +8955,7 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>Docker</strong> + <code>docker compose</code> ≥ 2.20</td>
+<td><strong>Docker</strong> + <code>docker compose</code> ≥ 2.20 (≥ 2.24.4 for the <code>network-zones</code> scenario, whose zone workers use <code>!override</code>)</td>
 <td>The whole control plane, the devices, and containerlab itself</td>
 <td>everything</td>
 </tr>
@@ -8976,8 +8976,8 @@
 </tr>
 <tr>
 <td><strong>Quay pull access</strong></td>
-<td>Not needed for the defaults — the CMS, developer-preview engine, web client and worker images are all public. Only the full licensed engine requires <code>docker login quay.io</code></td>
-<td><code>make local-env-init</code></td>
+<td>Not needed for the defaults — the CMS, developer-preview engine, web client and worker images are all public. Only the full licensed engine requires <code>docker login quay.io</code>, and the <code>network-zones</code> scenario runs it</td>
+<td><code>make local-env-init</code>, <code>make local-lab-up</code></td>
 </tr>
 <tr>
 <td><strong>RAM</strong></td>
@@ -9051,7 +9051,7 @@ default path pulls anonymously:</p>
 </thead>
 <tbody>
 <tr>
-<td><code>quay.io/zebbra/neops-cms-free:develop</code></td>
+<td><code>quay.io/zebbra/neops-cms-free:develop</code> (<code>.env.example</code> pins <code>2.4.0</code>)</td>
 <td><code>cms</code></td>
 <td>public</td>
 </tr>
@@ -9069,8 +9069,11 @@ default path pulls anonymously:</p>
 </table>
 <p><code>ghcr.io/nokia/srlinux:26.3</code> (the SR Linux devices) and <code>ghcr.io/srl-labs/clab</code> (containerlab) are public as well.</p>
 <h3 id="when-docker-login-is-needed">When <code>docker login</code> <em>is</em> needed</h3>
-<p>Only to swap the developer preview for the <strong>full licensed engine</strong>, which is
-not public — an anonymous pull is rejected with <code>401</code>:</p>
+<p>Only for the <strong>full licensed engine</strong>, which is not public — an anonymous pull
+is rejected with <code>401</code>. A scenario whose <code>scenario.json</code> names
+<code>"engine": "enterprise"</code> runs it on its own (<code>network-zones</code> does: it starts
+three workers and the preview admits two), so log in before bringing it up.
+Any other scenario runs it once you point the image at it:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>login<span class="w"> </span>quay.io
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">NEOPS_WORKFLOW_ENGINE_IMAGE</span><span class="o">=</span>quay.io/zebbra/neops-workflow-engine:develop
 </span></code></pre></div>
@@ -9093,8 +9096,12 @@ the default path it needs no registry credentials at all.</p>
 </thead>
 <tbody>
 <tr>
+<td><code>NEOPS_CMS_IMAGE</code></td>
+<td><code>quay.io/zebbra/neops-cms-free:develop</code> (<code>.env.example</code> pins <code>2.4.0</code>)</td>
+</tr>
+<tr>
 <td><code>NEOPS_WORKFLOW_ENGINE_IMAGE</code></td>
-<td><code>quay.io/zebbra/neops-workflow-engine-preview:${NEOPS_ENGINE_TAG:-develop}</code> (<code>.env.example</code> pins <code>NEOPS_ENGINE_TAG=0.44.1</code>)</td>
+<td><code>quay.io/zebbra/neops-workflow-engine-preview:${NEOPS_ENGINE_TAG:-develop}</code> (<code>.env.example</code> pins <code>NEOPS_ENGINE_TAG=0.46.0</code>)</td>
 </tr>
 <tr>
 <td><code>NEOPS_WEB_CLIENT_IMAGE</code></td>
@@ -9102,7 +9109,7 @@ the default path it needs no registry credentials at all.</p>
 </tr>
 <tr>
 <td><code>NEOPS_WORKER_SDK_IMAGE</code></td>
-<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> (<code>.env.example</code> pins <code>0.3.0</code>)</td>
+<td><code>quay.io/zebbra/neops-worker-sdk:develop</code> (<code>.env.example</code> pins <code>0.5.0</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -9115,7 +9122,7 @@ the default path it needs no registry credentials at all.</p>
 </ul>
 <h2 id="next">Next</h2>
 <p><a href="../20-quickstart/">Quickstart <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 08:08:16'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-30T08:08:16+00:00'>2026-10-30 08:08:16</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:49:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:49:19+00:00'>2026-11-06 12:49:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
 
 
 
