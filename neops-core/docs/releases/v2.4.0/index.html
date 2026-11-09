@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://docs.neops.io/neops-core/docs/releases/unreleased/">
+        <link rel="canonical" href="https://docs.neops.io/neops-core/docs/releases/v2.4.0/">
       
       
       
@@ -21,7 +21,7 @@
     
     
       
-        <title>Neops Core, next release - Neops Docs</title>
+        <title>Neops Core 2.4.0 - Neops Docs</title>
       
     
     
@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#neops-core-next-release" class="md-skip">
+        <a href="#neops-core-240" class="md-skip">
           Skip to content
         </a>
       
@@ -129,7 +129,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Neops Core, next release
+              Neops Core 2.4.0
             
           </span>
         </div>
@@ -8728,7 +8728,7 @@
 
 
   
-    <a href="https://github.com/zebbra/neops/issues/new?title=Docs%3A+Neops+Core%2C+next+release&body=Page%3A+%2Fneops-core%2Fdocs%2Freleases%2Funreleased%2F%0ASource%3A+neops-core%2Fdocs%2Freleases%2Funreleased.md%0A%0AWhat+should+change%3F%0A" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/zebbra/neops/issues/new?title=Docs%3A+Neops+Core+2.4.0&body=Page%3A+%2Fneops-core%2Fdocs%2Freleases%2Fv2.4.0%2F%0ASource%3A+neops-core%2Fdocs%2Freleases%2Fv2.4.0.md%0A%0AWhat+should+change%3F%0A" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -8736,8 +8736,9 @@
   
 
 
-<h1 id="neops-core-next-release">Neops Core, next release</h1>
-<p>Not released yet. These notes cover network zones, which the workflow engine uses to send each job to a worker that can reach its device, and core log lines that now survive a log store outage.</p>
+<h1 id="neops-core-240">Neops Core 2.4.0</h1>
+<p>Released 2026-11-07</p>
+<p>These notes cover network zones, which the workflow engine uses to send each job to a worker that can reach its device, and core log lines that now survive a log store outage.</p>
 <h2 id="at-a-glance">At a glance</h2>
 <table>
 <thead>
@@ -8931,7 +8932,7 @@
 <p>New settings, all optional: <code>NEOPS_LOG_OUTBOX_MAX_ROWS</code>, <code>NEOPS_LOG_OUTBOX_MAX_BYTES</code>, <code>NEOPS_LOG_OUTBOX_MAX_ATTEMPTS</code>, <code>NEOPS_LOG_BATCH_MAX_BYTES</code> (1 MiB) and <code>NEOPS_LOG_QUEUE_MAX_RECORDS</code> (10000). They have the same names and defaults as the engine&rsquo;s. <code>neops-docker-compose</code> and the Helm charts do not pass them through yet, so changing one there needs an override.</p>
 <p><strong>Upgrade:</strong> migration <code>0205_log_outbox</code> adds two tables and needs no downtime.</p>
 <p><strong>Going back:</strong> the procedure in the 2.3.0 notes runs <code>migrate core 0188_refreshtoken_auth_provider</code> with the new code. That removes both tables, with every line still waiting in them and the drop counts, and nothing warns about it. An older core does not replay these lines either. Before that step, with the log store up and core serving requests, run <code>manage.py log_store_status</code> until <code>rows</code> is 0. If the store cannot come back in time, the waiting lines are lost: save them first with <code>pg_dump --table=core_logoutboxentry</code> if you need them. Do not go back without draining while lines of an applied change wait there, because those are the only record of who applied it.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:00:38'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:00:38+00:00'>2026-11-06 16:00:38</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 19:48:01'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-11-07T19:48:01+00:00'>2026-11-07 19:48:01</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 19:48:01'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T19:48:01+00:00'>2026-11-07 19:48:01</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
