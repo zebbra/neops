@@ -2391,6 +2391,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#site-links-and-outages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Site links and outages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Site links and outages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sizing-the-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing the timeouts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-the-engine-reads-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8826,6 +8854,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#site-links-and-outages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Site links and outages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Site links and outages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sizing-the-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing the timeouts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-the-engine-reads-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9182,13 +9238,21 @@ jobs:</p>
 </span></code></pre></div>
 <p>The engine does not check whether a zone has an online worker before it creates a job there: a job in a zone nobody
 serves waits until a worker of that zone comes online or <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code> (one hour by default) fails
-it with <em>No worker serving the job&rsquo;s network zone polled it; it waited … (pending timeout: …)</em>. When no live worker of
-the zone has the job&rsquo;s function block registered, the engine does not retry that failure, so it comes after one
-timeout. When one has, that worker is busy with other jobs: the failure says so and is retried like any other failure.
+it with <em>No worker serving the job&rsquo;s network zone polled it; it waited … (pending timeout: …)</em>. Only a worker that is
+<code>online</code> in <code>GET /workers</code> counts; an <code>unreachable</code> worker, one that stopped pinging, does not. When the zone has online
+workers but none of them registers the job&rsquo;s function block version, for example a stored workflow that pins a
+version the upgraded workers no longer serve, the failure names the zone and the block: <em>No online worker of network
+zone <code>&lt;zone&gt;</code> registers function block <code>&lt;package&gt;/&lt;name&gt;:&lt;version&gt;</code>, though the zone has … online workers; it waited
+…</em>. In both cases the engine does not retry the failure, so it comes after one timeout. When an online worker of the
+zone has the block registered, that worker is busy with other jobs: the failure says so and is retried like any other
+failure.
 The job and its log records name the zone. A waiting <code>EXECUTE</code> job holds the engine&rsquo;s drain phase, so new runs in every
 zone wait with it. The Monitor App&rsquo;s Workers page flags such zones.</p>
 <ul>
 <li>A never-polled <code>EXECUTE</code> job fails its run like any failed step.</li>
+<li>A never-polled <code>ACQUIRE</code> job is retried like an <code>EXECUTE</code> job. When it is not retried, the run ends
+  <code>FAILED_SAFE_ACK</code> with <code>acquire_failed</code>, and the reason names the step, the zone and the failure: <em>Acquire job of
+  step &lsquo;<label>&rsquo; in network zone &lsquo;<zone>&rsquo; failed: …</em>.</li>
 <li>A never-polled <code>ROLLBACK</code> job halts the rollback, and the run ends <code>FAILED_UNSAFE</code>. Until the pending timeout fails
   it, the waiting job holds the drain phase like a waiting <code>EXECUTE</code> job. Its ledger entry stays open: resolve it
   in <a href="../70-lifecycle/#remediation-the-way-the-locks-come-off">remediation</a>, which needs no worker, or roll it back once
@@ -9197,6 +9261,85 @@ zone wait with it. The Monitor App&rsquo;s Workers page flags such zones.</p>
 <p>Run at least two workers for every zone, <code>default</code> included, so a zone&rsquo;s jobs keep moving while one of its workers
 restarts. The <code>developer-preview</code> engine admits at most 2 workers per installation, so two workers in each of several
 zones need the licensed (<code>enterprise</code>) engine.</p>
+<h2 id="site-links-and-outages">Site links and outages</h2>
+<p>A zone&rsquo;s workers usually reach the engine over the site&rsquo;s link. When that link fails, they keep running the jobs they
+hold, so a job still changes its device, but their heartbeats and results do not arrive. Jobs are delivered at least
+once: a job held across an outage that outlasts the engine&rsquo;s patience is failed, and may run again.</p>
+<p>The engine fails a job a worker holds at the earlier of two deadlines, checked every <code>BLACKBOARD_JOB_CHECK_INTERVAL</code>
+(1 minute by default):</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Counted from</th>
+<th>Default</th>
+<th><code>reasonCode</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WORKER_OFFLINE_THRESHOLD_MS</code></td>
+<td>the worker&rsquo;s last heartbeat</td>
+<td>6 minutes</td>
+<td><code>worker_lost</code></td>
+</tr>
+<tr>
+<td><code>BLACKBOARD_STUCK_JOB_TIMEOUT</code></td>
+<td>when the worker took the job</td>
+<td>12 minutes</td>
+<td><code>job_timed_out</code></td>
+</tr>
+</tbody>
+</table>
+<p>With the defaults, an outage longer than about 6 minutes fails every job the zone&rsquo;s workers hold; a job that had run
+for more than 6 minutes when the outage began reaches the stuck timeout first. See the
+<a href="../../50-deployment/30-worker-management/#threshold-cascade">threshold cascade</a>.</p>
+<p>A worker re-sends a finished job&rsquo;s result for up to the Worker SDK&rsquo;s <code>RESULT_PUSH_TIMEOUT</code> (300 seconds by default,
+see its <a href="/neops-worker-sdk-py/docs/deployment/20-configuration/">configuration</a>). A result that lands before the engine
+fails the job counts: the job ran once and is not retried. Once the engine has failed the job, the late push is
+refused and the change it made stays done
+(<a href="../60-retry-and-rollback/#a-push-after-the-engine-gave-up">A push after the engine gave up</a>).</p>
+<p>What a failed job costs depends on its function block:</p>
+<ul>
+<li><strong>Pure or idempotent:</strong> the job is <a href="../60-retry-and-rollback/#automatic-retries">retried</a> in the same zone, by
+  whichever of the zone&rsquo;s workers polls it first, so the block may have run twice: on the cut-off worker and on the
+  retry. While no worker of the zone reaches the engine, the retry waits, up to <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code>.</li>
+<li><strong>Any other block:</strong> the step fails on its first attempt and the run goes to the
+  <a href="../60-retry-and-rollback/#rollback">rollback</a>, or ends <code>FAILED_UNSAFE</code> when an executed block is not reversible. The
+  engine wrote the failure, so the rollback gets <code>outcomeKnown: false</code> and no snapshot unless a late push left one. Its
+  <code>ROLLBACK</code> job runs in the zone too and waits for a worker of the zone, and it may run while the cut-off worker is
+  still changing the device. The device then holds a change the engine recorded as failed.</li>
+</ul>
+<p>While the held job, its retry or its rollback waits, the run is not finished; if the engine enters its drain phase
+meanwhile, new runs in every zone wait for it too.</p>
+<h3 id="sizing-the-timeouts">Sizing the timeouts</h3>
+<p>To ride out an outage of length D on a site whose longest job takes L, with a margin M of the worker&rsquo;s
+<code>API_REQUEST_TIMEOUT</code> plus 30 seconds (about 1 minute by default: on a link that drops packets, a request can hang for
+the request timeout before the worker backs off for up to 30 seconds):</p>
+<ul>
+<li><code>WORKER_OFFLINE_THRESHOLD_MS</code> above D + M + <code>HEARTBEAT_INTERVAL</code> (20 seconds by default), so the heartbeat before
+  the outage and the first one after it land in time;</li>
+<li><code>BLACKBOARD_STUCK_JOB_TIMEOUT</code> above L + D + M;</li>
+<li><code>RESULT_PUSH_TIMEOUT</code> at least <code>WORKER_OFFLINE_THRESHOLD_MS</code> + <code>BLACKBOARD_JOB_CHECK_INTERVAL</code>, and below the stuck
+  timeout as the Worker SDK asks;</li>
+<li><code>HEALTH_STALL_TIMEOUT</code>, set on the worker, at least L + <code>RESULT_PUSH_TIMEOUT</code>.</li>
+</ul>
+<p>The engine fails a job as <code>worker_lost</code> only if its worker still counts as offline when a check runs, so a worker that
+comes back between the offline threshold and the next check keeps its job. If its push gave up before then, the result
+is lost and the engine fails the job at the stuck timeout. With the engine&rsquo;s defaults that is 6 + 1 minutes, so a
+<code>RESULT_PUSH_TIMEOUT</code> of 420 seconds closes the gap; the SDK&rsquo;s 300-second default leaves an outage of about 5 to 7
+minutes that begins as a job finishes able to lose a successful result.</p>
+<p>The worker pushes the result from its poll loop, and stops refreshing its health file once that loop has not advanced
+for <code>HEALTH_STALL_TIMEOUT</code> (720 seconds by default). The worker chart&rsquo;s liveness probe then restarts the worker in the
+middle of the push. With a 420-second push timeout, the default covers jobs of up to 5 minutes; raise it with the
+stuck timeout for longer jobs.</p>
+<p>Higher thresholds cost time when a worker really dies: its jobs, their retries and rollbacks, and any drain waiting on
+them, wait that much longer, and a dead worker keeps its place in the license&rsquo;s worker quota until it counts as
+offline. Setting <code>WORKER_OFFLINE_THRESHOLD_MS</code> alone also raises the stuck timeout (2× it) and the pending timeout (5×
+the stuck timeout) unless those are set; see <a href="../../50-deployment/10-configuration/#worker-management">Configuration</a>.</p>
+<p>Function blocks that change devices at remote sites should be idempotent, so a second run is harmless
+(<a href="/neops-worker-sdk-py/docs/function-blocks/40-pure-and-idempotent/">Pure and idempotent</a>), or reversible with a
+<a href="../60-retry-and-rollback/#rollback-data">snapshot</a> taken before their first change.</p>
 <h2 id="where-the-engine-reads-zones">Where the engine reads zones</h2>
 <p>The engine keeps its own table of zones: the CMS&rsquo;s zones plus <code>default</code>. A zone the CMS deletes is marked deleted in the
 table and comes back if the CMS creates it again. Once read, the table serves while the CMS is down. A read the CMS does
@@ -9255,9 +9398,9 @@ is locked:</p>
 <li><strong>In the lock phase,</strong> the engine reads the CMS&rsquo;s zones. A declaration naming a zone the CMS does not hold fails the
   run; the reason names each declaration and its zone. When the CMS cannot be read, the read fails like the lock
   would: a refusal the CMS will repeat, such as a rejected <code>NEOPS_CMS_TOKEN</code> or a query its schema lacks, ends the run
-  <code>FAILED_SAFE</code> with <code>lock_refused</code>; any other failure retries the lock attempt with backoff, the cause in the reason,
-  and the run stays in <code>LOCKING</code>. So does a failure of the engine&rsquo;s own database to store the zones the CMS answered,
-  which the reason and the log name as such, not as a CMS failure. The engine logs every failed read at warn with the
+  <code>FAILED_SAFE</code> with <code>lock_refused</code>; any other failure retries the lock attempt with backoff, the cause in the run&rsquo;s
+  <code>retryNote</code>, not its <code>reason</code>, and the run stays in <code>LOCKING</code>. So does a failure of the engine&rsquo;s own database to
+  store the zones the CMS answered, which the <code>retryNote</code> and the log name as such, not as a CMS failure. The engine logs every failed read at warn with the
   run&rsquo;s id.</li>
 </ul>
 <h2 id="a-devices-zone-in-the-context">A device&rsquo;s zone in the context</h2>
@@ -9286,12 +9429,17 @@ its credentials.</p>
 <p>Its <code>identifierFields</code> are a list of groups: core tries them in order, a group matches when all its fields match, and
 a group is skipped when the data lacks one of its fields. To find a device by address, pair the address with the zone:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;device&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;device&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48213907</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">48213907</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network_zone&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zone-b&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">&quot;identifierFields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;ip&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;network_zone&quot;</span><span class="p">]],</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">&quot;skipIfIdentifierExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">}</span>
 </span></code></pre></div>
+<p>A create carries a temporary <code>id</code>, which <code>data.id</code> repeats. It must be a positive integer that no entity in the run
+already has: the engine refuses a zero or negative id when the result is pushed, and refuses a create whose <code>data.id</code>
+differs or whose id the run already holds. The CMS assigns the real id when the run unlocks, and a later write in the
+same run may name the temporary one. The Worker SDK draws temporary ids at random from 10,000,000 to 2,147,483,647, a
+range chosen to stay clear of the ids the CMS assigns; a hand-built result should do the same.</p>
 <table>
 <thead>
 <tr>
@@ -9403,29 +9551,45 @@ workflow on their ids (<code>"executeOnParameters": { "ids": [...] }</code>):</p
 </span></code></pre></div>
 <p><code>fb.examples.neops.io/get_facts</code> and <code>fb.examples.neops.io/check_identity</code> are illustrative names; no repository ships
 them.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_contact</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/get_facts:1.0.0&quot;</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">zone-b</span><span class="p p-Indicator">,</span><span class="nt"> override</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># reach the device from zone-b, wherever it is recorded</span>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">same_device</span>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/check_identity:1.0.0&quot;</span>
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">                                     </span><span class="c1"># fails unless the device that answered matches the CMS record</span>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">      </span><span class="nt">serial</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.serial</span><span class="nv"> </span><span class="s">}}&quot;</span>
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rehome</span>
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/device_update_device:0.2.0&quot;</span>
-</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
-</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
-</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">      </span><span class="nt">network_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone-b</span><span class="w">                          </span><span class="c1"># record the move; later steps and runs follow it</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_onboarding</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone_onboarding</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wf.examples.neops.io</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nt">majorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nt">minorVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nt">patchVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="nt">seedEntity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workflow</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_contact</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/get_facts:1.0.0&quot;</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">    </span><span class="nt">networkZone</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">zone-b</span><span class="p p-Indicator">,</span><span class="nt"> override</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># reach the device from zone-b, wherever it is recorded</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">same_device</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.examples.neops.io/check_identity:1.0.0&quot;</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">                                     </span><span class="c1"># fails unless the device that answered matches the CMS record</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.hostname</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">      </span><span class="nt">serial</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_contact.result.data.serial</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionBlock</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rehome</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="nt">functionBlock</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fb.base.neops.io/device_update_device:0.2.0&quot;</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">    </span><span class="nt">runOn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">      </span><span class="nt">network_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zone-b</span><span class="w">                          </span><span class="c1"># record the move; later steps and runs follow it</span>
 </span></code></pre></div>
+<p>Only <code>first_contact</code> runs in network B. <code>same_device</code> and <code>rehome</code> declare no zone, so they run in the device&rsquo;s zone,
+and the device is recorded in <code>default</code> until <code>rehome</code> writes: both run on a central worker. <code>check_identity</code> needs no
+connection there, since it compares what <code>first_contact</code> found with the CMS record in its context. A step that connects
+to the device before <code>rehome</code>, such as one that reads it again to check its identity, needs
+<code>networkZone: { name: zone-b, override: true }</code> too; without it, a central worker connects to the address in the
+central network, which with overlapping addresses is a different device. Every step&rsquo;s <code>ACQUIRE</code> job runs in the
+declared zone, else in <code>default</code>, so a <code>zone-b</code> worker serves <code>get_facts</code> and a central worker serves <code>check_identity</code>
+and <code>device_update_device</code>.</p>
 <p>The first step sends the record&rsquo;s credentials to whatever answers at that address in network B before any identity
 check runs, so onboard with credentials meant for that network.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-07 19:58:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-07T19:58:43+00:00'>2026-11-07 19:58:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-30 19:03:42'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-30T19:03:42+00:00'>2026-10-30 19:03:42</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-09 14:18:27'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-09T14:18:27+00:00'>2026-11-09 14:18:27</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

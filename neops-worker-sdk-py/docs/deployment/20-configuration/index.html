@@ -4589,6 +4589,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-push-and-the-engines-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result push and the engine&rsquo;s timeouts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8711,6 +8739,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-push-and-the-engines-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Result push and the engine&rsquo;s timeouts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8944,7 +9000,7 @@ inside another network.</p>
 <td><code>POLL_INTERVAL</code></td>
 <td><code>int</code></td>
 <td><code>10</code></td>
-<td>Seconds between job polling requests</td>
+<td>Seconds the worker waits after a poll that returned no job, or failed, before it polls again. After a job it polls again at once, see <a href="#throughput">Throughput</a></td>
 </tr>
 <tr>
 <td><code>HEARTBEAT_INTERVAL</code></td>
@@ -8968,7 +9024,7 @@ inside another network.</p>
 <td><code>RESULT_PUSH_TIMEOUT</code></td>
 <td><code>int</code></td>
 <td><code>300</code></td>
-<td>Seconds to keep re-sending a job result while the engine is unreachable; keep it below the engine&rsquo;s stuck-job timeout (12 min by default)</td>
+<td>Seconds to keep re-sending a job result while the engine is unreachable, see <a href="#result-push-and-the-engines-timeouts">Result push and the engine&rsquo;s timeouts</a></td>
 </tr>
 <tr>
 <td><code>STARTUP_RETRY_TIMEOUT</code></td>
@@ -8978,6 +9034,49 @@ inside another network.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="throughput">Throughput</h3>
+<p>A worker runs one job at a time. The engine hands out one job per poll, and the worker polls
+again as soon as it has pushed that job&rsquo;s result, so while jobs wait it runs them back to back.
+Only a poll that returns nothing, or fails, makes it wait <code>POLL_INTERVAL</code> before the next one.</p>
+<ul>
+<li><strong>Jobs per worker per minute</strong> while jobs wait: about 60 / (<em>t</em> + <em>r</em>), with <em>t</em> the job&rsquo;s own
+  seconds and <em>r</em> the round trip of one poll and one result push.</li>
+<li><strong>Step time</strong> for a step over <em>N</em> devices in a zone with <em>W</em> workers: about
+  <em>N</em> / <em>W</em> × (<em>t</em> + <em>r</em>), plus up to one <code>POLL_INTERVAL</code> before the first worker sees the step.</li>
+<li><strong>Pending timeout.</strong> The last job of such a step waits about <em>N</em> / <em>W</em> × (<em>t</em> + <em>r</em>) before a
+  worker takes it. Keep that well below the engine&rsquo;s <code>BLACKBOARD_PENDING_JOB_TIMEOUT</code> (60 min by
+  default); beyond it, waiting jobs fail.</li>
+</ul>
+<p>Worker SDK 0.5.0 and earlier slept 1 s and then <code>POLL_INTERVAL</code> after every job, also while jobs
+waited. With the default 10 s that capped a worker at about 60 / (11 + <em>t</em>) jobs a minute: 5.4 for
+an instant job, 1.5 for a 30 s job.</p>
+<h3 id="result-push-and-the-engines-timeouts">Result push and the engine&rsquo;s timeouts</h3>
+<p>The engine stops taking a job&rsquo;s result at the earlier of two of its timeouts:</p>
+<ul>
+<li><code>WORKER_OFFLINE_THRESHOLD_MS</code> (6 min by default), counted from the worker&rsquo;s last heartbeat: the
+  engine marks the worker offline and fails the jobs it holds;</li>
+<li><code>BLACKBOARD_STUCK_JOB_TIMEOUT</code> (12 min by default), counted from when the worker took the job:
+  the engine fails the job as timed out.</li>
+</ul>
+<p>The two count from different points, so for a job longer than about 6 min the stuck-job timeout
+fires first.</p>
+<p>A result pushed after that is refused, and the worker logs <em>Engine already holds a result for
+job &hellip;; this one is dropped</em>. The engine may by then have given the job to another worker.</p>
+<p><code>RESULT_PUSH_TIMEOUT</code> counts from the job&rsquo;s end, so it trades two losses against each other:</p>
+<ul>
+<li><strong>Below the earlier timeout</strong>, an outage that outlasts <code>RESULT_PUSH_TIMEOUT</code> but ends before the
+  engine fails the job drops a result the engine would still take. With the defaults that is an
+  outage starting after the job ended and lasting between 5 and about 6 min. Such an outage ends
+  before the offline threshold, so the worker stays online and the engine fails the job later, at
+  the stuck-job timeout (<code>job_timed_out</code>); only an outage that outlasts the offline threshold
+  fails it as worker-offline (<code>worker_lost</code>). Either way a change the block made is reported as
+  failed and may run again.</li>
+<li><strong>Above it</strong>, the extra re-sending can only be refused, and while it lasts the worker does not
+  poll.</li>
+</ul>
+<p>To close the window, set <code>RESULT_PUSH_TIMEOUT</code> to the earlier of the two timeouts, <code>360</code> with
+the engine&rsquo;s defaults, and raise it with them. An outage longer than that fails the jobs a site&rsquo;s
+workers hold whatever this setting is.</p>
 <hr />
 <h2 id="diagnostics">Diagnostics</h2>
 <table>
@@ -9144,7 +9243,7 @@ for how entity data flows into function blocks.</p>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1"># CMS</span>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="nv">URL_GRAPHQL</span><span class="o">=</span>http://localhost:8000/graphql
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:50:59'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:50:59+00:00'>2026-11-06 12:50:59</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-09 14:07:09'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-09T14:07:09+00:00'>2026-11-09 14:07:09</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
