@@ -9221,10 +9221,11 @@ log rows, and a backup taken then carries them. The table is empty in steady sta
 </tr>
 </tbody>
 </table>
-<p>Most routes accept a request body of up to <strong>100 kB</strong>. One route takes bulk payloads from workers
-and is raised to <strong>50 MB</strong>:</p>
+<p>Most routes accept a request body of up to <strong>100 kB</strong>. Two routes take larger payloads:</p>
 <ul>
-<li><code>POST /blackboard/job/result</code> &ndash; job results, which can carry bulk entity updates</li>
+<li><code>POST /blackboard/job/result</code> &ndash; job results, which can carry bulk entity updates (<strong>50 MB</strong>)</li>
+<li><code>POST /workflow-execution</code> &ndash; execution parameters, which can carry a file the monitor app&rsquo;s
+  file picker sends base64-encoded (<strong>20 MB</strong>)</li>
 </ul>
 <p>The two log push routes, <code>POST /blackboard/job/logs</code> and <code>POST /workers/:uuid/logs</code>, accept
 <strong>1 MiB</strong>. That limit is part of their contract (<code>x-neops-limits.bytesPerRequest</code> in
@@ -9241,7 +9242,7 @@ and is raised to <strong>50 MB</strong>:</p>
 <tr>
 <td><code>MAX_REQUEST_BODY_SIZE</code></td>
 <td><em>(unset)</em></td>
-<td>Replaces the 50 MB limit of <code>POST /blackboard/job/result</code>, e.g. <code>100mb</code>, <code>100MiB</code> or a plain byte count. Leave unset to keep the built-in limit</td>
+<td>Replaces the raised limit of the two routes above, e.g. <code>100mb</code>, <code>100MiB</code> or a plain byte count. Leave unset to keep the built-in limits</td>
 </tr>
 </tbody>
 </table>
@@ -9691,7 +9692,7 @@ any value that is not an integer, or for <code>ROLLBACK_DATA_MAX_BYTES</code> no
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nv">NEOPS_CMS_URL</span><span class="o">=</span>http://neops-cms.internal:8000/graphql
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nv">NEOPS_CMS_TOKEN</span><span class="o">=</span>&lt;cms-auth-token&gt;
 </span></code></pre></div>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 14:50:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T14:50:43+00:00'>2026-11-06 14:50:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-03-18 09:12:07'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-03-18T09:12:07+00:00'>2026-03-18 09:12:07</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 14:50:43'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T14:50:43+00:00'>2026-11-06 14:50:43</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div><div class='avatar-wrapper' data-name='Remo Ryter' data-tippy-content data-tippy-raw='<a href="mailto:remo.ryter@swisscom.com">Remo Ryter</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='remo.ryter@swisscom.com' /></div></div></div></div></div>
 
 
 

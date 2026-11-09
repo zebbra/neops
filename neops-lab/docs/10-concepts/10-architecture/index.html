@@ -8840,7 +8840,7 @@
 <tbody>
 <tr>
 <td><code>docker-compose.yml</code></td>
-<td>The <strong>base stack</strong>: CMS, workflow engine, monitor app, web client, Postgres, Elasticsearch, Redis, plus a <code>wait_health</code> helper</td>
+<td>The <strong>base stack</strong>: CMS, workflow engine, monitor app, web client, Postgres, Elasticsearch, Redis, VictoriaLogs, plus a <code>wait_health</code> helper</td>
 </tr>
 <tr>
 <td><code>docker-compose.worker.yml</code></td>
@@ -8929,6 +8929,12 @@ export COMPOSE_FILE=docker-compose.yml:docker-compose.worker.yml</p>
 <td>The CMS&rsquo;s channel layer (GraphQL subscriptions), cache and Celery broker</td>
 </tr>
 <tr>
+<td><code>victorialogs</code></td>
+<td><code>victoriametrics/victoria-logs:v1.53.0</code></td>
+<td>—</td>
+<td>The engine&rsquo;s log store (<code>NEOPS_LOG_BACKEND=victorialogs</code>): engine and worker lines, read back by the monitor app&rsquo;s log views. Volume <code>victorialogs_data</code>, 30-day retention, no healthcheck (the image has no shell)</td>
+</tr>
+<tr>
 <td><code>wait_health</code></td>
 <td><code>busybox</code></td>
 <td>—</td>
@@ -8947,6 +8953,7 @@ export COMPOSE_FILE=docker-compose.yml:docker-compose.worker.yml</p>
     boot[lab_bootstrap]
     pg[(postgres)]
     es[(elasticsearch)]
+    vl[(victorialogs)]
   end
   subgraph labnet["lab-net — 172.30.0.0/24"]
     dev1["core-rtr-01 … border-rtr-01&lt;br/&gt;172.30.0.11–20"]
@@ -8958,7 +8965,8 @@ export COMPOSE_FILE=docker-compose.yml:docker-compose.worker.yml</p>
   worker -- "URL_BLACKBOARD&lt;br/&gt;http://workflow_engine:3030" --&gt; engine
   worker -- "SSH 22" --&gt; dev1
   worker -- "SSH 22" --&gt; dev2
-  boot -- "POST /workflow-definition/publish" --&gt; engine</code></pre>
+  boot -- "POST /workflow-definition/publish" --&gt; engine
+  engine -- "log lines" --&gt; vl</code></pre>
 <p><code>lab-net</code> is declared by <code>docker-compose.worker.yml</code> with an explicit IPAM subnet of <code>172.30.0.0/24</code>, and containerlab&rsquo;s topology sets <code>mgmt.network: lab-net</code> with the same subnet. That is the join: compose creates the bridge, containerlab attaches the devices to it at their fixed <code>mgmt-ipv4</code>, and the worker — a member of both networks — can reach the engine by service name <em>and</em> the devices by IP.</p>
 <div class="admonition note">
 <p class="admonition-title">Every project network has a fixed subnet</p>
@@ -9133,7 +9141,7 @@ every scenario, so a future subset that <em>does</em> cut a cable fails the suit
 </table>
 <p>Everything under <code>generated/</code> is rebuilt on every <code>make local-lab-up</code>. Never commit it — containerlab mints TLS private keys in there.</p>
 <p>The one thing generated <em>outside</em> <code>generated/</code> is the committed <code>workflow-execution-parameters/*.json</code>, written back beside the topology that produced it. <code>make test</code> asserts it reproduces byte-for-byte, for every scenario.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 12:49:19'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T12:49:19+00:00'>2026-11-06 12:49:19</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:32:06'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:32:06+00:00'>2026-11-06 16:32:06</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Remo Ryter' data-tippy-content data-tippy-raw='<a href="mailto:remo.ryter@swisscom.com">Remo Ryter</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='remo.ryter@swisscom.com' /></div></div></div></div></div>
 
 
 

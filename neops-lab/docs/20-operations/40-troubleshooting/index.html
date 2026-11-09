@@ -5694,6 +5694,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-monitor-app-says-this-engine-stores-no-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The monitor app says This engine stores no logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#duplicate-interface-rows-after-re-running-discovery" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9026,6 +9037,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-monitor-app-says-this-engine-stores-no-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The monitor app says This engine stores no logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#duplicate-interface-rows-after-re-running-discovery" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9409,6 +9431,22 @@ a silent <em>duplicate</em> scope rather than updating the seeded one.</p>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>./containerlab<span class="w"> </span>destroy<span class="w"> </span>-t<span class="w"> </span>clab/probe.clab.yml<span class="w"> </span>--cleanup
 </span></code></pre></div>
 <hr />
+<h2 id="the-monitor-app-says-this-engine-stores-no-logs">The monitor app says <code>This engine stores no logs</code></h2>
+<p>The engine keeps queryable logs only when it has a log store; without one it
+logs to stdout and the monitor app&rsquo;s log views stay empty. The lab gives it
+one: the <code>victorialogs</code> service, with <code>NEOPS_LOG_BACKEND=victorialogs</code> and
+<code>NEOPS_LOG_URL=http://victorialogs:9428</code> on <code>workflow_engine</code>. If you still see
+the message:</p>
+<ul>
+<li>The engine is older than <code>v0.44.0</code>, the first release that pushes to
+  VictoriaLogs. Check <code>NEOPS_ENGINE_TAG</code> / <code>NEOPS_WORKFLOW_ENGINE_IMAGE</code>.</li>
+<li>The engine was started before the store was configured. Recreate it with
+  <code>docker compose up -d workflow_engine</code>; at boot it logs <code>Log store configured</code>
+  with <code>backend: victorialogs</code>.</li>
+</ul>
+<p>Lines from before the store existed were never stored and do not come back.
+While the store is unreachable the engine keeps lines in its Postgres outbox
+and replays them once it answers, so a slow <code>victorialogs</code> start loses nothing.</p>
 <h2 id="duplicate-interface-rows-after-re-running-discovery">Duplicate interface rows after re-running discovery</h2>
 <p><strong>Cause:</strong> devices are keyed by IP so they are skipped on a second run, but <strong>interfaces are always recorded</strong>.</p>
 <p><strong>Fix:</strong> run discovery against a fresh CMS.</p>
@@ -9438,8 +9476,8 @@ it afterwards. Checking out an older revision of this repo, which pins 8.9.2, ma
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>local-lab-down<span class="w"> </span>local-env-prune
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>make<span class="w"> </span>local-env-init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-up<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>local-lab-discover
 </span></code></pre></div>
-<p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>./containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch and Postgres volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:29:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:29:28+00:00'>2026-11-06 13:29:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div></div></div></div></div>
+<p><code>local-lab-down</code> tolerates there being no deployed lab (the <code>./containerlab destroy</code> line is prefixed with <code>-</code>, so <code>make</code> continues on failure). <code>local-env-prune</code> drops the Elasticsearch, Postgres and VictoriaLogs volumes — leftover volume state across down/up cycles has previously made <code>elastic_index --create</code> fail and stale CMS data confuse re-inits.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-08-10 14:29:48'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-08-10T14:29:48+00:00'>2026-08-10 14:29:48</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 16:32:06'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T16:32:06+00:00'>2026-11-06 16:32:06</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Remo Ryter' data-tippy-content data-tippy-raw='<a href="mailto:remo.ryter@swisscom.com">Remo Ryter</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='remo.ryter@swisscom.com' /></div></div></div></div></div>
 
 
 
