@@ -9161,6 +9161,12 @@ automatically:</p>
 </table>
 <p>Read-only and computed fields (<code>id</code>, <code>created_at</code>, <code>updated_at</code>, lock states,
 permission fields) are excluded from diffing automatically.</p>
+<p>The CMS applies a run&rsquo;s operations in the order it receives them and refuses a write that
+names an entity the run creates later. So every create is sent first, each after the creates it
+names: a group before a device naming it in <code>groups</code>, a controller before the devices naming it in <code>controller</code>, a device before its
+interfaces. Deletes and patches follow. Creates that name each other in a cycle, such as two new
+devices each naming the other as <code>controller</code>, fail the job with <code>retryable=False</code> and none of
+its changes are sent; leave one of the references to a later job.</p>
 <div class="admonition tip">
 <p class="admonition-title">Combine creation and modification</p>
 <p>You can create new entities and modify existing ones in the same function
@@ -9177,7 +9183,7 @@ and <code>global_add_devices</code>.</p>
 <hr />
 <p><strong>Next:</strong> <a href="../40-pure-and-idempotent/">Pure and Idempotent Function Blocks</a> —
 understand how safety semantics affect workflow retry and rollback behavior.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-06 13:03:24'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-06T13:03:24+00:00'>2026-11-06 13:03:24</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-26 17:18:08'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-26T17:18:08+00:00'>2026-02-26 17:18:08</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-09 11:35:28'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-09T11:35:28+00:00'>2026-11-09 11:35:28</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
