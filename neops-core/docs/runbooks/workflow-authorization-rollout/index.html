@@ -8804,35 +8804,11 @@ the missing claim.</p>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;:&quot;mutation{unlockResources(reference:\&quot;rollout-check\&quot;){success lockExists}}&quot;}&#39;</span>
 </span></code></pre></div>
 <h2 id="default-profiles">Default profiles</h2>
-<p><code>--profile</code> names one of three sets of grants:</p>
-<table>
-<thead>
-<tr>
-<th>Profile</th>
-<th>Grants</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>author</code></td>
-<td><code>workflow:read</code>, <code>workflow:write</code></td>
-</tr>
-<tr>
-<td><code>operator</code></td>
-<td><code>workflow:read</code>, <code>workflow-execution:read</code>, <code>workflow-execution:write</code>, <code>workflow-execution-abort:write</code>, <code>workflow-execution-log:read</code>, <code>worker:read</code></td>
-</tr>
-<tr>
-<td><code>admin</code></td>
-<td><code>author</code> + <code>operator</code> + <code>workflow-delete:write</code>, <code>workflow-execution-rollback:write</code>, <code>workflow-execution-resolve:write</code>, <code>worker:write</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>--profile</code> names one of three sets of grants, <code>author</code>, <code>operator</code> or <code>admin</code>.
+What each contains, and what every grant in them unlocks, is in
+<a href="../../permissions/#workflow-engine-strings">Permissions and roles</a>.</p>
 <p>Applying a profile is additive: it widens the role&rsquo;s grants and never revokes
-one, so a narrower profile after a wider one takes nothing away. With
-<code>NEOPS_PERMISSIONS_SIMPLE_IMPLICIT_PERMISSION_LEVEL</code> on, a stored <code>write</code> carries
-<code>execute</code> beside it.</p>
-<p>The table is the one in the <code>grant_workflow_permissions</code> module docstring;
-keep the two in sync.</p>
+one, so a narrower profile after a wider one takes nothing away.</p>
 <h2 id="if-it-goes-wrong">If it goes wrong</h2>
 <p>Symptom: workflows stop at the locking step, and the engine logs a CMS refusal
 naming <code>workflow-execution:write</code>.</p>
@@ -8840,7 +8816,7 @@ naming <code>workflow-execution:write</code>.</p>
 restart, and a refused lock leaves no partial state to clean up.</p>
 <p>Rolling back means redeploying the previous CMS tag. The grant is harmless on the
 old release, so it can stay.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 14:27:46'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T14:27:46+00:00'>2026-09-08 14:27:46</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-28 08:14:40'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-28T08:14:40+00:00'>2026-10-28 08:14:40</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-09-08 14:27:46'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-09-08T14:27:46+00:00'>2026-09-08 14:27:46</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

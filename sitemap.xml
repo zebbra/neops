@@ -609,6 +609,14 @@
          <lastmod>2026-11-11</lastmod>
     </url>
     <url>
+         <loc>https://docs.neops.io/neops-core/docs/oidc-providers/</loc>
+         <lastmod>2026-11-11</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.neops.io/neops-core/docs/permissions/</loc>
+         <lastmod>2026-11-11</lastmod>
+    </url>
+    <url>
          <loc>https://docs.neops.io/neops-core/docs/token-validation-guide/</loc>
          <lastmod>2026-11-11</lastmod>
     </url>

@@ -8777,14 +8777,15 @@ no callbacks to the backend.</p>
 <p>After validation, read the <code>permissions</code> array from the decoded payload.
 Each entry is a string in the format <code>element:flag</code>:</p>
 <ul>
-<li><code>element</code> is the resource type (e.g., <code>workflow</code>, <code>settings</code>, <code>tasks</code>)</li>
+<li><code>element</code> is a permission element name (e.g., <code>workflow</code>, <code>workflow-execution</code>, <code>network-zones</code>)</li>
 <li><code>flag</code> is the access level: <code>read</code>, <code>execute</code>, or <code>write</code></li>
 </ul>
-<p>To check if a user can execute workflows:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>token.permissions.includes(&quot;workflow:execute&quot;)
+<p>Every element and string, and what each unlocks, is listed in <a href="../permissions/">Permissions and roles</a>.</p>
+<p>To check if a user can start workflow runs:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>token.permissions.includes(&quot;workflow-execution:write&quot;)
 </span></code></pre></div>
 <p>To check multiple permissions (AND logic):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[&quot;workflow:read&quot;, &quot;workflow:execute&quot;].every(p =&gt; token.permissions.includes(p))
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[&quot;workflow:read&quot;, &quot;workflow-execution:write&quot;].every(p =&gt; token.permissions.includes(p))
 </span></code></pre></div>
 <h2 id="example-typescript-nestjs-using-jose">Example: TypeScript / NestJS (using jose)</h2>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createRemoteJWKSet</span><span class="p">,</span><span class="w"> </span><span class="nx">jwtVerify</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;jose&quot;</span><span class="p">;</span>
@@ -8864,7 +8865,7 @@ on unknown <code>kid</code> (handles key rotation transparently).</p>
   the client should use their refresh token to get a new access token from
   the backend.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-26 23:50:36'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-10-26T23:50:36+00:00'>2026-10-26 23:50:36</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-02-19 09:58:13'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-02-19T09:58:13+00:00'>2026-02-19 09:58:13</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_authors'></span><div class='author-group'><div class='avatar-wrapper' data-name='Andy Griesbeck' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/andy-griesbeck" target="_blank">Andy Griesbeck</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/andy-griesbeck.png' data-email='andy.griesbeck@zebbra.ch' /></div><div class='avatar-wrapper' data-name='Claude' data-tippy-content data-tippy-raw='<a href="mailto:noreply@anthropic.com">Claude</a>'><span class='avatar-text'></span><img class='avatar' data-src='' data-email='noreply@anthropic.com' /></div><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
