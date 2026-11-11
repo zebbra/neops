@@ -96,6 +96,8 @@ plugins:
     - '*/CLAUDE.md'
     - '*/pull_request_template.md'
     - '*/scenarios/*/README.md'
+    regex:
+    - ^neops-core/(?!docs/releases/)
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 site_url: https://docs.neops.io/

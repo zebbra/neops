@@ -107,3 +107,7 @@ plugins:
         # left alone they publish twice more as orphans. The snippet resolves on
         # the filesystem, so excluding the page does not break the include.
         - '*/scenarios/*/README.md'
+      regex:
+        # neops-core is mounted for its release notes only: the rest of that
+        # repository is internal documentation, not part of the public site.
+        - '^neops-core/(?!docs/releases/)'
