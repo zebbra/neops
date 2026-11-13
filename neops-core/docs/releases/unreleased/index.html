@@ -8538,6 +8538,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#group-membership-changes-fail-until-the-migrate-job-finishes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group membership changes fail until the migrate Job finishes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#archived-devices-groups-and-clients-no-longer-hold-their-unique-values" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8575,6 +8586,17 @@
     <span class="md-ellipsis">
       
         Fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going back
       
     </span>
   </a>
@@ -8620,9 +8642,12 @@
 <h2 id="upgrade-notes">Upgrade notes</h2>
 <h3 id="the-helm-migrate-job-takes-its-own-resources">The Helm migrate Job takes its own resources</h3>
 <p>The core chart has a new value, <code>migrate.resources</code>, for the post-install and post-upgrade migrate Job, which runs the index rebuild. Left empty, as it is by default, the Job takes the top-level <code>resources</code> of the Core web pods, as before. Set it to give the rebuild more memory without resizing every web pod; under the neops umbrella chart it is <code>neops-core.migrate.resources</code>.</p>
-<p>Since 2.3.0 a full rebuild (<code>elastic_index --rebuild --force</code>, or <code>--rebuild-if-stale</code> when every index is stale) holds about 140 bytes more per row until it has synced the lookup indices. At 610,000 documents its peak RSS went from 409 MiB to 492 MiB. It grows linearly, so expect about 0.8 GB more at 6 million rows.</p>
+<p>Since 2.3.0 a full rebuild (<code>elastic_index --rebuild --force</code>, or <code>--rebuild-if-stale</code> when every index is stale) holds about 140 bytes more per row until it has synced the lookup indices. At 610,000 documents its peak RSS went from 409 MiB to 492 MiB. It grows linearly, so expect about 0.8 GB more at 6 million rows.
+This release changes which fact and check values are indexed, so the index content version rises and <code>manage.py elastic_index --rebuild-if-stale</code> rebuilds every search index on the upgrade with no further step. Search is unavailable or incomplete while the rebuild runs, and locks that search the index are refused with <code>INDEX_SYNC_PENDING</code> until it finishes; the workflow engine retries them. Going back to an earlier release rebuilds the indices again.</p>
+<h3 id="group-membership-changes-fail-until-the-migrate-job-finishes">Group membership changes fail until the migrate Job finishes</h3>
+<p>Migration <code>0208_pending_group_index_first_due_at</code> adds a column that the new pods write when a device&rsquo;s groups change. The chart runs migrations in the post-upgrade migrate Job while the new pods already serve, so until that Job has migrated, changing a device&rsquo;s groups on a new pod fails and <code>manage.py index_sync_status</code> errors.</p>
 <h3 id="archived-devices-groups-and-clients-no-longer-hold-their-unique-values">Archived devices, groups and clients no longer hold their unique values</h3>
-<p>The upgrade applies migration <code>0207_unique_among_live_rows</code>. A device&rsquo;s <code>external_reference</code>, a group&rsquo;s <code>name</code> and a client&rsquo;s MAC address are now unique among live rows only, so an unlock&rsquo;s <code>db_updates</code> can create or rename an entity to a value an archived one still carries. It used to be refused with <code>already exists</code>. Restoring an archived row while a live row holds its value is refused with <code>A live device already has this external reference.</code> (or the group or client equivalent), and restoring an interface leaves such a client archived. The migration rewrites no rows. It holds an exclusive lock on <code>core_device</code>, <code>core_devicegroup</code> and <code>core_client</code> while it builds their indexes, about a second at two million clients.</p>
+<p>The upgrade applies migration <code>0207_unique_among_live_rows</code>. A device&rsquo;s <code>external_reference</code>, a group&rsquo;s <code>name</code> and a client&rsquo;s MAC address are now unique among live rows only, so an unlock&rsquo;s <code>db_updates</code> can create or rename an entity to a value an archived one still carries. It used to be refused with <code>already exists</code>. Likewise, an import that matches a live device without a reference now gives it the reference an archived device carries, where it used to fail with <code>Reference is held by an archived device</code>. Restoring an archived row while a live row holds its value is refused with <code>A live device already has this external reference.</code> (or the group or client equivalent), and restoring an interface leaves such a client archived. The migration rewrites no rows. It holds an exclusive lock on <code>core_device</code>, <code>core_devicegroup</code> and <code>core_client</code> while it builds their indexes, about a second at two million clients.</p>
 <h4 id="going-back-below-this-release">Going back below this release</h4>
 <p>Undoing <code>0207_unique_among_live_rows</code> puts back uniqueness across all rows, and it fails with <code>could not create unique index</code> once two rows share a value, which this release allows. Before <code>migrate core 0206_network_zone</code> (or any older target), clear the value on each archived row that shares it with a live row or with a row archived later. This keeps the live row&rsquo;s value, or else the one archived last:</p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">core_device</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">external_reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span>
@@ -8647,6 +8672,7 @@
 <h2 id="fixes">Fixes</h2>
 <ul>
 <li><code>manage.py sync_lookup_indices --force</code> now stamps the lookup indices it refilled. It used to leave them unstamped, so the next <code>elastic_index --rebuild-if-stale</code> (every Helm upgrade, every <code>./neops up</code>) rebuilt <code>network</code>, <code>groups</code> and <code>clients</code> as well, with search down meanwhile.</li>
+<li>A fact or check value is indexed as null only when Elasticsearch maps its key as an IP address and the value is not one. Those keys are the names the <code>ipaddress_fields</code> template matches as a whole, in any case: <code>ip</code>, <code>ip4</code>, <code>ip6</code>, <code>ipv4</code>, <code>ipv6</code> or <code>ipaddress</code>, with at most one <code>_</code> or <code>-</code> before or after it (<code>IPv4</code>, <code>_ip</code>). In a dotted key only the last segment counts, as Elasticsearch splits the key into objects: <code>mgmt.ipv4</code> is an IP key, <code>ipv4.description</code> is not. Before, every string under a key containing the letters <code>ip</code> that was not an IP address was indexed as null, so <code>description</code>, <code>ship</code>, <code>vip</code>, <code>ip_address</code> or <code>mgmt_ip</code> were not searchable; after the rebuild they are, as keywords. A key such as <code>IPv4</code> with a value like <code>none</code>, which Elasticsearch used to refuse and set aside the whole document for, is now indexed with that key as null. Checks were not converted at all and are now converted the same way. Search follows the same rule: a CIDR such as <code>mgmt_ipv4: 10.0.0.0/8</code> on a key Elasticsearch maps as keyword is now matched as that text, where 2.3.0 and later sent it as a CIDR match that could not match a keyword field. <a href="https://github.com/zebbra/neops-core/issues/2434">https://github.com/zebbra/neops-core/issues/2434</a></li>
 <li>The <code>devices</code> list now sorts a device with no zone as <code>default</code> when ordered by <code>networkZone.name</code>, as the 2.4.0 notes said and as <code>devicesElastic</code> already did. In 2.4.0 and 2.5.0 it sorted those devices last ascending and first descending.</li>
 <li>An ordering list separated by spaces only, such as <code>hostname -networkZone.name</code>, is now read as two keys, like <code>hostname,-networkZone.name</code>. It used to fail as one unknown field.</li>
 <li>A search that Elasticsearch refuses as invalid ES|QL now names its problems without the <code>line N:M:</code> positions, which pointed into the statement Core generates rather than into anything the client sent: <code>Query failed: Found 1 problem: Unknown column [nope]</code>. Several problems are joined with <code>;</code>. A client that matches on the old message text needs to follow.</li>
@@ -8655,8 +8681,11 @@
 <li><code>manage.py elastic_sync_schema --show-schema KEY</code> now prints the stored and the inferred schema of that fact or check key for each entity type, and creates nothing. It used to run the <code>--analyze</code> summary and never print the key. Combining it with <code>--analyze</code> or <code>--create</code> is refused (<a href="https://github.com/zebbra/neops-core/issues/2449">https://github.com/zebbra/neops-core/issues/2449</a>).</li>
 <li>With more than one shard per index (<code>ELASTICSEARCH_DSL_INDEX_SHARDS</code> above 1), a shard that fails a query now fails the search lists and the topology with that shard&rsquo;s reason, for example <code>Query failed: For input string: "abc" (index network)</code>, and fails a list filtered by a scope. They used to return the other shards&rsquo; rows, or none, without an error. A task whose targets come from a search filter still swallows the error and now runs on no targets instead of on fewer: <a href="https://github.com/zebbra/neops-core/issues/2433">https://github.com/zebbra/neops-core/issues/2433</a> tracks that. A list also no longer answers no rows and a <code>totalCount</code> of 0 when counting more than 10,000 hits fails: it counts in the same search.</li>
 <li>A Django admin import with the delay Elasticsearch option now puts the web process&rsquo;s configured signal processor back when it ends, also when it fails. It used to leave <code>NeopsCacheSignalProcessor</code> installed, so that process kept queueing the pks of later saves in memory until its next delayed import or restart.</li>
+<li><code>manage.py index_sync_status</code> now reports group index writes due for longer than <code>--max-pending-age</code> when a group&rsquo;s write keeps failing. It measured their age from the time each record is next due, which every failed try moved to now, so the threshold never tripped. Migration <code>0208_pending_group_index_first_due_at</code> keeps the time the change was made in the new column <code>first_due_at</code>, set from <code>created_at</code> for records already due.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-13 13:23:23'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-13T13:23:23+00:00'>2026-11-13 13:23:23</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<h2 id="going-back">Going back</h2>
+<p>An earlier release runs on the migrated database as it is, during the rolling upgrade and after going back: the database sets <code>first_due_at</code> to the time of the insert for the records it writes. <code>migrate core 0206_network_zone</code> drops the column, and with it the time each record already due first came due. Migrate back only once the pods of the earlier release have replaced the new ones: a new pod cannot record a group write without the column.</p>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-13 15:38:15'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-13T15:38:15+00:00'>2026-11-13 15:38:15</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
