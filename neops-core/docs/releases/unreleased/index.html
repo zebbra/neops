@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/shift-away.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/backdrop.css">
     
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/scale.css">
+    
       <link rel="stylesheet" href="../../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../../assets/document_dates/core/core.css">
     
@@ -8537,6 +8537,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#archived-devices-groups-and-clients-no-longer-hold-their-unique-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archived devices, groups and clients no longer hold their unique values
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Archived devices, groups and clients no longer hold their unique values">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#going-back-below-this-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going back below this release
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8593,6 +8621,29 @@
 <h3 id="the-helm-migrate-job-takes-its-own-resources">The Helm migrate Job takes its own resources</h3>
 <p>The core chart has a new value, <code>migrate.resources</code>, for the post-install and post-upgrade migrate Job, which runs the index rebuild. Left empty, as it is by default, the Job takes the top-level <code>resources</code> of the Core web pods, as before. Set it to give the rebuild more memory without resizing every web pod; under the neops umbrella chart it is <code>neops-core.migrate.resources</code>.</p>
 <p>Since 2.3.0 a full rebuild (<code>elastic_index --rebuild --force</code>, or <code>--rebuild-if-stale</code> when every index is stale) holds about 140 bytes more per row until it has synced the lookup indices. At 610,000 documents its peak RSS went from 409 MiB to 492 MiB. It grows linearly, so expect about 0.8 GB more at 6 million rows.</p>
+<h3 id="archived-devices-groups-and-clients-no-longer-hold-their-unique-values">Archived devices, groups and clients no longer hold their unique values</h3>
+<p>The upgrade applies migration <code>0207_unique_among_live_rows</code>. A device&rsquo;s <code>external_reference</code>, a group&rsquo;s <code>name</code> and a client&rsquo;s MAC address are now unique among live rows only, so an unlock&rsquo;s <code>db_updates</code> can create or rename an entity to a value an archived one still carries. It used to be refused with <code>already exists</code>. Restoring an archived row while a live row holds its value is refused with <code>A live device already has this external reference.</code> (or the group or client equivalent), and restoring an interface leaves such a client archived. The migration rewrites no rows. It holds an exclusive lock on <code>core_device</code>, <code>core_devicegroup</code> and <code>core_client</code> while it builds their indexes, about a second at two million clients.</p>
+<h4 id="going-back-below-this-release">Going back below this release</h4>
+<p>Undoing <code>0207_unique_among_live_rows</code> puts back uniqueness across all rows, and it fails with <code>could not create unique index</code> once two rows share a value, which this release allows. Before <code>migrate core 0206_network_zone</code> (or any older target), clear the value on each archived row that shares it with a live row or with a row archived later. This keeps the live row&rsquo;s value, or else the one archived last:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">core_device</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">external_reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">core_device</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">external_reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">external_reference</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="p">)));</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">core_devicegroup</span><span class="w"> </span><span class="k">g</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">core_devicegroup</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">g</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="k">g</span><span class="p">.</span><span class="n">id</span><span class="p">)));</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">core_client</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">mac_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">core_client</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">mac_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">mac_address</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">deleted_at</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span><span class="p">)));</span>
+</span></code></pre></div>
+<p>Run it right before the migrate, with Core&rsquo;s workers and the workflow engine stopped, since a run that archives or re-creates an entity in between can add a new duplicate. Run each as a <code>SELECT id</code> with the same <code>WHERE</code> first to see what it clears. An archived row whose value was cleared can no longer be found or restored by that value.</p>
 <h2 id="fixes">Fixes</h2>
 <ul>
 <li><code>manage.py sync_lookup_indices --force</code> now stamps the lookup indices it refilled. It used to leave them unstamped, so the next <code>elastic_index --rebuild-if-stale</code> (every Helm upgrade, every <code>./neops up</code>) rebuilt <code>network</code>, <code>groups</code> and <code>clients</code> as well, with search down meanwhile.</li>
@@ -8605,7 +8656,7 @@
 <li>With more than one shard per index (<code>ELASTICSEARCH_DSL_INDEX_SHARDS</code> above 1), a shard that fails a query now fails the search lists and the topology with that shard&rsquo;s reason, for example <code>Query failed: For input string: "abc" (index network)</code>, and fails a list filtered by a scope. They used to return the other shards&rsquo; rows, or none, without an error. A task whose targets come from a search filter still swallows the error and now runs on no targets instead of on fewer: <a href="https://github.com/zebbra/neops-core/issues/2433">https://github.com/zebbra/neops-core/issues/2433</a> tracks that. A list also no longer answers no rows and a <code>totalCount</code> of 0 when counting more than 10,000 hits fails: it counts in the same search.</li>
 <li>A Django admin import with the delay Elasticsearch option now puts the web process&rsquo;s configured signal processor back when it ends, also when it fails. It used to leave <code>NeopsCacheSignalProcessor</code> installed, so that process kept queueing the pks of later saves in memory until its next delayed import or restart.</li>
 </ul>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-09 19:33:21'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-09T19:33:21+00:00'>2026-11-09 19:33:21</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-10-27 18:39:19'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-10-27T18:39:19+00:00'>2026-10-27 18:39:19</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-13 13:23:23'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-13T13:23:23+00:00'>2026-11-13 13:23:23</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

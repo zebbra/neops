@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/shift-away.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/backdrop.css">
     
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
+    
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/core/core.css">
     
@@ -8755,9 +8755,7 @@ want to log out&rdquo; page because of that.</p>
 <h3 id="who-gets-an-account">Who gets an account</h3>
 <p>Every person the provider lets sign in to the Neops client gets a Neops account at their first
 login, with no further approval. Restrict who may sign in <strong>at the provider</strong> (the assignment
-settings below), because an account without any role still holds the element defaults, and
-some of those are open by default (see the warning in
-<a href="../permissions/#core-elements">Permissions and roles</a>).</p>
+settings below).</p>
 <h3 id="claims">Claims</h3>
 <table>
 <thead>
@@ -8806,8 +8804,7 @@ check.</p>
 <p><strong>Matching existing users by address.</strong> When the provider marks the address verified in its
 userinfo response and the address belongs to an existing Neops user, the login is linked to
 that user and logs in as them from then on, superuser and roles included. That is how a local
-account moves to single sign-on, and it is also how anyone the provider vouches for with that
-address takes the account over. Before turning OIDC on, make sure every local account,
+account moves to single sign-on. Before turning OIDC on, make sure every local account,
 the installation&rsquo;s admin user above all, either belongs to the same person in the provider or
 has an address no provider identity carries.</p>
 <p>Linking follows the provider&rsquo;s own <code>email_verified</code> in userinfo, not the trust opt-out:</p>
@@ -8817,9 +8814,6 @@ has an address no provider identity carries.</p>
   returning to the web client.</li>
 <li>A provider under the opt-out that sends <code>email_verified: true</code> for some users is still linked
   for those users.</li>
-<li>A provider that sends <code>email_verified</code> as a string is linked even for <code>"false"</code>. Core refuses
-  such a provider unless the opt-out is on, so <strong>never use the opt-out for a provider that sends
-  the claim as a string</strong>: it would link unverified addresses to existing accounts.</li>
 </ul>
 <p>For a <strong>new</strong> user, core takes the username and names from the userinfo response alone when it
 fetched one (the default), and from the ID token otherwise. For everything else, including
@@ -8878,9 +8872,8 @@ roles and the <code>email_verified</code> check, it merges both, userinfo winnin
 <li><strong>Providers usually send no claim once a user&rsquo;s last role is gone</strong>, which leaves the user&rsquo;s
   Neops roles as they were. Check this for your provider on a user without roles (Keycloak&rsquo;s
   <em>Evaluate</em>, Okta&rsquo;s <em>Token Preview</em>).</li>
-<li><strong>Changes reach Neops only at an interactive login.</strong> Refreshing a session never asks the
-  provider again, and a session can be refreshed indefinitely. To take someone&rsquo;s access away,
-  deactivate the user in Neops (<em>Users</em> in the admin site); see
+<li><strong>Role changes in the provider take effect at the user&rsquo;s next login.</strong> To take someone&rsquo;s
+  access away, deactivate the user in Neops (<em>Users</em> in the admin site); see
   <a href="../permissions/#when-a-change-takes-effect">When a change takes effect</a>.</li>
 <li><strong>A role sync never touches <code>is_superuser</code> or <code>is_staff</code>.</strong> Admin-site access stays a local
   decision.</li>
@@ -9015,8 +9008,8 @@ no admin consent.</p>
 </ol>
 <p>Entra puts the assigned values in the ID token as a top-level <code>roles</code> array, which Neops reads.
 A user with no assignment gets no <code>roles</code> claim, so their Neops roles stay as they were; with
-<em>Assignment required</em> on, they also cannot start a new login. An open Neops session is not
-affected by either: deactivate the user in Neops to end it.</p>
+<em>Assignment required</em> on, they also cannot log in. To take someone&rsquo;s access away, deactivate
+the user in Neops.</p>
 <p>Use app roles, not the <em>groups</em> claim: Neops does not read <code>groups</code>, and Entra emits group
 object IDs there, replaces the list with a reference above 200 groups, and differs between
 tenants.</p>
@@ -9090,8 +9083,7 @@ groups can match. Where the claim is set up depends on the authorization server:
 <li>Only the people who should use Neops can sign in to that client.</li>
 <li>The ID token or userinfo carries <code>sub</code>, <code>email</code> and a boolean <code>email_verified: true</code>. Use
    <code>trust_email_without_verification</code> only for a provider that sends no <code>email_verified</code> at all
-   and whose addresses only your administrators can set; never for one that sends it as a
-   string.</li>
+   and whose addresses only your administrators can set.</li>
 <li>If roles should come from the provider: a top-level <code>roles</code> array of strings, in the ID token
    or userinfo (not only in the access token), whose values are the Neops role names, and none
    of them a privileged Neops role you did not mean to hand out. Otherwise send no role claim at
@@ -9137,7 +9129,7 @@ groups can match. Where the claim is set up depends on the authorization server:
 </tr>
 </tbody>
 </table>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 13:03:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T13:03:32+00:00'>2026-11-11 13:03:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 

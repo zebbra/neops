@@ -55,17 +55,17 @@
     
       <link rel="stylesheet" href="../../../assets/document_dates/fonts/material-icons.css">
     
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
-    
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/shift-away.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
-    
-      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/backdrop.css">
     
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/tippy.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/scale.css">
+    
       <link rel="stylesheet" href="../../../assets/document_dates/tippy/light.css">
+    
+      <link rel="stylesheet" href="../../../assets/document_dates/tippy/material.css">
     
       <link rel="stylesheet" href="../../../assets/document_dates/core/core.css">
     
@@ -8659,17 +8659,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limits-to-know" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Limits to know
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#without-the-plugin" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8819,8 +8808,8 @@ default; each of the other grant kinds has its own page.</p>
 <li><strong>Elements.</strong> If any of the user&rsquo;s roles has a grant row for the element, the highest row
   wins, and a row with no flags is an explicit deny. If none has a row, the element&rsquo;s own
   default applies. A role default never reaches an element.</li>
-<li><strong>No role at all</strong> sees nothing that is filtered by group, task or scope, but still holds
-  every element default, including the open ones flagged in the catalogue.</li>
+<li><strong>No role at all</strong> sees nothing that is filtered by group, task or scope, and gets the element
+  defaults only.</li>
 </ul>
 <p>The web client&rsquo;s role editor shows a role&rsquo;s default against every group, task and scope that
 has no grant row. That display is not what is enforced: once a role has one row of a kind, the
@@ -8866,7 +8855,7 @@ the role default covers all of them, a scope grant only the ones it names.</p>
 <td>Inventory editor</td>
 <td><code>write</code></td>
 <td>none, or <code>write</code> on chosen device groups</td>
-<td>none; plus <code>delete-facts</code>, <code>device-archive</code> and <code>tasks-archive</code> <code>write</code> once their open defaults are closed (below)</td>
+<td>none; <code>delete-facts</code>, <code>device-archive</code> and <code>tasks-archive</code> <code>write</code> where their defaults were narrowed</td>
 </tr>
 <tr>
 <td>Administrator</td>
@@ -8876,8 +8865,6 @@ the role default covers all of them, a scope grant only the ones it names.</p>
 </tr>
 </tbody>
 </table>
-<p>Object grants narrow what a role sees and changes in the inventory; they do not narrow
-workflow runs (see <a href="#limits-to-know">Limits</a>).</p>
 <h2 id="permission-elements">Permission elements</h2>
 <p>Elements are registered by core on every start from one list in code. An element keeps the
 default stored in the database, edited or not: a release that changes a shipped default
@@ -8885,15 +8872,6 @@ reaches an existing installation only through <code>manage.py sync_permission_el
 which also undoes every edited default. Element names never contain <code>:</code>, because the colon
 separates the name from the flag in the token.</p>
 <h3 id="core-elements">Core elements</h3>
-<div class="admonition warning">
-<p class="admonition-title">Open to every account by default</p>
-<p><code>delete-facts</code>, <code>device-archive</code> and <code>tasks-archive</code> ship with every flag on, and their
-checks look at the element only, not at the user&rsquo;s device groups. As shipped, <strong>every
-account, including one without any role and one just created by an OIDC login, may delete
-facts on every device and delete archived devices and tasks.</strong> On a production
-installation set their default to none (<em>Permission elements</em> in the admin site) and give
-them to the roles that need them. Re-check after any <code>sync_permission_element --reset</code>.</p>
-</div>
 <table>
 <thead>
 <tr>
@@ -8930,18 +8908,18 @@ them to the roles that need them. Re-check after any <code>sync_permission_eleme
 </tr>
 <tr>
 <td><code>device-archive</code></td>
-<td><strong>read, execute, write</strong></td>
-<td><code>write</code>: un-archive a device, delete an archived device. See the warning above</td>
+<td>read, execute, write</td>
+<td><code>write</code>: un-archive a device, delete an archived device</td>
 </tr>
 <tr>
 <td><code>tasks-archive</code></td>
-<td><strong>read, execute, write</strong></td>
-<td><code>write</code>: un-archive a legacy task, delete an archived task. See the warning above</td>
+<td>read, execute, write</td>
+<td><code>write</code>: un-archive a legacy task, delete an archived task</td>
 </tr>
 <tr>
 <td><code>delete-facts</code></td>
-<td><strong>read, execute, write</strong></td>
-<td><code>write</code>: delete device, interface and group facts; deleting by key deletes that fact on every device. See the warning above</td>
+<td>read, execute, write</td>
+<td><code>write</code>: delete device, interface and group facts</td>
 </tr>
 <tr>
 <td><code>execution</code></td>
@@ -9014,7 +8992,7 @@ grant.</p>
 </tr>
 <tr>
 <td><code>workflow-execution:write</code></td>
-<td><strong>start a run</strong>, against any device (see <a href="#limits-to-know">Limits</a>). Core also requires it of the user who started the run when the run locks its devices</td>
+<td><strong>start a run</strong>. Core also requires it of the user who started the run when the run locks its devices</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
@@ -9068,10 +9046,8 @@ grant.</p>
 <code>workflow-execution-log:read</code> on top of <code>worker:read</code>. Every workflow element defaults to no
 access, so a role gets workflow rights only through a grant.</p>
 <p>The engine itself reaches core as one service account, the user behind its <code>NEOPS_CMS_TOKEN</code>
-API key, and that account needs <code>workflow-execution:write</code> too. The check on the user who
-started a run records who acted rather than limiting the engine: whoever holds that key can
-name any active user. The Compose deployment mints the key for its admin user, a superuser who
-can also read every device password, so treat the key like that user&rsquo;s password.</p>
+API key, and that account needs <code>workflow-execution:write</code> too. The Compose deployment mints
+that key for its admin user, whose seeded role carries the grant.</p>
 <h3 id="profiles">Profiles</h3>
 <p>The three columns above are the profiles of <code>grant_workflow_permissions</code>, which adds a
 profile&rsquo;s grants to a role:</p>
@@ -9152,40 +9128,13 @@ in <a href="../oidc-providers/">OIDC providers</a>.</p>
 <td>next access token</td>
 </tr>
 <tr>
-<td>Roles or the user removed in the identity provider</td>
-<td><strong>not until the user&rsquo;s next interactive login</strong></td>
-<td>the same</td>
-</tr>
-<tr>
 <td>User deactivated in Neops</td>
 <td>next request; refresh tokens and API keys stop working</td>
 <td>the current access token keeps working for up to 15 minutes</td>
 </tr>
 </tbody>
 </table>
-<p>Logins refresh their tokens without going back to the identity provider: a refresh token lasts
-7 days and, by default, each refresh renews it, so an open session can last indefinitely. To
-take someone&rsquo;s access away, deactivate the user in Neops (<em>Users</em> in the admin site); changing
-the identity provider alone is not enough.</p>
-<h2 id="limits-to-know">Limits to know</h2>
-<ul>
-<li><strong>A run is not checked against the user&rsquo;s devices.</strong> The engine locks and writes through its
-  own service account, so anyone with <code>workflow-execution:write</code> can run any published workflow
-  on any device, whatever device groups their roles cover. There is no per-workflow or
-  per-device grant yet.</li>
-<li><strong>Workers are not authenticated.</strong> Worker registration, ping and unregistration, job polling,
-  result and log upload, and function-block registration on the engine are open to anyone who
-  can reach them
-  (<a href="https://github.com/zebbra/neops-workflow-engine/issues/267">neops-workflow-engine#267</a>).
-  Keep the engine&rsquo;s worker routes off any network you do not trust.</li>
-<li><strong>Scopes are views, not boundaries.</strong> A scope&rsquo;s filters narrow what a list shows when a
-  client asks for that scope; what a user may see is decided by their device group and task
-  grants.</li>
-<li><strong>File storage has its own rules.</strong> neops-storage asks core for the user&rsquo;s grant on the
-  device, group, interface or client a file belongs to, and needs more than core does: reading
-  a file takes <code>write</code> there, so a <code>read</code> grant gives no file access. Files attached to a scope
-  are writable by every logged-in user. Its <code>/manage</code> routes have a separate local admin.</li>
-</ul>
+<p>To take someone&rsquo;s access away, deactivate the user in Neops (<em>Users</em> in the admin site).</p>
 <h2 id="without-the-plugin">Without the plugin</h2>
 <p>Without <code>neops_permissions_simple</code> in <code>NEOPS_PLUGINS</code>, core allows every check, the grant
 tables and their mutations do not exist, and the access token carries no permissions and
@@ -9203,7 +9152,7 @@ README has the caching details); the profiles are in
 <code>neops/core/schemas/mutations/lock_authz.py</code>; the engine&rsquo;s checks are the <code>@RequirePermission</code>
 decorators in neops-workflow-engine, and its route table test is
 <code>test/auth/route-table.e2e-spec.ts</code>. A new element or a new engine string changes this page.</p>
-<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
+<div class='document-dates-plugin-wrapper document-dates-bottom'><div class='document-dates-plugin' locale=''><div class='dd-left'><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 10:14:35'><span class='material-icons' data-icon='doc_created'></span><time datetime='2026-11-11T10:14:35+00:00'>2026-11-11 10:14:35</time></span><span class='dd-item' data-tippy-content data-tippy-raw='2026-11-11 13:03:32'><span class='material-icons' data-icon='doc_updated'></span><time datetime='2026-11-11T13:03:32+00:00'>2026-11-11 13:03:32</time></span></div><div class='dd-right'><span class='material-icons' data-icon='doc_author'></span><div class='author-group'><div class='avatar-wrapper' data-name='Leandro Lerena' data-tippy-content data-tippy-raw='<a href="https://www.neops.io/team/leandro-lerena" target="_blank">Leandro Lerena</a>'><span class='avatar-text'></span><img class='avatar' data-src='../../../assets/authors/leandro-lerena.jpeg' data-email='leandro.lerena@zebbra.ch' /></div></div></div></div></div>
 
 
 
