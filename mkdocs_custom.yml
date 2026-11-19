@@ -107,8 +107,17 @@ plugins:
         # left alone they publish twice more as orphans. The snippet resolves on
         # the filesystem, so excluding the page does not break the include.
         - '*/scenarios/*/README.md'
-        # generated indexes and a tooling README of the workflow engine: not product docs
-        - 'neops-workflow-engine/*/properties.md'
-        - 'neops-workflow-engine/*/properties.json'
-        - 'neops-workflow-engine/*/PLAYBOOK_INDEX.md'
-        - 'neops-workflow-engine/*/pdd/README.md'
+        # the workflow engine's tests, sources, tooling and developer notes (each tree
+        # is also reached through a docs/ symlink) and its generated files: not product docs
+        - 'neops-workflow-engine/test/*'
+        - 'neops-workflow-engine/docs/test/*'
+        - 'neops-workflow-engine/src/*'
+        - 'neops-workflow-engine/docs/src/*'
+        - 'neops-workflow-engine/tools/*'
+        - 'neops-workflow-engine/docs/tools/*'
+        - 'neops-workflow-engine/rest/*'
+        - 'neops-workflow-engine/docs/properties.*'
+        - 'neops-workflow-engine/properties/*'
+        - 'neops-workflow-engine/docs/properties/*'
+        - 'neops-workflow-engine/.properties/*'
+        - 'neops-workflow-engine/.property-index/*'
