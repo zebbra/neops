@@ -96,6 +96,10 @@ plugins:
     - '*/CLAUDE.md'
     - '*/pull_request_template.md'
     - '*/scenarios/*/README.md'
+    - neops-workflow-engine/*/properties.md
+    - neops-workflow-engine/*/properties.json
+    - neops-workflow-engine/*/PLAYBOOK_INDEX.md
+    - neops-workflow-engine/*/pdd/README.md
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 site_url: https://docs.neops.io/
