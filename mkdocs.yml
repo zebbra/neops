@@ -96,10 +96,18 @@ plugins:
     - '*/CLAUDE.md'
     - '*/pull_request_template.md'
     - '*/scenarios/*/README.md'
-    - neops-workflow-engine/*/properties.md
-    - neops-workflow-engine/*/properties.json
-    - neops-workflow-engine/*/PLAYBOOK_INDEX.md
-    - neops-workflow-engine/*/pdd/README.md
+    - neops-workflow-engine/test/*
+    - neops-workflow-engine/docs/test/*
+    - neops-workflow-engine/src/*
+    - neops-workflow-engine/docs/src/*
+    - neops-workflow-engine/tools/*
+    - neops-workflow-engine/docs/tools/*
+    - neops-workflow-engine/rest/*
+    - neops-workflow-engine/docs/properties.*
+    - neops-workflow-engine/properties/*
+    - neops-workflow-engine/docs/properties/*
+    - neops-workflow-engine/.properties/*
+    - neops-workflow-engine/.property-index/*
 repo_url: https://github.com/zebbra/neops
 site_name: Neops Docs
 site_url: https://docs.neops.io/
