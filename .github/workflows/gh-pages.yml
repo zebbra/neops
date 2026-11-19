@@ -109,3 +109,5 @@ jobs:
         with:
           github_token: ${{ secrets.SUBMODULES_TOKEN }}
           publish_dir: ./site  # Directory with the build artifacts
+          # each deploy replaces the branch with one commit, so past builds are not kept
+          force_orphan: true
