@@ -1,0 +1,56 @@
+# Author profiles for mkdocs-document-dates.
+#
+# Auto-loaded by the plugin from <docs_dir>/authors.yml.
+#
+# Lookup key (left-hand side of each entry) MUST match the canonical git
+# author name, i.e. `%aN` from `git log --use-mailmap` after .mailmap rewrites
+# are applied. To verify a name, run:
+#     git -c mailmap.file=.mailmap log --use-mailmap --format='%aN' | sort -u
+#
+# Fields:
+#   name        Display name shown in the tooltip.
+#   email       Drives the implicit Gravatar fallback. The plugin's core.js
+#               hashes this email and uses Gravatar when `avatar` is empty.
+#   avatar      Optional explicit avatar source. Either:
+#                 - external URL, e.g. https://github.com/<handle>.png
+#                 - path relative to docs_dir, e.g. assets/authors/<file>.jpg
+#                   (the plugin resolves it relative to each page's URL)
+#               Leaving this empty falls through to a Gravatar derived from
+#               `email` (the plugin's client-side JS handles that).
+#   url         Optional profile URL. Renders as a clickable link in the
+#               author tooltip.
+#   description Optional one-liner shown in the tooltip.
+#
+# Entries below cover the authors currently visible across the served site.
+# Avatars are the team headshots from https://www.neops.io/team (downloaded
+# into assets/authors/), except Tim who uses his GitHub avatar. Any author not
+# listed here falls back to a Gravatar derived from `email`.
+
+authors:
+
+  "Leandro Lerena":
+    name: Leandro Lerena
+    email: leandro.lerena@zebbra.ch
+    avatar: assets/authors/leandro-lerena.jpeg
+    url: https://www.neops.io/team/leandro-lerena
+    description: Software Architect
+
+  "Tim Zurbuchen":
+    name: Tim Zurbuchen
+    email: tim.zurbuchen@zebbra.ch
+    avatar: https://github.com/Haigos.png
+    url: https://github.com/Haigos
+
+  "Andy Griesbeck":
+    name: Andy Griesbeck
+    email: andy.griesbeck@zebbra.ch
+    avatar: assets/authors/andy-griesbeck.png
+    url: https://www.neops.io/team/andy-griesbeck
+    description: Software Solutioneer
+
+  "Simon Obi":
+    name: Simon Obi
+    email: simon.obi@zebbra.ch
+    avatar: assets/authors/simon-obi.png
+    url: https://www.neops.io/team/simon-obi
+    description: Lead Network Automation
