@@ -1,0 +1,18 @@
+.neops-card-lab-frame {
+  display: block;
+  width: 100%;
+  height: 70rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: #f4f4f4;
+}
+
+.neops-card-lab-link {
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+@media screen and (max-width: 48rem) {
+  .neops-card-lab-frame {
+    height: 112rem;
+  }
+}

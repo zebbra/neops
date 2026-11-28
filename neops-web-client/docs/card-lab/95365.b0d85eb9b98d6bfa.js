@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkneops_web_client=self.webpackChunkneops_web_client||[]).push([[95365],{95365(s,e,t){t.r(e),t.d(e,{default:()=>n});var n={elem:"svg",attrs:{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 32 32",fill:"currentColor",width:32,height:32},content:[{elem:"path",attrs:{d:"M16 10 26 20 24.6 21.4 16 12.8 7.4 21.4 6 20z"}}],name:"chevron--up",size:32}}}]);
